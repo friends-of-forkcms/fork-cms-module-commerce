@@ -1,0 +1,42 @@
+services:
+    catalog.repository.category:
+        class: Backend\Modules\Catalog\Domain\Category\CategoryRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Category\Category
+
+    catalog.repository.product:
+        class: Backend\Modules\Catalog\Domain\Product\ProductRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Product\Product
+            
+    catalog.repository.brand:
+        class: Backend\Modules\Catalog\Domain\Brand\BrandRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Brand\Brand
+            
+    catalog.repository.order:
+        class: Backend\Modules\Catalog\Domain\Order\OrderRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Order\Order
+
+    catalog.repository.specification:
+        class: Backend\Modules\Catalog\Domain\Specification\SpecificationRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Specification\Specification
+
+    catalog.repository.specification.value:
+        class: Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue
+
+    catalog.repository.vat:
+        class: Backend\Modules\Catalog\Domain\Vat\VatRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Vat\Vat

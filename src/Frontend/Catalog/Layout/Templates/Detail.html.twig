@@ -1,0 +1,137 @@
+{#{option:item}#}
+{#{* Product information: see dump for additional info *}#}
+{#<div id="productContainer">#}
+	{#{* Product videos *}#}
+	{#{option:videos}#}
+	{#<div class="videos">#}
+		{#{iteration:videos}#}
+			{#<p><b>{$lblVideos|ucfirst}:</b></p>#}
+			{#<a class="fancybox fancybox.iframe" rel="gallery" href="{$videos.url}">#}
+				{#<img src="{$videos.image}" alt="{$videos.title}" title="{$videos.title}">#}
+			{#</a>#}
+		{#{/iteration:videos}#}
+	{#</div>#}
+	{#{/option:videos}#}
+	{##}
+	{#{* Product files *}#}
+	{#{option:files}#}
+	{#<div class="videos">#}
+		{#<p><b>{$lblFiles|ucfirst}:</b></p>#}
+		{#<ul>#}
+		{#{iteration:files}#}
+			{#<li><a href="{$files.url}">{$files.title}</a></li>#}
+		{#{/iteration:files}#}
+		{#</ul>#}
+	{#</div>#}
+	{#{/option:files}#}
+	{##}
+	{#{* Product comments *}#}
+	{#{option:item.allow_comments}#}
+		{#<hr>#}
+		{#<h2>{$lblComments|ucfirst}</h2>#}
+		{#<div class="comments">#}
+		{#{option:comments}#}
+			{#{iteration:comments}				#}
+				{#<p>#}
+					{#<b>{$comments.author}</b>#}
+					{#{option:comments.website}(<a href="{$comments.website}">{$comments.website}</a>){/option:comments.website}#}
+					{#- {$comments.created_on|timeago}#}
+				{#</p>#}
+				{#<p>{$comments.text|ucfirst}</p>#}
+			{#<hr>#}
+			{#{/iteration:comments}#}
+		{#{/option:comments}#}
+		{#{option:!comments} <a href="{$item.full_url}#{$actComment}" itemprop="discussionUrl">{$msgCatalogNoComments}</a>{/option:!comments}#}
+		{#</div>#}
+		{##}
+		{#<div class="form">#}
+			{#{option:commentIsInModeration}<div class="message warning"><p>{$msgCatalogCommentInModeration}</p></div>{/option:commentIsInModeration}#}
+			{#{option:commentIsSpam}<div class="message error"><p>{$msgCatalogCommentIsSpam}</p></div>{/option:commentIsSpam}#}
+			{#{option:commentIsAdded}<div class="message success"><p>{$msgCatalogCommentIsAdded}</p></div>{/option:commentIsAdded}#}
+			{#{form:commentsForm}#}
+				{#<p {option:txtAuthorError}class="errorArea"{/option:txtAuthorError}>#}
+					{#<label for="author">{$lblName|ucfirst}<abbr title="{$lblRequiredField}">*</abbr></label>#}
+					{#{$txtAuthor} {$txtAuthorError}#}
+				{#</p>#}
+				{##}
+				{#<p {option:txtEmailError}class="errorArea"{/option:txtEmailError}>#}
+					{#<label for="email">{$lblEmail|ucfirst}<abbr title="{$lblRequiredField}">*</abbr></label>#}
+					{#{$txtEmail} {$txtEmailError}#}
+				{#</p>#}
+				{##}
+				{#<p class="bigInput{option:txtWebsiteError} errorArea{/option:txtWebsiteError}">#}
+					{#<label for="website">{$lblWebsite|ucfirst}</label>#}
+					{#{$txtWebsite} {$txtWebsiteError}#}
+				{#</p>#}
+	{##}
+				{#<p class="bigInput{option:txtMessageError} errorArea{/option:txtMessageError}">#}
+					{#<label for="message">{$lblMessage|ucfirst}<abbr title="{$lblRequiredField}">*</abbr></label>#}
+					{#{$txtMessage} {$txtMessageError}#}
+				{#</p>#}
+	{##}
+				{#<p>#}
+					{#<input class="inputSubmit" type="submit" name="comment" value="{$msgComment|ucfirst}" />#}
+				{#</p>#}
+			{#{/form:commentsForm}#}
+		{#</div>#}
+		{#<hr>#}
+	{#{/option:item.allow_comments}#}
+	{##}
+	{#{* Back to overview *}#}
+	{#<p><a href="{$var|geturlforblock:'catalog'}" title="{$msgToCatalogOverview|ucfirst}">{$msgToCatalogOverview|ucfirst}</a></p>#}
+	{##}
+{#{/option:item}#}
+{#</div>#}
+
+<div id="productContainer">
+	<div class="title"><h1>{{ product.title }}</h1></div>
+	<div class="price"><p><b>{{ 'lbl.Price'|trans|ucfirst }}:</b> {{ product.activePrice|formatcurrency }}</p></div>
+	<div class="category"><p><b>{{ 'lbl.Category'|trans|ucfirst }}:</b> <a href="{$item.category_full_url}">{{ product.category.title }}</a></p></div>
+	<div class="brand"><p><b>{{ 'lbl.Brand'|trans|ucfirst}}:</b> <a href="{$item.brand.full_url}">{{ product.brand.title }}</a></p></div>
+
+	<div class="summary">{{ product.summary }}</div>
+	<div class="content">
+		<p><b>{{ 'lbl.Content'|trans|ucfirst}}:</b></p>
+		<p>{{ product.text|raw }}</p>
+	</div>
+
+	<div class="addProductToShoppingCart">
+		<p><a href="javascript:void(0);" id="{{ product.id }}">{{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}</a></p>
+	</div>
+
+    {# Product images #}
+	{{ images|raw }}
+
+	{# Product specifications #}
+	{% if product.specificationValues %}
+		<hr>
+		<h2>{{ 'lbl.Specifications'|trans|ucfirst }}</h2>
+		<div class="specifications">
+			{% for value in product.specificationValues %}
+				<p><b>{{ value.specification.title }}:</b> {{ value.value }}</p>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+
+	{# Related products #}
+	{% if product.relatedProducts %}
+		<hr>
+		<h2>{{ 'lbl.RelatedProducts'|trans|ucfirst }}</h2>
+		<div class="relatedProducts">
+			{% for related in product.relatedProducts %}
+			<div class="relatedProduct">
+				<div class="title"><h3>{{ related.title }}</h3></div>
+				<div class="price"><p><b>{{ 'lbl.Price'|trans|ucfirst}}:</b> {{ related.activePrice|formatcurrency }}</p></div>
+				<div class="category"><p><b>{{ 'lbl.Category'|trans|ucfirst }}:</b> <a href="$item.category_full_url">{{ related.category.title }}</a></p></div>
+				<div class="addProductToShoppingCart">
+					<p><a href="javascript:void(0);" id="{{ related.id }}">{{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}</a></p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="clearfix"></div>
+	{% endif %}
+
+	<p><a href="{{ geturlforblock('Catalog') }}" title="{{ 'msg.ToCatalogOverview'|trans|ucfirst}}">{{ 'msg.ToCatalogOverview'|trans|ucfirst }}</a></p>
+</div>

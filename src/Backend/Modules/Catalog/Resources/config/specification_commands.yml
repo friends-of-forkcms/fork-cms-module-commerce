@@ -1,0 +1,21 @@
+services:
+    catalog.handler.create_specification:
+        class: Backend\Modules\Catalog\Domain\Specification\Command\CreateHandler
+        arguments:
+            - "@catalog.repository.specification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Specification\Command\Create }
+
+    catalog.handler.update_specification:
+        class: Backend\Modules\Catalog\Domain\Specification\Command\UpdateHandler
+        arguments:
+            - "@catalog.repository.specification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Specification\Command\Update }
+
+    catalog.handler.delete_specification:
+        class: Backend\Modules\Catalog\Domain\Specification\Command\DeleteHandler
+        arguments:
+            - "@catalog.repository.specification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Specification\Command\Delete }

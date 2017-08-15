@@ -1,0 +1,222 @@
+{% block _product_specification_values_entry_widget %}
+    <div class="row">
+        <div class="col-md-5">
+            {{ form_label(form.specification) }}
+            {{ form_widget(form.specification) }}
+        </div>
+        <div class="col-md-5">
+            {{ form_label(form.value) }}
+            {{ form_widget(form.value) }}
+        </div>
+        <div class="col-md-2">
+            {% if vars.allow_delete %}
+                <label>&nbsp;</label>
+                <div class="btn-toolbar">
+                    <div class="btn-group-sm pull-right">
+                        <a href="#" class="btn btn-danger btn-sm" data-removefield="collection"
+                           data-field="{{ field.vars.id }}">{{ vars.delete_button_text|trans({}, translation_domain)|raw }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock _product_specification_values_entry_widget %}
+
+{% block _product_specification_values_row %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_vars = {} %}
+            {% if style is defined %}
+                {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+            {% endif %}
+            {% if form.vars.allow_delete %}
+                {% set prototype_vars = prototype_vars|merge({'vars' : {'allow_delete': form.vars.allow_delete, 'delete_button_text' : form.vars.delete_button_text}}) %}
+            {% endif %}
+            {% set prototype_html = form_widget(prototype, prototype_vars) %}
+
+
+            {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            <ul class="list-group js-collection">
+                {% for field in form %}
+                    <li class="list-group-item">
+                        {{ form_widget(field, {'vars' : form.vars}) }}
+                        {{ form_errors(field) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="row">
+                {% if form.vars.allow_add %}
+                    <div class="col-md-12">
+                        <div class="btn-group-sm pull-right">
+                            <a href="#" class="btn btn-success btn-sm" data-addfield="collection"
+                               data-collection="{{ form.vars.id }}"
+                               data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|raw }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock _product_specification_values_row %}
+
+{% block _product_specials_entry_widget %}
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_label(form.price) }}
+            {{ form_widget(form.price) }}
+            {{ form_errors(form.price) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.start_date) }}
+            {{ form_widget(form.start_date) }}
+            {{ form_errors(form.start_date) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.end_date) }}
+            {{ form_widget(form.end_date) }}
+            {{ form_errors(form.end_date) }}
+        </div>
+        <div class="col-md-3">
+            {% if vars.allow_delete %}
+                <label>&nbsp;</label>
+                <div class="btn-toolbar">
+                    <div class="btn-group-sm pull-right">
+                        <a href="#" class="btn btn-danger btn-sm" data-removefield="collection"
+                           data-field="{{ field.vars.id }}">{{ vars.delete_button_text|trans({}, translation_domain)|raw }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock _product_specials_entry_widget %}
+
+{% block _product_specials_row %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_vars = {} %}
+            {% if style is defined %}
+                {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+            {% endif %}
+            {% if form.vars.allow_delete %}
+                {% set prototype_vars = prototype_vars|merge({'vars' : {'allow_delete': form.vars.allow_delete, 'delete_button_text' : form.vars.delete_button_text}}) %}
+            {% endif %}
+            {% set prototype_html = form_widget(prototype, prototype_vars) %}
+
+
+            {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            <ul class="list-group js-collection">
+                {% for field in form %}
+                    <li class="list-group-item">
+                        {{ form_widget(field, {'vars' : form.vars}) }}
+                        {{ form_errors(field) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="row">
+                {% if form.vars.allow_add %}
+                    <div class="col-md-12">
+                        <div class="btn-group-sm pull-right">
+                            <a href="#" class="btn btn-success btn-sm" data-addfield="collection"
+                               data-collection="{{ form.vars.id }}"
+                               data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|raw }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock _product_specials_row %}
+
+{% block media_group_widget %}
+    <div class="fork-module-content media-library-media-group-helper">
+        <div id="group-{{ mediaGroup.id }}" data-media-group-id="{{ mediaGroup.id }}"
+             class="panel panel-default mediaGroup">
+            <!--[if lt IE 7 ]>
+            <div class="panel-body mediaConnectedBox ie6"><![endif]-->
+            <!--[if IE 7 ]>
+            <div class="panel-body mediaConnectedBox ie7"><![endif]-->
+            <!--[if IE 8 ]>
+            <div class="panel-body mediaConnectedBox ie8"><![endif]-->
+            <!--[if IE 9 ]>
+            <div class="panel-body mediaConnectedBox ie9"><![endif]-->
+            <!--[if (gt IE 9)|!(IE)]><!-->
+            <div class="panel-body mediaConnectedBox"><!--<![endif]-->
+                <ul class="mediaConnectedItems ui-sortable">
+                    {% for connectedItem in mediaGroup.connectedItems %}
+                        <li id="media-{{ connectedItem.item.id }}" data-folder-id="{{ connectedItem.item.folder.id }}"
+                            class="ui-state-default">
+                            <div class="mediaHolder mediaHolder{{ connectedItem.item.type|ucfirst }}">
+
+                                {# Audio #}
+                                {% if connectedItem.item.type.isAudio %}
+                                    <div class="icon"></div>
+                                    <div class="url">{{ connectedItem.item.url }}</div>
+                                {% endif %}
+
+                                {# File #}
+                                {% if connectedItem.item.type.isFile %}
+                                    <div class="icon"></div>
+                                    <div class="url">{{ connectedItem.item.url }}</div>
+                                {% endif %}
+
+                                {# Image #}
+                                {% if connectedItem.item.type.isImage %}
+                                    <img src="{{ connectedItem.item.getWebPath('backend') }}"
+                                         alt="{{ connectedItem.item.title }}" title="{{ connectedItem.item.title }}"/>
+                                {% endif %}
+
+                                {# Movie #}
+                                {% if connectedItem.item.type.isMovie %}
+                                    <div class="icon"></div>
+                                    <div class="url">{{ connectedItem.item.url }}</div>
+                                {% endif %}
+
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if not mediaGroup.connectedItems.count %}
+                    <p class="mediaNoItems helpTxt">{{ 'msg.MediaNoItemsConnected'|trans }}</p>
+                {% endif %}
+                {% if not form.vars.valid %}
+                    <div class="media-group-type-errors">
+                        {{ form_errors(form.mediaIds) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="panel-footer mediaEditBox">
+                <div class="btn-toolbar">
+                    <div class="btn-group pull-left" role="group">
+                        <button type="button" {% if aspectRatio is defined %}
+                                data-aspect-ratio={{ aspectRatio }}{% endif %} data-i="{{ mediaGroup.id }}"
+                                class="addMediaButton btn btn-default"
+                                title="{{ 'lbl.MediaConnectNow'|trans|ucfirst }}">
+                            <span class="fa fa-plus-square"></span>
+                            <span class="btn-text">{{ 'lbl.MediaConnectNow'|trans|ucfirst }}</span>
+                        </button>
+                        <button type="button" data-i="{{ mediaGroup.id }}"
+                                class="disconnectMediaItemsButton btn btn-default disabled"
+                                title="{{ 'lbl.MediaDisconnect'|trans|ucfirst }}">
+                            <span class="fa fa-minus-square"></span>
+                            <span class="btn-text">{{ 'lbl.MediaDisconnect'|trans|ucfirst }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {# Add hidden required fields #}
+            {{ form_row(form.id) }}
+            {{ form_row(form.mediaIds) }}
+            {{ form_row(form.type) }}
+        </div>
+    </div>
+{% endblock media_group_widget %}

@@ -1,0 +1,55 @@
+doctrine:
+  dbal:
+    types:
+      catalog_category_image_type: Backend\Modules\Catalog\Domain\Category\ImageDBALType
+      catalog_brand_image_type: Backend\Modules\Catalog\Domain\Brand\ImageDBALType
+  orm:
+    mappings:
+      category:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Category"
+        alias: CatalogCategory
+        prefix: Backend\Modules\Catalog\Domain\Category
+      product:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Product"
+        alias: CatalogProduct
+        prefix: Backend\Modules\Catalog\Domain\Product
+      brand:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Brand"
+        alias: CatalogBrand
+        prefix: Backend\Modules\Catalog\Domain\Brand
+      order:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Order"
+        alias: CatalogOrder
+        prefix: Backend\Modules\Catalog\Domain\Order
+      specification:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Specification"
+        alias: CatalogSpecification
+        prefix: Backend\Modules\Catalog\Domain\Specification
+      specification_value:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/SpecificationValue"
+        alias: CatalogSpecificationValue
+        prefix: Backend\Modules\Catalog\Domain\SpecificationValue
+      vat:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Vat"
+        alias: CatalogVat
+        prefix: Backend\Modules\Catalog\Domain\Vat
+      product_special:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/ProductSpecial"
+        alias: CatalogProductSpecial
+        prefix: Backend\Modules\Catalog\Domain\ProductSpecial

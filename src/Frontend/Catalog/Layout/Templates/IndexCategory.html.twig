@@ -1,0 +1,9 @@
+<ul>
+    {% for category in categories %}
+        <li><a href="{{ parentUrl }}/{{ category.meta.url }}">{{ category.title }}</a>
+            {% if not category.children.isEmpty %}
+                {% include '/Modules/Catalog/Layout/Templates/IndexCategory.html.twig' with{'parentUrl' : parentUrl ~'/'~ category.meta.url, 'categories' : category.children} %}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

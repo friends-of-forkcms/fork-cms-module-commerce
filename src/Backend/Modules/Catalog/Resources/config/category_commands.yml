@@ -1,0 +1,21 @@
+services:
+    catalog.handler.create_category:
+        class: Backend\Modules\Catalog\Domain\Category\Command\CreateHandler
+        arguments:
+            - "@catalog.repository.category"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Category\Command\Create }
+
+    catalog.handler.update_category:
+        class: Backend\Modules\Catalog\Domain\Category\Command\UpdateHandler
+        arguments:
+            - "@catalog.repository.category"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Category\Command\Update }
+
+    catalog.handler.delete_category:
+        class: Backend\Modules\Catalog\Domain\Category\Command\DeleteHandler
+        arguments:
+            - "@catalog.repository.category"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Category\Command\Delete }

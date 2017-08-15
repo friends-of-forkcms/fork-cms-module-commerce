@@ -1,0 +1,21 @@
+services:
+    catalog.handler.create_order:
+        class: Backend\Modules\Catalog\Domain\Order\Command\CreateHandler
+        arguments:
+            - "@catalog.repository.order"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Order\Command\Create }
+
+    catalog.handler.update_order:
+        class: Backend\Modules\Catalog\Domain\Order\Command\UpdateHandler
+        arguments:
+            - "@catalog.repository.order"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Order\Command\Update }
+
+    catalog.handler.delete_order:
+        class: Backend\Modules\Catalog\Domain\Order\Command\DeleteHandler
+        arguments:
+            - "@catalog.repository.order"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Order\Command\Delete }

@@ -1,0 +1,28 @@
+{#
+	variables that are available:
+	- {{ category }}: contains data about the category
+#}
+
+<h1>{{ 'lbl.Category'|trans|ucfirst }}: {{ category.title }}</h1>
+
+{% if category.products %}
+    <div class="productsContainer">
+        {% for product in category.products %}
+            <div class="title"><p><a href="{{ productBaseUrl }}/{{ product.meta.url }}" title="{{ product.title }}">{{ product.title }}</a>
+                </p></div>
+            <div class="price"><p>{{ 'lbl.Price'|trans|ucfirst }}: {{ product.activePrice|formatcurrency }}</p></div>
+            <div class="summary"><p>{{ products.summary }}</p></div>
+            <div class="addProductToShoppingCart">
+                <p><a href="#" id="{{ products.id }}">{{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}</a></p>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if category.children %}
+<h3>{{ 'lbl.SubCategories'|trans|ucfirst }}</h3>
+<div class="bd content">
+    {% include '/Modules/Catalog/Layout/Templates/IndexCategory.html.twig' with{'parentUrl' : categoryBaseUrl, 'categories' : category.children} %}
+</div>
+{% endif %}

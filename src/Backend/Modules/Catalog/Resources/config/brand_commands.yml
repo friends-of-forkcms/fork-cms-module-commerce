@@ -1,0 +1,21 @@
+services:
+    catalog.handler.create_brand:
+        class: Backend\Modules\Catalog\Domain\Brand\Command\CreateHandler
+        arguments:
+            - "@catalog.repository.brand"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\Create }
+
+    catalog.handler.update_brand:
+        class: Backend\Modules\Catalog\Domain\Brand\Command\UpdateHandler
+        arguments:
+            - "@catalog.repository.brand"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\Update }
+
+    catalog.handler.delete_brand:
+        class: Backend\Modules\Catalog\Domain\Brand\Command\DeleteHandler
+        arguments:
+            - "@catalog.repository.brand"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\Delete }

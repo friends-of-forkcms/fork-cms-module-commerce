@@ -1,0 +1,21 @@
+services:
+    catalog.handler.create_vat:
+        class: Backend\Modules\Catalog\Domain\Vat\Command\CreateHandler
+        arguments:
+            - "@catalog.repository.vat"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Vat\Command\Create }
+
+    catalog.handler.update_vat:
+        class: Backend\Modules\Catalog\Domain\Vat\Command\UpdateHandler
+        arguments:
+            - "@catalog.repository.vat"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Vat\Command\Update }
+
+    catalog.handler.delete_vat:
+        class: Backend\Modules\Catalog\Domain\Vat\Command\DeleteHandler
+        arguments:
+            - "@catalog.repository.vat"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Vat\Command\Delete }

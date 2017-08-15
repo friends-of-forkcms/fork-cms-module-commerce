@@ -1,0 +1,8 @@
+imports:
+  - { resource: category_commands.yml }
+  - { resource: brand_commands.yml }
+  - { resource: product_commands.yml }
+  - { resource: order_commands.yml }
+  - { resource: specification_commands.yml }
+  - { resource: vat_commands.yml }
+  - { resource: repositories.yml }

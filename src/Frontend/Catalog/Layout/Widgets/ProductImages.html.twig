@@ -1,0 +1,11 @@
+{% if mediaItems %}
+    <div class="images">
+        <p><b>{{ 'lbl.Images'|trans|ucfirst }}:</b></p>
+        <ul>
+            {% for mediaItem in mediaItems %}
+                <li><img src="{{ (mediaItem.getWebPath()) | imagine_filter('media_library_lightbox_small') }}"
+                         alt="{{ mediaItem.title }}" title="{{ mediaItem.title }}"/></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
