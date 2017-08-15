@@ -24,10 +24,20 @@ This module requires extra depencies, you can install these by running:
 ```composer require tetranz/select2entity-bundle```
 
 ### 3. Install extra JavaScript and CSS
+
+Run:
 ```yarn add select2```
 
+Add some lines to `gulpfile.js`:
+* Search for `gulp.task("build:backend:assets:copy-css-vendors", function() {` and add `"node_modules/select2/dist/css/select2.min.css",` to the `.src` array.
+* Search for `gulp.task("build:backend:assets:copy-js-vendors", function() {` and add `
+    "node_modules/select2/dist/js/i18n/nl.js",
+    "node_modules/select2/dist/js/i18n/en.js",
+    "node_modules/select2/dist/js/select2.full.min.js",` to the `.src` array.
+
+And than build the files:
 ```guild build```
 
 Now you should be able to run this module.
 
-At the moment the backend only is fixed and we are still working on this.
+At the moment we are working on the backend, frontend is slowly to be finished.
