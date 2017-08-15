@@ -29,8 +29,8 @@
                            data-toggle="tab">{{ 'lbl.Offer'|trans|ucfirst }}</a>
                     </li>
                     <li role="presentation">
-                        <a href="#tabImages" aria-controls="tabImages" role="tab"
-                           data-toggle="tab">{{ 'lbl.Images'|trans|ucfirst }}</a>
+                        <a href="#tabMedia" aria-controls="tabMedia" role="tab"
+                           data-toggle="tab">{{ 'lbl.Media'|trans|ucfirst }}</a>
                     </li>
                     <li class="pull-right" role="presentation">
                         <a href="#tabSEO" aria-controls="tabSEO" role="tab"
@@ -121,7 +121,7 @@
                     <div role="tabpanel" class="tab-pane" id="tabProductSpecials">
                         {{ form_row(form.specials) }}
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tabImages">
+                    <div role="tabpanel" class="tab-pane" id="tabMedia">
                         {{ form_row(form.images, {'mediaGroup': mediaGroup}) }}
                     </div>
                     <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
