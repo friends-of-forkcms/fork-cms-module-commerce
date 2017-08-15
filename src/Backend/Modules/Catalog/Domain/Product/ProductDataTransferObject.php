@@ -49,6 +49,20 @@ class ProductDataTransferObject
     public $price;
 
     /**
+     * @var integer
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $stock;
+
+    /**
+     * @var integer
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $order_quantity = 1;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -92,6 +106,11 @@ class ProductDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $stock_status;
+
+    /**
+     * @var boolean
+     */
+    public $from_stock = true;
 
     /**
      * @var Meta
@@ -166,12 +185,15 @@ class ProductDataTransferObject
         $this->category             = $product->getCategory();
         $this->brand                = $product->getBrand();
         $this->vat                  = $product->getVat();
-        $this->stock_status          = $product->getStockStatus();
+        $this->stock_status         = $product->getStockStatus();
         $this->title                = $product->getTitle();
         $this->summary              = $product->getSummary();
         $this->text                 = $product->getText();
         $this->locale               = $product->getLocale();
         $this->price                = $product->getPrice();
+        $this->stock                = $product->getStock();
+        $this->order_quantity       = $product->getOrderQuantity();
+        $this->from_stock           = $product->isFromStock();
         $this->sku                  = $product->getSku();
         $this->sequence             = $product->getSequence();
         $this->specification_values = $product->getSpecificationValues();

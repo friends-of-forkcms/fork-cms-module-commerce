@@ -21,7 +21,7 @@ class DataGrid extends DataGridDatabase
 
         } else {
             parent::__construct(
-                'SELECT i.id, i.title AS title, i.category_id, i.sequence
+                'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
 		 FROM catalog_products AS i
 		 WHERE i.language = :language
 		 ORDER BY i.sequence ASC',
@@ -33,7 +33,12 @@ class DataGrid extends DataGridDatabase
         $this->setRowAttributes(array('id' => 'row-[id]'));
         $this->setColumnsHidden(array('sequence'));
         $this->setColumnFunction([self::class, 'categoryName'], ['[category_id]'], 'category_id');
-        $this->setHeaderLabels(['category_id' => ucfirst(Language::lbl('Category'))]);
+        $this->setHeaderLabels(
+            [
+                'category_id' => ucfirst(Language::lbl('Category')),
+                'sku' => ucfirst(Language::lbl('ArticleNumber')),
+            ]
+        );
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('Edit')) {

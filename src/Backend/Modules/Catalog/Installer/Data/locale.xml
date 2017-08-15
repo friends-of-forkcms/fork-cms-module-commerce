@@ -382,9 +382,29 @@
 				<translation language="nl"><![CDATA[niet op voorraad status]]></translation>
 				<translation language="en"><![CDATA[not in stock status]]></translation>
 			</item>
+			<item type="label" name="Stock">
+				<translation language="nl"><![CDATA[voorraad]]></translation>
+				<translation language="en"><![CDATA[stock]]></translation>
+			</item>
+			<item type="label" name="FromStock">
+				<translation language="nl"><![CDATA[van voorraad]]></translation>
+				<translation language="en"><![CDATA[from stock]]></translation>
+			</item>
 			<item type="label" name="Offer">
 				<translation language="nl"><![CDATA[aanbieding]]></translation>
 				<translation language="en"><![CDATA[offer]]></translation>
+			</item>
+			<item type="label" name="Yes">
+				<translation language="nl"><![CDATA[ja]]></translation>
+				<translation language="en"><![CDATA[yes]]></translation>
+			</item>
+			<item type="label" name="No">
+				<translation language="nl"><![CDATA[nee]]></translation>
+				<translation language="en"><![CDATA[no]]></translation>
+			</item>
+			<item type="label" name="OrderQuantity">
+				<translation language="nl"><![CDATA[bestel hoeveelheid]]></translation>
+				<translation language="en"><![CDATA[order quantity]]></translation>
 			</item>
 			<item type="error" name="EndDateAfterStartDate">
 				<translation language="nl"><![CDATA[Eind datum moet na start datum zijn]]></translation>

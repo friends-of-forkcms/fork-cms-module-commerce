@@ -127,6 +127,27 @@ class Product
     private $price;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $stock;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $order_quantity;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $from_stock;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="text")
@@ -191,6 +212,9 @@ class Product
         Locale $locale,
         string $title,
         float $price,
+        int $stock,
+        int $order_quantity,
+        boolean $from_stock,
         string $sku,
         string $summary,
         ?string $text,
@@ -200,22 +224,25 @@ class Product
         $specials,
         $related_products
     ) {
-        $this->meta                 = $meta;
-        $this->category             = $category;
-        $this->brand                = $brand;
-        $this->vat                  = $vat;
-        $this->stock_status          = $stock_status;
-        $this->locale               = $locale;
-        $this->title                = $title;
-        $this->price                = $price;
-        $this->sku                  = $sku;
-        $this->summary              = $summary;
-        $this->text                 = $text;
-        $this->sequence             = $sequence;
-        $this->images               = $images;
-        $this->specification_values = $specification_values;
-        $this->specials             = $specials;
-        $this->related_products     = $related_products;
+        $this->meta                   = $meta;
+        $this->category               = $category;
+        $this->brand                  = $brand;
+        $this->vat                    = $vat;
+        $this->stock_status           = $stock_status;
+        $this->locale                 = $locale;
+        $this->title                  = $title;
+        $this->price                  = $price;
+        $this->stock                  = $stock;
+        $this->order_quantity = $order_quantity;
+        $this->from_stock             = $from_stock;
+        $this->sku                    = $sku;
+        $this->summary                = $summary;
+        $this->text                   = $text;
+        $this->sequence               = $sequence;
+        $this->images                 = $images;
+        $this->specification_values   = $specification_values;
+        $this->specials               = $specials;
+        $this->related_products       = $related_products;
     }
 
     public static function fromDataTransferObject(ProductDataTransferObject $dataTransferObject)
@@ -238,6 +265,9 @@ class Product
             $dataTransferObject->locale,
             $dataTransferObject->title,
             $dataTransferObject->price,
+            $dataTransferObject->stock,
+            $dataTransferObject->order_quantity,
+            $dataTransferObject->from_stock,
             $dataTransferObject->sku,
             $dataTransferObject->summary,
             $dataTransferObject->text,
@@ -301,11 +331,43 @@ class Product
     }
 
     /**
+     * @return int
+     */
+    public function getStock(): int
+    {
+        return $this->stock;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrderQuantity(): int
+    {
+        return $this->order_quantity;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFromStock(): bool
+    {
+        return $this->from_stock;
+    }
+
+    /**
+     * @param bool $from_stock
+     */
+    public function setFromStock(bool $from_stock)
+    {
+        $this->from_stock = $from_stock;
+    }
+
+    /**
      * Get the active price if is special or the current price
      *
      * @param bool $includeVat
      *
-     * @return string
+     * @return float
      */
     public function getActivePrice(bool $includeVat = true): float
     {
@@ -446,22 +508,25 @@ class Product
     {
         $product = $dataTransferObject->getProductEntity();
 
-        $product->meta                 = $dataTransferObject->meta;
-        $product->category             = $dataTransferObject->category;
-        $product->brand                = $dataTransferObject->brand;
-        $product->vat                  = $dataTransferObject->vat;
-        $product->stock_status          = $dataTransferObject->stock_status;
-        $product->locale               = $dataTransferObject->locale;
-        $product->title                = $dataTransferObject->title;
-        $product->price                = $dataTransferObject->price;
-        $product->sku                  = $dataTransferObject->sku;
-        $product->summary              = $dataTransferObject->summary;
-        $product->text                 = $dataTransferObject->text;
-        $product->sequence             = $dataTransferObject->sequence;
-        $product->images               = $dataTransferObject->images;
-        $product->specification_values = $dataTransferObject->specification_values;
-        $product->specials             = $dataTransferObject->specials;
-        $product->related_products     = $dataTransferObject->related_products;
+        $product->meta                   = $dataTransferObject->meta;
+        $product->category               = $dataTransferObject->category;
+        $product->brand                  = $dataTransferObject->brand;
+        $product->vat                    = $dataTransferObject->vat;
+        $product->stock_status           = $dataTransferObject->stock_status;
+        $product->locale                 = $dataTransferObject->locale;
+        $product->title                  = $dataTransferObject->title;
+        $product->price                  = $dataTransferObject->price;
+        $product->stock                  = $dataTransferObject->stock;
+        $product->order_quantity = $dataTransferObject->order_quantity;
+        $product->from_stock             = $dataTransferObject->from_stock;
+        $product->sku                    = $dataTransferObject->sku;
+        $product->summary                = $dataTransferObject->summary;
+        $product->text                   = $dataTransferObject->text;
+        $product->sequence               = $dataTransferObject->sequence;
+        $product->images                 = $dataTransferObject->images;
+        $product->specification_values   = $dataTransferObject->specification_values;
+        $product->specials               = $dataTransferObject->specials;
+        $product->related_products       = $dataTransferObject->related_products;
 
         return $product;
     }

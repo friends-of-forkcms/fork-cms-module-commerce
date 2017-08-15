@@ -16,6 +16,8 @@ use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -55,6 +57,31 @@ class ProductType extends AbstractType
             [
                 'required' => true,
                 'label'    => 'lbl.Price',
+            ]
+        )->add(
+            'order_quantity',
+            NumberType::class,
+            [
+                'required' => true,
+                'label'    => 'lbl.OrderQuantity',
+            ]
+        )->add(
+            'stock',
+            NumberType::class,
+            [
+                'required' => true,
+                'label'    => 'lbl.Stock',
+            ]
+        )->add(
+            'from_stock',
+            ChoiceType::class,
+            [
+                'required' => true,
+                'label'    => 'lbl.FromStock',
+                'choices'  => [
+                    'lbl.Yes' => true,
+                    'lbl.No'  => false,
+                ]
             ]
         )->add(
             'sku',
@@ -107,23 +134,23 @@ class ProductType extends AbstractType
             'specification_values',
             CollectionType::class,
             [
-                'required'           => false,
-                'entry_type'         => SpecificationValueType::class,
-                'allow_add'          => true,
-                'allow_delete'       => true,
-                'by_reference'       => false,
-                'label'              => 'lbl.Specifications',
+                'required'     => false,
+                'entry_type'   => SpecificationValueType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label'        => 'lbl.Specifications',
             ]
         )->add(
             'specials',
             CollectionType::class,
             [
-                'required'           => false,
-                'entry_type'         => ProductSpecialType::class,
-                'allow_add'          => true,
-                'allow_delete'       => true,
-                'by_reference'       => false,
-                'label'              => 'lbl.Offer',
+                'required'     => false,
+                'entry_type'   => ProductSpecialType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label'        => 'lbl.Offer',
             ]
         )->add(
             'brand',
