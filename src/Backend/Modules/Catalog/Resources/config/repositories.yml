@@ -40,3 +40,9 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\Vat\Vat
+
+    catalog.repository.stock_status:
+        class: Backend\Modules\Catalog\Domain\StockStatus\StockStatusRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\StockStatus\StockStatus

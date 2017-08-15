@@ -2,9 +2,6 @@
 
 namespace Backend\Modules\Catalog\Domain\Vat;
 
-use Backend\Core\Engine\Model;
-use Backend\Modules\Catalog\Domain\VatValue\VatValue;
-use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Doctrine\ORM\Mapping as ORM;
 

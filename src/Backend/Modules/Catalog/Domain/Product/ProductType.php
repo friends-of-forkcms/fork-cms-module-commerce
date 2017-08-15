@@ -7,9 +7,9 @@ use Backend\Form\Type\EditorType;
 use Backend\Form\Type\MetaType;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Category\Category;
-use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecialType;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueType;
+use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
 use Common\Form\CollectionType;
@@ -139,11 +139,22 @@ class ProductType extends AbstractType
             EntityType::class,
             [
                 'label'         => 'lbl.Vat',
-                'placeholder'   => 'lbl.None',
                 'class'         => Vat::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
                               ->orderBy('i.sequence', 'ASC');
+                },
+                'choice_label'  => 'title'
+            ]
+        )->add(
+            'stock_status',
+            EntityType::class,
+            [
+                'label'         => 'lbl.NotInStockStatus',
+                'class'         => StockStatus::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('i')
+                              ->orderBy('i.title', 'ASC');
                 },
                 'choice_label'  => 'title'
             ]

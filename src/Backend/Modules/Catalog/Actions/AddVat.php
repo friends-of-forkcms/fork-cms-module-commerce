@@ -19,7 +19,7 @@ use Symfony\Component\Form\Form;
 /**
  * This is the add vat-action, it will display a form to create a new vat
  *
- * @author Willem van Dam <w.vandam@jvdict.nl>
+ * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddVat extends BackendBaseActionAdd
 {
@@ -31,7 +31,7 @@ class AddVat extends BackendBaseActionAdd
         parent::execute();
 
         $form = $this->getForm();
-        if (!$form->isSubmitted() || !$form->isValid()) {
+        if ( ! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
 
             $this->parse();
@@ -51,10 +51,11 @@ class AddVat extends BackendBaseActionAdd
             $this->getBackLink(
                 [
                     'report' => 'added',
-                    'var' => $createVat->title,
+                    'var'    => $createVat->title,
                 ]
             )
         );
+
         return;
     }
 

@@ -17,9 +17,7 @@ use Backend\Modules\Catalog\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\Domain\Vat\Event\Deleted;
 use Backend\Modules\Catalog\Domain\Vat\Command\Delete as DeleteCommand;
-use Backend\Modules\Catalog\Domain\Vat\Exception\VatValueNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-
 
 /**
  * This action will delete a vat

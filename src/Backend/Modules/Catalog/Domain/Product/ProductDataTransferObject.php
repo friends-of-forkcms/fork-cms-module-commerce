@@ -6,6 +6,7 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
+use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
@@ -86,6 +87,13 @@ class ProductDataTransferObject
     public $vat;
 
     /**
+     * @var StockStatus
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $stock_status;
+
+    /**
      * @var Meta
      */
     public $meta;
@@ -158,6 +166,7 @@ class ProductDataTransferObject
         $this->category             = $product->getCategory();
         $this->brand                = $product->getBrand();
         $this->vat                  = $product->getVat();
+        $this->stock_status          = $product->getStockStatus();
         $this->title                = $product->getTitle();
         $this->summary              = $product->getSummary();
         $this->text                 = $product->getText();

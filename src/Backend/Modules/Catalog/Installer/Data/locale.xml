@@ -370,6 +370,18 @@
 				<translation language="nl"><![CDATA[BTW]]></translation>
 				<translation language="en"><![CDATA[VAT]]></translation>
 			</item>
+			<item type="label" name="StockStatuses">
+				<translation language="nl"><![CDATA[voorraad statussen]]></translation>
+				<translation language="en"><![CDATA[stock statuses]]></translation>
+			</item>
+			<item type="label" name="StockStatus">
+				<translation language="nl"><![CDATA[voorraad status]]></translation>
+				<translation language="en"><![CDATA[stock status]]></translation>
+			</item>
+			<item type="label" name="NotInStockStatus">
+				<translation language="nl"><![CDATA[niet op voorraad status]]></translation>
+				<translation language="en"><![CDATA[not in stock status]]></translation>
+			</item>
 			<item type="label" name="Offer">
 				<translation language="nl"><![CDATA[aanbieding]]></translation>
 				<translation language="en"><![CDATA[offer]]></translation>

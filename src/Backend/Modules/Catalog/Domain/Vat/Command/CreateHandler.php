@@ -2,10 +2,8 @@
 
 namespace Backend\Modules\Catalog\Domain\Vat\Command;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\Domain\Vat\VatRepository;
-use Common\ModuleExtraType;
 
 final class CreateHandler
 {

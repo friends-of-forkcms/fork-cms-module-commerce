@@ -5,4 +5,5 @@ imports:
   - { resource: order_commands.yml }
   - { resource: specification_commands.yml }
   - { resource: vat_commands.yml }
+  - { resource: stock_status_commands.yml }
   - { resource: repositories.yml }

@@ -2,13 +2,10 @@
 
 namespace Backend\Modules\Catalog\Domain\Vat;
 
-use Backend\Modules\Catalog\Domain\Vat\Exception\VatValueNotFound;
-use Common\Doctrine\Entity\Meta;
+use Backend\Modules\Catalog\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
-use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Backend\Core\Engine\Model;
 
 class VatRepository extends EntityRepository
 {
@@ -28,7 +25,7 @@ class VatRepository extends EntityRepository
         $vat = $this->findOneBy(['id' => $id, 'locale' => $locale]);
 
         if ($vat === null) {
-            throw VatValueNotFound::forId($id);
+            throw VatNotFound::forId($id);
         }
 
         return $vat;
@@ -69,70 +66,5 @@ class VatRepository extends EntityRepository
 
         // Return the new sequence
         return $query_builder->getQuery()->getSingleScalarResult() + 1;
-    }
-
-    /**
-     * Get an tree of vats
-     *
-     * @param Locale $locale
-     *
-     * @return array
-     */
-    public function getTree(Locale $locale)
-    {
-        $queryBuilder = $this->createQueryBuilder('i');
-
-        /**
-         * @var Vat[] $query_result
-         */
-        $queryResult = $queryBuilder->where('i.locale = :locale')
-            ->andWhere('i.parent IS NULL')
-            ->setParameter('locale', $locale)
-            ->orderBy('i.sequence', 'asc')
-            ->getQuery()
-            ->getResult();
-
-        $treeResult = [];
-
-	    foreach($queryResult as $vat) {
-		    $treeResult[$vat->getTitle()] = $vat;
-	    }
-
-        return $treeResult;
-    }
-
-    /**
-     * @param string $url
-     * @param Locale $locale
-     * @param integer $id
-     *
-     * @return string
-     */
-    public function getUrl($url, Locale $locale, $id)
-    {
-        $url           = Uri::getUrl((string)$url);
-        $query_builder = $this->createQueryBuilder('i');
-        $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
-                      ->where($query_builder->expr()->eq('m.url', ':url'))
-                      ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
-                      ->setParameters(
-                          [
-                              'url'    => $url,
-                              'locale' => $locale
-                          ]
-                      );
-
-        if ($id !== null) {
-            $query_builder->andWhere($query_builder->expr()->neq('i.id', ':id'))
-                          ->setParameter('id', $id);
-        }
-
-        if (count($query_builder->getQuery()->getResult())) {
-            $url = Model::addNumber($url);
-
-            return self::getURL($url, $locale, $id);
-        }
-
-        return $url;
     }
 }

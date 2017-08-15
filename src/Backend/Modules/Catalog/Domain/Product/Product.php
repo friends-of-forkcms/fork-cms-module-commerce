@@ -6,6 +6,7 @@ use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
+use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Common\Doctrine\Entity\Meta;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
@@ -61,6 +62,14 @@ class Product
      * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $vat;
+
+    /**
+     * @var StockStatus
+     *
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\StockStatus\StockStatus")
+     * @ORM\JoinColumn(name="stock_status_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $stock_status;
 
     /**
      * @var SpecificationValue[]
@@ -178,6 +187,7 @@ class Product
         Category $category,
         ?Brand $brand,
         Vat $vat,
+        StockStatus $stock_status,
         Locale $locale,
         string $title,
         float $price,
@@ -194,6 +204,7 @@ class Product
         $this->category             = $category;
         $this->brand                = $brand;
         $this->vat                  = $vat;
+        $this->stock_status          = $stock_status;
         $this->locale               = $locale;
         $this->title                = $title;
         $this->price                = $price;
@@ -223,6 +234,7 @@ class Product
             $dataTransferObject->category,
             $dataTransferObject->brand,
             $dataTransferObject->vat,
+            $dataTransferObject->stock_status,
             $dataTransferObject->locale,
             $dataTransferObject->title,
             $dataTransferObject->price,
@@ -265,6 +277,14 @@ class Product
         return $this->vat;
     }
 
+    /**
+     * @return StockStatus
+     */
+    public function getStockStatus(): StockStatus
+    {
+        return $this->stock_status;
+    }
+
     public function getLocale(): Locale
     {
         return $this->locale;
@@ -289,7 +309,7 @@ class Product
      */
     public function getActivePrice(bool $includeVat = true): float
     {
-        if (!$this->activePrice) {
+        if ( ! $this->activePrice) {
             $expr  = Criteria::expr();
             $today = (new \DateTime('now'))->setTime(0, 0, 0);
             $price = $this->getPrice();
@@ -430,6 +450,7 @@ class Product
         $product->category             = $dataTransferObject->category;
         $product->brand                = $dataTransferObject->brand;
         $product->vat                  = $dataTransferObject->vat;
+        $product->stock_status          = $dataTransferObject->stock_status;
         $product->locale               = $dataTransferObject->locale;
         $product->title                = $dataTransferObject->title;
         $product->price                = $dataTransferObject->price;

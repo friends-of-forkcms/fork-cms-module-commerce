@@ -19,6 +19,7 @@ use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
+use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Common\ModuleExtraType;
 
@@ -111,6 +112,12 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'DeleteVat');
         $this->setActionRights(1, 'Catalog', 'SequenceVats');
 
+        // stock statuses
+        $this->setActionRights(1, 'Catalog', 'StockStatuses');
+        $this->setActionRights(1, 'Catalog', 'AddStockStatus');
+        $this->setActionRights(1, 'Catalog', 'EditStockStatus');
+        $this->setActionRights(1, 'Catalog', 'DeleteStockStatus');
+
         // add extra's
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Brand', 'Brand');
@@ -122,20 +129,68 @@ class Installer extends ModuleInstaller
         // set navigation
         $navigationModulesId = $this->setNavigation(null, 'Modules');
         $navigationCatalogId = $this->setNavigation($navigationModulesId, 'Catalog');
-        $this->setNavigation($navigationCatalogId, 'Products', 'catalog/index', array(
-            'catalog/add',
-            'catalog/edit',
-        ));
-        $this->setNavigation($navigationCatalogId, 'Categories', 'catalog/categories',
-            array('catalog/add_category', 'catalog/edit_category'));
-        $this->setNavigation($navigationCatalogId, 'Specifications', 'catalog/specifications',
-            array('catalog/add_specification', 'catalog/edit_specification'));
-        $this->setNavigation($navigationCatalogId, 'Comments', 'catalog/comments', array('catalog/edit_comment'));
-        $this->setNavigation($navigationCatalogId, 'Orders', 'catalog/orders', array('catalog/edit_order'));
-        $this->setNavigation($navigationCatalogId, 'Brands', 'catalog/brands',
-            array('catalog/add_brand', 'catalog/edit_brand'));
-        $this->setNavigation($navigationCatalogId, 'Vats', 'catalog/vats',
-            array('catalog/add_vat', 'catalog/edit_vat'));
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Products',
+            'catalog/index',
+            [
+                'catalog/add',
+                'catalog/edit',
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Categories',
+            'catalog/categories',
+            [
+                'catalog/add_category',
+                'catalog/edit_category'
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Specifications',
+            'catalog/specifications',
+            [
+                'catalog/add_specification',
+                'catalog/edit_specification'
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Orders',
+            'catalog/orders',
+            [
+                'catalog/edit_order'
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Brands',
+            'catalog/brands',
+            [
+                'catalog/add_brand',
+                'catalog/edit_brand'
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Vats',
+            'catalog/vats',
+            [
+                'catalog/add_vat',
+                'catalog/edit_vat'
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'StockStatuses',
+            'catalog/stock_statuses',
+            [
+                'catalog/add_stock_status',
+                'catalog/edit_stock_status'
+            ]
+        );
 
         // settings navigation
         $navigationSettingsId = $this->setNavigation(null, 'Settings');
@@ -148,10 +203,11 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(Category::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Brand::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Vat::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(StockStatus::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Product::class);
-	    Model::get('fork.entity.create_schema')->forEntityClass(ProductSpecial::class);
-	    Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
-	    Model::get('fork.entity.create_schema')->forEntityClass(Specification::class);
-	    Model::get('fork.entity.create_schema')->forEntityClass(SpecificationValue::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(ProductSpecial::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(Specification::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(SpecificationValue::class);
     }
 }
