@@ -8,6 +8,7 @@ At the moment it is almost the same as the Webleads module, but we left out some
   * Special prices (sale prices)
   * Added a article number
   * Added VAT options
+  * Add product specifications on the flow. The user gets the option to create or select one while adding or editing a product
 
 We also removed some components:
 * The media manager has been removed in favour of the default Fork media manager
