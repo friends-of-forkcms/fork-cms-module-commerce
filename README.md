@@ -10,7 +10,7 @@ At the moment it is almost the same as the Webleads module, but we left out some
   * Added VAT options
 
 We also removed some components:
-* The media manager has been removed infavour of the default Fork media manager
+* The media manager has been removed in favour of the default Fork media manager
 * Removed comments on products (may return in the future)
 
 ## How to install
@@ -21,12 +21,16 @@ Upload this module as usual, copy the `Catalog` folder from the `Backend` and `F
 ### 2. Run composer
 This module requires extra depencies, you can install these by running:
 
-```composer require tetranz/select2entity-bundle```
+```
+composer require tetranz/select2entity-bundle
+```
 
 ### 3. Install extra JavaScript and CSS
 
 Run:
-```yarn add select2```
+```
+yarn add select2
+```
 
 Add some lines to `gulpfile.js`:
 * Search for `gulp.task("build:backend:assets:copy-css-vendors", function() {` and add `"node_modules/select2/dist/css/select2.min.css",` to the `.src` array.
@@ -36,7 +40,9 @@ Add some lines to `gulpfile.js`:
     "node_modules/select2/dist/js/select2.full.min.js",` to the `.src` array.
 
 And than build the files:
-```guild build```
+```
+guild build
+```
 
 Now you should be able to run this module.
 
