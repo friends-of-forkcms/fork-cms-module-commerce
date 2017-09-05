@@ -16,7 +16,7 @@ use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Brand\BrandRepository;
 use Backend\Modules\Catalog\Domain\Brand\BrandType;
-use Backend\Modules\Catalog\Domain\Brand\Command\Update;
+use Backend\Modules\Catalog\Domain\Brand\Command\UpdateBrand;
 use Backend\Modules\Catalog\Domain\Brand\Event\Updated;
 use Backend\Modules\Catalog\Domain\Brand\Exception\BrandNotFound;
 use Symfony\Component\Form\Form;
@@ -60,7 +60,7 @@ class EditBrand extends BackendBaseActionEdit
             return;
         }
 
-        /** @var Update $updateBrand */
+        /** @var UpdateBrand $updateBrand */
         $updateBrand = $this->updateBrand($form);
 
         $this->get('event_dispatcher')->dispatch(
@@ -108,7 +108,7 @@ class EditBrand extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             BrandType::class,
-            new Update($brand)
+            new UpdateBrand($brand)
         );
 
         $form->handleRequest($this->getRequest());
@@ -116,9 +116,9 @@ class EditBrand extends BackendBaseActionEdit
         return $form;
     }
 
-    private function updateBrand(Form $form): Update
+    private function updateBrand(Form $form): UpdateBrand
     {
-        /** @var Update $updateBrand */
+        /** @var UpdateBrand $updateBrand */
         $updateBrand = $form->getData();
 
         // The command bus will handle the saving of the brand in the database.

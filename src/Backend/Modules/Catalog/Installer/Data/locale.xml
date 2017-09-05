@@ -406,6 +406,10 @@
 				<translation language="nl"><![CDATA[bestel hoeveelheid]]></translation>
 				<translation language="en"><![CDATA[order quantity]]></translation>
 			</item>
+			<item type="label" name="ArticleNumber">
+				<translation language="nl"><![CDATA[artikelnummer]]></translation>
+				<translation language="en"><![CDATA[article number]]></translation>
+			</item>
 			<item type="error" name="EndDateAfterStartDate">
 				<translation language="nl"><![CDATA[Eind datum moet na start datum zijn]]></translation>
 				<translation language="en"><![CDATA[End date must be after start date]]></translation>

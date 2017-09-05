@@ -64,7 +64,7 @@ class CategoryRepository extends EntityRepository
                             ->getResult();
     }
 
-    public function findByLocaleAndUrl(Locale $locale, string $url): Category
+    public function findByLocaleAndUrl(Locale $locale, string $url): ?Category
     {
         $queryBuilder = $this->createQueryBuilder('i');
 
@@ -79,7 +79,7 @@ class CategoryRepository extends EntityRepository
                 ]
             )
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     /**

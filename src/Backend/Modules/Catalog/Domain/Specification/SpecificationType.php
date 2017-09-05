@@ -28,7 +28,9 @@ class SpecificationType extends AbstractType
             [
                 'required' => true,
                 'label'    => 'lbl.Type',
-                'choices'  => array('lbl.Textbox' => Specification::textbox)
+                'choices'  => [
+                    'lbl.TextBox' => Specification::TYPE_TEXTBOX
+                ]
             ]
         )->addEventListener(
             FormEvents::PRE_SET_DATA,

@@ -12,7 +12,7 @@ namespace Backend\Modules\Catalog\Ajax;
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
-use Backend\Modules\Catalog\Domain\Category\Command\Update;
+use Backend\Modules\Catalog\Domain\Category\Command\UpdateCategory;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -58,6 +58,6 @@ class AutoCompleteProducts extends BackendBaseAJAXAction
         }
 
         // success output
-        $this->output(Response::HTTP_OK, $returnData, 'sequence updated');
+        $this->output(Response::HTTP_OK, $returnData);
     }
 }

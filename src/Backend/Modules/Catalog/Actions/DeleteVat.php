@@ -16,7 +16,7 @@ use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\Domain\Vat\Event\Deleted;
-use Backend\Modules\Catalog\Domain\Vat\Command\Delete as DeleteCommand;
+use Backend\Modules\Catalog\Domain\Vat\Command\DeleteVat as DeleteCommand;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**

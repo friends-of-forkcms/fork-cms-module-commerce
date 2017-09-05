@@ -14,6 +14,7 @@ use Common\Locale;
 use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Table(name="catalog_products")
@@ -74,7 +75,12 @@ class Product
     /**
      * @var SpecificationValue[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue", mappedBy="product", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue", cascade={"remove", "persist"})
+     * @ORM\JoinTable(
+     *     name="catalog_products_specification_values",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
     private $specification_values;
 
@@ -88,7 +94,6 @@ class Product
     /**
      * Many Products may have many related products.
      * @var Product[]
-     *
      *
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(name="catalog_related_products",
@@ -214,7 +219,7 @@ class Product
         float $price,
         int $stock,
         int $order_quantity,
-        boolean $from_stock,
+        bool $from_stock,
         string $sku,
         string $summary,
         ?string $text,
@@ -460,6 +465,10 @@ class Product
         return $this->specification_values;
     }
 
+    public function removeSpecificationValue(SpecificationValue $specificationValue) {
+        $this->specification_values->removeElement($specificationValue);
+    }
+
     /**
      * @return ProductSpecial[]
      */
@@ -517,7 +526,7 @@ class Product
         $product->title                  = $dataTransferObject->title;
         $product->price                  = $dataTransferObject->price;
         $product->stock                  = $dataTransferObject->stock;
-        $product->order_quantity = $dataTransferObject->order_quantity;
+        $product->order_quantity         = $dataTransferObject->order_quantity;
         $product->from_stock             = $dataTransferObject->from_stock;
         $product->sku                    = $dataTransferObject->sku;
         $product->summary                = $dataTransferObject->summary;
@@ -534,5 +543,15 @@ class Product
     public function getDataTransferObject(): ProductDataTransferObject
     {
         return new ProductDataTransferObject($this);
+    }
+
+    /**
+     * Get the frontend url based on the parent category
+     *
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->category->getUrl() .'/' . $this->meta->getUrl();
     }
 }

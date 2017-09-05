@@ -53,6 +53,10 @@
                             data['fork']['action'] = $(this).data('action');
                         }
 
+                        if (options.hasOwnProperty('parentElement')) {
+                            data['parent'] = $(options.parentElement).val()
+                        }
+
                         // only send the 'page' parameter if scrolling is enabled
                         if (scroll) {
                             data['page'] = params.page || 1;
@@ -91,6 +95,25 @@
 
 (function( $ ) {
     $(document).ready(function () {
-        $('.select2entity[data-autostart="true"]').select2entity();
+        $('.select2entity[data-autostart="true"]:not([data-action="AutoCompleteSpecificationValue"])').select2entity();
+
+        var addCollectionButton = $('[data-collection="product_specification_values"]');
+        addCollectionButton.on('collection-field-added', function(){
+            var selectElement = $('[data-action="AutoCompleteSpecificationValue"]:last');
+
+            selectElement.select2entity(
+                {
+                    parentElement : selectElement.closest('.list-group-item').find('[name*="product[specification_values]"]')
+                }
+            );
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            addCollectionButton.trigger('collection-field-added');
+        });
+
+        if ($('a[href=#tabSpecifications]').closest('li').hasClass('active')) {
+            addCollectionButton.trigger('collection-field-added');
+        }
     });
 })( jQuery );

@@ -5,12 +5,10 @@ namespace Backend\Modules\Catalog\Domain\Product;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Common\Doctrine\Entity\Meta;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
-use League\Flysystem\Adapter\Local;
 
 class ProductRepository extends EntityRepository
 {
@@ -23,7 +21,7 @@ class ProductRepository extends EntityRepository
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Product
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw ProductNotFound::forEmptyId();
         }
 
         /** @var Product $product */
@@ -48,26 +46,74 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Find the products limited by values
+     * Find the products limited by category
      *
-     * @param Locale $locale
+     * @param Category $category
      * @param integer $limit
      * @param integer $offset
+     * @param array $sorting
      *
      * @return Product[]
      */
-    public function findLimited(Locale $locale, int $limit, int $offset = 0)
+    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, ?array $sorting)
     {
         $queryBuilder = $this->createQueryBuilder('i');
 
-        return $queryBuilder->where('i.locale = :locale')
-                            ->setParameter('locale', $locale)
-                            ->orderBy('i.createdOn', 'ASC')
-                            ->addOrderBy('i.id', 'DESC')
-                            ->setMaxResults($limit)
-                            ->setFirstResult($offset)
+        $query = $queryBuilder->where('i.category = :category')
+                              ->setParameter('category', $category)
+                              ->orderBy('i.createdOn', 'ASC')
+                              ->addOrderBy('i.id', 'DESC');
+
+        if ($sorting) {
+
+        }
+
+
+        return $query->setMaxResults($limit)
+                     ->setFirstResult($offset)
+                     ->getQuery()
+                     ->getResult();
+    }
+
+    /**
+     * Find a product by category and product url
+     *
+     * @param Locale $locale
+     * @param string $category
+     * @param string $url
+     *
+     * @return Product|null
+     */
+    public function findByCategoryAndUrl(Locale $locale, string $category, $url): ?Product
+    {
+        $queryBuilder         = $this->createQueryBuilder('i');
+        $categoryQueryBuilder = $this->getEntityManager()->createQueryBuilder();
+
+        $categoryQuery = $categoryQueryBuilder->select('c.id')
+                                              ->from(Category::class, 'c')
+                                              ->join(Meta::class, 'm2', 'WITH', 'm2.id = c.meta')
+                                              ->where('m2.url = :category')
+                                              ->andWhere('c.locale = :locale')
+                                              ->setParameter('locale', $locale);
+
+        return $queryBuilder->join(Meta::class, 'm', 'WITH', 'm.id = i.meta')
+                            ->where('i.locale = :locale')
+                            ->andWhere('m.url = :url')
+                            ->andWhere(
+                                $queryBuilder->expr()->in(
+                                    'i.category',
+                                    $categoryQuery->getDQL()
+                                )
+                            )
+                            ->setParameters(
+                                [
+                                    'locale'   => $locale,
+                                    'url'      => $url,
+                                    'category' => $category
+                                ]
+                            )
                             ->getQuery()
-                            ->getResult();
+                            ->getOneOrNullResult();
     }
 
     /**
@@ -112,55 +158,6 @@ class ProductRepository extends EntityRepository
                              ->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * Get an tree of products
-     *
-     * @param Locale $locale
-     *
-     * @return array
-     */
-    public function getTree(Locale $locale)
-    {
-        $queryBuilder = $this->createQueryBuilder('i');
-
-        /**
-         * @var Product[] $query_result
-         */
-        $queryResult = $queryBuilder->where('i.locale = :locale')
-                                    ->andWhere('i.parent IS NULL')
-                                    ->setParameter('locale', $locale)
-                                    ->orderBy('i.sequence', 'asc')
-                                    ->getQuery()
-                                    ->getResult();
-
-        $treeResult = [];
-
-        $this->parseTreeChildren($treeResult, $queryResult, 0);
-
-        return $treeResult;
-    }
-
-    /**
-     * A recursive function to populate the tree array
-     *
-     * @param array $treeResult
-     * @param Product[] $products
-     * @param integer $path
-     *
-     * @return void
-     */
-    private function parseTreeChildren(array &$treeResult, $products, int $path)
-    {
-        foreach ($products as $product) {
-            $product->path                    = $path;
-            $treeResult[$product->getTitle()] = $product;
-
-            if ( ! $product->getChildren()->isEmpty()) {
-                $this->parseTreeChildren($treeResult, $product->getChildren(), $path + 1);
-            }
-        }
-    }
-
     public function findForAutoComplete(
         Locale $locale,
         string $query,
@@ -178,7 +175,7 @@ class ProductRepository extends EntityRepository
                          )
                      )
                      ->setParameter('locale', $locale)
-        ->setParameter('query', '%' . $query . '%');
+                     ->setParameter('query', '%' . $query . '%');
 
         if ($excluded_id) {
             $queryBuilder->andWhere('i.id != :excluded_id')
@@ -202,7 +199,7 @@ class ProductRepository extends EntityRepository
                             ->setParameters(
                                 [
                                     'locale' => $locale,
-                                    'url' => $url
+                                    'url'    => $url
                                 ]
                             )
                             ->getQuery()

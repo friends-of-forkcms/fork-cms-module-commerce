@@ -13,7 +13,7 @@ use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
-use Backend\Modules\Catalog\Domain\Product\Command\Update;
+use Backend\Modules\Catalog\Domain\Product\Command\UpdateProduct;
 use Backend\Modules\Catalog\Domain\Product\Event\Updated;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\Product;
@@ -60,7 +60,7 @@ class Edit extends BackendBaseActionEdit
             return;
         }
 
-        /** @var Update $updateProduct */
+        /** @var UpdateProduct $updateProduct */
         $updateProduct = $this->updateProduct($form);
 
         $this->get('event_dispatcher')->dispatch(
@@ -136,7 +136,7 @@ class Edit extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             ProductType::class,
-            new Update($product),
+            new UpdateProduct($product),
             [
                 'categories' => $this->get('catalog.repository.category')->getTree(Locale::workingLocale()),
                 'product'    => $product
@@ -148,9 +148,9 @@ class Edit extends BackendBaseActionEdit
         return $form;
     }
 
-    private function updateProduct(Form $form): Update
+    private function updateProduct(Form $form): UpdateProduct
     {
-        /** @var Update $updateProduct */
+        /** @var UpdateProduct $updateProduct */
         $updateProduct = $form->getData();
 
         // The command bus will handle the saving of the product in the database.

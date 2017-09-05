@@ -16,7 +16,7 @@ class DataGrid extends DataGridDatabase
     public function __construct(Locale $locale)
     {
         parent::__construct(
-            'SELECT c.id, c.title AS specification, c.sequence
+            'SELECT c.id, c.title AS specification, c.type, c.sequence
 					 FROM catalog_specifications AS c
 					 WHERE c.language = :language
 					 GROUP BY c.id
@@ -27,6 +27,7 @@ class DataGrid extends DataGridDatabase
         // sequence
         $this->enableSequenceByDragAndDrop();
         $this->setAttributes(array('data-action' => 'SequenceSpecifications'));
+        $this->setColumnFunction([self::class, 'typeName'], ['[type]'], 'type');
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditSpecification')) {
@@ -39,5 +40,18 @@ class DataGrid extends DataGridDatabase
     public static function getHtml(Locale $locale): string
     {
         return (new self($locale))->getContent();
+    }
+
+    public static function typeName(int $type): string
+    {
+        $name = null;
+        switch ($type) {
+            default:
+            case Specification::TYPE_TEXTBOX:
+                $name = ucfirst(Language::lbl('TextBox'));
+                break;
+        }
+
+        return $name;
     }
 }

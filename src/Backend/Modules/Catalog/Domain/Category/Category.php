@@ -8,6 +8,7 @@ use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Frontend\Core\Engine\Navigation;
 
 /**
  * @ORM\Table(name="catalog_categories")
@@ -115,6 +116,13 @@ class Category
      * @var int
      */
     public $path;
+
+    /**
+     * This is used to store the url path
+     *
+     * @var string
+     */
+    private $urlPrefix;
 
     private function __construct(
         int $extraId,
@@ -231,7 +239,7 @@ class Category
     }
 
     /**
-     * @return Product
+     * @return Product[]
      */
     public function getProducts()
     {
@@ -320,5 +328,21 @@ class Category
     public function getDataTransferObject(): CategoryDataTransferObject
     {
         return new CategoryDataTransferObject($this);
+    }
+
+    /**
+     * Get the frontend url based on module, meta and parent category
+     */
+    public function getUrl(): string
+    {
+        if (!$this->urlPrefix) {
+            if ($this->parent) {
+                $this->urlPrefix = $this->parent->getUrl();
+            } else {
+                $this->urlPrefix = Navigation::getUrlForBlock('Catalog', 'Index');
+            }
+        }
+
+        return $this->urlPrefix .'/'. $this->meta->getUrl();
     }
 }

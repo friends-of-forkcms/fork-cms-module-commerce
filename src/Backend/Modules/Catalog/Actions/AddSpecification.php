@@ -12,7 +12,7 @@ namespace Backend\Modules\Catalog\Actions;
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Modules\Catalog\Domain\Specification\SpecificationType;
-use Backend\Modules\Catalog\Domain\Specification\Command\Create;
+use Backend\Modules\Catalog\Domain\Specification\Command\CreateSpecification;
 use Backend\Modules\Catalog\Domain\Specification\Event\Created;
 use Symfony\Component\Form\Form;
 
@@ -59,7 +59,7 @@ class AddSpecification extends BackendBaseActionAdd
         return;
     }
 
-    private function createSpecification(Form $form): Create
+    private function createSpecification(Form $form): CreateSpecification
     {
         $createSpecification = $form->getData();
 
@@ -83,7 +83,7 @@ class AddSpecification extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             SpecificationType::class,
-            new Create()
+            new CreateSpecification()
         );
 
         $form->handleRequest($this->getRequest());

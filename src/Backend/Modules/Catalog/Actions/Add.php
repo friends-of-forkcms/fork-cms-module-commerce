@@ -16,7 +16,7 @@ use Backend\Core\Engine\Language;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Meta as BackendMeta;
 use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\Product\Command\Create;
+use Backend\Modules\Catalog\Domain\Product\Command\CreateProduct;
 use Backend\Modules\Catalog\Domain\Product\Event\Created;
 use Backend\Modules\Catalog\Domain\Product\ProductType;
 use Backend\Modules\Catalog\Engine\Model as BackendCatalogModel;
@@ -96,7 +96,7 @@ class Add extends BackendBaseActionAdd
         );
     }
 
-    private function createProduct(Form $form): Create
+    private function createProduct(Form $form): CreateProduct
     {
         $createProduct = $form->getData();
 
@@ -120,7 +120,7 @@ class Add extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             ProductType::class,
-            new Create(),
+            new CreateProduct(),
             [
                 'categories' => $this->get('catalog.repository.category')->getTree(Locale::workingLocale())
             ]

@@ -15,7 +15,7 @@ use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Brand\Event\Deleted;
-use Backend\Modules\Catalog\Domain\Brand\Command\Delete as DeleteCommand;
+use Backend\Modules\Catalog\Domain\Brand\Command\DeleteBrand as DeleteCommand;
 use Backend\Modules\Catalog\Domain\Brand\Exception\BrandNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 

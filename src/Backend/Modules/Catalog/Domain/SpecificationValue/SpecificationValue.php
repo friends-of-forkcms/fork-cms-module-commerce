@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Domain\SpecificationValue;
 
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
+use Common\Doctrine\Entity\Meta;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,19 +32,24 @@ class SpecificationValue
     private $specification;
 
     /**
-     * @var Product
+     * @var Meta
      *
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Product\Product", inversedBy="specification_values")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta",cascade={"remove", "persist"})
+     * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
      */
-    private $product;
+    private $meta;
+
+    /**
+     * @var Product[]
+     */
+    private $products;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $value;
+    public $value;
 
     /**
      * @return int
@@ -54,11 +60,11 @@ class SpecificationValue
     }
 
     /**
-     * @return Product
+     * @return Product[]
      */
-    public function getProduct(): Product
+    public function getProducts()
     {
-        return $this->product;
+        return $this->products;
     }
 
     /**
@@ -99,5 +105,42 @@ class SpecificationValue
     public function setValue(string $value)
     {
         $this->value = $value;
+    }
+
+    /**
+     * @return Meta
+     */
+    public function getMeta(): ?Meta
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param Meta $meta
+     */
+    public function setMeta(Meta $meta)
+    {
+        $this->meta = $meta;
+    }
+
+    public function getDataTransferObject(): SpecificationValueDataTransferObject
+    {
+        return new SpecificationValueDataTransferObject($this);
+    }
+
+    public static function fromDataTransferObject(SpecificationValueDataTransferObject $dataTransferObject)
+    {
+        if ($dataTransferObject->hasExistingSpecificationValue()) {
+            $specificationValue = $dataTransferObject->getSpecificationValueEntity();
+        } else {
+            $specificationValue = new self();
+        }
+
+        // Set the values
+        $specificationValue->setValue($dataTransferObject->value);
+        $specificationValue->setSpecification($dataTransferObject->specification);
+        $specificationValue->setMeta($dataTransferObject->meta);
+
+        return $specificationValue;
     }
 }

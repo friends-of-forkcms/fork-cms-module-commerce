@@ -2,7 +2,7 @@
 {% import "Layout/Templates/macros.html.twig" as macro %}
 
 {% block actionbar %}
-    {% if showCatalogAddCategory %}
+    {% if showCatalogAdd %}
 		<div class="btn-toolbar pull-right">
 			<div class="btn-group" role="group">
                 {{ macro.buttonIcon( geturl('Add'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
@@ -32,8 +32,6 @@
 				</div>
 			</div>
 		</div>
-
-
         {{ form_end(filterCategory) }}
 	</div>
 

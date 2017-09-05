@@ -1,0 +1,21 @@
+services:
+    catalog.handler.create_specification_value:
+        class: Backend\Modules\Catalog\Domain\SpecificationValue\Command\CreateSpecificationValueHandler
+        arguments:
+            - "@catalog.repository.specification_value"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\SpecificationValue\Command\CreateSpecificationValue }
+
+    catalog.handler.update_specification_value:
+        class: Backend\Modules\Catalog\Domain\SpecificationValue\Command\UpdateSpecificationValueHandler
+        arguments:
+            - "@catalog.repository.specification_value"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\SpecificationValue\Command\UpdateSpecificationValue }
+
+    catalog.handler.delete_specification_value:
+        class: Backend\Modules\Catalog\Domain\SpecificationValue\Command\DeleteSpecificationValueHandler
+        arguments:
+            - "@catalog.repository.specification_value"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\SpecificationValue\Command\DeleteSpecificationValue }

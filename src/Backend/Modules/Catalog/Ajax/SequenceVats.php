@@ -11,7 +11,7 @@ namespace Backend\Modules\Catalog\Ajax;
 
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\Vat\Command\Update;
+use Backend\Modules\Catalog\Domain\Vat\Command\UpdateVat;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -41,7 +41,7 @@ class SequenceVats extends BackendBaseAJAXAction
 
             // update sequence
             if ($vat = $vatRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateVat = new Update($vat);
+                $updateVat = new UpdateVat($vat);
                 $updateVat->sequence = $i + 1;
 
                 $this->get('command_bus')->handle($updateVat);

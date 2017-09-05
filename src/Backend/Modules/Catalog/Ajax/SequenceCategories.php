@@ -12,7 +12,7 @@ namespace Backend\Modules\Catalog\Ajax;
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
-use Backend\Modules\Catalog\Domain\Category\Command\Update;
+use Backend\Modules\Catalog\Domain\Category\Command\UpdateCategory;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -43,7 +43,7 @@ class SequenceCategories extends BackendBaseAJAXAction
 
             // update sequence
             if ($category = $categoryRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateCategory = new Update($category);
+                $updateCategory = new UpdateCategory($category);
                 $updateCategory->sequence = $i + 1;
 
                 $this->get('command_bus')->handle($updateCategory);

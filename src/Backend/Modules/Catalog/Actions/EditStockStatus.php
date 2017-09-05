@@ -18,7 +18,7 @@ use Backend\Modules\Catalog\Domain\StockStatus\Exception\StockStatusValueNotFoun
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatusType;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatusRepository;
-use Backend\Modules\Catalog\Domain\StockStatus\Command\Update;
+use Backend\Modules\Catalog\Domain\StockStatus\Command\UpdateStockStatus;
 use Backend\Modules\Catalog\Domain\StockStatus\Event\Updated;
 use Symfony\Component\Form\Form;
 
@@ -60,7 +60,7 @@ class EditStockStatus extends BackendBaseActionEdit
             return;
         }
 
-        /** @var Update $updateStockStatus */
+        /** @var UpdateStockStatus $updateStockStatus */
         $updateStockStatus = $this->updateStockStatus($form);
 
         $this->get('event_dispatcher')->dispatch(
@@ -108,7 +108,7 @@ class EditStockStatus extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             StockStatusType::class,
-            new Update($stockStatus)
+            new UpdateStockStatus($stockStatus)
         );
 
         $form->handleRequest($this->getRequest());
@@ -116,9 +116,9 @@ class EditStockStatus extends BackendBaseActionEdit
         return $form;
     }
 
-    private function updateStockStatus(Form $form): Update
+    private function updateStockStatus(Form $form): UpdateStockStatus
     {
-        /** @var Update $updateStockStatus */
+        /** @var UpdateStockStatus $updateStockStatus */
         $updateStockStatus = $form->getData();
 
         // The command bus will handle the saving of the stock status in the database.

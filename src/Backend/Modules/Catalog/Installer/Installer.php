@@ -10,6 +10,8 @@ namespace Backend\Modules\Catalog\Installer;
  */
 
 use Backend\Modules\Catalog\Domain\Brand\Brand;
+use Backend\Modules\Catalog\Domain\Cart\Cart;
+use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Category\Category;
 
 use Backend\Core\Engine\Model;
@@ -75,6 +77,7 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'Add');
         $this->setActionRights(1, 'Catalog', 'Edit');
         $this->setActionRights(1, 'Catalog', 'Delete');
+        $this->setActionRights(1, 'Catalog', 'AutoCompleteProducts');
 
         // categories
         $this->setActionRights(1, 'Catalog', 'Categories');
@@ -88,6 +91,11 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'EditSpecification');
         $this->setActionRights(1, 'Catalog', 'DeleteSpecification');
         $this->setActionRights(1, 'Catalog', 'SequenceSpecifications');
+
+        // specification values
+        $this->setActionRights(1, 'Catalog', 'EditSpecificationValue');
+        $this->setActionRights(1, 'Catalog', 'DeleteSpecificationValue');
+        $this->setActionRights(1, 'Catalog', 'AutoCompleteSpecificationValue');
 
         // orders
         $this->setActionRights(1, 'Catalog', 'Orders');
@@ -119,7 +127,7 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'DeleteStockStatus');
 
         // add extra's
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Index');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Brand', 'Brand');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Categories', 'Categories');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'ShoppingCart', 'ShoppingCart');
@@ -209,5 +217,7 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Specification::class);
         Model::get('fork.entity.create_schema')->forEntityClass(SpecificationValue::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(Cart::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(CartValue::class);
     }
 }

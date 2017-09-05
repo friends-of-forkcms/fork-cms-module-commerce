@@ -12,7 +12,7 @@ use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Brand\BrandType;
-use Backend\Modules\Catalog\Domain\Brand\Command\Create;
+use Backend\Modules\Catalog\Domain\Brand\Command\CreateBrand;
 use Backend\Modules\Catalog\Domain\Brand\Event\Created;
 use Symfony\Component\Form\Form;
 
@@ -58,7 +58,7 @@ class AddBrand extends BackendBaseActionAdd
         );
     }
 
-    private function createBrand(Form $form): Create
+    private function createBrand(Form $form): CreateBrand
     {
         $createBrand = $form->getData();
 
@@ -82,7 +82,7 @@ class AddBrand extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             BrandType::class,
-            new Create()
+            new CreateBrand()
         );
 
         $form->handleRequest($this->getRequest());

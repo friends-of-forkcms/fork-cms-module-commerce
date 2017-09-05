@@ -224,6 +224,7 @@ class ProductDataTransferObject
 
     public function removeSpecificationValu($value)
     {
+        $this->specification_values->remove($value->getId());
         $this->remove_specification_values->add($value);
     }
 

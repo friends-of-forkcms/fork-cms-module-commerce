@@ -15,7 +15,7 @@ use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Category\Event\Deleted;
-use Backend\Modules\Catalog\Domain\Category\Command\Delete as DeleteCommand;
+use Backend\Modules\Catalog\Domain\Category\Command\DeleteCategory as DeleteCommand;
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 

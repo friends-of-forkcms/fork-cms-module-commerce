@@ -68,14 +68,14 @@ class CategoryDataTransferObject
             return;
         }
 
-        $this->id      = $category->getId();
-        $this->extraId = $category->getExtraId();
-        $this->title   = $category->getTitle();
-        $this->text    = $category->getText();
-        $this->locale  = $category->getLocale();
-        $this->parent  = $category->getParent();
-        $this->meta    = $category->getMeta();
-        $this->image   = $category->getImage();
+        $this->id       = $category->getId();
+        $this->extraId  = $category->getExtraId();
+        $this->title    = $category->getTitle();
+        $this->text     = $category->getText();
+        $this->locale   = $category->getLocale();
+        $this->parent   = $category->getParent();
+        $this->meta     = $category->getMeta();
+        $this->image    = $category->getImage();
         $this->sequence = $category->getSequence();
     }
 

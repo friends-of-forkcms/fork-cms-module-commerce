@@ -14,7 +14,7 @@ final class DeleteHandler
         $this->vatRepository = $stockStatusRepository;
     }
 
-    public function handle(Delete $deleteStockStatus): void
+    public function handle(DeleteStockStatus $deleteStockStatus): void
     {
         $this->vatRepository->removeByIdAndLocale(
             $deleteStockStatus->vat->getId(),

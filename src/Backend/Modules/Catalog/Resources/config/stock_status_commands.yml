@@ -1,21 +1,21 @@
 services:
     catalog.handler.create_stock_status:
-        class: Backend\Modules\Catalog\Domain\StockStatus\Command\CreateHandler
+        class: Backend\Modules\Catalog\Domain\StockStatus\Command\CreateStockStatusHandler
         arguments:
             - "@catalog.repository.stock_status"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\StockStatus\Command\Create }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\StockStatus\Command\CreateStockStatus }
 
     catalog.handler.update_stock_status:
-        class: Backend\Modules\Catalog\Domain\StockStatus\Command\UpdateHandler
+        class: Backend\Modules\Catalog\Domain\StockStatus\Command\UpdateStockStatusHandler
         arguments:
             - "@catalog.repository.stock_status"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\StockStatus\Command\Update }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\StockStatus\Command\UpdateStockStatus }
 
     catalog.handler.delete_stock_status:
-        class: Backend\Modules\Catalog\Domain\StockStatus\Command\DeleteHandler
+        class: Backend\Modules\Catalog\Domain\StockStatus\Command\DeleteStockStatusHandler
         arguments:
             - "@catalog.repository.stock_status"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\StockStatus\Command\Delete }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\StockStatus\Command\DeleteStockStatus }

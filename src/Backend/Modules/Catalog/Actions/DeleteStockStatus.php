@@ -16,7 +16,7 @@ use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\StockStatus\Exception\StockStatusNotFound;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\StockStatus\Event\Deleted;
-use Backend\Modules\Catalog\Domain\StockStatus\Command\Delete as DeleteCommand;
+use Backend\Modules\Catalog\Domain\StockStatus\Command\DeleteStockStatus as DeleteCommand;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**

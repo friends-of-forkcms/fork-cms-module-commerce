@@ -1,4 +1,5 @@
 {% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
 
 {% block actionbar %}
 
@@ -14,6 +15,10 @@
                         <a href="#tabContent" aria-controls="tabContent" role="tab"
                            data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#tabValues" aria-controls="tabValues" role="tab"
+                           data-toggle="tab">{{ 'lbl.Values'|trans|ucfirst }}</a>
+                    </li>
                     <li class="pull-right" role="presentation">
                         <a href="#tabSEO" aria-controls="tabSEO" role="tab"
                            data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
@@ -22,6 +27,9 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabContent">
                         {{ form_row(form.title) }}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tabValues">
+                        {{ macro.dataGrid(dataGridValues) }}
                     </div>
                     <div role="tabpanel" class="tab-pane active" id="tabContent">
                         {{ form_row(form.type) }}

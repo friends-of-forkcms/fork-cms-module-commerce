@@ -12,7 +12,7 @@ use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Category\CategoryType;
-use Backend\Modules\Catalog\Domain\Category\Command\Create;
+use Backend\Modules\Catalog\Domain\Category\Command\CreateCategory;
 use Backend\Modules\Catalog\Domain\Category\Event\Created;
 use Symfony\Component\Form\Form;
 
@@ -58,7 +58,7 @@ class AddCategory extends BackendBaseActionAdd
         );
     }
 
-    private function createCategory(Form $form): Create
+    private function createCategory(Form $form): CreateCategory
     {
         $createCategory = $form->getData();
 
@@ -82,7 +82,7 @@ class AddCategory extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             CategoryType::class,
-            new Create(),
+            new CreateCategory(),
             [
                 'categories' => $this->get('catalog.repository.category')->getTree(Locale::workingLocale())
             ]

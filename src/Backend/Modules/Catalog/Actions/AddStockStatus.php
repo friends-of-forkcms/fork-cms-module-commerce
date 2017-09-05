@@ -12,7 +12,7 @@ namespace Backend\Modules\Catalog\Actions;
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatusType;
-use Backend\Modules\Catalog\Domain\StockStatus\Command\Create;
+use Backend\Modules\Catalog\Domain\StockStatus\Command\CreateStockStatus;
 use Backend\Modules\Catalog\Domain\StockStatus\Event\Created;
 use Symfony\Component\Form\Form;
 
@@ -59,7 +59,7 @@ class AddStockStatus extends BackendBaseActionAdd
         return;
     }
 
-    private function createStockStatus(Form $form): Create
+    private function createStockStatus(Form $form): CreateStockStatus
     {
         $createStockStatus = $form->getData();
 
@@ -83,7 +83,7 @@ class AddStockStatus extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             StockStatusType::class,
-            new Create()
+            new CreateStockStatus()
         );
 
         $form->handleRequest($this->getRequest());

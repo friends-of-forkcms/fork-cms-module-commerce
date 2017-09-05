@@ -59,3 +59,9 @@ doctrine:
         dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/StockStatus"
         alias: CatalogStockStatus
         prefix: Backend\Modules\Catalog\Domain\StockStatus
+      cart:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Cart"
+        alias: CatalogCart
+        prefix: Backend\Modules\Catalog\Domain\Cart

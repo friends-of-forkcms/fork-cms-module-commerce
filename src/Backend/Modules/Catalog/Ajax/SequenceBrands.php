@@ -11,7 +11,7 @@ namespace Backend\Modules\Catalog\Ajax;
 
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\Brand\Command\Update;
+use Backend\Modules\Catalog\Domain\Brand\Command\UpdateBrand;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -42,7 +42,7 @@ class SequenceBrands extends BackendBaseAJAXAction
 
             // update sequence
             if ($brand = $brandRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateBrand = new Update($brand);
+                $updateBrand = new UpdateBrand($brand);
                 $updateBrand->sequence = $i + 1;
 
                 $this->get('command_bus')->handle($updateBrand);

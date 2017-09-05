@@ -29,7 +29,7 @@ services:
         arguments:
             - Backend\Modules\Catalog\Domain\Specification\Specification
 
-    catalog.repository.specification.value:
+    catalog.repository.specification_value:
         class: Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:

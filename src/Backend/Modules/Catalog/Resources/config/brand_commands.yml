@@ -1,21 +1,21 @@
 services:
     catalog.handler.create_brand:
-        class: Backend\Modules\Catalog\Domain\Brand\Command\CreateHandler
+        class: Backend\Modules\Catalog\Domain\Brand\Command\CreateBrandHandler
         arguments:
             - "@catalog.repository.brand"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\Create }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\CreateBrand }
 
     catalog.handler.update_brand:
-        class: Backend\Modules\Catalog\Domain\Brand\Command\UpdateHandler
+        class: Backend\Modules\Catalog\Domain\Brand\Command\UpdateBrandHandler
         arguments:
             - "@catalog.repository.brand"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\Update }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\UpdateBrand }
 
     catalog.handler.delete_brand:
-        class: Backend\Modules\Catalog\Domain\Brand\Command\DeleteHandler
+        class: Backend\Modules\Catalog\Domain\Brand\Command\DeleteBrandHandler
         arguments:
             - "@catalog.repository.brand"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\Delete }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Brand\Command\DeleteBrand }

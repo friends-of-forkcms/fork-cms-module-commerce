@@ -13,12 +13,13 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationValueNotFound;
+use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationNotFound;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Backend\Modules\Catalog\Domain\Specification\SpecificationType;
 use Backend\Modules\Catalog\Domain\Specification\SpecificationRepository;
-use Backend\Modules\Catalog\Domain\Specification\Command\Update;
+use Backend\Modules\Catalog\Domain\Specification\Command\UpdateSpecification;
 use Backend\Modules\Catalog\Domain\Specification\Event\Updated;
+use Backend\Modules\Catalog\Domain\SpecificationValue\DataGrid;
 use Symfony\Component\Form\Form;
 
 /**
@@ -26,6 +27,7 @@ use Symfony\Component\Form\Form;
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Willem van Dam <w.vandam@jvdict.nl>
+ * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditSpecification extends BackendBaseActionEdit
 {
@@ -53,6 +55,7 @@ class EditSpecification extends BackendBaseActionEdit
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('specification', $specification);
+            $this->template->assign('dataGridValues', DataGrid::getHtml($specification));
 
             $this->parse();
             $this->display();
@@ -60,7 +63,7 @@ class EditSpecification extends BackendBaseActionEdit
             return;
         }
 
-        /** @var Update $updateSpecification */
+        /** @var UpdateSpecification $updateSpecification */
         $updateSpecification = $this->updateSpecification($form);
 
         $this->get('event_dispatcher')->dispatch(
@@ -89,7 +92,7 @@ class EditSpecification extends BackendBaseActionEdit
                 $this->getRequest()->query->getInt('id'),
                 Locale::workingLocale()
             );
-        } catch (SpecificationValueNotFound $e) {
+        } catch (SpecificationNotFound $e) {
             $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
     }
@@ -108,7 +111,7 @@ class EditSpecification extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             SpecificationType::class,
-            new Update($specification)
+            new UpdateSpecification($specification)
         );
 
         $form->handleRequest($this->getRequest());
@@ -116,9 +119,9 @@ class EditSpecification extends BackendBaseActionEdit
         return $form;
     }
 
-    private function updateSpecification(Form $form): Update
+    private function updateSpecification(Form $form): UpdateSpecification
     {
-        /** @var Update $updateSpecification */
+        /** @var UpdateSpecification $updateSpecification */
         $updateSpecification = $form->getData();
 
         // The command bus will handle the saving of the specification in the database.

@@ -17,7 +17,7 @@ use Backend\Modules\Catalog\Domain\Product\Event\Deleted;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Backend\Modules\Catalog\Domain\Product\Command\Delete as DeleteCommand;
+use Backend\Modules\Catalog\Domain\Product\Command\DeleteProduct as DeleteCommand;
 
 /**
  * This action will delete a product

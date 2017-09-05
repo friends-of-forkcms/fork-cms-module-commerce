@@ -1,21 +1,21 @@
 services:
     catalog.handler.create_product:
-        class: Backend\Modules\Catalog\Domain\Product\Command\CreateHandler
+        class: Backend\Modules\Catalog\Domain\Product\Command\CreateProductHandler
         arguments:
             - "@catalog.repository.product"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\Create }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\CreateProduct }
 
     catalog.handler.update_product:
-        class: Backend\Modules\Catalog\Domain\Product\Command\UpdateHandler
+        class: Backend\Modules\Catalog\Domain\Product\Command\UpdateProductHandler
         arguments:
             - "@catalog.repository.product"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\Update }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\UpdateProduct }
 
     catalog.handler.delete_product:
-        class: Backend\Modules\Catalog\Domain\Product\Command\DeleteHandler
+        class: Backend\Modules\Catalog\Domain\Product\Command\DeleteProductHandler
         arguments:
             - "@catalog.repository.product"
         tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\Delete }
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\DeleteProduct }

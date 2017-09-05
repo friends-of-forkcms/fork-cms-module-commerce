@@ -2,11 +2,13 @@
 
 namespace Backend\Modules\Catalog\Domain\SpecificationValue;
 
-use Backend\Modules\Catalog\Domain\Specification\Specification;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Backend\Form\Type\MetaType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SpecificationValueType extends AbstractType
@@ -14,21 +16,30 @@ class SpecificationValueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'specification',
-            EntityType::class,
-            [
-                'required'     => true,
-                'label'        => 'lbl.Specification',
-                'class'        => Specification::class,
-                'choice_label' => 'title'
-            ]
-        )->add(
             'value',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Value',
+                'label'    => 'lbl.Title',
             ]
+        )->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) {
+                $event->getForm()->add(
+                    'meta',
+                    MetaType::class,
+                    [
+                        'base_field_name'                  => 'value',
+                        'generate_url_callback_class'      => 'catalog.repository.specification_value',
+                        'generate_url_callback_method'     => 'getUrl',
+                        'detail_url'                       => '',
+                        'generate_url_callback_parameters' => [
+                            $event->getData()->specification->getId(),
+                            $event->getData()->id,
+                        ],
+                    ]
+                );
+            }
         );
     }
 
@@ -36,13 +47,13 @@ class SpecificationValueType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => SpecificationValue::class,
+                'data_class' => SpecificationValueDataTransferObject::class
             ]
         );
     }
 
     public function getBlockPrefix(): string
     {
-        return 'specification_values';
+        return 'specification_value';
     }
 }

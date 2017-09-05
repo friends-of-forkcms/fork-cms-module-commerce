@@ -12,7 +12,7 @@ namespace Backend\Modules\Catalog\Actions;
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Modules\Catalog\Domain\Vat\VatType;
-use Backend\Modules\Catalog\Domain\Vat\Command\Create;
+use Backend\Modules\Catalog\Domain\Vat\Command\CreateVat;
 use Backend\Modules\Catalog\Domain\Vat\Event\Created;
 use Symfony\Component\Form\Form;
 
@@ -59,7 +59,7 @@ class AddVat extends BackendBaseActionAdd
         return;
     }
 
-    private function createVat(Form $form): Create
+    private function createVat(Form $form): CreateVat
     {
         $createVat = $form->getData();
 
@@ -83,7 +83,7 @@ class AddVat extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             VatType::class,
-            new Create()
+            new CreateVat()
         );
 
         $form->handleRequest($this->getRequest());

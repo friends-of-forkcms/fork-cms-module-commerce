@@ -2,9 +2,8 @@
 
 namespace Backend\Modules\Catalog\Domain\Specification;
 
-use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationValueNotFound;
+use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationNotFound;
 use Common\Doctrine\Entity\Meta;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
@@ -21,14 +20,14 @@ class SpecificationRepository extends EntityRepository
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Specification
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw SpecificationNotFound::forEmptyId();
         }
 
         /** @var Specification $specification */
         $specification = $this->findOneBy(['id' => $id, 'locale' => $locale]);
 
         if ($specification === null) {
-            throw SpecificationValueNotFound::forId($id);
+            throw SpecificationNotFound::forId($id);
         }
 
         return $specification;
@@ -43,62 +42,6 @@ class SpecificationRepository extends EntityRepository
             },
             (array) $this->findBy(['id' => $id, 'locale' => $locale])
         );
-    }
-
-    /**
-     * Get the next sequence in line
-     *
-     * @param Locale $locale
-     * @param Specification $parent
-     *
-     * @return integer
-     */
-    public function getNextSequence(Locale $locale, Specification $parent = null): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-        $query_builder->select('MAX(i.sequence) as sequence')
-            ->where('i.locale = :locale');
-
-        $query_builder->setParameter('locale', $locale);
-
-        // Include the parent if is set
-        if ($parent) {
-            $query_builder->andWhere('i.parent = :parent');
-            $query_builder->setParameter('parent', $parent);
-        }
-
-        // Return the new sequence
-        return $query_builder->getQuery()->getSingleScalarResult() + 1;
-    }
-
-    /**
-     * Get an tree of specifications
-     *
-     * @param Locale $locale
-     *
-     * @return array
-     */
-    public function getTree(Locale $locale)
-    {
-        $queryBuilder = $this->createQueryBuilder('i');
-
-        /**
-         * @var Specification[] $query_result
-         */
-        $queryResult = $queryBuilder->where('i.locale = :locale')
-            ->andWhere('i.parent IS NULL')
-            ->setParameter('locale', $locale)
-            ->orderBy('i.sequence', 'asc')
-            ->getQuery()
-            ->getResult();
-
-        $treeResult = [];
-
-	    foreach($queryResult as $specification) {
-		    $treeResult[$specification->getTitle()] = $specification;
-	    }
-
-        return $treeResult;
     }
 
     /**

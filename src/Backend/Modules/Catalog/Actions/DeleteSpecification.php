@@ -15,7 +15,7 @@ use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Backend\Modules\Catalog\Domain\Specification\Event\Deleted;
-use Backend\Modules\Catalog\Domain\Specification\Command\Delete as DeleteCommand;
+use Backend\Modules\Catalog\Domain\Specification\Command\DeleteSpecification as DeleteCommand;
 use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationValueNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 

@@ -2,13 +2,15 @@
 
 namespace Backend\Modules\Catalog\Domain\Product;
 
+use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\EditorType;
 use Backend\Form\Type\MetaType;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecialType;
-use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueType;
+use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueDataTransferObject;
+use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueType;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
@@ -16,6 +18,7 @@ use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -131,16 +134,49 @@ class ProductType extends AbstractType
                 'action'               => 'AutoCompleteProducts',
             ]
         )->add(
-            'specification_values',
-            CollectionType::class,
-            [
-                'required'     => false,
-                'entry_type'   => SpecificationValueType::class,
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'label'        => 'lbl.Specifications',
-            ]
+            $builder->create(
+                'specification_values',
+                CollectionType::class,
+                [
+                    'required'     => false,
+                    'entry_type'   => ProductSpecificationValueType::class,
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'label'        => 'lbl.Specifications',
+                ]
+            )->addModelTransformer(new CallbackTransformer(
+                function ($entities) {
+                    $dataTransferObjects = [];
+
+                    foreach ($entities as $entity) {
+                        $dataTransferObjects[] = new ProductSpecificationValueDataTransferObject($entity);
+                    }
+
+                    return $dataTransferObjects;
+                },
+                function ($dataTransferObjects) {
+                    $entities      = [];
+                    $entityManager = Model::get('doctrine.orm.entity_manager');
+
+                    /**
+                     * @var ProductSpecificationValueDataTransferObject[] $dataTransferObjects
+                     */
+                    foreach ($dataTransferObjects as $dataTransferObject) {
+                        $specificationValue = $dataTransferObject->value;
+
+                        // Determine if the value not exists
+                        if (!$entityManager->contains($dataTransferObject->value)) {
+                            $specificationValue->setSpecification($dataTransferObject->specification);
+                            $specificationValue->setMeta($dataTransferObject->getMeta());
+                        }
+
+                        $entities[] = $specificationValue;
+                    }
+
+                    return $entities;
+                }
+            ))
         )->add(
             'specials',
             CollectionType::class,

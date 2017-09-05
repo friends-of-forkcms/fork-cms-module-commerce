@@ -18,7 +18,7 @@ use Backend\Modules\Catalog\Domain\Vat\Exception\VatValueNotFound;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\Domain\Vat\VatType;
 use Backend\Modules\Catalog\Domain\Vat\VatRepository;
-use Backend\Modules\Catalog\Domain\Vat\Command\Update;
+use Backend\Modules\Catalog\Domain\Vat\Command\UpdateVat;
 use Backend\Modules\Catalog\Domain\Vat\Event\Updated;
 use Symfony\Component\Form\Form;
 
@@ -60,7 +60,7 @@ class EditVat extends BackendBaseActionEdit
             return;
         }
 
-        /** @var Update $updateVat */
+        /** @var UpdateVat $updateVat */
         $updateVat = $this->updateVat($form);
 
         $this->get('event_dispatcher')->dispatch(
@@ -108,7 +108,7 @@ class EditVat extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             VatType::class,
-            new Update($vat)
+            new UpdateVat($vat)
         );
 
         $form->handleRequest($this->getRequest());
@@ -116,9 +116,9 @@ class EditVat extends BackendBaseActionEdit
         return $form;
     }
 
-    private function updateVat(Form $form): Update
+    private function updateVat(Form $form): UpdateVat
     {
-        /** @var Update $updateVat */
+        /** @var UpdateVat $updateVat */
         $updateVat = $form->getData();
 
         // The command bus will handle the saving of the vat in the database.

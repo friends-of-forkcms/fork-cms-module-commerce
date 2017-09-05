@@ -65,7 +65,7 @@ class Specification
      */
     private $type;
 
-    public const textbox = 1;
+    public const TYPE_TEXTBOX = 1;
 
     private function __construct(
         Locale $locale,
@@ -142,7 +142,7 @@ class Specification
     /**
      * @return SpecificationValue[]
      */
-    public function getSpecificationValues(): array
+    public function getSpecificationValues()
     {
         return $this->specification_values;
     }

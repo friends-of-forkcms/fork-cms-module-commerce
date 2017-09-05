@@ -16,7 +16,7 @@ use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
 use Backend\Modules\Catalog\Domain\Category\CategoryType;
-use Backend\Modules\Catalog\Domain\Category\Command\Update;
+use Backend\Modules\Catalog\Domain\Category\Command\UpdateCategory;
 use Backend\Modules\Catalog\Domain\Category\Event\Updated;
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
 use Symfony\Component\Form\Form;
@@ -60,7 +60,7 @@ class EditCategory extends BackendBaseActionEdit
             return;
         }
 
-        /** @var Update $updateCategory */
+        /** @var UpdateCategory $updateCategory */
         $updateCategory = $this->updateCategory($form);
 
         $this->get('event_dispatcher')->dispatch(
@@ -108,7 +108,7 @@ class EditCategory extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             CategoryType::class,
-            new Update($category)
+            new UpdateCategory($category)
         );
 
         $form->handleRequest($this->getRequest());
@@ -116,9 +116,9 @@ class EditCategory extends BackendBaseActionEdit
         return $form;
     }
 
-    private function updateCategory(Form $form): Update
+    private function updateCategory(Form $form): UpdateCategory
     {
-        /** @var Update $updateCategory */
+        /** @var UpdateCategory $updateCategory */
         $updateCategory = $form->getData();
 
         // The command bus will handle the saving of the category in the database.
