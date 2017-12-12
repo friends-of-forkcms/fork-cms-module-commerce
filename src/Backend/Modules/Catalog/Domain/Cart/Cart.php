@@ -2,7 +2,9 @@
 
 namespace Backend\Modules\Catalog\Domain\Cart;
 
+use Common\Core\Model;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,11 +24,18 @@ class Cart
     private $id;
 
     /**
-     * @var CartValue
+     * @var CartValue[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\Cart\CartValue", mappedBy="cart", cascade={"remove", "persist"})
      */
     private $values;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $total_quantity = 0;
 
     /**
      * @var string
@@ -57,6 +66,26 @@ class Cart
     private $editedOn;
 
     /**
+     * @var float
+     */
+    private $total;
+
+    /**
+     * @var float
+     */
+    private $subTotal;
+
+    /**
+     * @var array
+     */
+    private $vats = [];
+
+    public function __construct()
+    {
+        $this->values = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -65,19 +94,54 @@ class Cart
     }
 
     /**
-     * @return CartValue
+     * @param int $id
      */
-    public function getValues(): CartValue
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return CartValue[]
+     */
+    public function getValues()
     {
         return $this->values;
     }
 
     /**
-     * @param CartValue $values
+     * @param CartValue $value
+     *
+     * @return void
      */
-    public function setValues(CartValue $values)
+    public function addValue(CartValue $value): void
     {
-        $this->values = $values;
+        $this->values->add($value);
+
+        // Recalculate on add
+        $this->calculateTotalQuantity();
+        $this->calculateTotals();
+    }
+
+    /**
+     * @param CartValue $value
+     *
+     * @return void
+     */
+    public function removeValue(CartValue $value): void
+    {
+        $this->values->removeElement($value);
+
+        $this->calculateTotalQuantity();
+        $this->calculateTotals();
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalQuantity(): int
+    {
+        return $this->total_quantity;
     }
 
     /**
@@ -154,5 +218,92 @@ class Cart
         if (!$this->id) {
             $this->createdOn = $this->editedOn;
         }
+    }
+
+    /**
+     * Get the total cart value
+     *
+     * @return float
+     */
+    public function getTotal(): float
+    {
+        if (!$this->total) {
+            $this->calculateTotals();
+        }
+
+        return $this->total;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSubTotal(): float
+    {
+        if (!$this->subTotal) {
+            $this->calculateTotals();
+        }
+
+        return $this->subTotal;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVats(): array
+    {
+        if (!$this->vats) {
+            $this->calculateTotals();
+        }
+
+        return $this->vats;
+    }
+
+    /**
+     * Calculate the cart totals
+     *
+     * @return void
+     */
+    public function calculateTotals(): void
+    {
+        // Reset the values
+        $this->subTotal = 0;
+        $this->total = 0;
+        $this->vats = [];
+
+        // Store new values
+        foreach ($this->values as $value) {
+            $product = $value->getProduct();
+            $vat = $product->getVat();
+            $vatPrice = $product->getVatPrice() * $value->getQuantity();
+
+            $this->subTotal += $value->getTotal();
+
+            if (!array_key_exists($vat->getId(), $this->vats)) {
+                $this->vats[$vat->getId()] = [
+                    'title' => $vat->getTitle(),
+                    'total' => 0
+                ];
+            }
+
+            $this->vats[$vat->getId()]['total'] += $vatPrice;
+
+            $this->total += $value->getTotal() + $vatPrice;
+        }
+    }
+
+    /**
+     * Calculate the total quantity
+     *
+     * @return void
+     */
+    private function calculateTotalQuantity(): void
+    {
+        $totalQuantity = 0;
+
+        foreach ($this->values as $value) {
+            $totalQuantity += $value->getQuantity();
+        }
+
+        $this->total_quantity = $totalQuantity;
     }
 }

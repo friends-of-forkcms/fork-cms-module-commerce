@@ -55,6 +55,13 @@ class ProductType extends AbstractType
                 'label'    => 'lbl.Content'
             ]
         )->add(
+            'weight',
+            TextType::class,
+            [
+                'required' => false,
+                'label'    => 'lbl.Weight',
+            ]
+        )->add(
             'price',
             TextType::class,
             [
@@ -131,6 +138,28 @@ class ProductType extends AbstractType
                 'cache_timeout'        => 60000, // if 'cache' is true
                 'language'             => Locale::workingLocale(),
                 'label'                => 'lbl.RelatedProducts',
+                'action'               => 'AutoCompleteProducts',
+            ]
+        )->add(
+            'up_sell_products',
+            Select2EntityType::class,
+            [
+                'multiple'             => true,
+                'remote_route'         => 'backend_ajax',
+                'remote_params'        => [
+                    'excluded_id' => ($options['product'] ? $options['product']->getId() : null)
+                ],
+                'class'                => Product::class,
+                'primary_key'          => 'id',
+                'text_property'        => 'getTitle',
+                'minimum_input_length' => 3,
+                'page_limit'           => 10,
+                'allow_clear'          => true,
+                'delay'                => 250,
+                'cache'                => false,
+                'cache_timeout'        => 60000, // if 'cache' is true
+                'language'             => Locale::workingLocale(),
+                'label'                => 'lbl.UpSellProducts',
                 'action'               => 'AutoCompleteProducts',
             ]
         )->add(

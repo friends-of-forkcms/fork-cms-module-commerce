@@ -18,7 +18,13 @@ class DataGrid extends DataGridDatabase
     public function __construct(Locale $locale, ?Category $category)
     {
         if ($category) {
-
+            parent::__construct(
+                'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
+		 FROM catalog_products AS i
+		 WHERE i.language = :language and i.category_id = :category
+		 ORDER BY i.sequence ASC',
+                ['language' => $locale, 'category' => $category->getId()]
+            );
         } else {
             parent::__construct(
                 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence

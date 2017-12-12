@@ -11,157 +11,75 @@
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 jsFrontend.catalog =
-{
-	// constructor
-	init: function()
-	{
-		jsFrontend.catalog.onChange();
-	},
-	
-	onChange: function()
-	{				
-		$addToShoppingCart = $('.addProductToShoppingCart a');
-		$editProductAmountInCheckout = $('.editProductAmountInCheckout a');
-		$removeFromShoppingCart = $('.removeProductFromShoppingCart a');
-		
-		// only allow numbers for input field
-		$("#inputAmountOfProducts").keypress(function (e) {
-			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-				return false;
-			}
-		});
-		
-		// add or update product
-		$addToShoppingCart.click(function(){
-			var $this = $(this);
-			
-			var $productId = $this.attr('id');
-			
-			// calculate new product amount, shopping cart widget has to be on page
-			// in order to make this work
-			var $currentAmountText = $("#shoppingCartTable #productAmountCell-" + $productId).text();
-			var $currentAmount =  parseInt($currentAmountText) || 0;
-			var $productAmount = $currentAmount + 1;
-			
-			var $action = 'add-update';
-			
-			// execute fork action from ajax event
-			$.ajax({
-				type: 'POST',
-				data: {
-					fork: { module: 'Catalog', action: 'SaveShoppingCart'},
-					productAmount: $productAmount,
-					productId: $productId,
-					action: $action,
-					value: $this.val()
-				},
-				success: function (data) {
-					jsFrontend.catalog.updateShoppingCart();
-					jsFrontend.catalog.displayFeedback('success', 'center', jsFrontend.locale.lbl('ProductAdded'));
-				},
-				error: function (request, status, error) {
-					alert(request.responseText);
-				}
-			});
-		});
-		
-		// add or update product
-		$editProductAmountInCheckout.click(function(){
-			var $this = $(this);
-			var $productId = $this.attr('id');
-			var $productAmount = $("#inputAmountOfProducts-" + $productId).val();
-			var $action = 'add-update';
-			
-			// execute fork action from ajax event
-			$.ajax({
-				type: 'POST',
-				data: {
-					fork: { module: 'Catalog', action: 'SaveShoppingCart'},
-					productAmount: $productAmount,
-					productId: $productId,
-					action: $action,
-					value: $this.val()
-				},
-				success: function (data) {
-					jsFrontend.catalog.updateShoppingCart();
-					jsFrontend.catalog.updateCheckoutCart();
-					jsFrontend.catalog.displayFeedback('success', 'center', jsFrontend.locale.lbl('ProductAdded'));
-				}
-			});
-		});
-		
-		jsFrontend.catalog.updateShoppingCart();
-		
-		// delete product
-		$removeFromShoppingCart.click(function(){
-			var $this = $(this);
-						
-			var $productId = $this.attr('id');
-			var $action = 'delete';
-			
-			// execute fork action from ajax event
-			$.ajax({
-				type: 'POST',
-				data: {
-					fork: { module: 'Catalog', action: 'SaveShoppingCart'},
-					productId: $productId,
-					action: $action,
-					value: $this.val()
-				},
-				success: function (data) {
-					jsFrontend.catalog.updateShoppingCart();
-					jsFrontend.catalog.updateCheckoutCart();
-					jsFrontend.catalog.displayFeedback('success', 'center', jsFrontend.locale.lbl('ProductRemoved'));
-				}
-			});
-		});
-	},
+    {
+        // constructor
+        init: function () {
+            jsFrontend.catalog.productDetail();
+        },
 
-	updateShoppingCart: function()
-	{
-	    $.ajax({
-		data: {
-		    fork: { module: 'Catalog', action: 'UpdateShoppingCart' }
-		},
-		success: function (result) {
-		    var $target = $('#shoppingCartWidget');
-						
-		    if ($target && $target.length) {
-				$target.html(result.data);
-		    }
-		}
-	    });
-	},
-	
-	updateCheckoutCart: function()
-	{
-	    $.ajax({
-		data: {
-		    fork: { module: 'Catalog', action: 'UpdateCheckoutCart' }
-		},
-		success: function (result) {
-		    var $target = $('#shoppingCartCheckout');
-						
-		    if ($target && $target.length) {
-				$target.html(result.data);
-		    }
-		},
-		error: function (request, status, error) {
-			alert(request.responseText);
-		}
-	    });
-	},
-	
-	displayFeedback: function(type, layout, message)
-	{
-		var n = noty({
-		    text        : message,
-		    type        : type,
-		    dismissQueue: true,
-		    layout      : layout,
-		    theme       : 'defaultTheme'
-		});
-	}
-}
+        productDetail: function () {
+            var photoHolder = $(".product-photo-slider"),
+                thumbnails = $('.thumb-slider .thumbnails li');
+
+            // Stop executing when there are no photos to display
+            if (photoHolder.length === 0) {
+                return;
+            }
+
+            var slider = photoHolder.sudoSlider(
+                {
+                    effect: 'slide',
+                    prevNext: true,
+                    responsive: true,
+                    speed: 300,
+                    auto: false,
+                    pause: '5000',
+                    beforeAnimation: function (i, j) {
+                        thumbnails.filter('.current').removeClass('current');
+                        thumbnails.eq(i - 1).addClass('current');
+                    }
+                }
+            );
+
+            thumbnails.find('a').click(function (e) {
+                e.preventDefault();
+
+                thumbnails.find('> .current').removeClass('current');
+                slider.goToSlide($(this).parent().addClass('current').index() + 1);
+            });
+
+            $('[data-fancybox]').fancybox({
+                thumbs : {
+                    autoStart : true
+                }
+            });
+
+            $('.parts-small').owlCarousel({
+                stagePadding: 0,
+                margin:15,
+                nav:true,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:2
+                    },
+                    800: {
+                        items:2
+                    },
+                    1100:{
+                        items:3
+                    },
+                    1500:{
+                        items:3
+                    },
+                    1600:{
+                        items:3
+                    }
+                }
+            });
+        }
+    };
 
 $(jsFrontend.catalog.init);

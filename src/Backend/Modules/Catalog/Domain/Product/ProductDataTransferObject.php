@@ -43,6 +43,11 @@ class ProductDataTransferObject
 
     /**
      * @var string
+     */
+    public $weight;
+
+    /**
+     * @var string
      *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
@@ -147,6 +152,11 @@ class ProductDataTransferObject
     /**
      * @var PersistentCollection
      */
+    public $up_sell_products;
+
+    /**
+     * @var PersistentCollection
+     */
     public $remove_specification_values;
 
     /**
@@ -173,8 +183,10 @@ class ProductDataTransferObject
         $this->specials                    = new ArrayCollection();
         $this->remove_specials             = new ArrayCollection();
         $this->related_products            = new ArrayCollection();
+        $this->up_sell_products            = new ArrayCollection();
         $this->remove_related_products     = new ArrayCollection();
         $this->images                      = MediaGroup::create(MediaGroupType::fromString('image'));
+        $this->weight                      = (float) 0.00;
 
         if ( ! $this->hasExistingProduct()) {
             return;
@@ -190,6 +202,7 @@ class ProductDataTransferObject
         $this->summary              = $product->getSummary();
         $this->text                 = $product->getText();
         $this->locale               = $product->getLocale();
+        $this->weight               = $product->getWeight();
         $this->price                = $product->getPrice();
         $this->stock                = $product->getStock();
         $this->order_quantity       = $product->getOrderQuantity();
@@ -200,6 +213,7 @@ class ProductDataTransferObject
         $this->specials             = $product->getSpecials();
         $this->images               = $product->getImages();
         $this->related_products     = $product->getRelatedProducts();
+        $this->up_sell_products     = $product->getUpSellProducts();
 
         // just a fallback
         if ( ! $this->images instanceof MediaGroup) {
@@ -240,6 +254,17 @@ class ProductDataTransferObject
 
         // for our update to remove this entity
         $this->remove_related_products->add($product);
+    }
+
+    public function addUpSellProduct(Product $product)
+    {
+        $this->up_sell_products->add($product);
+    }
+
+    public function removeUpSellProduct(Product $product)
+    {
+        // for our current entity
+        $this->up_sell_products->removeElement($product);
     }
 
     public function addSpecial(ProductSpecial $special)

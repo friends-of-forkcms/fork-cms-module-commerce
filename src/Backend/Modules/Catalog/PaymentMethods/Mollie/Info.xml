@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paymentMethod>
+  <name>Mollie</name>
+  <version>1.0.0</version>
+  <description>
+    <![CDATA[
+			Handle Mollie payments in your website
+		]]>
+  </description>
+</paymentMethod>

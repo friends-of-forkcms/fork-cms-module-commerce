@@ -29,6 +29,30 @@ doctrine:
         dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Order"
         alias: CatalogOrder
         prefix: Backend\Modules\Catalog\Domain\Order
+      order_address:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/OrderAddress"
+        alias: CatalogOrderAddress
+        prefix: Backend\Modules\Catalog\Domain\OrderAddress
+      order_vat:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/OrderVat"
+        alias: CatalogOrderVat
+        prefix: Backend\Modules\Catalog\Domain\OrderVat
+      order_product:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/OrderProduct"
+        alias: CatalogOrderProduct
+        prefix: Backend\Modules\Catalog\Domain\OrderProduct
+      order_history:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/OrderHistory"
+        alias: CatalogOrderHistory
+        prefix: Backend\Modules\Catalog\Domain\OrderHistory
       specification:
         type: annotation
         is_bundle: false
@@ -65,3 +89,15 @@ doctrine:
         dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/Cart"
         alias: CatalogCart
         prefix: Backend\Modules\Catalog\Domain\Cart
+      shipment_method:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/ShipmentMethod"
+        alias: CatalogShipmentMethod
+        prefix: Backend\Modules\Catalog\Domain\ShipmentMethod
+      payment_method:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/PaymentMethod"
+        alias: CatalogPaymentMethod
+        prefix: Backend\Modules\Catalog\Domain\PaymentMethod

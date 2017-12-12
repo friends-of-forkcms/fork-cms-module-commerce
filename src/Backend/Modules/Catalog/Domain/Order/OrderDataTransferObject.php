@@ -2,9 +2,10 @@
 
 namespace Backend\Modules\Catalog\Domain\Order;
 
-use Backend\Core\Language\Locale;
-use Common\Doctrine\Entity\Meta;
-use Symfony\Component\Validator\Constraints as Assert;
+use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class OrderDataTransferObject
 {
@@ -19,64 +20,98 @@ class OrderDataTransferObject
     public $id;
 
     /**
-     * @var int
+     * @var string
      */
-    public $extraId;
+    public $shipment_method;
+
+    /**
+     * @var float
+     */
+    public $shipment_price;
+
+    /**
+     * @var \DateTime
+     */
+    public $date;
 
     /**
      * @var string
+     */
+    public $comment;
+
+    /**
+     * @var float
+     */
+    public $sub_total;
+
+    /**
+     * @var float
+     */
+    public $total;
+
+    /**
+     * @var OrderAddress
+     */
+    public $invoiceAddress;
+
+    /**
+     * @var OrderAddress
+     */
+    public $shipmentAddress;
+
+    /**
+     * @var ArrayCollection
+     */
+    public $products;
+
+    /**
+     * @var ArrayCollection
+     */
+    public $vats;
+
+    /**
+     * OrderDataTransferObject constructor.
      *
-     * @Assert\NotBlank(message="err.FieldIsRequired")
+     * @param Order|null $order @
      */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $text;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var Order
-     */
-    public $parent;
-
-    /**
-     * @var Meta
-     */
-    public $meta;
-
-    /**
-     * @var Image
-     */
-    public $image;
-
-    /**
-     * @var int
-     */
-    public $sequence;
-
     public function __construct(Order $order = null)
     {
         $this->orderEntity = $order;
+        $this->date        = new \DateTime();
+        $this->products    = new ArrayCollection();
+        $this->vats        = new ArrayCollection();
 
         if ( ! $this->hasExistingOrder()) {
             return;
         }
 
-        $this->id      = $order->getId();
-        $this->extraId = $order->getExtraId();
-        $this->title   = $order->getTitle();
-        $this->text    = $order->getText();
-        $this->locale  = $order->getLocale();
-        $this->parent  = $order->getParent();
-        $this->meta    = $order->getMeta();
-        $this->image   = $order->getImage();
-        $this->sequence = $order->getSequence();
+        $this->id              = $order->getId();
+        $this->shipment_method = $order->getShipmentMethod();
+        $this->shipment_price  = $order->getShipmentPrice();
+        $this->date            = $order->getDate();
+        $this->comment         = $order->getComment();
+        $this->sub_total       = $order->getSubTotal();
+        $this->total           = $order->getTotal();
+        $this->invoiceAddress  = $order->getInvoiceAddress();
+        $this->shipmentAddress = $order->getShipmentAddress();
+        $this->products        = $order->getProducts();
+        $this->vats            = $order->getVats();
+    }
+
+    /**
+     * @param OrderProduct $product
+     */
+    public function addProduct(OrderProduct $product): void
+    {
+        $this->products->add($product);
+    }
+
+    /**
+     * @param OrderVat $vat
+     */
+    public function addVat(OrderVat $vat): void
+    {
+        $this->vats->add($vat);
     }
 
     public function getOrderEntity(): Order

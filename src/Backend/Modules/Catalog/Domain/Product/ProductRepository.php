@@ -4,11 +4,15 @@ namespace Backend\Modules\Catalog\Domain\Product;
 
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
+use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 
 class ProductRepository extends EntityRepository
 {
@@ -51,22 +55,18 @@ class ProductRepository extends EntityRepository
      * @param Category $category
      * @param integer $limit
      * @param integer $offset
-     * @param array $sorting
+     * @param string $sorting
      *
      * @return Product[]
      */
-    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, ?array $sorting)
+    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, ?string $sorting)
     {
-        $queryBuilder = $this->createQueryBuilder('i');
+        $queryBuilder = $this->createQueryBuilder('p');
 
-        $query = $queryBuilder->where('i.category = :category')
-                              ->setParameter('category', $category)
-                              ->orderBy('i.createdOn', 'ASC')
-                              ->addOrderBy('i.id', 'DESC');
+        $query = $queryBuilder->where('p.category = :category')
+                              ->setParameter('category', $category);
 
-        if ($sorting) {
-
-        }
+        $query = $this->setProductSorting($query, $sorting);
 
 
         return $query->setMaxResults($limit)
@@ -138,7 +138,8 @@ class ProductRepository extends EntityRepository
         }
 
         // Return the new sequence
-        return $query_builder->getQuery()->getSingleScalarResult() + 1;
+        return $query_builder->getQuery()
+                             ->getSingleScalarResult() + 1;
     }
 
     /**
@@ -155,7 +156,8 @@ class ProductRepository extends EntityRepository
         return $query_builder->select('COUNT(i.id)')
                              ->where('i.locale = :locale')
                              ->setParameter('locale', $locale)
-                             ->getQuery()->getSingleScalarResult();
+                             ->getQuery()
+                             ->getSingleScalarResult();
     }
 
     public function findForAutoComplete(
@@ -239,5 +241,146 @@ class ProductRepository extends EntityRepository
         }
 
         return $url;
+    }
+
+    /**
+     * Filter the products based on specification values
+     *
+     * @param array $filters
+     * @param Category $category
+     * @param integer $limit
+     * @param integer $offset
+     * @param string $sorting
+     *
+     * @return array
+     */
+    public function filterProducts(array $filters, Category $category, int $limit, int $offset, string $sorting): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $query = $queryBuilder->innerJoin('p.category', 'c')
+                              ->where('c.id = :category');
+
+        // Counter needed for the parameters
+        $i = 0;
+        foreach ($filters as $specification => $specificationValue) {
+            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+
+            // Prepare our IN query
+            $query2 = $queryBuilder2->select('p'.$i.'.id')
+                                    ->from(Specification::class, 's'.$i)
+                                    ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
+                                    ->leftJoin('sv'.$i.'.products', 'p'.$i)
+                                    ->innerJoin('s'.$i.'.meta', 'm'.$i)
+                                    ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
+                                    ->where('s'.$i.'.filter = :filter')
+                                    ->andWhere('p'.$i.'.category = :category')
+                                    ->andWhere('m'.$i.'.url = :specification' . $i)
+                                    ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
+
+            // Add the IN query to our root query
+            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
+
+            // Set the specification parameters
+            $query->setParameter('specification' . $i, $specification);
+
+            // Update the counter
+            $i++;
+        }
+
+        // Set the parameters
+        $query->setParameter('category', $category)
+              ->setParameter('filter', true)
+              ->setMaxResults($limit)
+              ->setFirstResult($offset);
+
+        $query = $this->setProductSorting($query, $sorting);
+
+        return $query->getQuery()
+                     ->getResult();
+    }
+
+    /**
+     * Filter the products and count the result
+     *
+     * @param array $filters
+     * @param Category $category
+     *
+     * @return integer
+     */
+    public function filterProductsCount(array $filters, Category $category): int
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $query = $queryBuilder->select('count(p.id)')
+                              ->innerJoin('p.category', 'c')
+                              ->where('c.id = :category');
+
+        // We need a counter to set the parameters
+        $i = 0;
+        foreach ($filters as $specification => $specificationValue) {
+            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+
+            // Prepare our IN query
+            $query2 = $queryBuilder2->select('p'.$i.'.id')
+                                    ->from(Specification::class, 's'.$i)
+                                    ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
+                                    ->leftJoin('sv'.$i.'.products', 'p'.$i)
+                                    ->innerJoin('s'.$i.'.meta', 'm'.$i)
+                                    ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
+                                    ->where('s'.$i.'.filter = :filter')
+                                    ->andWhere('p'.$i.'.category = :category')
+                                    ->andWhere('m'.$i.'.url = :specification' . $i)
+                                    ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
+
+            // Add the IN query to our root query
+            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
+
+            // Set the specification parameters
+            $query->setParameter('specification' . $i, $specification);
+
+            $i++;
+        }
+
+        // Set the parameters
+        $query->setParameter('category', $category)
+              ->setParameter('filter', true);
+
+        try {
+            return $query->getQuery()
+                         ->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            return 0;
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * @param QueryBuilder $query
+     * @param string $sorting
+     *
+     * @return QueryBuilder
+     */
+    private function setProductSorting(QueryBuilder $query, string $sorting): QueryBuilder
+    {
+        switch ($sorting) {
+            case Product::SORT_RANDOM:
+            default:
+                $query->orderBy('p.createdOn', 'ASC')
+                      ->addOrderBy('p.id', 'DESC');
+                break;
+            case Product::SORT_PRICE_ASC:
+                $query->orderBy('p.price', 'ASC');
+                break;
+            case Product::SORT_PRICE_DESC:
+                $query->orderBy('p.price', 'DESC');
+                break;
+            case Product::SORT_CREATED_AT:
+                $query->orderBy('p.createdOn', 'DESC');
+                break;
+        }
+
+        return $query;
     }
 }

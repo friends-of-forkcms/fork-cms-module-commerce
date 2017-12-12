@@ -2,18 +2,17 @@
 
 namespace Frontend\Modules\Catalog\Actions;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
+use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
+use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
+use Backend\Modules\Catalog\Domain\Specification\SpecificationRepository;
+use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
+use Frontend\Modules\Catalog\Engine\Pagination;
 
 /**
  * This is the overview-action
@@ -24,124 +23,274 @@ use Frontend\Core\Language\Locale;
 class Index extends FrontendBaseBlock
 {
     /**
-     * The pagination array
-     * It will hold all needed parameters, some of them need initialization.
-     *
-     * @var    array
-     */
-    protected $pagination = [
-        'limit'          => 10,
-        'offset'         => 0,
-        'requested_page' => 1,
-        'num_items'      => null,
-        'num_pages'      => null
-    ];
-
-    /**
      * Execute the action
+     *
+     * @throws RedirectException
      */
     public function execute(): void
     {
         parent::execute();
-        $this->loadTemplate();
-        $this->getData();
-        $this->parse();
-    }
 
-    /**
-     * Load the data, don't forget to validate the incoming data
-     */
-    private function getData()
-    {
-        $this->buildPagination();
-        $this->getCategories();
-        $this->getProducts();
-    }
+        $categoryRepository = $this->getCategoryRepository();
+        $productRepository  = $this->getProductRepository();
 
-    /**
-     * Build the pagination
-     */
-    private function buildPagination()
-    {
-        /**
-         * @var ProductRepository
-         */
-        $productRepository = $this->get('catalog.repository.product');
+        $parameters     = $this->url->getParameters(false);
+        $parameterCount = count($parameters);
 
-        // requested page
-        $requestedPage = $this->url->getParameter('page', 'int', 1);
-
-        // set URL and limit
-        $this->pagination['url']   = FrontendNavigation::getURLForBlock('Catalog');
-        $this->pagination['limit'] = $this->get('fork.settings')->get('catalog', 'overview_num_items', 10);
-
-        // populate count fields in pagination
-        $this->pagination['num_items'] = $productRepository->getCount(Locale::frontendLanguage());
-        $this->pagination['num_pages'] = (int)ceil($this->pagination['num_items'] / $this->pagination['limit']);
-
-        // num pages is always equal to at least 1
-        if ($this->pagination['num_pages'] == 0) {
-            $this->pagination['num_pages'] = 1;
-        }
-
-        // redirect if the request page doesn't exist
-        if ($requestedPage > $this->pagination['num_pages'] || $requestedPage < 1) {
-            $this->redirect(FrontendNavigation::getURL(404));
-        }
-
-        // populate calculated fields in pagination
-        $this->pagination['requested_page'] = $requestedPage;
-        $this->pagination['offset']         = ($this->pagination['requested_page'] * $this->pagination['limit']) - $this->pagination['limit'];
-    }
-
-    /**
-     * Get all categories
-     */
-    private function getCategories()
-    {
-        /**
-         * @var CategoryRepository
-         */
-        $categoryRepository = $this->get('catalog.repository.category');
-
-        $this->template->assign('categories', $categoryRepository->findParents(Locale::frontendLanguage()));
-        $this->template->assign('categoriesBaseUrl', FrontendNavigation::getURLForBlock('Catalog', 'Category'));
-    }
-
-    /**
-     * Get all products
-     */
-    private function getProducts()
-    {
-        /**
-         * @var ProductRepository
-         */
-        $productRepository = $this->get('catalog.repository.product');
-
-        $this->template->assign(
-            'products',
-            $productRepository->findLimited(
-                Locale::frontendLanguage(),
-                $this->pagination['limit'],
-                $this->pagination['offset']
+        if ($parameterCount >= 3) { // Parent category, category and product
+            if ($product = $productRepository->findByCategoryAndUrl(Locale::frontendLanguage(), $parameters[1],
+                $parameters[2])) {
+                $this->parseProduct($product);
+            } else {
+                $this->redirect(FrontendNavigation::getUrl(404));
+            }
+        } elseif ($parameterCount == 2) {
+            if ($product = $productRepository->findByCategoryAndUrl(Locale::frontendLanguage(), $parameters[0],
+                $parameters[1])) {
+                $this->parseProduct($product);
+            } elseif ($category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[1])) {
+                $this->parseCategory($category);
+            } else {
+                $this->redirect(FrontendNavigation::getUrl(404));
+            }
+        } elseif (
+            $parameterCount == 1 && (
+            $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
             )
-        );
-
-        $this->template->assign('productBaseUrl', FrontendNavigation::getURLForBlock('Catalog', 'Detail'));
+        ) { // Category
+            $this->parseCategory($category);
+        } elseif ($parameterCount == 0) { // Overview
+            $this->parseOverview();
+        } else {
+            $this->redirect(FrontendNavigation::getUrl(404));
+        }
     }
 
     /**
-     * Parse the page
+     * Parse overview of categories
      */
-    protected function parse()
+    private function parseOverview()
     {
+        $this->loadTemplate();
+
         // add css
         $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/catalog.css');
 
         // add noty js
         $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
 
-        // parse the pagination
-        $this->parsePagination();
+        $this->template->assign('categories', $this->getCategoryRepository()->findParents(Locale::frontendLanguage()));
+        $this->template->assign('categoriesBaseUrl', FrontendNavigation::getURLForBlock('Catalog'));
+    }
+
+    /**
+     * Parse products overview in a category
+     *
+     * @param Category $category
+     *
+     * @throws RedirectException
+     */
+    private function parseCategory(Category $category)
+    {
+        // Set some default variables
+        $currentPage             = $this->url->getParameter(Language::lbl('Page'), 'int', 1);
+        $itemsPerPage            = $this->get('fork.settings')->get('Catalog', 'overview_num_items', 10);
+        $filtersShowMoreCount    = $this->get('fork.settings')->get('Catalog', 'filters_show_more_num_items', 5);
+        $productRepository       = $this->getProductRepository();
+        $specificationRepository = $this->getSpecificationRepository();
+        $productOffset           = ($currentPage - 1) * $itemsPerPage;
+        $baseUrl                 = '/' . implode('/',
+                array_merge($this->url->getPages(), $this->url->getParameters(false)));
+
+        // Set page defaults
+        $this->loadTemplate('Catalog/Layout/Templates/Category.html.twig');
+        $this->setMeta($category->getMeta());
+
+        // add css
+        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/catalog.css');
+
+        // Add JS
+        $this->addJSData('categoryUrl', $baseUrl);
+        $this->addJSData('category', $category->getId());
+        $this->addJS('Category.js');
+        $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
+
+        // Build pagination
+        $pagination = new Pagination();
+        $pagination->setCurrentPage($currentPage);
+        $pagination->setItemsPerPage($itemsPerPage);
+        $pagination->setBaseUrl($baseUrl);
+        $pagination->setParameters($this->getRequest()->query->all());
+
+        // Add categories to breadcrumbs
+        $this->categoryToBreadcrumb($category);
+
+        // Define the sort orders
+        $sortOrders = [
+            Product::SORT_RANDOM     => [
+                'label'    => 'Willekeurig',
+                'selected' => false,
+            ],
+            Product::SORT_PRICE_ASC  => [
+                'label'    => 'Prijs (laag/hoog)',
+                'selected' => false,
+            ],
+            Product::SORT_PRICE_DESC => [
+                'label'    => 'Prijs (hoog/laag)',
+                'selected' => false,
+            ],
+            Product::SORT_CREATED_AT => [
+                'label'    => 'Toegevoegd',
+                'selected' => false,
+            ]
+        ];
+
+        $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
+        if (array_key_exists($currentSortOrder, $sortOrders)) {
+            $sortOrders[$currentSortOrder]['selected'] = true;
+        }
+
+        // Get the filters for current category
+        $filters = $specificationRepository->findFiltersByCategory($category);
+
+        // Fetch the products
+        if ($productFilters = $this->getProductFilters()) {
+            $products = $productRepository->filterProducts($productFilters, $category, $itemsPerPage, $productOffset,
+                $currentSortOrder);
+            $pagination->setItemCount($productRepository->filterProductsCount($productFilters, $category));
+        } else {
+            $products = $productRepository->findLimitedByCategory($category, $itemsPerPage, $productOffset,
+                $currentSortOrder);
+            $pagination->setItemCount($category->getProducts()->count());
+        }
+
+        // When requesting an invalid page return to 404
+        if ($currentPage > $pagination->getPageCount() || $currentPage < 1) {
+            $this->redirect(
+                FrontendNavigation::getUrl(404)
+            );
+        }
+
+        // Assign to our template
+        $this->template->assign('category', $category);
+        $this->template->assign('products', $products);
+        $this->template->assign('pagination', $pagination);
+        $this->template->assign('filters', $filters);
+        $this->template->assign('sortOrders', $sortOrders);
+        $this->template->assign('filtersShowMoreCount', $filtersShowMoreCount);
+    }
+
+    /**
+     * Parse product
+     */
+    private function parseProduct(Product $product)
+    {
+        // Set page defaults
+        $this->loadTemplate('Catalog/Layout/Templates/Product.html.twig');
+        $this->setMeta($product->getMeta());
+
+        // Add categories to the breadcrumb
+        $this->categoryToBreadcrumb($product->getCategory());
+
+        // Add js
+        $this->addJS('jquery.sudoSlider.min.js');
+        $this->addJS('jquery.fancybox.min.js');
+        $this->addJS('owl.carousel.min.js');
+
+        // Add js data
+        $this->addJSData('isProductDetail', true);
+
+        // Add css
+        $this->addCSS('jquery.fancybox.min.css');
+        $this->addCSS('owl.carousel.min.css');
+        $this->addCSS('catalog.css');
+
+        $this->breadcrumb->addElement($product->getTitle(), $product->getUrl());
+
+        // build the images widget
+        $this->template->assign(
+            'images',
+            $this->get('media_library.helper.frontend')->parseWidget(
+                'ProductImages',
+                $product->getImages()->getId(),
+                'MyCustomOptionalTitle',
+                'Catalog'
+            )
+        );
+
+        $this->template->assign('product', $product);
+    }
+
+    /**
+     * @param Category $category
+     */
+    private function categoryToBreadcrumb(Category $category): void
+    {
+        if ($category->getParent()) {
+            $this->categoryToBreadcrumb($category->getParent());
+        }
+
+        $this->breadcrumb->addElement($category->getTitle(), $category->getUrl());
+    }
+
+    /**
+     * @return CategoryRepository
+     */
+    private function getCategoryRepository(): CategoryRepository
+    {
+        return $this->get('catalog.repository.category');
+    }
+
+    /**
+     * @return ProductRepository
+     */
+    private function getProductRepository(): ProductRepository
+    {
+        return $this->get('catalog.repository.product');
+    }
+
+    /**
+     * @return SpecificationRepository
+     */
+    private function getSpecificationRepository(): SpecificationRepository
+    {
+        return $this->get('catalog.repository.specification');
+    }
+
+    /**
+     * Get an array with the filters which could be used
+     *
+     * @return array
+     */
+    private function getProductFilters(): array
+    {
+        $filters = [];
+
+        foreach ($this->getRequest()->query->all() as $key => $value) {
+            if ($this->isExcludedFromFilter($key)) {
+                continue;
+            }
+
+            $filters[$key] = explode(',', $value);
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Check if query part is excluded from filters
+     *
+     * @param string $key
+     *
+     * @return boolean
+     */
+    private function isExcludedFromFilter(string $key): bool
+    {
+        $excludedKeys = [
+            Language::lbl('Page'),
+            'sort',
+        ];
+
+        return in_array($key, $excludedKeys);
     }
 }

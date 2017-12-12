@@ -2,148 +2,154 @@
 {% form_theme form with ["Catalog/Layout/Templates/FormHelper.html.twig", "Catalog/Layout/Templates/Select2Entity.html.twig"] %}
 
 {% block content %}
-    {{ form_start(form) }}
-    <div class="row fork-module-content">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
-                {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
-            </div>
-        </div>
+  {{ form_start(form) }}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
+        {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
+      </div>
     </div>
+  </div>
 
-    <div class="row fork-module-content">
-        <div class="col-md-12">
-            <div role="tabpanel">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#tabContent" aria-controls="tabContent" role="tab"
-                           data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabSpecifications" aria-controls="tabSpecifications" role="tab"
-                           data-toggle="tab">{{ 'lbl.Specifications'|trans|ucfirst }}</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabProductSpecials" aria-controls="tabProductSpecials" role="tab"
-                           data-toggle="tab">{{ 'lbl.Offer'|trans|ucfirst }}</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabMedia" aria-controls="tabMedia" role="tab"
-                           data-toggle="tab">{{ 'lbl.Media'|trans|ucfirst }}</a>
-                    </li>
-                    <li class="pull-right" role="presentation">
-                        <a href="#tabSEO" aria-controls="tabSEO" role="tab"
-                           data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tabContent">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="panel panel-default panel-editor">
-                                    <div class="panel-heading">
-                                        {{ form_label(form.summary) }}
-                                    </div>
-                                    <div class="panel-body">
-                                        {{ form_widget(form.summary) }}
-                                    </div>
-                                    {{ form_errors(form.summary) }}
-                                </div>
-                                <div class="panel panel-default panel-editor">
-                                    <div class="panel-heading">
-                                        {{ form_label(form.text) }}
-                                    </div>
-                                    <div class="panel-body">
-                                        {{ form_widget(form.text) }}
-                                    </div>
-                                    {{ form_errors(form.text) }}
-                                </div>
-                                {{ form_row(form.related_products) }}
-                            </div>
-                            <div class="col-md-4">
-                                <div class="panel form-group panel-default">
-                                    <div class="panel-heading">{{ 'lbl.MetaData'|trans|ucfirst }}</div>
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            {{ form_label(form.sku) }}
-                                            {{ form_widget(form.sku) }}
-                                            {{ form_errors(form.sku) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.category) }}
-                                            {{ form_widget(form.category) }}
-                                            {{ form_errors(form.category) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.brand) }}
-                                            {{ form_widget(form.brand) }}
-                                            {{ form_errors(form.brand) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.price) }}
-                                            {{ form_widget(form.price) }}
-                                            {{ form_errors(form.price) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.vat) }}
-                                            {{ form_widget(form.vat) }}
-                                            {{ form_errors(form.vat) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.order_quantity) }}
-                                            {{ form_widget(form.order_quantity) }}
-                                            {{ form_errors(form.order_quantity) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.stock) }}
-                                            {{ form_widget(form.stock) }}
-                                            {{ form_errors(form.stock) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.from_stock) }}
-                                            {{ form_widget(form.from_stock) }}
-                                            {{ form_errors(form.from_stock) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_label(form.stock_status) }}
-                                            {{ form_widget(form.stock_status) }}
-                                            {{ form_errors(form.stock_status) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tabSpecifications">
-                        {{ form_row(form.specification_values) }}
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tabProductSpecials">
-                        {{ form_row(form.specials) }}
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tabMedia">
-                        {{ form_row(form.images, {'mediaGroup': mediaGroup}) }}
-                    </div>
-                    <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
-                        {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}
-                    </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#tabContent" aria-controls="tabContent" role="tab"
+               data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabSpecifications" aria-controls="tabSpecifications" role="tab"
+               data-toggle="tab">{{ 'lbl.Specifications'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabProductSpecials" aria-controls="tabProductSpecials" role="tab"
+               data-toggle="tab">{{ 'lbl.Offer'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabMedia" aria-controls="tabMedia" role="tab"
+               data-toggle="tab">{{ 'lbl.Media'|trans|ucfirst }}</a>
+          </li>
+          <li class="pull-right" role="presentation">
+            <a href="#tabSEO" aria-controls="tabSEO" role="tab"
+               data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabContent">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="panel panel-default panel-editor">
+                  <div class="panel-heading">
+                    {{ form_label(form.summary) }}
+                  </div>
+                  <div class="panel-body">
+                    {{ form_widget(form.summary) }}
+                  </div>
+                  {{ form_errors(form.summary) }}
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row fork-module-actions">
-        <div class="col-md-12">
-            <div class="btn-toolbar">
-                <div class="btn-group pull-right" role="group">
-                    <button id="addButton" type="submit" name="add" class="btn btn-primary">
-                        <span class="fa fa-plus-square"></span>&nbsp;
-                        {{ 'lbl.Add'|trans|ucfirst }}
-                    </button>
+                <div class="panel panel-default panel-editor">
+                  <div class="panel-heading">
+                    {{ form_label(form.text) }}
+                  </div>
+                  <div class="panel-body">
+                    {{ form_widget(form.text) }}
+                  </div>
+                  {{ form_errors(form.text) }}
                 </div>
+                {{ form_row(form.related_products) }}
+                {{ form_row(form.up_sell_products) }}
+              </div>
+              <div class="col-md-4">
+                <div class="panel form-group panel-default">
+                  <div class="panel-heading">{{ 'lbl.MetaData'|trans|ucfirst }}</div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                      {{ form_label(form.sku) }}
+                      {{ form_widget(form.sku) }}
+                      {{ form_errors(form.sku) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.category) }}
+                      {{ form_widget(form.category) }}
+                      {{ form_errors(form.category) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.brand) }}
+                      {{ form_widget(form.brand) }}
+                      {{ form_errors(form.brand) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.weight) }}
+                      {{ form_widget(form.weight) }}
+                      {{ form_errors(form.weight) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.price) }}
+                      {{ form_widget(form.price) }}
+                      {{ form_errors(form.price) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.vat) }}
+                      {{ form_widget(form.vat) }}
+                      {{ form_errors(form.vat) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.order_quantity) }}
+                      {{ form_widget(form.order_quantity) }}
+                      {{ form_errors(form.order_quantity) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.stock) }}
+                      {{ form_widget(form.stock) }}
+                      {{ form_errors(form.stock) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.from_stock) }}
+                      {{ form_widget(form.from_stock) }}
+                      {{ form_errors(form.from_stock) }}
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.stock_status) }}
+                      {{ form_widget(form.stock_status) }}
+                      {{ form_errors(form.stock_status) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabSpecifications">
+            {{ form_row(form.specification_values) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabProductSpecials">
+            {{ form_row(form.specials) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabMedia">
+            {{ form_row(form.images, {'mediaGroup': mediaGroup}) }}
+          </div>
+          <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
+            {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}
+          </div>
         </div>
+      </div>
     </div>
-    {{ form_end(form) }}
+  </div>
+  <div class="row fork-module-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-right" role="group">
+          <button id="addButton" type="submit" name="add" class="btn btn-primary">
+            <span class="fa fa-plus-square"></span>&nbsp;
+            {{ 'lbl.Add'|trans|ucfirst }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form_end(form) }}
 
-    {% include "MediaLibrary/Resources/views/BackendMediaGroupsHelper.html.twig" %}
+  {% include "MediaLibrary/Resources/views/BackendMediaGroupsHelper.html.twig" %}
 {% endblock %}

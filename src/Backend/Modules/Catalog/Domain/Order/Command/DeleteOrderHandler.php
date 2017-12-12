@@ -15,7 +15,7 @@ final class DeleteOrderHandler
         $this->orderRepository = $orderRepository;
     }
 
-    public function handle(DeleteOrder $deleteOrder): void
+    public function handle(DeleteCart $deleteOrder): void
     {
         $this->orderRepository->removeByIdAndLocale(
             $deleteOrder->order->getId(),

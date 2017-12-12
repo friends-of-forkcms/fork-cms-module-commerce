@@ -1,14 +1,6 @@
 <?php
 
 namespace Backend\Modules\Catalog\Actions;
-
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;

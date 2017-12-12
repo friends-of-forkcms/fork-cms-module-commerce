@@ -23,13 +23,14 @@ class SpecificationType extends AbstractType
                 'label'    => 'lbl.Title',
             ]
         )->add(
-            'type',
+            'filter',
             ChoiceType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Type',
+                'label'    => 'lbl.UseAsFilter',
                 'choices'  => [
-                    'lbl.TextBox' => Specification::TYPE_TEXTBOX
+                    'lbl.Yes' => true,
+                    'lbl.No'  => false
                 ]
             ]
         )->addEventListener(

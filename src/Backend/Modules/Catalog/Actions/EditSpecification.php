@@ -100,7 +100,7 @@ class EditSpecification extends BackendBaseActionEdit
     private function getBackLink(array $parameters = []): string
     {
         return BackendModel::createUrlForAction(
-            'Specification',
+            'Specifications',
             null,
             null,
             $parameters

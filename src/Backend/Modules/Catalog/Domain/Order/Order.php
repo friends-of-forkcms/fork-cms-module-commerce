@@ -2,7 +2,12 @@
 
 namespace Backend\Modules\Catalog\Domain\Order;
 
+use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
+use Backend\Modules\Catalog\Domain\Product\Product;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,13 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Order
 {
     /**
-     * Different order statuses
-     */
-    const STATUS_PENDING = 1;
-    const STATUS_COMPLETED = 3;
-    const STATUS_MODERATION = 2;
-
-    /**
      * @var int
      *
      * @ORM\Id
@@ -29,11 +27,25 @@ class Order
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(type="integer", name="status")
+     * @ORM\Column(type="string")
      */
-    private $status = self::STATUS_PENDING;
+    private $shipment_method;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2)
+     */
+    private $shipment_price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
 
     /**
      * @var DateTime
@@ -43,81 +55,73 @@ class Order
     private $date;
 
     /**
-     * @var string
+     * @var OrderProduct[]
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct", mappedBy="order")
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
-    private $email;
+    private $products;
 
     /**
-     * @var string
+     * @var OrderVat[]
      *
-     * @ORM\Column(type="string", length=255, name="first_name")
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderVat\OrderVat", mappedBy="order")
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
-    private $firstName;
+    private $vats;
 
     /**
-     * @var string
+     * @var OrderAddress
      *
-     * @ORM\Column(type="string", length=255, name="last_name")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress", inversedBy="order")
+     * @ORM\JoinColumn(name="invoice_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $lastName;
+    private $invoice_address;
 
     /**
-     * @var string
+     * @var OrderAddress
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress", inversedBy="order")
+     * @ORM\JoinColumn(name="shipment_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $address;
+    private $shipment_address;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(type="string", length=255, name="house_number")
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $houseNumber;
+    private $sub_total;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(type="string", length=255, name="postal_code")
-     */
-    private $postalCode;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $city;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private $total;
 
     private function __construct(
-        int $status,
         DateTime $date,
-        string $email,
-        string $firstName,
-        string $lastName,
-        string $address,
-        string $postalCode,
-        string $city,
-        int $total
+        string $shipment_method,
+        string $shipment_price,
+        ?string $comment,
+        float $sub_total,
+        float $total,
+        OrderAddress $invoiceAddress,
+        OrderAddress $shipmentAddress,
+        ArrayCollection $products,
+        ArrayCollection $vats
     ) {
-        $this->status     = $status;
-        $this->date       = $date;
-        $this->email      = $email;
-        $this->firstName  = $firstName;
-        $this->lastName   = $lastName;
-        $this->address    = $address;
-        $this->postalCode = $postalCode;
-        $this->city       = $city;
-        $this->total      = $total;
+        $this->date             = $date;
+        $this->shipment_method  = $shipment_method;
+        $this->shipment_price   = $shipment_price;
+        $this->comment          = $comment;
+        $this->sub_total        = $sub_total;
+        $this->total            = $total;
+        $this->invoice_address  = $invoiceAddress;
+        $this->shipment_address = $shipmentAddress;
+        $this->products         = $products;
+        $this->vats             = $vats;
     }
 
     public static function fromDataTransferObject(OrderDataTransferObject $dataTransferObject)
@@ -132,15 +136,16 @@ class Order
     private static function create(OrderDataTransferObject $dataTransferObject): self
     {
         return new self(
-            $dataTransferObject->status,
             $dataTransferObject->date,
-            $dataTransferObject->email,
-            $dataTransferObject->fistName,
-            $dataTransferObject->lastName,
-            $dataTransferObject->address,
-            $dataTransferObject->postalCode,
-            $dataTransferObject->city,
-            $dataTransferObject->total
+            $dataTransferObject->shipment_method,
+            $dataTransferObject->shipment_price,
+            $dataTransferObject->comment,
+            $dataTransferObject->sub_total,
+            $dataTransferObject->total,
+            $dataTransferObject->invoiceAddress,
+            $dataTransferObject->shipmentAddress,
+            $dataTransferObject->products,
+            $dataTransferObject->vats
         );
     }
 
@@ -153,11 +158,27 @@ class Order
     }
 
     /**
+     * @return string
+     */
+    public function getShipmentMethod(): string
+    {
+        return $this->shipment_method;
+    }
+
+    /**
      * @return int
      */
-    public function getStatus(): int
+    public function getShipmentPrice(): int
     {
-        return $this->status;
+        return $this->shipment_price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
     }
 
     /**
@@ -169,82 +190,59 @@ class Order
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getEmail(): string
+    public function getSubTotal(): float
     {
-        return $this->email;
+        return $this->sub_total;
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddress(): string
-    {
-        return $this->address;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHouseNumber(): string
-    {
-        return $this->houseNumber;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPostalCode(): string
-    {
-        return $this->postalCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCity(): string
-    {
-        return $this->city;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getTotal(): int
+    public function getTotal(): float
     {
         return $this->total;
+    }
+
+    /**
+     * @return OrderProduct[]
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @return OrderVat[]
+     */
+    public function getVats()
+    {
+        return $this->vats;
+    }
+
+    /**
+     * @return OrderAddress
+     */
+    public function getInvoiceAddress(): OrderAddress
+    {
+        return $this->invoice_address;
+    }
+
+    /**
+     * @return OrderAddress
+     */
+    public function getShipmentAddress(): OrderAddress
+    {
+        return $this->shipment_address;
     }
 
     private static function update(OrderDataTransferObject $dataTransferObject)
     {
         $order = $dataTransferObject->getOrderEntity();
 
-        $order->status     = $dataTransferObject->status;
-        $order->date       = $dataTransferObject->date;
-        $order->email      = $dataTransferObject->email;
-        $order->firstName  = $dataTransferObject->firstName;
-        $order->lastName   = $dataTransferObject->lastName;
-        $order->address    = $dataTransferObject->address;
-        $order->postalCode = $dataTransferObject->postalCode;
-        $order->city       = $dataTransferObject->city;
-        $order->total      = $dataTransferObject->total;
+        $order->date  = $dataTransferObject->date;
+        $order->total = $dataTransferObject->total;
 
         return $order;
     }

@@ -1,0 +1,7 @@
+services:
+    catalog.handler.update_settings:
+        class: Backend\Modules\Catalog\Domain\Settings\Command\UpdateSettingsHandler
+        arguments:
+            - "@fork.settings"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Settings\Command\UpdateSettings }

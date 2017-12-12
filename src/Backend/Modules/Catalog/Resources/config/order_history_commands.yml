@@ -1,0 +1,14 @@
+services:
+    catalog.handler.create_order_history:
+        class: Backend\Modules\Catalog\Domain\OrderHistory\Command\CreateOrderHistoryHandler
+        arguments:
+            - "@catalog.repository.order_history"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\OrderHistory\Command\CreateOrderHistory }
+
+    catalog.handler.delete_order_history:
+        class: Backend\Modules\Catalog\Domain\OrderHistory\Command\DeleteOrderHistoryHandler
+        arguments:
+            - "@catalog.repository.order_history"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\OrderHistory\Command\DeleteOrderHistory }

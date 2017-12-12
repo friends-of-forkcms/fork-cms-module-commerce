@@ -2,23 +2,22 @@
 
 namespace Backend\Modules\Catalog\Installer;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
+use Backend\Core\Engine\Model;
+use Backend\Core\Installer\ModuleInstaller;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Category\Category;
-
-use Backend\Core\Engine\Model;
-use Backend\Core\Installer\ModuleInstaller;
 use Backend\Modules\Catalog\Domain\Order\Order;
+use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory;
+use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
+use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
+use Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
+use Backend\Modules\Catalog\Domain\ShipmentMethod\ShipmentMethod;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
@@ -44,28 +43,8 @@ class Installer extends ModuleInstaller
         $this->importLocale(dirname(__FILE__) . '/Data/locale.xml');
 
         // general settings
-        $this->setSetting('Catalog', 'allow_comments', true);
-        $this->setSetting('Catalog', 'requires_akismet', true);
-        $this->setSetting('Catalog', 'spamfilter', false);
-        $this->setSetting('Catalog', 'moderation', true);
         $this->setSetting('Catalog', 'overview_num_items', 10);
-        $this->setSetting('Catalog', 'recent_products_full_num_items', 3);
-        $this->setSetting('Catalog', 'allow_multiple_categories', true);
-
-        $this->setSetting('Catalog', 'width1', (int)400);
-        $this->setSetting('Catalog', 'height1', (int)300);
-        $this->setSetting('Catalog', 'allow_enlargment1', true);
-        $this->setSetting('Catalog', 'force_aspect_ratio1', true);
-
-        $this->setSetting('Catalog', 'width2', (int)800);
-        $this->setSetting('Catalog', 'height2', (int)600);
-        $this->setSetting('Catalog', 'allow_enlargment2', true);
-        $this->setSetting('Catalog', 'force_aspect_ratio2', true);
-
-        $this->setSetting('Catalog', 'width3', (int)1600);
-        $this->setSetting('Catalog', 'height3', (int)1200);
-        $this->setSetting('Catalog', 'allow_enlargment3', true);
-        $this->setSetting('Catalog', 'force_aspect_ratio3', true);
+        $this->setSetting('Catalog', 'filters_show_more_num_items', 5);
 
         $this->makeSearchable('Catalog');
 
@@ -89,6 +68,7 @@ class Installer extends ModuleInstaller
         // specifications
         $this->setActionRights(1, 'Catalog', 'Specifications');
         $this->setActionRights(1, 'Catalog', 'EditSpecification');
+        $this->setActionRights(1, 'Catalog', 'AddSpecification');
         $this->setActionRights(1, 'Catalog', 'DeleteSpecification');
         $this->setActionRights(1, 'Catalog', 'SequenceSpecifications');
 
@@ -126,9 +106,29 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'EditStockStatus');
         $this->setActionRights(1, 'Catalog', 'DeleteStockStatus');
 
+        // order statuses
+        $this->setActionRights(1, 'Catalog', 'OrderStatuses');
+        $this->setActionRights(1, 'Catalog', 'AddOrderStatus');
+        $this->setActionRights(1, 'Catalog', 'EditOrderStatus');
+        $this->setActionRights(1, 'Catalog', 'DeleteOrderStatus');
+
+        // shipment methods
+        $this->setActionRights(1, 'Catalog', 'ShipmentMethods');
+        $this->setActionRights(1, 'Catalog', 'EditShipmentMethod');
+        $this->setActionRights(1, 'Catalog', 'DisableShipmentMethod');
+        $this->setActionRights(1, 'Catalog', 'EnableShipmentMethod');
+
+        // payment methods
+        $this->setActionRights(1, 'Catalog', 'PaymentMethods');
+        $this->setActionRights(1, 'Catalog', 'EditPaymentMethod');
+        $this->setActionRights(1, 'Catalog', 'DisablePaymentMethod');
+        $this->setActionRights(1, 'Catalog', 'EnablePaymentMethod');
+
         // add extra's
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Index');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Cart');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Brand', 'Brand');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Cart', 'Cart');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Categories', 'Categories');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'ShoppingCart', 'ShoppingCart');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'RecentProducts', 'RecentProducts');
@@ -161,7 +161,8 @@ class Installer extends ModuleInstaller
             'catalog/specifications',
             [
                 'catalog/add_specification',
-                'catalog/edit_specification'
+                'catalog/edit_specification',
+                'catalog/edit_specification_value',
             ]
         );
         $this->setNavigation(
@@ -169,7 +170,7 @@ class Installer extends ModuleInstaller
             'Orders',
             'catalog/orders',
             [
-                'catalog/edit_order'
+                'catalog/edit_order',
             ]
         );
         $this->setNavigation(
@@ -178,7 +179,7 @@ class Installer extends ModuleInstaller
             'catalog/brands',
             [
                 'catalog/add_brand',
-                'catalog/edit_brand'
+                'catalog/edit_brand',
             ]
         );
         $this->setNavigation(
@@ -187,7 +188,7 @@ class Installer extends ModuleInstaller
             'catalog/vats',
             [
                 'catalog/add_vat',
-                'catalog/edit_vat'
+                'catalog/edit_vat',
             ]
         );
         $this->setNavigation(
@@ -196,7 +197,32 @@ class Installer extends ModuleInstaller
             'catalog/stock_statuses',
             [
                 'catalog/add_stock_status',
-                'catalog/edit_stock_status'
+                'catalog/edit_stock_status',
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'OrderStatuses',
+            'catalog/order_statuses',
+            [
+                'catalog/add_order_status',
+                'catalog/edit_order_status',
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'ShipmentMethods',
+            'catalog/shipment_methods',
+            [
+                'catalog/edit_shipment_method',
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'PaymentMethods',
+            'catalog/payment_methods',
+            [
+                'catalog/edit_payment_method',
             ]
         );
 
@@ -212,12 +238,19 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(Brand::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Vat::class);
         Model::get('fork.entity.create_schema')->forEntityClass(StockStatus::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(OrderStatus::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Product::class);
         Model::get('fork.entity.create_schema')->forEntityClass(ProductSpecial::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(OrderAddress::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(OrderProduct::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(OrderVat::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(OrderHistory::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Specification::class);
         Model::get('fork.entity.create_schema')->forEntityClass(SpecificationValue::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Cart::class);
         Model::get('fork.entity.create_schema')->forEntityClass(CartValue::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(ShipmentMethod::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(PaymentMethod::class);
     }
 }

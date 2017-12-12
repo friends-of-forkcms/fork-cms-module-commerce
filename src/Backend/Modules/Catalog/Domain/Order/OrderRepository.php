@@ -3,7 +3,6 @@
 namespace Backend\Modules\Catalog\Domain\Order;
 
 use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 
@@ -15,14 +14,14 @@ class OrderRepository extends EntityRepository
         $this->getEntityManager()->persist($order);
     }
 
-    public function findOneByIdAndLocale(?int $id, Locale $locale): ?Order
+    public function findOneById(?int $id): ?Order
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw OrderNotFound::forEmptyId();
         }
 
         /** @var Order $order */
-        $order = $this->findOneBy(['id' => $id, 'locale' => $locale]);
+        $order = $this->findOneBy(['id' => $id]);
 
         if ($order === null) {
             throw OrderNotFound::forId($id);

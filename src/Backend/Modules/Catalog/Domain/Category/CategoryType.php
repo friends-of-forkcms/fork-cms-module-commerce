@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Catalog\Domain\Category;
 
+use Backend\Form\Type\EditorType;
 use Backend\Form\Type\MetaType;
 use Common\Form\ImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,6 +23,13 @@ class CategoryType extends AbstractType
             [
                 'required' => true,
                 'label'    => 'lbl.Title',
+            ]
+        )->add(
+            'text',
+            EditorType::class,
+            [
+                'required' => false,
+                'label'    => 'lbl.Description',
             ]
         )->add(
             'image',

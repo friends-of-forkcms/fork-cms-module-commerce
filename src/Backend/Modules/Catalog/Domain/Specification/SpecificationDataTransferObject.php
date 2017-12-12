@@ -47,13 +47,14 @@ class SpecificationDataTransferObject
     public $specification_values;
 
     /**
-     * @var int
+     * @var bool
      */
-    public $type;
+    public $filter;
 
     public function __construct(Specification $specification = null)
     {
         $this->specificationEntity = $specification;
+        $this->filter              = false;
 
         if ( ! $this->hasExistingSpecification()) {
             return;
@@ -64,7 +65,7 @@ class SpecificationDataTransferObject
         $this->locale               = $specification->getLocale();
         $this->meta                 = $specification->getMeta();
         $this->sequence             = $specification->getSequence();
-        $this->type                 = $specification->getType();
+        $this->filter               = $specification->isFilter();
         $this->specification_values = $specification->getSpecificationValues();
     }
 

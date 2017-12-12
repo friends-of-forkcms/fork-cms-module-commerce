@@ -17,9 +17,14 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabContent">
+                      <div class="col-md-8">
                         {{ form_row(form.title) }}
+                        {{ form_row(form.text) }}
+                      </div>
+                      <div class="col-md-4">
                         {{ form_row(form.image) }}
                         {{ form_row(form.parent) }}
+                      </div>
                     </div>
                     <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
                         {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}

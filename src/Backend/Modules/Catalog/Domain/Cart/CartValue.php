@@ -32,7 +32,7 @@ class CartValue
     /**
      * @var Product
      *
-     * @ORM\ManyToOne(targetEntity="Cart", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Product\Product", inversedBy="cart_values")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $product;
@@ -42,14 +42,14 @@ class CartValue
      *
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
-    private $quantity;
+    private $quantity = 0;
 
     /**
      * @var float
      *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $total;
+    private $total = 0;
 
     /**
      * @var \DateTime
@@ -144,6 +144,16 @@ class CartValue
     public function setDate(\DateTime $date)
     {
         $this->date = $date;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        if (!$this->id) {
+            $this->date = new \DateTime();
+        }
     }
 
 }

@@ -18,9 +18,7 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabContent">
                         {{ form_row(form.title) }}
-                    </div>
-                    <div role="tabpanel" class="tab-pane active" id="tabContent">
-                        {{ form_row(form.type) }}
+                        {{ form_row(form.filter) }}
                     </div>
                     <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
                         {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}

@@ -59,11 +59,11 @@ class Specification
     private $sequence;
 
     /**
-     * @var int
+     * @var bool
      *
-     * @ORM\Column(type="integer", length=11)
+     * @ORM\Column(type="boolean")
      */
-    private $type;
+    private $filter;
 
     public const TYPE_TEXTBOX = 1;
 
@@ -72,14 +72,14 @@ class Specification
         string $title,
         int $sequence,
         Meta $meta,
-        int $type,
+        bool $filter,
         $specification_values
     ) {
         $this->locale               = $locale;
         $this->title                = $title;
         $this->sequence             = $sequence;
         $this->meta                 = $meta;
-        $this->type                 = $type;
+        $this->filter               = $filter;
         $this->specification_values = $specification_values;
     }
 
@@ -99,7 +99,7 @@ class Specification
             $dataTransferObject->title,
             $dataTransferObject->sequence,
             $dataTransferObject->meta,
-            $dataTransferObject->type,
+            $dataTransferObject->filter,
             $dataTransferObject->specification_values
         );
     }
@@ -134,9 +134,12 @@ class Specification
         return $this->meta;
     }
 
-    public function getType(): int
+    /**
+     * @return bool
+     */
+    public function isFilter(): bool
     {
-        return $this->type;
+        return $this->filter;
     }
 
     /**
@@ -155,7 +158,7 @@ class Specification
         $specification->title                = $dataTransferObject->title;
         $specification->sequence             = $dataTransferObject->sequence;
         $specification->meta                 = $dataTransferObject->meta;
-        $specification->type                 = $dataTransferObject->type;
+        $specification->filter               = $dataTransferObject->filter;
         $specification->specification_values = $dataTransferObject->specification_values;
 
         return $specification;

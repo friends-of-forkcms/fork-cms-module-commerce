@@ -2,12 +2,17 @@
 
 namespace Backend\Modules\Catalog\Domain\Specification;
 
+use Backend\Modules\Catalog\Domain\Category\Category;
+use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationNotFound;
+use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class SpecificationRepository extends EntityRepository
 {
@@ -40,8 +45,26 @@ class SpecificationRepository extends EntityRepository
             function (Specification $specification) {
                 $this->getEntityManager()->remove($specification);
             },
-            (array) $this->findBy(['id' => $id, 'locale' => $locale])
+            (array)$this->findBy(['id' => $id, 'locale' => $locale])
         );
+    }
+
+    /**
+     * Get the next sequence in line
+     *
+     * @param Locale $locale
+     *
+     * @return integer
+     */
+    public function getNextSequence(Locale $locale): int
+    {
+        $query_builder = $this->createQueryBuilder('i');
+
+        return $query_builder->select('MAX(i.sequence) as sequence')
+                      ->where('i.locale = :locale')
+                      ->setParameter('locale', $locale)
+                      ->getQuery()
+                      ->getSingleScalarResult() + 1;
     }
 
     /**
@@ -77,5 +100,30 @@ class SpecificationRepository extends EntityRepository
         }
 
         return $url;
+    }
+
+    /**
+     * Find the specification filters based on the given category
+     *
+     * @param Category $category
+     *
+     * @return array
+     */
+    public function findFiltersByCategory(Category $category): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        $query = $queryBuilder->select(['s', 'sv'])
+            ->leftJoin('s.specification_values', 'sv')
+            ->leftJoin('sv.products', 'p')
+            ->where('s.filter = :filter')
+            ->andWhere('p.category = :category')
+            ->orderBy('s.sequence', 'ASC')
+            ->orderBy('sv.value', 'ASC')
+            ->setParameter('filter', true)
+            ->setParameter('category', $category)
+            ->getQuery();
+
+        return $query->getResult();
     }
 }

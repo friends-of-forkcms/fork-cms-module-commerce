@@ -10,18 +10,48 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\Product\Product
-            
+
     catalog.repository.brand:
         class: Backend\Modules\Catalog\Domain\Brand\BrandRepository
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\Brand\Brand
-            
+
     catalog.repository.order:
         class: Backend\Modules\Catalog\Domain\Order\OrderRepository
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\Order\Order
+
+    catalog.repository.order_product:
+        class: Backend\Modules\Catalog\Domain\OrderProduct\OrderProductRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct
+
+    catalog.repository.order_address:
+        class: Backend\Modules\Catalog\Domain\OrderAddress\OrderAddressRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress
+
+    catalog.repository.order_vat:
+        class: Backend\Modules\Catalog\Domain\OrderVat\OrderVatRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\OrderVat\OrderVat
+
+    catalog.repository.order_status:
+        class: Backend\Modules\Catalog\Domain\OrderStatus\OrderStatusRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus
+
+    catalog.repository.order_history:
+        class: Backend\Modules\Catalog\Domain\OrderHistory\OrderHistoryRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory
 
     catalog.repository.specification:
         class: Backend\Modules\Catalog\Domain\Specification\SpecificationRepository
@@ -46,3 +76,27 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\StockStatus\StockStatus
+
+    catalog.repository.cart:
+        class: Backend\Modules\Catalog\Domain\Cart\CartRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Cart\Cart
+
+    catalog.repository.cart_value:
+        class: Backend\Modules\Catalog\Domain\Cart\CartValueRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Cart\CartValue
+
+    catalog.repository.shipment_method:
+        class: Backend\Modules\Catalog\Domain\ShipmentMethod\ShipmentMethodRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\ShipmentMethod\ShipmentMethod
+
+    catalog.repository.payment_method:
+        class: Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethodRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethod

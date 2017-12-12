@@ -1,0 +1,36 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+
+{% endblock %}
+
+{% block content %}
+{{ form_start(form) }}
+<div class="row fork-module-content">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          {{ 'lbl.Overview'|trans|ucfirst }}
+        </h3>
+      </div>
+      <div class="panel-body">
+        {{ form_row(form.overview_num_items) }}
+        {{ form_row(form.filters_show_more_num_items) }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row fork-module-actions">
+  <div class="col-md-12">
+    <div class="btn-toolbar">
+      <div class="btn-group pull-right" role="group">
+        <button id="save" type="submit" name="save" class="btn btn-primary">
+          <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{ form_end(form) }}
+{% endblock %}

@@ -53,8 +53,10 @@
                             data['fork']['action'] = $(this).data('action');
                         }
 
-                        if (options.hasOwnProperty('parentElement')) {
-                            data['parent'] = $(options.parentElement).val()
+                        if (options instanceof Object) {
+                            if (options.hasOwnProperty('parentElement')) {
+                                data['parent'] = $(options.parentElement).val()
+                            }
                         }
 
                         // only send the 'page' parameter if scrolling is enabled
@@ -94,7 +96,7 @@
 })( jQuery );
 
 (function( $ ) {
-    $(document).ready(function () {
+    $(function(){
         $('.select2entity[data-autostart="true"]:not([data-action="AutoCompleteSpecificationValue"])').select2entity();
 
         var addCollectionButton = $('[data-collection="product_specification_values"]');
@@ -109,11 +111,21 @@
         });
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            addCollectionButton.trigger('collection-field-added');
+            activateAutoCompleteSpecificationValue();
         });
 
         if ($('a[href=#tabSpecifications]').closest('li').hasClass('active')) {
-            addCollectionButton.trigger('collection-field-added');
+            activateAutoCompleteSpecificationValue();
+        }
+
+        function activateAutoCompleteSpecificationValue() {
+            $('[data-action="AutoCompleteSpecificationValue"]').each(function(){
+                $(this).select2entity(
+                    {
+                        parentElement : $(this).closest('.list-group-item').find('[name*="product[specification_values]"]')
+                    }
+                );
+            });
         }
     });
 })( jQuery );
