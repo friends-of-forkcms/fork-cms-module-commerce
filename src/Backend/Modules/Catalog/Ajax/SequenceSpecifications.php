@@ -2,16 +2,10 @@
 
 namespace Backend\Modules\Catalog\Ajax;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
-use Backend\Core\Engine\Language as BL;
-use Backend\Modules\Catalog\Engine\Model as BackendCatalogModel;
+use Backend\Core\Language\Locale;
+use Backend\Modules\Catalog\Domain\Specification\Command\UpdateSpecification;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Alters the sequence of Catalog categories
@@ -23,25 +17,31 @@ class SequenceSpecifications extends BackendBaseAJAXAction
     public function execute(): void
     {
         parent::execute();
-        
+
         // get parameters
-        $newIdSequence = trim(\SpoonFilter::getPostValue('new_id_sequence', null, '', 'string'));
+        $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
+
+        /**
+         * get the specifications repository
+         */
+        $specificationRepository = $this->get('catalog.repository.specification');
 
         // list id
         $ids = (array) explode(',', rtrim($newIdSequence, ','));
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-            $item['id'] = $id;
-            $item['sequence'] = $i + 1;
 
             // update sequence
-            if (BackendCatalogModel::existsSpecification($id)) {
-                BackendCatalogModel::updateSpecification($id, $item);
+            if ($vat = $specificationRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
+                $updateSequence = new UpdateSpecification($vat);
+                $updateSequence->sequence = $i + 1;
+
+                $this->get('command_bus')->handle($updateSequence);
             }
         }
-        
+
         // success output
-        $this->output(self::OK, null, 'sequence updated');
+        $this->output(Response::HTTP_OK, null, 'sequence updated');
     }
 }

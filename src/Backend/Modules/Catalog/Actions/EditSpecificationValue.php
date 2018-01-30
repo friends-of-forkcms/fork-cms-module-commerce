@@ -2,20 +2,13 @@
 
 namespace Backend\Modules\Catalog\Actions;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Catalog\Domain\SpecificationValue\Exception\SpecificationValueNotFound;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
-use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository;
+use Backend\Modules\Catalog\Domain\SpecificationValue\ProductOptionValueRepository;
 use Backend\Modules\Catalog\Domain\SpecificationValue\Command\UpdateSpecificationValue;
 use Backend\Modules\Catalog\Domain\SpecificationValue\Event\UpdatedSpecificationValue;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueType;
@@ -81,7 +74,7 @@ class EditSpecificationValue extends BackendBaseActionEdit
 
     private function getSpecificationValue(): SpecificationValue
     {
-        /** @var SpecificationValueRepository $specificationValueRepository */
+        /** @var ProductOptionValueRepository $specificationValueRepository */
         $specificationValueRepository = $this->get('catalog.repository.specification_value');
 
         try {

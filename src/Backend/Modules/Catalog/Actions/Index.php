@@ -2,13 +2,6 @@
 
 namespace Backend\Modules\Catalog\Actions;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
@@ -16,6 +9,7 @@ use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
 use Backend\Modules\Catalog\Domain\Category\FilterType;
 use Backend\Modules\Catalog\Domain\Product\DataGrid;
+use Common\Exception\RedirectException;
 
 /**
  * This is the index-action (default), it will display the overview of products
@@ -41,6 +35,9 @@ class Index extends BackendBaseActionIndex
 
     /**
      * Execute the action
+     *
+     * @throws RedirectException
+     * @throws \Exception
      */
     public function execute(): void
     {
@@ -65,6 +62,10 @@ class Index extends BackendBaseActionIndex
         $this->display();
     }
 
+    /**
+     * @throws RedirectException
+     * @throws \Exception
+     */
     private function loadFilterForm(): void
     {
         $filterForm = $this->createForm(
@@ -99,6 +100,12 @@ class Index extends BackendBaseActionIndex
         $this->template->assign('filterCategory', $filterForm->createView());
     }
 
+    /**
+     * @param array $parameters
+     *
+     * @return string
+     * @throws \Exception
+     */
     private function getBackLink(array $parameters = []): string
     {
         return BackendModel::createUrlForAction(

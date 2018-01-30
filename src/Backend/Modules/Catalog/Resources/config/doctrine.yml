@@ -101,3 +101,15 @@ doctrine:
         dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/PaymentMethod"
         alias: CatalogPaymentMethod
         prefix: Backend\Modules\Catalog\Domain\PaymentMethod
+      product_option:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/ProductOption"
+        alias: CatalogProductOption
+        prefix: Backend\Modules\Catalog\Domain\ProductOption
+      product_option_value:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/ProductOptionValue"
+        alias: CatalogProductOption
+        prefix: Backend\Modules\Catalog\Domain\ProductOptionValue

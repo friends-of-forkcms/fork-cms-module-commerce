@@ -3,9 +3,14 @@
 namespace Backend\Modules\Catalog\Domain\Order;
 
 use Backend\Form\Type\MetaType;
+use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistoryDataTransferObject;
+use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
 use Common\Form\ImageType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -17,56 +22,32 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'title',
-            TextType::class,
-            [
-                'required' => true,
-                'label'    => 'lbl.Title',
-            ]
-        )->add(
-            'image',
-            ImageType::class,
-            [
-                'required'    => false,
-                'label'       => 'lbl.Image',
-                'image_class' => Image::class,
-            ]
-        )->add(
-            'parent',
+            'orderStatus',
             EntityType::class,
             [
-                'required'     => false,
-                'label'        => 'lbl.InOrder',
-                'placeholder'  => 'lbl.None',
-                'class'        => Order::class,
-                'choices'      => $options['categories'],
-                'choice_label' => function($order) {
-                    $prefix = null;
-                    if ($order->path > 0) {
-                        $prefix = str_repeat('-', $order->path) .' ';
-                    }
-
-                    return $prefix . $order->getTitle();
-                }
+                'required' => true,
+                'label'    => 'lbl.OrderStatus',
+                'class'    => OrderStatus::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('i')
+                              ->orderBy('i.title', 'ASC');
+                },
+                'choice_label'  => 'title'
             ]
-        )->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
-                $event->getForm()->add(
-                    'meta',
-                    MetaType::class,
-                    [
-                        'base_field_name'                  => 'title',
-                        'generate_url_callback_class'      => 'catalog.repository.order',
-                        'generate_url_callback_method'     => 'getUrl',
-                        'detail_url'                       => '',
-                        'generate_url_callback_parameters' => [
-                            $event->getData()->locale,
-                            $event->getData()->id,
-                        ],
-                    ]
-                );
-            }
+        )->add(
+            'message',
+            TextareaType::class,
+            [
+                'required'    => false,
+                'label'       => 'lbl.Comment',
+            ]
+        )->add(
+            'notify',
+            CheckboxType::class,
+            [
+                'required'     => false,
+                'label'        => 'lbl.NotifyCustomer',
+            ]
         );
     }
 
@@ -74,8 +55,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => OrderDataTransferObject::class,
-                'categories' => null
+                'data_class' => OrderHistoryDataTransferObject::class,
             ]
         );
     }

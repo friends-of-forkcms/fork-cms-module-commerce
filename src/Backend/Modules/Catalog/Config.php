@@ -2,15 +2,8 @@
 
 namespace Backend\Modules\Catalog;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\Config as BackendBaseConfig;
- 
+
 /**
  * This is the configuration-object for the Catalog module
  *
@@ -23,7 +16,7 @@ class Config extends BackendBaseConfig
      *
      * @var string
      */
-    protected $defaultAction = 'index';
+    protected $defaultAction = 'Index';
 
     /**
      * The disabled actions

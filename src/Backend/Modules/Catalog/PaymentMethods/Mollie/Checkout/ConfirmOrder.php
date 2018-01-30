@@ -3,7 +3,6 @@
 namespace Backend\Modules\Catalog\PaymentMethods\Mollie\Checkout;
 
 use Backend\Modules\Catalog\Domain\Order\Event\OrderCreated;
-use Backend\Modules\Catalog\Domain\Order\Event\OrderUpdated;
 use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Catalog\Domain\OrderHistory\Command\CreateOrderHistory;
 use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\ConfirmOrder as BaseConfirmOrder;
@@ -22,31 +21,36 @@ class ConfirmOrder extends BaseConfirmOrder
         // Create a new payment
         $payment = $mollie->payments->create(
             [
-                'amount' => $this->order->getTotal(),
-                'description' => 'Order '. $this->order->getId(),
-                'redirectUrl' => SITE_URL . Navigation::getUrlForBlock('Catalog', 'Cart') .'/post-payment?order_id=' . $this->order->getId(),
-                'webhookUrl' => SITE_URL . Navigation::getUrlForBlock('Catalog', 'Webhook') .'?order_id=' . $this->order->getId(),
-                'method' => \Mollie_API_Object_Method::IDEAL,
-                'issuer' => $this->data->issuer,
+                'amount'      => $this->order->getTotal(),
+                'description' => 'Order ' . $this->order->getId(),
+                'redirectUrl' => SITE_URL . Navigation::getUrlForBlock('Catalog',
+                        'Cart') . '/post-payment?order_id=' . $this->order->getId(),
+                'webhookUrl'  => SITE_URL . Navigation::getUrlForBlock('Catalog',
+                        'Cart') . '/webhook?payment_method=Mollie.Mollie',
+                'method'      => \Mollie_API_Object_Method::IDEAL,
+                'issuer'      => $this->data->issuer,
+                'metadata'    => [
+                    'order_id' => $this->order->getId(),
+                ],
             ]
         );
 
         // Store the payment id
         $this->entityManager->getConnection()
-            ->insert(
-                'catalog_orders_mollie_payments',
-                [
-                    'order_id' => $this->order->getId(),
-                    'transaction_id' => $payment->id
-                ]
-            );
+                            ->insert(
+                                'catalog_orders_mollie_payments',
+                                [
+                                    'order_id'       => $this->order->getId(),
+                                    'transaction_id' => $payment->id
+                                ]
+                            );
 
         // Update the order history
-        $createOrderHistory = new CreateOrderHistory();
-        $createOrderHistory->order = $this->order;
+        $createOrderHistory              = new CreateOrderHistory();
+        $createOrderHistory->order       = $this->order;
         $createOrderHistory->orderStatus = $this->getOrderStatus($this->getSetting('orderInitId'));
-        $createOrderHistory->message = 'Mollie order intialized with payment url: '. $payment->getPaymentUrl();
-        $createOrderHistory->notify = true;
+        $createOrderHistory->message     = 'Mollie order intialized with payment url: ' . $payment->getPaymentUrl();
+        $createOrderHistory->notify      = true;
         $this->commandBus->handle($createOrderHistory);
 
         // Trigger an event to notify or not
@@ -86,17 +90,11 @@ class ConfirmOrder extends BaseConfirmOrder
         }
 
         if ($payment->isPaid()) {
-            $createOrderHistory = new CreateOrderHistory();
-            $createOrderHistory->order = $order;
-            $createOrderHistory->orderStatus = $this->getOrderStatus($this->getSetting('orderCompletedId'));
-            $createOrderHistory->message = 'Order payed: ' . $payment->paidDatetime;
-            $createOrderHistory->notify = true;
-            $this->commandBus->handle($createOrderHistory);
-
-            // Trigger an event to notify or not
-            $this->eventDispatcher->dispatch(
-                OrderUpdated::EVENT_NAME,
-                new OrderUpdated($this->order, $createOrderHistory->getOrderHistoryEntity())
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderCompletedId'),
+                'Order payed: ' . $payment->paidDatetime,
+                true
             );
 
             $this->goToSuccessPage();
@@ -106,21 +104,85 @@ class ConfirmOrder extends BaseConfirmOrder
             $this->goToSuccessPage();
         }
 
-        if ($payment->isExpired() || $payment->isCancelled()) {
-            $createOrderHistory = new CreateOrderHistory();
-            $createOrderHistory->order = $order;
-            $createOrderHistory->orderStatus = $this->getOrderStatus($this->getSetting('orderCancelledId'));
-            $createOrderHistory->message = 'Order cancelled: ' . $payment->cancelledDatetime;
-            $createOrderHistory->notify = true;
-            $this->commandBus->handle($createOrderHistory);
-
-            // Trigger an event to notify or not
-            $this->eventDispatcher->dispatch(
-                OrderUpdated::EVENT_NAME,
-                new OrderUpdated($this->order, $createOrderHistory->getOrderHistoryEntity())
+        if ($payment->isExpired()) {
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderExpiredId'),
+                'Order expired: ' . $payment->expiredDatetime,
+                true
             );
 
             $this->goToCancelledPage();
         }
+
+        if ($payment->isCancelled()) {
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderCancelledId'),
+                'Order cancelled: ' . $payment->cancelledDatetime,
+                true
+            );
+
+            $this->goToCancelledPage();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function runWebhook()
+    {
+        if ( ! $this->request->request->has('id')) {
+            return 'Order not found';
+        }
+
+        $mollie = new \Mollie_API_Client();
+        $mollie->setApiKey($this->getSetting('apiKey'));
+
+        $payment = $mollie->payments->get($this->request->request->get('id'));
+
+        try {
+            $order = $this->getOrder($payment->metadata->order_id);
+        } catch (OrderNotFound $e) {
+            return 'Order not found';
+        }
+
+        if ($payment->isPaid()) {
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderCompletedId'),
+                'Order payed: ' . $payment->paidDatetime,
+                true
+            );
+        }
+
+        if ($payment->isExpired()) {
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderExpiredId'),
+                'Order expired: ' . $payment->expiredDatetime,
+                true
+            );
+        }
+
+        if ($payment->isCancelled()) {
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderCancelledId'),
+                'Order cancelled: ' . $payment->cancelledDatetime,
+                true
+            );
+        }
+
+        if ($payment->isRefunded()) {
+            $this->updateOrderStatus(
+                $order,
+                $this->getSetting('orderRefundedId'),
+                'Order refunded',
+                true
+            );
+        }
+
+        return '';
     }
 }

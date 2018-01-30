@@ -5,6 +5,7 @@ namespace Backend\Modules\Catalog\Domain\Product;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Category\Category;
+use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
@@ -81,6 +82,14 @@ class Product
     private $stock_status;
 
     /**
+     * @var ProductOption[]
+     *
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\ProductOption\ProductOption", mappedBy="product", cascade={"remove", "persist"})
+     * @ORM\OrderBy({"sequence" = "ASC"})
+     */
+    private $product_options;
+
+    /**
      * @var SpecificationValue[]
      *
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue", inversedBy="products", cascade={"remove", "persist"})
@@ -89,6 +98,7 @@ class Product
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @ORM\OrderBy({"value" = "ASC"})
      */
     private $specification_values;
 
@@ -360,6 +370,14 @@ class Product
     public function getStockStatus(): StockStatus
     {
         return $this->stock_status;
+    }
+
+    /**
+     * @return ProductOption[]
+     */
+    public function getProductOptions()
+    {
+        return $this->product_options;
     }
 
     public function getLocale(): Locale
@@ -648,6 +666,20 @@ class Product
         $this->calculateActivePrice();
 
         return $this->hasActiveSpecialPrice;
+    }
+
+    /**
+     * Check if the product is in stock
+     *
+     * @return boolean
+     */
+    public function inStock(): bool
+    {
+        if (!$this->isFromStock()) {
+            return true;
+        }
+
+        return $this->getStock() > 0;
     }
 
     /**

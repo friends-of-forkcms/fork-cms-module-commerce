@@ -6,6 +6,7 @@ use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\ShipmentMethods\Base\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -24,7 +25,7 @@ class PickupType extends Type
             ]
         )->add(
             'price',
-            TextType::class,
+            MoneyType::class,
             [
                 'required' => true,
                 'label'    => 'lbl.Price',

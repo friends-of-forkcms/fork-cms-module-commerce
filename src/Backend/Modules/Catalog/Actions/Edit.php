@@ -1,6 +1,7 @@
 <?php
 
 namespace Backend\Modules\Catalog\Actions;
+
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
@@ -11,6 +12,7 @@ use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Backend\Modules\Catalog\Domain\Product\ProductType;
+use Backend\Modules\Catalog\Domain\ProductOption\DataGrid as ProductOptionDataGrid;
 use Symfony\Component\Form\Form;
 
 /**
@@ -22,19 +24,24 @@ use Symfony\Component\Form\Form;
 class Edit extends BackendBaseActionEdit
 {
     /**
+     * @var Product
+     */
+    private $product;
+
+    /**
      * Execute the action
      */
     public function execute(): void
     {
         parent::execute();
 
-        $product = $this->getProduct();
+        $this->product = $this->getProduct();
 
-        $form = $this->getForm($product);
+        $form = $this->getForm($this->product);
 
         $deleteForm = $this->createForm(
             DeleteType::class,
-            ['id' => $product->getId()],
+            ['id' => $this->product->getId()],
             [
                 'module' => $this->getModule(),
                 'action' => 'Delete'
@@ -44,7 +51,7 @@ class Edit extends BackendBaseActionEdit
 
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
-            $this->template->assign('product', $product);
+            $this->template->assign('product', $this->product);
 
             $this->parse();
             $this->display();
@@ -97,6 +104,8 @@ class Edit extends BackendBaseActionEdit
             true,
             false
         );
+
+        $this->template->assign('productOptionsDataGrid', ProductOptionDataGrid::getHtml($this->product));
     }
 
     private function getProduct(): Product

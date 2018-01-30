@@ -80,6 +80,14 @@ class Cart
      */
     private $vats = [];
 
+    /**
+     * @var bool
+     */
+    private $allProductsInStock;
+
+    /**
+     * Cart constructor.
+     */
     public function __construct()
     {
         $this->values = new ArrayCollection();
@@ -272,6 +280,7 @@ class Cart
 
         // Store new values
         foreach ($this->values as $value) {
+            // Update the product totals
             $product = $value->getProduct();
             $vat = $product->getVat();
             $vatPrice = $product->getVatPrice() * $value->getQuantity();
@@ -286,8 +295,27 @@ class Cart
             }
 
             $this->vats[$vat->getId()]['total'] += $vatPrice;
-
             $this->total += $value->getTotal() + $vatPrice;
+
+            // Update the product option totals
+            foreach ($value->getCartValueOptions() as $valueOption) {
+                $productOptionValue = $valueOption->getProductOptionValue();
+                $vat = $productOptionValue->getVat();
+
+                if (!array_key_exists($vat->getId(), $this->vats)) {
+                    $this->vats[$vat->getId()] = [
+                        'title' => $vat->getTitle(),
+                        'total' => 0
+                    ];
+                }
+
+                $vatPrice = $productOptionValue->getVatPrice() * $value->getQuantity();
+                $productOptionValueTotal = $valueOption->getTotal();
+
+                $this->subTotal += $productOptionValueTotal;
+                $this->vats[$vat->getId()]['total'] += $vatPrice;
+                $this->total += $productOptionValueTotal + $vatPrice;
+            }
         }
     }
 
@@ -305,5 +333,27 @@ class Cart
         }
 
         $this->total_quantity = $totalQuantity;
+    }
+
+    /**
+     * Check if all the products are in stock
+     *
+     * @return boolean
+     */
+    public function isProductsInStock(): bool
+    {
+        if ($this->allProductsInStock === null) {
+            $inStock = true;
+
+            foreach ($this->getValues() as $value) {
+                if (!$value->isInStock()) {
+                    $inStock = false;
+                }
+            }
+
+            $this->allProductsInStock = $inStock;
+        }
+
+        return $this->allProductsInStock;
     }
 }

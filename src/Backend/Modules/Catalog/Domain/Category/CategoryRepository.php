@@ -4,7 +4,6 @@ namespace Backend\Modules\Catalog\Domain\Category;
 
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
 use Common\Doctrine\Entity\Meta;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
@@ -18,10 +17,17 @@ class CategoryRepository extends EntityRepository
         $this->getEntityManager()->persist($category);
     }
 
+    /**
+     * @param int|null $id
+     * @param Locale $locale
+     *
+     * @return Category|null
+     * @throws CategoryNotFound
+     */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Category
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw CategoryNotFound::forEmptyId();
         }
 
         /** @var Category $category */

@@ -2,37 +2,29 @@
 
 namespace Frontend\Modules\Catalog\Widgets;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
+use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
+use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
 use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
-use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Core\Language\Locale;
 use Frontend\Modules\Catalog\Engine\Model as FrontendCatalogModel;
 
 /**
  * This is a widget with the Catalog-categories
  *
- * @author Waldo Cosman<waldo@comsa.be>
+ * @author Waldo Cosman <waldo@comsa.be>
+ * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Category extends FrontendBaseWidget
 {
-
     /**
-     * The item.
-     *
-     * @var    array
+     * @var \Backend\Modules\Catalog\Domain\Category\Category
      */
     private $category;
-    private $products;
 
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
         $this->loadData();
@@ -46,11 +38,14 @@ class Category extends FrontendBaseWidget
      */
     private function loadData()
     {
-        // Get category
-        $this->category = FrontendCatalogModel::getCategoryById((int)$this->data['id']);
-
-        // Get Products
-        $this->products = FrontendCatalogModel::getAllByCategory($this->data['id']);
+        try {
+            $this->category = $this->getCategoryRepository()->findOneByIdAndLocale(
+                $this->data['id'],
+                Locale::frontendLanguage()
+            );
+        } catch (CategoryNotFound $e) {
+            $this->category = null;
+        }
     }
 
     /**
@@ -59,7 +54,16 @@ class Category extends FrontendBaseWidget
     private function parse()
     {
         // assign comments
-        $this->tpl->assign('category', $this->category);
-        $this->tpl->assign('products', $this->products);
+        $this->template->assign('category', $this->category);
+    }
+
+    /**
+     * Get the category repository
+     *
+     * @return CategoryRepository
+     */
+    private function getCategoryRepository(): CategoryRepository
+    {
+        return $this->get('catalog.repository.category');
     }
 }

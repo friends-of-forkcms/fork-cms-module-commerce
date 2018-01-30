@@ -2,8 +2,12 @@
 
 namespace Backend\Modules\Catalog\PaymentMethods\Base\Checkout;
 
+use Backend\Modules\Catalog\Domain\Order\Event\OrderUpdated;
+use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\Order\OrderRepository;
+use Backend\Modules\Catalog\Domain\OrderHistory\Command\CreateOrderHistory;
+use Backend\Modules\Catalog\Domain\OrderStatus\Exception\OrderStatusNotFound;
 use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatusRepository;
 use Backend\Modules\Catalog\Domain\PaymentMethod\CheckoutPaymentMethodDataTransferObject;
@@ -17,6 +21,7 @@ use Frontend\Core\Language\Locale;
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class ConfirmOrder
 {
@@ -39,6 +44,11 @@ abstract class ConfirmOrder
      * @var CheckoutPaymentMethodDataTransferObject
      */
     protected $data;
+
+    /**
+     * @var Request
+     */
+    protected $request;
 
     /**
      * @var Locale
@@ -116,6 +126,18 @@ abstract class ConfirmOrder
     public function setData(CheckoutPaymentMethodDataTransferObject $data): void
     {
         $this->data = $data;
+    }
+
+    /**
+     * Set the request
+     *
+     * @param Request $request
+     *
+     * @return void
+     */
+    public function setRequest(Request $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -234,6 +256,8 @@ abstract class ConfirmOrder
      *
      * @param mixed $orderStatusId
      *
+     * @throws OrderStatusNotFound
+     *
      * @return OrderStatus
      */
     protected function getOrderStatus($orderStatusId): ?OrderStatus
@@ -248,6 +272,8 @@ abstract class ConfirmOrder
      * Get the order based on an id
      *
      * @param mixed $orderId
+     *
+     * @throws OrderNotFound
      *
      * @return Order
      */
@@ -275,4 +301,42 @@ abstract class ConfirmOrder
      * @return void
      */
     public abstract function postPayment(): void;
+
+    /**
+     * Handle a optional webhook call from the payment provider
+     *
+     * @return mixed
+     */
+    public function runWebhook()
+    {
+        return;
+    }
+
+    /**
+     * Create a update order status
+     *
+     * @param Order $order
+     * @param integer $statusId
+     * @param string $message
+     * @param bool $notify
+     *
+     * @throws OrderStatusNotFound
+     *
+     * @return void
+     */
+    protected function updateOrderStatus(Order $order, int $statusId, string $message, bool $notify):void
+    {
+        $createOrderHistory = new CreateOrderHistory();
+        $createOrderHistory->order = $order;
+        $createOrderHistory->orderStatus = $this->getOrderStatus($statusId);
+        $createOrderHistory->message = $message;
+        $createOrderHistory->notify = $notify;
+        $this->commandBus->handle($createOrderHistory);
+
+        // Trigger an event to notify or not
+        $this->eventDispatcher->dispatch(
+            OrderUpdated::EVENT_NAME,
+            new OrderUpdated($this->order, $createOrderHistory->getOrderHistoryEntity())
+        );
+    }
 }

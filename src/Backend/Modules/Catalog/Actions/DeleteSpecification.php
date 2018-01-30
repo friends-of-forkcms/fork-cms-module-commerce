@@ -2,13 +2,6 @@
 
 namespace Backend\Modules\Catalog\Actions;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
@@ -18,7 +11,6 @@ use Backend\Modules\Catalog\Domain\Specification\Event\Deleted;
 use Backend\Modules\Catalog\Domain\Specification\Command\DeleteSpecification as DeleteCommand;
 use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationValueNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-
 
 /**
  * This action will delete a specification

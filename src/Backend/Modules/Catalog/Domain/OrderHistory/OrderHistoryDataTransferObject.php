@@ -28,13 +28,13 @@ class OrderHistoryDataTransferObject
 
     /**
      * @var OrderStatus
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $orderStatus;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $message;
 

@@ -1,8 +1,7 @@
 $(function(){
-    var cartWidget = $('.cartWidget');
-
     $('.addToCart').click(function(e){
         e.preventDefault(); // Should always use javascript:void(0); but this is a fallback
+        e.stopPropagation();
 
         // Skip when no product id available
         if (!$(this).data('id')) {
@@ -10,23 +9,54 @@ $(function(){
         }
 
         // Some special stuff when we are on a product detail page
-        if (jsFrontend.data.get('Catalog.isProductDetail')) {
-            var data = $('form.product').serialize();
+        if (jsFrontend.data.exists('Catalog') && jsFrontend.data.exists('Catalog.isProductDetail')) {
+            var data = $('form[name=product]').serialize();
+
+            // Cleanup errors
+            var errorFields = $('.bg-white.error');
+            errorFields.find('.error').remove();
+            errorFields.removeClass('error');
 
             $.ajax(
                 {
                     method : "POST",
-                    data : data,
-                    xhrFields: { withCredentials: true }
+                    data : data
                 }
             ).done(function(response){
                 $('[data-cart-total-quantity]').html(response.data.cart.totalQuantity);
 
                 $('#productAddedOrderModal').modal('show');
-            }).fail(function(jqXHR) {
+            }).fail(function(response){
+                $.each(response.responseJSON.data.errors.fields, function(key, value) {
+                    var field = $('[name*="\[' + key + '\]"'),
+                        parent = field.closest('.bg-white');
+
+                    parent.addClass('error');
+                    parent.append($('<span>').html(value).addClass('error'));
+                });
             });
         } else {
+            $.ajax(
+                {
+                    method : "POST",
+                    data : {
+                        fork : {
+                            module : 'Catalog',
+                            action: 'UpdateCart'
+                        },
+                        product : {
+                            id : $(this).data('id'),
+                            amount : $(this).data('orderQuantity')
+                        }
+                    }
+                }
+            ).done(function(response){
+                $('[data-cart-total-quantity]').html(response.data.cart.totalQuantity);
 
+                $('#productAddedOrderModal').modal('show');
+            }).fail(function(response){
+                window.location = response.responseJSON.data.errors.url;
+            });
         }
     });
 
@@ -40,7 +70,7 @@ $(function(){
 
         // Some special stuff when we are on a product detail page
         if (jsFrontend.data.get('Catalog.isProductDetail')) {
-            var data = $('form.product').serialize();
+            var data = $('form[name=product]').serialize();
 
             $.ajax(
                 {

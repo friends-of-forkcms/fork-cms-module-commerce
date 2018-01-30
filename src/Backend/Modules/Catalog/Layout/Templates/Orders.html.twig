@@ -1,29 +1,9 @@
-{% extends '/Layout/Templates/base.html.twig' %}
+{% extends 'Layout/Templates/base.html.twig' %}
 {% import "Layout/Templates/macros.html.twig" as macro %}
 
+{% block actionbar %}
+{% endblock %}
+
 {% block content %}
-    <div class="row fork-module-content">
-        <div class="col-md-12">
-            <div role="tabpanel">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#tabModeration" aria-controls="tabModeration" role="tab"
-                           data-toggle="tab">{{ 'lbl.WaitingForModeration'|trans|ucfirst }} ({{ moderationCount }})</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabCompleted" aria-controls="tabCompleted" role="tab"
-                           data-toggle="tab">{{ 'lbl.Completed'|trans|ucfirst }} ({{ completedCount }})</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tabModeration">
-                        {{ macro.dataGrid(dataGridModeration) }}
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tabCompleted">
-                        {{ macro.dataGrid(dataGridCompleted) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  {{ macro.dataGrid(dataGrid) }}
 {% endblock %}

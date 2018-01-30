@@ -3,7 +3,6 @@
 namespace Backend\Modules\Catalog\Domain\OrderStatus;
 
 use Backend\Modules\Catalog\Domain\OrderStatus\Exception\OrderStatusNotFound;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 
@@ -18,7 +17,7 @@ class OrderStatusRepository extends EntityRepository
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?OrderStatus
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw OrderStatusNotFound::forEmptyId();
         }
 
         /** @var OrderStatus $orderStatus */

@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Domain\Cart;
 
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 class CartValueRepository extends EntityRepository
 {
@@ -12,6 +13,8 @@ class CartValueRepository extends EntityRepository
      *
      * @param Cart $cart
      * @param Product $product
+     *
+     * @throws NonUniqueResultException
      *
      * @return CartValue
      */

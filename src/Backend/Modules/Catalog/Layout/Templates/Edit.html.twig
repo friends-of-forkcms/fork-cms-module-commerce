@@ -1,4 +1,5 @@
 {% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
 {% form_theme form with ["Catalog/Layout/Templates/FormHelper.html.twig", "Catalog/Layout/Templates/Select2Entity.html.twig"] %}
 
 {% block actionbar %}
@@ -24,6 +25,10 @@
           <li role="presentation" class="active">
             <a href="#tabContent" aria-controls="tabContent" role="tab"
                data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabOptions" aria-controls="tabOptions" role="tab"
+               data-toggle="tab">{{ 'lbl.Options'|trans|ucfirst }}</a>
           </li>
           <li role="presentation">
             <a href="#tabSpecifications" aria-controls="tabSpecifications" role="tab"
@@ -123,6 +128,18 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabOptions">
+            <div class="row">
+              <div class="col-md-12">
+                {{ macro.dataGrid(productOptionsDataGrid) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ macro.buttonIcon( geturl('AddProductOption', null, '&product=' ~ product.id), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
               </div>
             </div>
           </div>

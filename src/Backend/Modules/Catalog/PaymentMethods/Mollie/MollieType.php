@@ -69,10 +69,38 @@ class MollieType extends Type
                 },
                 'choice_label'  => 'title'
             ]
+        )->add(
+            'orderExpiredId',
+            EntityType::class,
+            [
+                'required'      => true,
+                'label'         => 'lbl.OrderExpired',
+                'class'         => OrderStatus::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('i')
+                              ->orderBy('i.title', 'ASC');
+                },
+                'choice_label'  => 'title'
+            ]
+        )->add(
+            'orderRefundedId',
+            EntityType::class,
+            [
+                'required'      => true,
+                'label'         => 'lbl.OrderRefunded',
+                'class'         => OrderStatus::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('i')
+                              ->orderBy('i.title', 'ASC');
+                },
+                'choice_label'  => 'title'
+            ]
         );
 
         $builder->get('orderInitId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
         $builder->get('orderCompletedId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
         $builder->get('orderCancelledId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
+        $builder->get('orderExpiredId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
+        $builder->get('orderRefundedId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
     }
 }

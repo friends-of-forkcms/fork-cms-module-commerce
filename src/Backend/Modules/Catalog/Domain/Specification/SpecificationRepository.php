@@ -11,6 +11,7 @@ use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
@@ -61,10 +62,10 @@ class SpecificationRepository extends EntityRepository
         $query_builder = $this->createQueryBuilder('i');
 
         return $query_builder->select('MAX(i.sequence) as sequence')
-                      ->where('i.locale = :locale')
-                      ->setParameter('locale', $locale)
-                      ->getQuery()
-                      ->getSingleScalarResult() + 1;
+                ->where('i.locale = :locale')
+                ->setParameter('locale', $locale)
+                ->getQuery()
+                ->getSingleScalarResult() + 1;
     }
 
     /**
@@ -76,21 +77,21 @@ class SpecificationRepository extends EntityRepository
      */
     public function getUrl($url, Locale $locale, $id)
     {
-        $url           = Uri::getUrl((string)$url);
+        $url = Uri::getUrl((string)$url);
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
-                      ->where($query_builder->expr()->eq('m.url', ':url'))
-                      ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
-                      ->setParameters(
-                          [
-                              'url'    => $url,
-                              'locale' => $locale
-                          ]
-                      );
+            ->where($query_builder->expr()->eq('m.url', ':url'))
+            ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
+            ->setParameters(
+                [
+                    'url' => $url,
+                    'locale' => $locale
+                ]
+            );
 
         if ($id !== null) {
             $query_builder->andWhere($query_builder->expr()->neq('i.id', ':id'))
-                          ->setParameter('id', $id);
+                ->setParameter('id', $id);
         }
 
         if (count($query_builder->getQuery()->getResult())) {
@@ -113,17 +114,36 @@ class SpecificationRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('s');
 
-        $query = $queryBuilder->select(['s', 'sv'])
+        return $queryBuilder->select(['s', 'sv'])
             ->leftJoin('s.specification_values', 'sv')
             ->leftJoin('sv.products', 'p')
             ->where('s.filter = :filter')
             ->andWhere('p.category = :category')
             ->orderBy('s.sequence', 'ASC')
-            ->orderBy('sv.value', 'ASC')
             ->setParameter('filter', true)
             ->setParameter('category', $category)
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
+    }
 
-        return $query->getResult();
+    /**
+     * Get the specifications for a product
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function findByProduct(Product $product): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        return $queryBuilder->select(['s', 'sv'])
+            ->innerJoin('s.specification_values', 'sv')
+            ->innerJoin('sv.products', 'p')
+            ->where('p.id = :product')
+            ->orderBy('s.sequence', 'ASC')
+            ->setParameter('product', $product->getId())
+            ->getQuery()
+            ->getResult();
     }
 }

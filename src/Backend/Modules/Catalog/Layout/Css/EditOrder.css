@@ -1,0 +1,6 @@
+.order-total tr td:last-child{text-align:right;width:120px;}
+.order-total tr td:first-child{font-weight:bold;}
+
+.table .total, .table .price{text-align:right;width:120px;}
+.table .amount{width:50px;}
+.table .article_number{width:200px;}

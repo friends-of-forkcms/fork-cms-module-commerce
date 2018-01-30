@@ -2,146 +2,134 @@
 
 namespace Backend\Modules\Catalog\Actions;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Language as BL;
-use Backend\Core\Engine\DataGridDB as BackendDataGridDB;
-use Backend\Core\Engine\DataGridFunctions as BackendDataGridFunctions;
-use Backend\Modules\Catalog\Engine\Model as BackendCatalogModel;
+use Backend\Modules\Catalog\Domain\Order\DataGridOrderHistory;
+use Backend\Modules\Catalog\Domain\Order\DataGridProducts;
+use Backend\Modules\Catalog\Domain\Order\Event\OrderUpdated;
+use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
+use Backend\Modules\Catalog\Domain\Order\Order;
+use Backend\Modules\Catalog\Domain\Order\OrderRepository;
+use Backend\Modules\Catalog\Domain\Order\OrderType;
+use Backend\Modules\Catalog\Domain\OrderHistory\Command\CreateOrderHistory;
+use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistoryDataTransferObject;
+use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistoryType;
+use Common\Exception\RedirectException;
+use Symfony\Component\Form\Form;
 
 /**
  * This is the edit-action, it will display a form to edit an existing item
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
+ * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditOrder extends BackendBaseActionEdit
 {
     /**
-     * DataGrids
-     *
-     * @var	BackendDataGridDB
+     * @var Order
      */
-    protected $dgProducts;
-  
+    private $order;
+
     /**
      * Execute the action
+     *
+     * @throws RedirectException
+     * @throws \Exception
      */
     public function execute(): void
     {
-        $this->id = $this->getParameter('id', 'int');
+        parent::execute();
 
-        // does the item exist
-        if ($this->id !== null && BackendCatalogModel::existsOrder($this->id)) {
-            parent::execute();
-            $this->getData();
-            $this->loadForm();
-            $this->validateForm();
+        $this->order = $this->getOrder();
+
+        $form = $this->getForm();
+
+        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+            $this->template->assign('form', $form->createView());
+            $this->template->assign('order', $this->order);
+            $this->template->assign('dataGridOrderProducts', DataGridProducts::getHtml($this->order));
+            $this->template->assign('dataGridOrderHistory', DataGridOrderHistory::getHtml($this->order));
+
+            $this->header->addCSS('EditOrder.css');
+
             $this->parse();
             $this->display();
+
+            return;
         }
 
-        // no item found, throw an exception, because somebody is fucking with our URL
-        else {
-            $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
+        /** @var CreateOrderHistory $createOrderHistory */
+        $createOrderHistory = $this->createOrderHistory($form);
+
+        $this->get('event_dispatcher')->dispatch(
+            OrderUpdated::EVENT_NAME,
+            new OrderUpdated($this->order, $createOrderHistory->getOrderHistoryEntity())
+        );
+
+        $this->redirect(
+            $this->getBackLink(
+                [
+                    'report'    => 'edited',
+                    'highlight' => 'row-' . $this->order->getId(),
+                ]
+            )
+        );
+    }
+
+    private function createOrderHistory(Form $form): CreateOrderHistory
+    {
+        /** @var CreateOrderHistory $createOrderHistory */
+        $createOrderHistory = $form->getData();
+        $createOrderHistory->order = $this->order;
+
+        // The command bus will handle the saving of the product in the database.
+        $this->get('command_bus')->handle($createOrderHistory);
+
+        return $createOrderHistory;
+    }
+
+    private function getForm(): Form
+    {
+        $form = $this->createForm(
+            OrderType::class,
+            new CreateOrderHistory()
+        );
+
+        $form->handleRequest($this->getRequest());
+
+        return $form;
+    }
+
+    /**
+     * @return Order
+     * @throws \Common\Exception\RedirectException
+     * @throws \Exception
+     */
+    private function getOrder(): Order
+    {
+        /** @var OrderRepository $orderRepository */
+        $orderRepository = $this->get('catalog.repository.order');
+
+        try {
+            return $orderRepository->findOneById($this->getRequest()->query->getInt('id'));
+        } catch (OrderNotFound $e) {
+            $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
     }
 
     /**
-     * Get the data
-     * If a revision-id was specified in the URL we load the revision and not the actual data.
+     * @param array $parameters
+     *
+     * @return string
+     * @throws \Exception
      */
-    private function getData()
+    private function getBackLink(array $parameters = []): string
     {
-        // get the record
-        $this->record = (array) BackendCatalogModel::getOrder($this->id);
-        
-        // dataGrid for the products within an order
-        $this->dgProducts = new BackendDataGridDB(BackendCatalogModel::QRY_DATAGRID_BROWSE_PRODUCTS_ORDER, array($this->id));
-
-        // hide columns
-        $this->dgProducts->setColumnsHidden('order_id', 'product_id', 'url', 'date');
-            
-        // set column URLs
-        $this->dgProducts->setColumnURL('title', BackendModel::createURLForAction('edit') . '&amp;id=[product_id]');
-        
-        // no item found, throw an exceptions, because somebody is fucking with our URL
-        if (empty($this->record)) {
-            $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
-        }
-    }
-
-    /**
-     * Load the form
-     */
-    private function loadForm()
-    {
-        // create form
-        $this->frm = new BackendForm('editOrder');
-
-        // create elements
-        $this->frm->addText('email', $this->record['email']);
-        $this->frm->addText('fname', $this->record['fname']);
-        $this->frm->addText('lname', $this->record['lname']);
-        $this->frm->addText('address', $this->record['address']);
-        $this->frm->addText('hnumber', $this->record['hnumber']);
-        $this->frm->addText('postal', $this->record['postal']);
-        $this->frm->addText('hometown', $this->record['hometown']);
-
-        // assign URL
-        //$this->tpl->assign('itemURL', BackendModel::getURLForBlock($this->getModule(), 'detail') . '/' . $this->record['product_url'] . '#order-' . $this->record['product_id']);
-            
-        $this->tpl->assign('products', $this->record);
-        $this->tpl->assign('dgProducts', ($this->dgProducts->getNumResults() != 0) ? $this->dgProducts->getContent() : false);
-        $this->tpl->assign('orderPerson', $this->record['fname']);
-    }
-
-    /**
-     * Validate the form
-     */
-    private function validateForm()
-    {
-        if ($this->frm->isSubmitted()) {
-            // cleanup the submitted fields, ignore fields that were added by hackers
-            $this->frm->cleanupFields();
-
-            // validate fields
-            $this->frm->getField('email')->isEmail(FL::err('EmailIsRequired'));
-            $this->frm->getField('fname')->isFilled(BL::err('FirstNameIsRequired'));
-            $this->frm->getField('lname')->isFilled(BL::err('LastNameIsRequired'));
-            $this->frm->getField('address')->isFilled(BL::err('AddressIsRequired'));
-            $this->frm->getField('hnumber')->isFilled(BL::err('HouseNumberIsRequired'));
-            $this->frm->getField('postal')->isFilled(BL::err('PostalIsRequired'));
-            $this->frm->getField('hometown')->isFilled(BL::err('HometownIsRequired'));
-            
-            // no errors?
-            if ($this->frm->isCorrect()) {
-                // build item
-                $order['id'] = $this->id;
-                $order['email'] = $this->frm->getField('email')->getValue();
-                $order['fname'] = $this->frm->getField('fname')->getValue();
-                $order['lname'] = $this->frm->getField('lname')->getValue();
-                $order['address'] = $this->frm->getField('address')->getValue();
-                $order['hnumber'] = $this->frm->getField('hnumber')->getValue();
-                $order['postal'] = $this->frm->getField('postal')->getValue();
-                $order['hometown'] = $this->frm->getField('hometown')->getValue();
-    
-                // insert the item
-                BackendCatalogModel::updateOrder($order);
-
-                // trigger event
-                BackendModel::triggerEvent($this->getModule(), 'after_edit_order', array('item' => $order));
-
-                // everything is saved, so redirect to the overview
-                $this->redirect(BackendModel::createURLForAction('orders') . '&report=edited-order&id=' . $order['id'] . '&highlight=row-' . $order['id'] . '#tab' . ucwords($this->record['status']));
-            }
-        }
+        return BackendModel::createUrlForAction(
+            'Orders',
+            null,
+            null,
+            $parameters
+        );
     }
 }

@@ -4,6 +4,8 @@ namespace Frontend\Modules\Catalog\Actions;
 
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
+use Backend\Modules\Catalog\Domain\Product\AddToCartDataTransferObject;
+use Backend\Modules\Catalog\Domain\Product\AddToCartType;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Backend\Modules\Catalog\Domain\Specification\SpecificationRepository;
@@ -32,9 +34,9 @@ class Index extends FrontendBaseBlock
         parent::execute();
 
         $categoryRepository = $this->getCategoryRepository();
-        $productRepository  = $this->getProductRepository();
+        $productRepository = $this->getProductRepository();
 
-        $parameters     = $this->url->getParameters(false);
+        $parameters = $this->url->getParameters(false);
         $parameterCount = count($parameters);
 
         if ($parameterCount >= 3) { // Parent category, category and product
@@ -93,17 +95,20 @@ class Index extends FrontendBaseBlock
     private function parseCategory(Category $category)
     {
         // Set some default variables
-        $currentPage             = $this->url->getParameter(Language::lbl('Page'), 'int', 1);
-        $itemsPerPage            = $this->get('fork.settings')->get('Catalog', 'overview_num_items', 10);
-        $filtersShowMoreCount    = $this->get('fork.settings')->get('Catalog', 'filters_show_more_num_items', 5);
-        $productRepository       = $this->getProductRepository();
+        $currentPage = $this->url->getParameter(Language::lbl('Page'), 'int', 1);
+        $itemsPerPage = $this->get('fork.settings')->get('Catalog', 'overview_num_items', 10);
+        $filtersShowMoreCount = $this->get('fork.settings')->get('Catalog', 'filters_show_more_num_items', 5);
+        $productRepository = $this->getProductRepository();
         $specificationRepository = $this->getSpecificationRepository();
-        $productOffset           = ($currentPage - 1) * $itemsPerPage;
-        $baseUrl                 = '/' . implode('/',
+        $productOffset = ($currentPage - 1) * $itemsPerPage;
+        $baseUrl = '/' . implode('/',
                 array_merge($this->url->getPages(), $this->url->getParameters(false)));
 
         // Set page defaults
         $this->loadTemplate('Catalog/Layout/Templates/Category.html.twig');
+        if ($category->getParent()) {
+            $this->categoryPageTitles($category->getParent());
+        }
         $this->setMeta($category->getMeta());
 
         // add css
@@ -127,20 +132,20 @@ class Index extends FrontendBaseBlock
 
         // Define the sort orders
         $sortOrders = [
-            Product::SORT_RANDOM     => [
-                'label'    => 'Willekeurig',
+            Product::SORT_RANDOM => [
+                'label' => 'Willekeurig',
                 'selected' => false,
             ],
-            Product::SORT_PRICE_ASC  => [
-                'label'    => 'Prijs (laag/hoog)',
+            Product::SORT_PRICE_ASC => [
+                'label' => 'Prijs (laag/hoog)',
                 'selected' => false,
             ],
             Product::SORT_PRICE_DESC => [
-                'label'    => 'Prijs (hoog/laag)',
+                'label' => 'Prijs (hoog/laag)',
                 'selected' => false,
             ],
             Product::SORT_CREATED_AT => [
-                'label'    => 'Toegevoegd',
+                'label' => 'Toegevoegd',
                 'selected' => false,
             ]
         ];
@@ -187,10 +192,15 @@ class Index extends FrontendBaseBlock
     {
         // Set page defaults
         $this->loadTemplate('Catalog/Layout/Templates/Product.html.twig');
+
+        // Add category titles to the header
+        $this->categoryPageTitles($product->getCategory());
+
         $this->setMeta($product->getMeta());
 
-        // Add categories to the breadcrumb
+        // Add the breadcrumbs
         $this->categoryToBreadcrumb($product->getCategory());
+        $this->breadcrumb->addElement($product->getTitle(), $product->getUrl());
 
         // Add js
         $this->addJS('jquery.sudoSlider.min.js');
@@ -205,7 +215,7 @@ class Index extends FrontendBaseBlock
         $this->addCSS('owl.carousel.min.css');
         $this->addCSS('catalog.css');
 
-        $this->breadcrumb->addElement($product->getTitle(), $product->getUrl());
+        $form = $this->createForm(AddToCartType::class, new AddToCartDataTransferObject($product), ['product' => $product]);
 
         // build the images widget
         $this->template->assign(
@@ -218,7 +228,9 @@ class Index extends FrontendBaseBlock
             )
         );
 
+        $this->template->assign('specifications', $this->getSpecificationRepository()->findByProduct($product));
         $this->template->assign('product', $product);
+        $this->template->assign('form', $form->createView());
     }
 
     /**
@@ -231,6 +243,18 @@ class Index extends FrontendBaseBlock
         }
 
         $this->breadcrumb->addElement($category->getTitle(), $category->getUrl());
+    }
+
+    /**
+     * @param Category $category
+     */
+    private function categoryPageTitles(Category $category): void
+    {
+        if ($category->getParent()) {
+            $this->categoryPageTitles($category->getParent());
+        }
+
+        $this->header->setPageTitle($category->getTitle());
     }
 
     /**

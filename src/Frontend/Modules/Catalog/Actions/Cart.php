@@ -49,29 +49,45 @@ class Cart extends FrontendBaseBlock
 
         if($parameterCount == 0) {
             $this->overview();
-        } elseif ($parameterCount == 1 && $this->cart && $this->cart->getValues()->count() > 0 ) {
-            switch ($this->url->getParameter(0)) {
-                case Language::lbl('Checkout'):
-                    $this->checkout();
-                    break;
-                case Language::lbl('RequestQuoteUrl'):
-                    $this->requestQuote();
-                    break;
-                case Language::lbl('PaymentSuccessUrl'):
-                    $this->paymentSuccess();
-                    break;
-                case Language::lbl('PaymentCancelledUrl'):
-                    $this->paymentCancelled();
-                    break;
-                case 'store-order':
-                    $this->storeOrder();
-                    break;
-                case 'post-payment':
-                    $this->postPayment();
-                    break;
-                default:
-                    $this->redirect(Navigation::getUrl(404));
-                    break;
+        } elseif ($parameterCount == 1) {
+            if ($this->cart && $this->cart->getValues()->count() > 0) {
+                switch ($this->url->getParameter(0)) {
+                    case Language::lbl('Checkout'):
+                        $this->isAllowedToCheckout();
+
+                        $this->checkout();
+                        break;
+                    case Language::lbl('RequestQuoteUrl'):
+                        $this->requestQuote();
+                        break;
+                    case Language::lbl('PaymentSuccessUrl'):
+                        $this->isAllowedToCheckout();
+
+                        $this->paymentSuccess();
+                        break;
+                    case Language::lbl('PaymentCancelledUrl'):
+                        $this->isAllowedToCheckout();
+
+                        $this->paymentCancelled();
+                        break;
+                    case 'store-order':
+                        $this->isAllowedToCheckout();
+
+                        $this->storeOrder();
+                        break;
+                    case 'post-payment':
+                        $this->isAllowedToCheckout();
+
+                        $this->postPayment();
+                        break;
+                    default:
+                        $this->redirect(Navigation::getUrl(404));
+                        break;
+                }
+            } elseif ($parameters[0] == 'webhook') {
+                $this->runWebhook();
+            } else {
+                $this->redirect(Navigation::getUrl(404));
             }
         } else {
             $this->redirect(Navigation::getUrl(404));
@@ -87,6 +103,8 @@ class Cart extends FrontendBaseBlock
     {
         $this->loadTemplate();
         $this->template->assign('cart', $this->cart);
+
+        $this->addJSData('isQuote', !$this->cart->isProductsInStock());
     }
 
     /**
@@ -322,6 +340,24 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
+     * Handle the webhook which is called by the payment provider.
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
+    private function runWebhook(): void
+    {
+        // Start the payment
+        $paymentMethod = $this->getPaymentMethod($this->getRequest()->get('payment_method'));
+        $paymentMethod->setRequest($this->getRequest());
+
+        echo $paymentMethod->runWebhook();
+
+        die();
+    }
+
+    /**
      * Get the order repository
      *
      * @return OrderRepository
@@ -384,5 +420,17 @@ class Cart extends FrontendBaseBlock
         $class = new $className($method[0], $method[1]);
 
         return $class;
+    }
+
+    /**
+     * Check if it is allowed to checkout
+     *
+     * @throws RedirectException
+     */
+    private function isAllowedToCheckout(): void
+    {
+        if (!$this->cart->isProductsInStock()) {
+            $this->redirect(Navigation::getUrlForBlock('Catalog', 'Cart'));
+        }
     }
 }

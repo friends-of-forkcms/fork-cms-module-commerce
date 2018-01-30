@@ -22,6 +22,12 @@ class ProductRepository extends EntityRepository
         $this->getEntityManager()->persist($product);
     }
 
+    /**
+     * @param int|null $id
+     * @param Locale $locale
+     * @return Product|null
+     * @throws ProductNotFound
+     */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Product
     {
         if ($id === null) {

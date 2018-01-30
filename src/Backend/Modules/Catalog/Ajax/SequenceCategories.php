@@ -2,13 +2,6 @@
 
 namespace Backend\Modules\Catalog\Ajax;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
@@ -26,7 +19,7 @@ class SequenceCategories extends BackendBaseAJAXAction
     public function execute(): void
     {
         parent::execute();
-        
+
         // get parameters
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 

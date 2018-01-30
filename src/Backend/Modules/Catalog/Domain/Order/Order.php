@@ -66,7 +66,7 @@ class Order
      * @var OrderVat[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderVat\OrderVat", mappedBy="order")
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"title" = "ASC"})
      */
     private $vats;
 

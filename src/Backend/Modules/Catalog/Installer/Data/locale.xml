@@ -523,6 +523,122 @@
         <translation language="nl"><![CDATA[laat "meer zien" naar aantal filters]]></translation>
         <translation language="en"><![CDATA[display "show more" after filters count]]></translation>
       </item>
+      <item type="label" name="OrderNumber">
+        <translation language="nl"><![CDATA[bestelnummer]]></translation>
+        <translation language="en"><![CDATA[order number]]></translation>
+      </item>
+      <item type="label" name="OrderDate">
+        <translation language="nl"><![CDATA[bestel datum]]></translation>
+        <translation language="en"><![CDATA[order date]]></translation>
+      </item>
+      <item type="label" name="Total">
+        <translation language="nl"><![CDATA[totaal]]></translation>
+        <translation language="en"><![CDATA[totaal]]></translation>
+      </item>
+      <item type="label" name="CustomerDetails">
+        <translation language="nl"><![CDATA[klantdetails]]></translation>
+        <translation language="en"><![CDATA[customer details]]></translation>
+      </item>
+      <item type="label" name="InvoiceAddress">
+        <translation language="nl"><![CDATA[factuuradres]]></translation>
+        <translation language="en"><![CDATA[invoice address]]></translation>
+      </item>
+      <item type="label" name="ShipmentAddress">
+        <translation language="nl"><![CDATA[verzendadres]]></translation>
+        <translation language="en"><![CDATA[shipment address]]></translation>
+      </item>
+      <item type="label" name="OrderHistory">
+        <translation language="nl"><![CDATA[bestelgeschiedenis]]></translation>
+        <translation language="en"><![CDATA[order history]]></translation>
+      </item>
+      <item type="label" name="CustomerNotified">
+        <translation language="nl"><![CDATA[klant geïnformeerd]]></translation>
+        <translation language="en"><![CDATA[customer notified]]></translation>
+      </item>
+      <item type="label" name="NotifyCustomer">
+        <translation language="nl"><![CDATA[klant informeren]]></translation>
+        <translation language="en"><![CDATA[notify customer]]></translation>
+      </item>
+      <item type="label" name="AddOrderHistory">
+        <translation language="nl"><![CDATA[bestelgeschiedenis toevoegen]]></translation>
+        <translation language="en"><![CDATA[add order history]]></translation>
+      </item>
+      <item type="message" name="OrderUpdated">
+        <translation language="nl"><![CDATA[Uw bestelling is zojuist bijgewerkt.]]></translation>
+        <translation language="en"><![CDATA[Your order has been updated.]]></translation>
+      </item>
+      <item type="label" name="OrderGreeting">
+        <translation language="nl"><![CDATA[beste %s,]]></translation>
+        <translation language="en"><![CDATA[dear %s,]]></translation>
+      </item>
+      <item type="message" name="OrderUpdated">
+        <translation language="nl"><![CDATA[Uw bestelling is zojuist bijgewerkt.]]></translation>
+        <translation language="en"><![CDATA[Your order has been updated.]]></translation>
+      </item>
+      <item type="label" name="UpdateOrderMailSubject">
+        <translation language="nl"><![CDATA[Uw bestelling %s]]></translation>
+        <translation language="en"><![CDATA[Your order %s]]></translation>
+      </item>
+      <item type="label" name="OrderNumber">
+        <translation language="nl"><![CDATA[bestelnummer]]></translation>
+        <translation language="en"><![CDATA[order number]]></translation>
+      </item>
+      <item type="label" name="KindRegards">
+        <translation language="nl"><![CDATA[Met vriendelijke groet,]]></translation>
+        <translation language="en"><![CDATA[Kind regards,]]></translation>
+      </item>
+      <item type="label" name="OrderDetails">
+        <translation language="nl"><![CDATA[bestelgegevens]]></translation>
+        <translation language="en"><![CDATA[order details]]></translation>
+      </item>
+      <item type="label" name="OrderRefunded">
+        <translation language="nl"><![CDATA[order terug gestort]]></translation>
+        <translation language="en"><![CDATA[order refunded]]></translation>
+      </item>
+      <item type="label" name="OrderExpired">
+        <translation language="nl"><![CDATA[order verlopen]]></translation>
+        <translation language="en"><![CDATA[order expired]]></translation>
+      </item>
+      <item type="label" name="DefaultSettings">
+        <translation language="nl"><![CDATA[standaard instellingen]]></translation>
+        <translation language="en"><![CDATA[default settings]]></translation>
+      </item>
+      <item type="label" name="Options">
+        <translation language="nl"><![CDATA[opties]]></translation>
+        <translation language="en"><![CDATA[options]]></translation>
+      </item>
+      <item type="label" name="Required">
+        <translation language="nl"><![CDATA[verplicht]]></translation>
+        <translation language="en"><![CDATA[required]]></translation>
+      </item>
+      <item type="label" name="DropDown">
+        <translation language="nl"><![CDATA[keuze menu]]></translation>
+        <translation language="en"><![CDATA[DropDown]]></translation>
+      </item>
+      <item type="label" name="Placeholder">
+        <translation language="nl"><![CDATA[placeholder]]></translation>
+        <translation language="en"><![CDATA[placeholder]]></translation>
+      </item>
+      <item type="label" name="MakeAChoice">
+        <translation language="nl"><![CDATA[maak een keuze]]></translation>
+        <translation language="en"><![CDATA[make a choice]]></translation>
+      </item>
+      <item type="label" name="Values">
+        <translation language="nl"><![CDATA[waarden]]></translation>
+        <translation language="en"><![CDATA[values]]></translation>
+      </item>
+      <item type="label" name="DefaultValue">
+        <translation language="nl"><![CDATA[standaard waarde]]></translation>
+        <translation language="en"><![CDATA[default value]]></translation>
+      </item>
+      <item type="message" name="CannotAddProductOptionsWhenCreatingANewProduct">
+        <translation language="nl"><![CDATA[Kan geen product opties toevoegen wanneer een nieuw product wordt toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[Cannot add product options when creating a new product.]]></translation>
+      </item>
+      <item type="message" name="CannotAddProductOptionValuesWhenCreatingANewProductOption">
+        <translation language="nl"><![CDATA[Kan geen product optie waarden toevoegen wanneer een nieuw product opties wordt toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[Cannot add product option values when creating a new product option.]]></translation>
+      </item>
     </Catalog>
     <Core>
       <item type="label" name="Catalog">
@@ -540,6 +656,10 @@
       <item type="label" name="Cart">
         <translation language="nl"><![CDATA[winkelwagen]]></translation>
         <translation language="en"><![CDATA[cart]]></translation>
+      </item>
+      <item type="label" name="EditOrder">
+        <translation language="nl"><![CDATA[bewerk bestelling]]></translation>
+        <translation language="en"><![CDATA[edit order]]></translation>
       </item>
     </Core>
   </Backend>
@@ -893,11 +1013,11 @@
         <translation language="en"><![CDATA[order created at]]></translation>
       </item>
       <item type="label" name="InvoiceAddress">
-        <translation language="nl"><![CDATA[factuuraddres]]></translation>
+        <translation language="nl"><![CDATA[factuuradres]]></translation>
         <translation language="en"><![CDATA[invoice address]]></translation>
       </item>
       <item type="label" name="ShipmentAddress">
-        <translation language="nl"><![CDATA[verzendaddres]]></translation>
+        <translation language="nl"><![CDATA[verzendadres]]></translation>
         <translation language="en"><![CDATA[shipment address]]></translation>
       </item>
       <item type="label" name="ShipmentMethod">
@@ -1015,6 +1135,10 @@
       <item type="label" name="Weight">
         <translation language="nl"><![CDATA[gewicht]]></translation>
         <translation language="en"><![CDATA[weight]]></translation>
+      </item>
+      <item type="label" name="MakeYourChoice">
+        <translation language="nl"><![CDATA[maak direct een keuze]]></translation>
+        <translation language="en"><![CDATA[make your choice]]></translation>
       </item>
     </Core>
   </Frontend>

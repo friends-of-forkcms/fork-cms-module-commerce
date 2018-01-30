@@ -13,3 +13,5 @@ imports:
   - { resource: stock_status_commands.yml }
   - { resource: vat_commands.yml }
   - { resource: quote_events.yml }
+  - { resource: product_option_commands.yml }
+  - { resource: product_option_value_commands.yml }

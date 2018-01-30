@@ -21,6 +21,10 @@
                data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
           </li>
           <li role="presentation">
+            <a href="#tabOptions" aria-controls="tabOptions" role="tab"
+               data-toggle="tab">{{ 'lbl.Options'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
             <a href="#tabSpecifications" aria-controls="tabSpecifications" role="tab"
                data-toggle="tab">{{ 'lbl.Specifications'|trans|ucfirst }}</a>
           </li>
@@ -118,6 +122,13 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabOptions">
+            <div class="row">
+              <div class="col-md-12">
+                {{ 'msg.CannotAddProductOptionsWhenCreatingANewProduct'|trans }}
               </div>
             </div>
           </div>

@@ -14,6 +14,12 @@ class OrderRepository extends EntityRepository
         $this->getEntityManager()->persist($order);
     }
 
+    /**
+     * @param int|null $id
+     *
+     * @return Order|null
+     * @throws OrderNotFound
+     */
     public function findOneById(?int $id): ?Order
     {
         if ($id === null) {
@@ -41,6 +47,13 @@ class OrderRepository extends EntityRepository
         );
     }
 
+    /**
+     * @param int $status
+     *
+     * @return int
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function getStatusCount(int $status): int
     {
         $query_builder = $this->createQueryBuilder('i');

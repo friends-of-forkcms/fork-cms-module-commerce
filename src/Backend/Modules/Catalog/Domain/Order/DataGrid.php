@@ -4,7 +4,6 @@ namespace Backend\Modules\Catalog\Domain\Order;
 
 use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\DataGridFunctions;
-use Backend\Core\Engine\TemplateModifiers;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
@@ -15,54 +14,48 @@ use Backend\Core\Language\Locale;
  */
 class DataGrid extends DataGridDatabase
 {
-    public function __construct(Locale $locale, int $status)
+    /**
+     * DataGrid constructor.
+     *
+     * @param Locale $locale
+     * @param int|null $status
+     *
+     * @throws \Exception
+     * @throws \SpoonDatagridException
+     */
+    public function __construct(Locale $locale, int $status = null)
     {
-        parent::__construct(
-            'SELECT
-		 	i.id, i.id AS order_nr, i.status, UNIX_TIMESTAMP(i.date) AS ordered_on,
-			i.email, i.first_name AS FirstName, i.last_name AS LastName, i.total AS TotalPrice
-		 FROM catalog_orders AS i
-		 WHERE i.status = :status
-		 GROUP BY i.id',
-            ['status' => $status]
-        );
+        $query = 'SELECT i.id as order_number, CONCAT_WS(" ", a.first_name, a.last_name) as name, i.total,
+            (SELECT s.title FROM catalog_order_statuses s INNER JOIN catalog_order_histories h ON h.order_status_id = s.id WHERE h.order_id = i.id ORDER BY h.created_at DESC LIMIT 1) as order_status
+            , UNIX_TIMESTAMP(i.date) as `order_date`
+            FROM catalog_orders AS i INNER JOIN catalog_order_addresses a ON a.id = i.invoice_address_id';
 
-        $this->setHeaderLabels(array('ordered_on' => ucfirst(Language::lbl('Date'))));
-
-        // add the multicheckbox column
-        $this->setMassActionCheckboxes('checkbox', '[id]');
+        parent::__construct($query);
 
         // assign column functions
-        $this->setColumnFunction(array(new DataGridFunctions(), 'getTimeAgo'), '[ordered_on]', 'ordered_on', true);
+        $this->setColumnFunction(array(new DataGridFunctions(), 'getTimeAgo'), '[order_date]', 'order_date', true);
+        $this->setColumnFunction(array(self::class, 'getFormatPrice'), '[total]', 'total', true);
 
         // sorting
-        $this->setSortingColumns(array('ordered_on', 'order_nr'), 'ordered_on');
+        $this->setSortingColumns(array('order_date', 'order_number'), 'order_date');
         $this->setSortParameter('desc');
-
-        // hide columns
-        $this->setColumnsHidden(['status']);
-
-        switch ($status) {
-            case Order::STATUS_MODERATION:
-                $this->setActiveTab('tabModeration');
-                break;
-            case Order::STATUS_COMPLETED:
-                $this->setActiveTab('tabCompleted');
-                break;
-        }
-
-        // @todo add mass actions
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditOrder')) {
-            $editUrl = Model::createUrlForAction('EditOrder', null, null, ['id' => '[id]'], false);
-            $this->setColumnURL('title', $editUrl);
+            $editUrl = Model::createUrlForAction('EditOrder', null, null, ['id' => '[order_number]'], false);
+            $this->setColumnURL('order_number', $editUrl);
+            $this->setColumnURL('name', $editUrl);
             $this->addColumn('edit', null, Language::lbl('Edit'), $editUrl, Language::lbl('Edit'));
         }
     }
 
-    public static function getHtml(Locale $locale, int $status): string
+    public static function getHtml(Locale $locale, int $status = null): string
     {
-        return (new self($locale, $status))->getContent();
+        return (new self($locale, $status = null))->getContent();
+    }
+
+    public function getFormatPrice($price)
+    {
+        return '&euro; ' .number_format($price, 2, ',', '.');
     }
 }

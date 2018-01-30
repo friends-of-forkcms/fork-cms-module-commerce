@@ -5,6 +5,7 @@ namespace Backend\Modules\Catalog\Domain\Cart;
 use Backend\Modules\Catalog\Domain\Cart\Exception\CartNotFound;
 use Common\Locale;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Frontend\Core\Engine\Model as FrontendModel;
 
 class CartRepository extends EntityRepository
@@ -60,10 +61,14 @@ class CartRepository extends EntityRepository
     {
         $query_builder = $this->createQueryBuilder('i');
 
-        $entity = $query_builder->where('i.session_id = :session_id')
-                                ->setParameter('session_id', $hash)
-                                ->getQuery()
-                                ->getOneOrNullResult();
+        try {
+            $entity = $query_builder->where('i.session_id = :session_id')
+                                    ->setParameter('session_id', $hash)
+                                    ->getQuery()
+                                    ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            $entity = null;
+        }
 
         if (!$entity) {
             $entity = new Cart();

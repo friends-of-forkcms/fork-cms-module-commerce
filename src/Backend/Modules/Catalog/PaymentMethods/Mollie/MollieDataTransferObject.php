@@ -42,4 +42,18 @@ class MollieDataTransferObject extends DataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $orderCancelledId;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $orderRefundedId;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $orderExpiredId;
 }

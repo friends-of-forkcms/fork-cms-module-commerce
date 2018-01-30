@@ -3,6 +3,7 @@
 namespace Backend\Modules\Catalog\Domain\Cart;
 
 use Backend\Modules\Catalog\Domain\Product\Product;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,13 @@ class CartValue
      * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $cart;
+
+    /**
+     * @var CartValueOption[]
+     *
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\Cart\CartValueOption", mappedBy="cart_value", cascade={"remove", "persist"})
+     */
+    private $cart_value_options;
 
     /**
      * @var Product
@@ -59,9 +67,19 @@ class CartValue
     private $date;
 
     /**
+     * @var bool
+     */
+    private $isInStock;
+
+    public function __construct()
+    {
+        $this->cart_value_options = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -80,6 +98,32 @@ class CartValue
     public function setCart(Cart $cart)
     {
         $this->cart = $cart;
+    }
+
+    /**
+     * @return CartValueOption[]
+     */
+    public function getCartValueOptions()
+    {
+        return $this->cart_value_options;
+    }
+
+    /**
+     * @param CartValueOption[] $cart_value_options
+     */
+    public function setCartValueOptions(array $cart_value_options): void
+    {
+        $this->cart_value_options = $cart_value_options;
+    }
+
+    /**
+     * Add a cart value option
+     *
+     * @param CartValueOption $cartValueOption
+     */
+    public function addCartValueOption(CartValueOption $cartValueOption): void
+    {
+        $this->cart_value_options->add($cartValueOption);
     }
 
     /**
@@ -156,4 +200,22 @@ class CartValue
         }
     }
 
+    public function isInStock(): bool
+    {
+        if ($this->isInStock === null) {
+            $inStock = true;
+
+            if (!$this->getProduct()->inStock()) {
+                $inStock = false;
+            }
+
+            if ($this->getQuantity() > $this->getProduct()->inStock()) {
+                $inStock = false;
+            }
+
+            $this->isInStock = $inStock;
+        }
+
+        return $this->isInStock;
+    }
 }

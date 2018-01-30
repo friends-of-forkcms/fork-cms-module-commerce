@@ -89,6 +89,12 @@ services:
         arguments:
             - Backend\Modules\Catalog\Domain\Cart\CartValue
 
+    catalog.repository.cart_value_option:
+        class: Backend\Modules\Catalog\Domain\Cart\CartValueOptionRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\Cart\CartValueOption
+
     catalog.repository.shipment_method:
         class: Backend\Modules\Catalog\Domain\ShipmentMethod\ShipmentMethodRepository
         factory: ["@doctrine.orm.entity_manager", getRepository]
@@ -100,3 +106,15 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethod
+
+    catalog.repository.product_option:
+        class: Backend\Modules\Catalog\Domain\ProductOption\ProductOptionRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\ProductOption\ProductOption
+
+    catalog.repository.product_option_value:
+        class: Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValueRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue

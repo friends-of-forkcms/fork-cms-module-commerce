@@ -7,6 +7,7 @@ use Backend\Core\Installer\ModuleInstaller;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
+use Backend\Modules\Catalog\Domain\Cart\CartValueOption;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
@@ -16,6 +17,8 @@ use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
 use Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Catalog\Domain\Product\Product;
+use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
+use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\ShipmentMethod\ShipmentMethod;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
@@ -124,6 +127,18 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'DisablePaymentMethod');
         $this->setActionRights(1, 'Catalog', 'EnablePaymentMethod');
 
+        // product options methods
+        $this->setActionRights(1, 'Catalog', 'AddProductOption');
+        $this->setActionRights(1, 'Catalog', 'EditProductOption');
+        $this->setActionRights(1, 'Catalog', 'DeleteProductOption');
+        $this->setActionRights(1, 'Catalog', 'SequenceProductOptions');
+
+        // product option values methods
+        $this->setActionRights(1, 'Catalog', 'AddProductOptionValue');
+        $this->setActionRights(1, 'Catalog', 'EditProductOptionValue');
+        $this->setActionRights(1, 'Catalog', 'DeleteProductOptionValue');
+        $this->setActionRights(1, 'Catalog', 'SequenceProductOptionValues');
+
         // add extra's
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Index');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Cart');
@@ -144,6 +159,10 @@ class Installer extends ModuleInstaller
             [
                 'catalog/add',
                 'catalog/edit',
+                'catalog/add_product_option',
+                'catalog/edit_product_option',
+                'catalog/add_product_option_value',
+                'catalog/edit_product_option_value',
             ]
         );
         $this->setNavigation(
@@ -240,6 +259,8 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(StockStatus::class);
         Model::get('fork.entity.create_schema')->forEntityClass(OrderStatus::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Product::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(ProductOption::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(ProductOptionValue::class);
         Model::get('fork.entity.create_schema')->forEntityClass(ProductSpecial::class);
         Model::get('fork.entity.create_schema')->forEntityClass(OrderAddress::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
@@ -250,6 +271,7 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(SpecificationValue::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Cart::class);
         Model::get('fork.entity.create_schema')->forEntityClass(CartValue::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(CartValueOption::class);
         Model::get('fork.entity.create_schema')->forEntityClass(ShipmentMethod::class);
         Model::get('fork.entity.create_schema')->forEntityClass(PaymentMethod::class);
     }

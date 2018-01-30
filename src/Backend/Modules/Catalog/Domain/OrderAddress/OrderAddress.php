@@ -157,7 +157,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->email_address;
     }
@@ -165,7 +165,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
