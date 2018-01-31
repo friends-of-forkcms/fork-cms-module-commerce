@@ -97,17 +97,18 @@
 
 (function( $ ) {
     $(function(){
-        $('.select2entity[data-autostart="true"]:not([data-action="AutoCompleteSpecificationValue"])').select2entity();
+        $('.select2entity[data-autostart="true"]:not([data-action="AutoCompleteSpecificationValue"])').each(function(){
+          $(this).select2entity($(this).data());
+        });
 
         var addCollectionButton = $('[data-collection="product_specification_values"]');
         addCollectionButton.on('collection-field-added', function(){
-            var selectElement = $('[data-action="AutoCompleteSpecificationValue"]:last');
+            var selectElement = $('[data-action="AutoCompleteSpecificationValue"]:last'),
+              options = selectElement.data();
 
-            selectElement.select2entity(
-                {
-                    parentElement : selectElement.closest('.list-group-item').find('[name*="product[specification_values]"]')
-                }
-            );
+            options['parentElement'] = selectElement.closest('.list-group-item').find('[name*="product[specification_values]"]');
+
+            selectElement.select2entity(options);
         });
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -120,11 +121,10 @@
 
         function activateAutoCompleteSpecificationValue() {
             $('[data-action="AutoCompleteSpecificationValue"]').each(function(){
-                $(this).select2entity(
-                    {
-                        parentElement : $(this).closest('.list-group-item').find('[name*="product[specification_values]"]')
-                    }
-                );
+                var options = $(this).data();
+                options['parentElement'] =  $(this).closest('.list-group-item').find('[name*="product[specification_values]"]');
+
+                $(this).select2entity(options);
             });
         }
     });

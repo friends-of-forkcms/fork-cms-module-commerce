@@ -32,7 +32,7 @@ class AutoCompleteSpecificationValue extends BackendBaseAJAXAction
          * @var SpecificationValue[] $specificationValues
          */
         $specificationValues = $entityManager->findForAutoComplete(
-            $this->getRequest()->request->get('q'),
+            $this->getRequest()->request->get('q', ''),
             $this->getRequest()->request->get('parent'),
             $this->getRequest()->query->get('page_limit'),
             $page

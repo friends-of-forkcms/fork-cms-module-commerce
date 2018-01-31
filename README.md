@@ -42,7 +42,7 @@ Add some lines to `gulpfile.js`:
 
 And than build the files:
 ```
-guild build
+gulp build
 ```
 
 Now you should be able to run this module.
