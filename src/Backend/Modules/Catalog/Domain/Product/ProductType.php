@@ -14,6 +14,7 @@ use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueT
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
+use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -39,59 +40,59 @@ class ProductType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         )->add(
             'summary',
             TextareaType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Summary'
+                'label' => 'lbl.Summary'
             ]
         )->add(
             'text',
             EditorType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.Content'
+                'label' => 'lbl.Content'
             ]
         )->add(
             'weight',
             TextType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.Weight',
+                'label' => 'lbl.Weight',
             ]
         )->add(
             'price',
             MoneyType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Price',
+                'label' => 'lbl.Price',
             ]
         )->add(
             'order_quantity',
             NumberType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.OrderQuantity',
+                'label' => 'lbl.OrderQuantity',
             ]
         )->add(
             'stock',
             NumberType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Stock',
+                'label' => 'lbl.Stock',
             ]
         )->add(
             'from_stock',
             ChoiceType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.FromStock',
-                'choices'  => [
+                'label' => 'lbl.FromStock',
+                'choices' => [
                     'lbl.Yes' => true,
-                    'lbl.No'  => false,
+                    'lbl.No' => false,
                 ]
             ]
         )->add(
@@ -99,17 +100,17 @@ class ProductType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.ArticleNumber'
+                'label' => 'lbl.ArticleNumber'
             ]
         )->add(
             'category',
             EntityType::class,
             [
-                'required'     => true,
-                'label'        => 'lbl.InCategory',
-                'placeholder'  => 'lbl.None',
-                'class'        => Category::class,
-                'choices'      => $options['categories'],
+                'required' => true,
+                'label' => 'lbl.InCategory',
+                'placeholder' => 'lbl.None',
+                'class' => Category::class,
+                'choices' => $options['categories'],
                 'choice_label' => function ($category) {
                     $prefix = null;
                     if ($category->path > 0) {
@@ -123,57 +124,57 @@ class ProductType extends AbstractType
             'related_products',
             Select2EntityType::class,
             [
-                'multiple'             => true,
-                'remote_route'         => 'backend_ajax',
-                'remote_params'        => [
+                'multiple' => true,
+                'remote_route' => 'backend_ajax',
+                'remote_params' => [
                     'excluded_id' => ($options['product'] ? $options['product']->getId() : null)
                 ],
-                'class'                => Product::class,
-                'primary_key'          => 'id',
-                'text_property'        => 'getTitle',
+                'class' => Product::class,
+                'primary_key' => 'id',
+                'text_property' => 'getTitle',
                 'minimum_input_length' => 3,
-                'page_limit'           => 10,
-                'allow_clear'          => true,
-                'delay'                => 250,
-                'cache'                => false,
-                'cache_timeout'        => 60000, // if 'cache' is true
-                'language'             => Locale::workingLocale(),
-                'label'                => 'lbl.RelatedProducts',
-                'action'               => 'AutoCompleteProducts',
+                'page_limit' => 10,
+                'allow_clear' => true,
+                'delay' => 250,
+                'cache' => false,
+                'cache_timeout' => 60000, // if 'cache' is true
+                'language' => Locale::workingLocale(),
+                'label' => 'lbl.RelatedProducts',
+                'action' => 'AutoCompleteProducts',
             ]
         )->add(
             'up_sell_products',
             Select2EntityType::class,
             [
-                'multiple'             => true,
-                'remote_route'         => 'backend_ajax',
-                'remote_params'        => [
+                'multiple' => true,
+                'remote_route' => 'backend_ajax',
+                'remote_params' => [
                     'excluded_id' => ($options['product'] ? $options['product']->getId() : null)
                 ],
-                'class'                => Product::class,
-                'primary_key'          => 'id',
-                'text_property'        => 'getTitle',
+                'class' => Product::class,
+                'primary_key' => 'id',
+                'text_property' => 'getTitle',
                 'minimum_input_length' => 3,
-                'page_limit'           => 10,
-                'allow_clear'          => true,
-                'delay'                => 250,
-                'cache'                => false,
-                'cache_timeout'        => 60000, // if 'cache' is true
-                'language'             => Locale::workingLocale(),
-                'label'                => 'lbl.UpSellProducts',
-                'action'               => 'AutoCompleteProducts',
+                'page_limit' => 10,
+                'allow_clear' => true,
+                'delay' => 250,
+                'cache' => false,
+                'cache_timeout' => 60000, // if 'cache' is true
+                'language' => Locale::workingLocale(),
+                'label' => 'lbl.UpSellProducts',
+                'action' => 'AutoCompleteProducts',
             ]
         )->add(
             $builder->create(
                 'specification_values',
                 CollectionType::class,
                 [
-                    'required'     => false,
-                    'entry_type'   => ProductSpecificationValueType::class,
-                    'allow_add'    => true,
+                    'required' => false,
+                    'entry_type' => ProductSpecificationValueType::class,
+                    'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
-                    'label'        => 'lbl.Specifications',
+                    'label' => 'lbl.Specifications',
                 ]
             )->addModelTransformer(new CallbackTransformer(
                 function ($entities) {
@@ -186,7 +187,7 @@ class ProductType extends AbstractType
                     return $dataTransferObjects;
                 },
                 function ($dataTransferObjects) {
-                    $entities      = [];
+                    $entities = [];
                     $entityManager = Model::get('doctrine.orm.entity_manager');
 
                     /**
@@ -211,52 +212,60 @@ class ProductType extends AbstractType
             'specials',
             CollectionType::class,
             [
-                'required'     => false,
-                'entry_type'   => ProductSpecialType::class,
-                'allow_add'    => true,
+                'required' => false,
+                'entry_type' => ProductSpecialType::class,
+                'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label'        => 'lbl.Offer',
+                'label' => 'lbl.Offer',
             ]
         )->add(
             'brand',
             EntityType::class,
             [
-                'label'        => 'lbl.Brand',
-                'placeholder'  => 'lbl.None',
-                'class'        => Brand::class,
-                'choice_label' => 'title'
+                'label' => 'lbl.Brand',
+                'placeholder' => 'lbl.None',
+                'class' => Brand::class,
+                'choice_label' => 'title',
+                'required' => false,
             ]
         )->add(
             'vat',
             EntityType::class,
             [
-                'label'         => 'lbl.Vat',
-                'class'         => Vat::class,
+                'label' => 'lbl.Vat',
+                'class' => Vat::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
-                              ->orderBy('i.sequence', 'ASC');
+                        ->orderBy('i.sequence', 'ASC');
                 },
-                'choice_label'  => 'title'
+                'choice_label' => 'title'
             ]
         )->add(
             'stock_status',
             EntityType::class,
             [
-                'label'         => 'lbl.NotInStockStatus',
-                'class'         => StockStatus::class,
+                'label' => 'lbl.NotInStockStatus',
+                'class' => StockStatus::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
-                              ->orderBy('i.title', 'ASC');
+                        ->orderBy('i.title', 'ASC');
                 },
-                'choice_label'  => 'title'
+                'choice_label' => 'title'
             ]
         )->add(
             'images',
             MediaGroupType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.Images',
+                'label' => 'lbl.Images',
+            ]
+        )->add(
+            'downloads',
+            MediaGroupType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.Downloads',
             ]
         )->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -265,10 +274,10 @@ class ProductType extends AbstractType
                     'meta',
                     MetaType::class,
                     [
-                        'base_field_name'                  => 'title',
-                        'generate_url_callback_class'      => 'catalog.repository.product',
-                        'generate_url_callback_method'     => 'getUrl',
-                        'detail_url'                       => '',
+                        'base_field_name' => 'title',
+                        'generate_url_callback_class' => 'catalog.repository.product',
+                        'generate_url_callback_method' => 'getUrl',
+                        'detail_url' => '',
                         'generate_url_callback_parameters' => [
                             $event->getData()->locale,
                             $event->getData()->id,
@@ -285,7 +294,7 @@ class ProductType extends AbstractType
             [
                 'data_class' => ProductDataTransferObject::class,
                 'categories' => null,
-                'product'    => null
+                'product' => null
             ]
         );
     }

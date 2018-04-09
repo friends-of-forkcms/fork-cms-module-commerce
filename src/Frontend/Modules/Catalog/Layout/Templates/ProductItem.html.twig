@@ -1,0 +1,33 @@
+<div class="product-item text-center bg-light clickable" data-url="{{ product.url }}">
+  <img src="{{ (product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}" alt="{{ product.title }}" />
+  <div class="inner">
+    <h3>
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    <p>
+      <span>Art. nr. {{ product.sku }}</span>
+      {{ product.summary }}
+    </p>
+
+    {% if product.inStock %}
+      <div class="price-box">
+        {% if product.hasActiveSpecialPrice %}
+          <p class="price-old">
+            <span >€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
+          </p>
+          <p class="price-new">
+            <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+          </p>
+        {% else %}
+          <p class="price">
+            <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+          </p>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="price-box">
+        <p class="price">{{ product.stockStatus.title }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>

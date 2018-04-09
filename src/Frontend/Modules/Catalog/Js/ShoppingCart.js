@@ -9,7 +9,7 @@ $(function(){
         }
 
         // Some special stuff when we are on a product detail page
-        if (jsFrontend.data.exists('Catalog') && jsFrontend.data.exists('Catalog.isProductDetail')) {
+        if (jsFrontend.data.exists('Catalog') && jsFrontend.data.get('Catalog')['isProductDetail']) {
             var data = $('form[name=product]').serialize();
 
             // Cleanup errors

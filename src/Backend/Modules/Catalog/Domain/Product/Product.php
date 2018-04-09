@@ -118,6 +118,7 @@ class Product
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="related_product_id", referencedColumnName="id")}
      * )
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $related_products;
 
@@ -128,6 +129,7 @@ class Product
      *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="up_sell_product_id", referencedColumnName="id")}
      *      )
+     * @ORM\OrderBy({"sequence" = "ASC", "category" = "ASC"})
      */
     protected $up_sell_products;
 
@@ -219,8 +221,26 @@ class Product
      *      referencedColumnName="id",
      *      onDelete="cascade"
      * )
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     protected $images;
+
+    /**
+     * @var MediaGroup
+     *
+     * @ORM\OneToOne(
+     *      targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
+     *      cascade="persist",
+     *      orphanRemoval=true
+     * )
+     * @ORM\JoinColumn(
+     *      name="downloadGroupId",
+     *      referencedColumnName="id",
+     *      onDelete="cascade"
+     * )
+     * @ORM\OrderBy({"sequence" = "ASC"})
+     */
+    protected $downloads;
 
     /**
      * @ORM\Column(type="integer", length=11, nullable=true)
@@ -271,33 +291,36 @@ class Product
         ?string $text,
         int $sequence,
         MediaGroup $images,
+        MediaGroup $downloads,
         $specification_values,
         $specials,
         $related_products,
         $up_sell_products
-    ) {
-        $this->cart_values          = new ArrayCollection();
-        $this->meta                 = $meta;
-        $this->category             = $category;
-        $this->brand                = $brand;
-        $this->vat                  = $vat;
-        $this->stock_status         = $stock_status;
-        $this->locale               = $locale;
-        $this->title                = $title;
-        $this->weight               = $weight;
-        $this->price                = $price;
-        $this->stock                = $stock;
-        $this->order_quantity       = $order_quantity;
-        $this->from_stock           = $from_stock;
-        $this->sku                  = $sku;
-        $this->summary              = $summary;
-        $this->text                 = $text;
-        $this->sequence             = $sequence;
-        $this->images               = $images;
+    )
+    {
+        $this->cart_values = new ArrayCollection();
+        $this->meta = $meta;
+        $this->category = $category;
+        $this->brand = $brand;
+        $this->vat = $vat;
+        $this->stock_status = $stock_status;
+        $this->locale = $locale;
+        $this->title = $title;
+        $this->weight = $weight;
+        $this->price = $price;
+        $this->stock = $stock;
+        $this->order_quantity = $order_quantity;
+        $this->from_stock = $from_stock;
+        $this->sku = $sku;
+        $this->summary = $summary;
+        $this->text = $text;
+        $this->sequence = $sequence;
+        $this->images = $images;
+        $this->downloads = $downloads;
         $this->specification_values = $specification_values;
-        $this->specials             = $specials;
-        $this->related_products     = $related_products;
-        $this->up_sell_products     = $up_sell_products;
+        $this->specials = $specials;
+        $this->related_products = $related_products;
+        $this->up_sell_products = $up_sell_products;
     }
 
     public static function fromDataTransferObject(ProductDataTransferObject $dataTransferObject)
@@ -329,6 +352,7 @@ class Product
             $dataTransferObject->text,
             $dataTransferObject->sequence,
             $dataTransferObject->images,
+            $dataTransferObject->downloads,
             $dataTransferObject->specification_values,
             $dataTransferObject->specials,
             $dataTransferObject->related_products,
@@ -469,6 +493,14 @@ class Product
         return $this->images;
     }
 
+    /**
+     * @return MediaGroup
+     */
+    public function getDownloads(): ?MediaGroup
+    {
+        return $this->downloads;
+    }
+
     public function getSequence(): int
     {
         return $this->sequence;
@@ -556,27 +588,28 @@ class Product
     {
         $product = $dataTransferObject->getProductEntity();
 
-        $product->meta                 = $dataTransferObject->meta;
-        $product->category             = $dataTransferObject->category;
-        $product->brand                = $dataTransferObject->brand;
-        $product->vat                  = $dataTransferObject->vat;
-        $product->stock_status         = $dataTransferObject->stock_status;
-        $product->locale               = $dataTransferObject->locale;
-        $product->title                = $dataTransferObject->title;
-        $product->weight               = $dataTransferObject->weight;
-        $product->price                = $dataTransferObject->price;
-        $product->stock                = $dataTransferObject->stock;
-        $product->order_quantity       = $dataTransferObject->order_quantity;
-        $product->from_stock           = $dataTransferObject->from_stock;
-        $product->sku                  = $dataTransferObject->sku;
-        $product->summary              = $dataTransferObject->summary;
-        $product->text                 = $dataTransferObject->text;
-        $product->sequence             = $dataTransferObject->sequence;
-        $product->images               = $dataTransferObject->images;
+        $product->meta = $dataTransferObject->meta;
+        $product->category = $dataTransferObject->category;
+        $product->brand = $dataTransferObject->brand;
+        $product->vat = $dataTransferObject->vat;
+        $product->stock_status = $dataTransferObject->stock_status;
+        $product->locale = $dataTransferObject->locale;
+        $product->title = $dataTransferObject->title;
+        $product->weight = $dataTransferObject->weight;
+        $product->price = $dataTransferObject->price;
+        $product->stock = $dataTransferObject->stock;
+        $product->order_quantity = $dataTransferObject->order_quantity;
+        $product->from_stock = $dataTransferObject->from_stock;
+        $product->sku = $dataTransferObject->sku;
+        $product->summary = $dataTransferObject->summary;
+        $product->text = $dataTransferObject->text;
+        $product->sequence = $dataTransferObject->sequence;
+        $product->images = $dataTransferObject->images;
+        $product->downloads = $dataTransferObject->downloads;
         $product->specification_values = $dataTransferObject->specification_values;
-        $product->specials             = $dataTransferObject->specials;
-        $product->related_products     = $dataTransferObject->related_products;
-        $product->up_sell_products     = $dataTransferObject->up_sell_products;
+        $product->specials = $dataTransferObject->specials;
+        $product->related_products = $dataTransferObject->related_products;
+        $product->up_sell_products = $dataTransferObject->up_sell_products;
 
         return $product;
     }
@@ -691,7 +724,7 @@ class Product
             return;
         }
 
-        $expr  = Criteria::expr();
+        $expr = Criteria::expr();
         $today = (new \DateTime('now'))->setTime(0, 0, 0);
         $price = $this->getPrice();
 
@@ -711,7 +744,7 @@ class Product
 
         if ($specialPrice = $specialPrices->first()) {
             $this->hasActiveSpecialPrice = true;
-            $price                       = $specialPrice->getPrice();
+            $price = $specialPrice->getPrice();
         }
 
         $this->activePrice = $price;

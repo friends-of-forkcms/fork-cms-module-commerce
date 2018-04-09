@@ -4,15 +4,15 @@ namespace Backend\Modules\Catalog\Ajax;
 
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\Specification\Command\UpdateSpecification;
+use Backend\Modules\Catalog\Domain\Product\Command\UpdateProduct;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of specification values
+ * Alters the sequence of Catalog products
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
-class SequenceSpecifications extends BackendBaseAJAXAction
+class SequenceProducts extends BackendBaseAJAXAction
 {
     public function execute(): void
     {
@@ -22,9 +22,9 @@ class SequenceSpecifications extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the specifications repository
+         * get the product repository
          */
-        $specificationRepository = $this->get('catalog.repository.specification');
+        $productRepository = $this->get('catalog.repository.product');
 
         // list id
         $ids = (array) explode(',', rtrim($newIdSequence, ','));
@@ -33,11 +33,11 @@ class SequenceSpecifications extends BackendBaseAJAXAction
         foreach ($ids as $i => $id) {
 
             // update sequence
-            if ($vat = $specificationRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateSequence = new UpdateSpecification($vat);
-                $updateSequence->sequence = $i + 1;
+            if ($product = $productRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
+                $updateproduct = new UpdateProduct($product);
+                $updateproduct->sequence = $i + 1;
 
-                $this->get('command_bus')->handle($updateSequence);
+                $this->get('command_bus')->handle($updateproduct);
             }
         }
 

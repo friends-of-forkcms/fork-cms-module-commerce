@@ -1,9 +1,13 @@
-<ul>
+<div class="padding-bottom">
+  <div class="product-overview clearfix">
     {% for category in categories %}
-        <li><a href="{{ parentUrl }}/{{ category.meta.url }}">{{ category.title }}</a>
-            {% if not category.children.isEmpty %}
-                {% include '/Modules/Catalog/Layout/Templates/IndexCategory.html.twig' with{'parentUrl' : parentUrl ~'/'~ category.meta.url, 'categories' : category.children} %}
-            {% endif %}
-        </li>
+      <div class="col-md-4 col-sm-6 col-xs-6 no-gutter product-item text-center clickable"
+           data-url="{{ category.url }}">
+        <div class="inner bg-light">
+          <img src="{{ category.image.webPath('source') }}" alt="{{ category.title }}"/>
+          <a class="arrow" href="{{ category.url }}">{{ category.title }}</a>
+        </div>
+      </div>
     {% endfor %}
-</ul>
+  </div>
+</div>

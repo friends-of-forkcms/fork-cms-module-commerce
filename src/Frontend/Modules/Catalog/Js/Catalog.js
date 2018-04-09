@@ -19,7 +19,7 @@ jsFrontend.catalog =
 
         productDetail: function () {
             var photoHolder = $(".product-photo-slider"),
-                thumbnails = $('.thumb-slider .thumbnails li');
+                thumbnails = $('.thumb-slider .thumbnails');
 
             // Stop executing when there are no photos to display
             if (photoHolder.length === 0) {
@@ -35,17 +35,19 @@ jsFrontend.catalog =
                     auto: false,
                     pause: '5000',
                     beforeAnimation: function (i, j) {
-                        thumbnails.filter('.current').removeClass('current');
-                        thumbnails.eq(i - 1).addClass('current');
+                        $('.thumb-slider .thumbnails').find('.current').removeClass('current');
+                        thumbnails.find('a[data-index='+ i +']').closest('li').addClass('current');
                     }
                 }
             );
 
-            thumbnails.find('a').click(function (e) {
+            thumbnails.on('click', 'a[data-index]', function (e) {
                 e.preventDefault();
 
-                thumbnails.find('> .current').removeClass('current');
-                slider.goToSlide($(this).parent().addClass('current').index() + 1);
+                thumbnails.find('.current').removeClass('current');
+                $(this).parent().addClass('current');
+
+                slider.goToSlide($(this).data('index'));
             });
 
             $('[data-fancybox]').fancybox({

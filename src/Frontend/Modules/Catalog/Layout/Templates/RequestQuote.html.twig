@@ -1,0 +1,114 @@
+{% form_theme form with ["Catalog/Layout/Templates/FormHelper.html.twig"] %}
+
+<div class="col-md-12 col-sm-12 col-xs-12 left">
+  <h1>{{ 'lbl.RequestQuote'|trans|ucfirst }}</h1>
+
+  {% if quoteSubmitted %}
+  {% else %}
+    {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+    <div class="panel-group" id="checkoutAccordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            {{ 'lbl.Step1AddressDetails'|trans|ucfirst }}
+          </h4>
+        </div>
+        <div id="stepOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-6">
+                {{ form_row(form.first_name) }}
+                {{ form_row(form.last_name) }}
+                {{ form_row(form.email_address) }}
+                {{ form_row(form.phone) }}
+              </div>
+              <div class="col-md-6">
+                {{ form_row(form.street) }}
+                {{ form_row(form.street) }}
+                <div class="row">
+                  <div class="col-md-4">
+                    {{ form_row(form.zip_code) }}
+                  </div>
+                  <div class="col-md-4">
+                    {{ form_row(form.house_number) }}
+                  </div>
+                  <div class="col-md-4">
+                    {{ form_row(form.house_number_addition) }}
+                  </div>
+                </div>
+                {{ form_row(form.city) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            {{ 'lbl.Step2YourQuoteRequest'|trans|ucfirst }}
+          </h4>
+        </div>
+        <div id="stepTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <div class="shopping-cart">
+              {% for value in cart.values %}
+                <div class="shopping-cart-row bg-light clearfix">
+                  <div class="col-md-1 no-gutter shopping-cart-image">
+                    <img src="{{ (value.product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
+                         alt="{{ value.product.title }}"/>
+                  </div>
+                  <div class="col-md-4 shopping-cart-details">
+                    <div class="col-md-8">
+                      <a href="{{ value.product.url }}">{{ value.product.title }}</a>
+                    </div>
+                    <div class="col-md-4">
+                      <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span><br/>
+                      {{ value.product.sku }}</div>
+                  </div>
+                  <div class="col-md-7 shopping-cart-actions">
+                    <div class="col-md-4">
+                      <span>{{ 'lbl.Amount'|trans|ucfirst }}:</span><br/>
+                      {{ value.quantity }}
+                    </div>
+                    <div class="col-md-3 text-right">
+                      <span>{{ 'lbl.Price'|trans|ucfirst }}: </span><br/>
+                      &euro; {% if value.product.hasActiveSpecialPrice %}{{ value.product.activePrice(false)|formatnumber(2) }}{% else %}{{ value.product.activePrice(false)|formatnumber(2) }}{% endif %}
+                    </div>
+                    <div class="col-md-3 text-right">
+                      <span>{{ 'lbl.Total'|trans|ucfirst }}:</span> <br/>
+                      <strong>€ {{ value.total|formatnumber(2) }}</strong></div>
+                  </div>
+                </div>
+
+                {% for valueOption in value.cartValueOptions %}
+                  <div class="shopping-cart-row bg-light clearfix">
+                    <div class="col-md-5 shopping-cart-details">
+                      {{ valueOption.productOptionValue.title }}
+                      <input type="hidden" value="{{ valueOption.productOptionValue.id }}" data-option="option_{{ valueOption.productOptionValue.productOption.id }}"
+                             name="product[{{ value.product.id }}][option_{{ valueOption.productOptionValue.productOption.id }}]"/>
+                    </div>
+                    <div class="col-md-7 shopping-cart-actions">
+                      <div class="col-md-4">
+                      </div>
+                      <div class="col-md-3 text-right">
+                        &euro; {{ valueOption.productOptionValue.price|formatnumber(2) }}
+                      </div>
+                      <div class="col-md-3 text-right">
+                        <strong data-total="{{ value.product.id }}_option_{{ valueOption.productOptionValue.id }}">€ {{ valueOption.total|formatnumber(2) }}</strong></div>
+                      <div class="col-md-2 text-right"></div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endfor %}
+            </div>
+            <div class="col-md-offset-10 col-md-2 no-gutter steps">
+              <button type="submit"
+                      class="btn btn-primary arrow pull-right">{{ 'lbl.RequestQuote'|trans|ucfirst }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(form) }}
+  {% endif %}
+</div>

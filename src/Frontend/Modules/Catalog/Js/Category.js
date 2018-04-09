@@ -2,7 +2,8 @@ $(function(){
     var filters = {},
         productOverviewSelector = '.overview',
         page = 1,
-        sort = null;
+        sort = null,
+        ajaxAction = null;
 
     function updateFilters(pageUpdate) {
         // Reset our current filters
@@ -63,73 +64,89 @@ $(function(){
      * Start filtering our products
      */
     function filterProducts() {
-        // Some defaults are ok but others need a rewrite
-        $.ajax({
-            data : {
-                fork : {
-                    module : 'Catalog',
-                    action : 'FilterProducts'
-                },
-                filters : filters,
-                category : jsData['Catalog']['category'],
-                page : page,
-                sort : sort
+        if (ajaxAction) {
+          ajaxAction.abort();
+        }
+
+        setTimeout(function() {
+          // Some defaults are ok but others need a rewrite
+          ajaxAction = $.ajax({
+            data: {
+              fork: {
+                module: 'Catalog',
+                action: 'FilterProducts'
+              },
+              filters: filters,
+              category: jsData['Catalog']['category'],
+              page: page,
+              sort: sort
             }
-        }).done(function(response){
+          }).done(function (response) {
+            // Scroll to product top
+            var productOverviewHolder = $('.product-overview'),
+              body = $('html,body');
+
+            if (body.scrollTop() > (productOverviewHolder.offset().top + 100)) {
+              body.animate({
+                scrollTop: productOverviewHolder.offset().top - 100
+              }, 500);
+            }
+
             // Append the products
             $(productOverviewSelector).empty()
-                .append(response['data']['products']);
+              .append(response['data']['products']);
 
             // Build pagination HTML
             var pagination = response['data']['pagination'],
-                paginationHolder = $('.overview-nav'),
-                ul = $('<ul>');
+              paginationHolder = $('.overview-nav'),
+              ul = $('<ul>');
 
             // Build previous
             if (pagination['showPrevious']) {
-                $('<li>').append(
-                    $('<a>').attr({
-                            href : pagination['urlPrevious'],
-                            'data-page': pagination['previousNumber']
-                        })
-                        .data('page', pagination['previousNumber'])
-                        .html(utils.string.ucfirst(jsFrontend.locale.lbl('Previous')))
-                ).appendTo(ul);
+              $('<li>').append(
+                $('<a>').attr({
+                  href: pagination['urlPrevious'],
+                  'data-page': pagination['previousNumber']
+                })
+                  .data('page', pagination['previousNumber'])
+                  .html(utils.string.ucfirst(jsFrontend.locale.lbl('Previous')))
+              ).appendTo(ul);
             } else {
-                $('<li>').addClass('disabled')
-                    .append(
-                        $('<a>').attr('href', 'javascript:void(0);')
-                            .html(utils.string.ucfirst(jsFrontend.locale.lbl('Previous')))
-                    )
-                    .appendTo(ul);
+              $('<li>').addClass('disabled')
+                .append(
+                  $('<a>').attr('href', 'javascript:void(0);')
+                    .html(utils.string.ucfirst(jsFrontend.locale.lbl('Previous')))
+                )
+                .appendTo(ul);
             }
 
             // Build pagination
-            $('<li>').html(pagination['currentPage'] +' / '+ pagination['pageCount'])
-                .appendTo(ul);
+            $('<li>').html(pagination['currentPage'] + ' / ' + pagination['pageCount'])
+              .appendTo(ul);
 
             // Build next button
             if (pagination['showNext']) {
-                $('<li>').append(
-                    $('<a>').attr({
-                        href : pagination['urlNext'],
-                        'data-page': pagination['nextNumber']
-                    })
-                        .data('page', pagination['nextNumber'])
-                        .html(utils.string.ucfirst(jsFrontend.locale.lbl('Next')))
-                ).appendTo(ul);
+              $('<li>').append(
+                $('<a>').attr({
+                  href: pagination['urlNext'],
+                  'data-page': pagination['nextNumber']
+                })
+                  .data('page', pagination['nextNumber'])
+                  .html(utils.string.ucfirst(jsFrontend.locale.lbl('Next')))
+              ).appendTo(ul);
             } else {
-                $('<li>').addClass('disabled')
-                    .append(
-                        $('<a>').attr('href', 'javascript:void(0);')
-                            .html(utils.string.ucfirst(jsFrontend.locale.lbl('Next')))
-                    )
-                    .appendTo(ul);
+              $('<li>').addClass('disabled')
+                .append(
+                  $('<a>').attr('href', 'javascript:void(0);')
+                    .html(utils.string.ucfirst(jsFrontend.locale.lbl('Next')))
+                )
+                .appendTo(ul);
             }
 
             // Set HTML
             paginationHolder.html(ul);
-        });
+          });
+        }, 100);
     }
 
     // Handle the filter change

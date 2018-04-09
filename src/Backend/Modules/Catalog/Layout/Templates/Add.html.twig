@@ -140,6 +140,7 @@
           </div>
           <div role="tabpanel" class="tab-pane" id="tabMedia">
             {{ form_row(form.images, {'mediaGroup': mediaGroup}) }}
+            {{ form_row(form.downloads, {'mediaGroup': mediaGroup}) }}
           </div>
           <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
             {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}

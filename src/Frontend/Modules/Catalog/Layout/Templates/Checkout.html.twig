@@ -1,0 +1,90 @@
+<div class="col-md-12 col-sm-12 col-xs-12 left">
+  <h1>{{ 'lbl.Checkout'|trans|ucfirst }}</h1>
+
+
+  <div class="panel-group" id="checkoutAccordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingStepOne">
+        <h4 class="panel-title">
+          <a role="button" data-toggle="collapse" data-parent="#checkoutAccordion" href="#collapseStepOne" aria-expanded="true" aria-controls="collapseStepOne">
+            {{ 'lbl.Step1HowToPay'|trans|ucfirst }}
+          </a>
+        </h4>
+      </div>
+      <div id="collapseStepOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingStepOne">
+        <div class="panel-body">
+          <div class="container">
+            <div class="col-md-6">
+              <h2>{{ 'lbl.NewCustomer'|trans|ucfirst }}</h2>
+              <p>{{ 'msg.HowWouldYouLikeToCheckout'|trans }}</p>
+              <div class="radio">
+                  {#<input type="radio" name="checkout_type" value="register" id="checkout_register"> <label for="checkout_register">{{ 'lbl.SignUp'|trans|ucfirst }}</label>#}
+                <input type="radio" name="checkout_type" value="guest" id="checkout_guest">
+                <label for="checkout_guest">{{ 'lbl.DirectCheckout'|trans|ucfirst }}</label>
+              </div>
+              <button class="btn btn-default" id="checkout-account">{{ 'lbl.Continue'|trans|ucfirst }}</button>
+            </div>
+            <div>
+              {#HIER INLOG FORMULIER#}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingTwo">
+        <h4 class="panel-title">
+            {{ 'lbl.Step2InvoiceAddress'|trans|ucfirst }}
+        </h4>
+      </div>
+      <div id="stepTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+        <div class="panel-body">
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingThree">
+        <h4 class="panel-title">
+          {{ 'lbl.Step3ShipmentAddress'|trans|ucfirst }}
+        </h4>
+      </div>
+      <div id="stepThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+        <div class="panel-body">
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingFour">
+        <h4 class="panel-title">
+          {{ 'lbl.Step4ShipmentMethod'|trans|ucfirst }}
+        </h4>
+      </div>
+      <div id="stepFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+        <div class="panel-body">
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingFive">
+        <h4 class="panel-title">
+          {{ 'lbl.Step5PaymentMethod'|trans|ucfirst }}
+        </h4>
+      </div>
+      <div id="stepFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+        <div class="panel-body">
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingSix">
+        <h4 class="panel-title">
+          {{ 'lbl.Step6ConfirmOrder'|trans|ucfirst }}
+        </h4>
+      </div>
+      <div id="stepSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+        <div class="panel-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -355,8 +355,6 @@ class ProductRepository extends EntityRepository
         try {
             return $query->getQuery()
                          ->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            return 0;
         } catch (NonUniqueResultException $e) {
             return 0;
         }
@@ -373,7 +371,7 @@ class ProductRepository extends EntityRepository
         switch ($sorting) {
             case Product::SORT_RANDOM:
             default:
-                $query->orderBy('p.createdOn', 'ASC')
+                $query->orderBy('p.sequence', 'ASC')
                       ->addOrderBy('p.id', 'DESC');
                 break;
             case Product::SORT_PRICE_ASC:

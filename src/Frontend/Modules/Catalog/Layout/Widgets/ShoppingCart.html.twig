@@ -1,6 +1,6 @@
-<div class="shopping-cart">
-    <h1>{$lblShoppingCart|ucfirst}</h1>
-    <section id="shoppingCartWidget" class="mod">
-        {include:{$FRONTEND_MODULES_PATH}/Catalog/Layout/Widgets/ShoppingCartAjax.tpl}
-    </section>
+<div class="cart-button cartWidget">
+    <a href="{{ geturlforblock('Catalog', 'Cart') }}" class="bg-cart">
+        {{ 'lbl.Cart'|trans|ucfirst }}
+        <span data-cart-total-quantity>{{ cart.totalQuantity }}</span>
+    </a>
 </div>

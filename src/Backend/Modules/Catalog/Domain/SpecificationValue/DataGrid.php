@@ -20,9 +20,14 @@ class DataGrid extends DataGridDatabase
             'SELECT c.id, c.value, (SELECT COUNT(*) FROM `catalog_products_specification_values` WHERE `specification_value_id` = c.id) as products
 					 FROM catalog_specification_values AS c
 					 WHERE c.specification_id = :specification
-					 GROUP BY c.value ASC',
+					 ORDER BY c.sequence ASC',
             ['specification' => $specification->getId()]
         );
+
+
+        // sequence
+        $this->enableSequenceByDragAndDrop();
+        $this->setAttributes(array('data-action' => 'SequenceSpecificationValues'));
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditSpecificationValue')) {

@@ -59,9 +59,14 @@ class SpecificationValue
     public $value;
 
     /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    private $sequence;
+
+    /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -115,6 +120,22 @@ class SpecificationValue
     }
 
     /**
+     * @return mixed
+     */
+    public function getSequence()
+    {
+        return $this->sequence;
+    }
+
+    /**
+     * @param mixed $sequence
+     */
+    public function setSequence($sequence): void
+    {
+        $this->sequence = $sequence;
+    }
+
+    /**
      * @return Meta
      */
     public function getMeta(): ?Meta
@@ -147,6 +168,7 @@ class SpecificationValue
         $specificationValue->setValue($dataTransferObject->value);
         $specificationValue->setSpecification($dataTransferObject->specification);
         $specificationValue->setMeta($dataTransferObject->meta);
+        $specificationValue->setSequence($dataTransferObject->sequence);
 
         return $specificationValue;
     }

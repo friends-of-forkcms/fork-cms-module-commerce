@@ -59,6 +59,7 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'Add');
         $this->setActionRights(1, 'Catalog', 'Edit');
         $this->setActionRights(1, 'Catalog', 'Delete');
+        $this->setActionRights(1, 'Catalog', 'SequenceProducts');
         $this->setActionRights(1, 'Catalog', 'AutoCompleteProducts');
 
         // categories
@@ -78,6 +79,7 @@ class Installer extends ModuleInstaller
         // specification values
         $this->setActionRights(1, 'Catalog', 'EditSpecificationValue');
         $this->setActionRights(1, 'Catalog', 'DeleteSpecificationValue');
+        $this->setActionRights(1, 'Catalog', 'SequenceSpecificationValues');
         $this->setActionRights(1, 'Catalog', 'AutoCompleteSpecificationValue');
 
         // orders

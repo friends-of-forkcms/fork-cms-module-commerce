@@ -1,0 +1,13 @@
+{% form_theme form with ["Catalog/Layout/Templates/FormHelper.html.twig"] %}
+
+{{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+  <div class="row">
+    <div class="col-md-12">
+      {{ form_widget(form.shipment_method) }}
+      {{ form_errors(form.shipment_method) }}
+    </div>
+    <div class="text-right">
+      <button type="submit" class="btn btn-primary" id="submit-step-four">{{ 'lbl.Continue'|trans|ucfirst }}</button>
+    </div>
+  </div>
+{{ form_end(form) }}

@@ -1,137 +1,145 @@
-{#{option:item}#}
-{#{* Product information: see dump for additional info *}#}
-{#<div id="productContainer">#}
-	{#{* Product videos *}#}
-	{#{option:videos}#}
-	{#<div class="videos">#}
-		{#{iteration:videos}#}
-			{#<p><b>{$lblVideos|ucfirst}:</b></p>#}
-			{#<a class="fancybox fancybox.iframe" rel="gallery" href="{$videos.url}">#}
-				{#<img src="{$videos.image}" alt="{$videos.title}" title="{$videos.title}">#}
-			{#</a>#}
-		{#{/iteration:videos}#}
-	{#</div>#}
-	{#{/option:videos}#}
-	{##}
-	{#{* Product files *}#}
-	{#{option:files}#}
-	{#<div class="videos">#}
-		{#<p><b>{$lblFiles|ucfirst}:</b></p>#}
-		{#<ul>#}
-		{#{iteration:files}#}
-			{#<li><a href="{$files.url}">{$files.title}</a></li>#}
-		{#{/iteration:files}#}
-		{#</ul>#}
-	{#</div>#}
-	{#{/option:files}#}
-	{##}
-	{#{* Product comments *}#}
-	{#{option:item.allow_comments}#}
-		{#<hr>#}
-		{#<h2>{$lblComments|ucfirst}</h2>#}
-		{#<div class="comments">#}
-		{#{option:comments}#}
-			{#{iteration:comments}				#}
-				{#<p>#}
-					{#<b>{$comments.author}</b>#}
-					{#{option:comments.website}(<a href="{$comments.website}">{$comments.website}</a>){/option:comments.website}#}
-					{#- {$comments.created_on|timeago}#}
-				{#</p>#}
-				{#<p>{$comments.text|ucfirst}</p>#}
-			{#<hr>#}
-			{#{/iteration:comments}#}
-		{#{/option:comments}#}
-		{#{option:!comments} <a href="{$item.full_url}#{$actComment}" itemprop="discussionUrl">{$msgCatalogNoComments}</a>{/option:!comments}#}
-		{#</div>#}
-		{##}
-		{#<div class="form">#}
-			{#{option:commentIsInModeration}<div class="message warning"><p>{$msgCatalogCommentInModeration}</p></div>{/option:commentIsInModeration}#}
-			{#{option:commentIsSpam}<div class="message error"><p>{$msgCatalogCommentIsSpam}</p></div>{/option:commentIsSpam}#}
-			{#{option:commentIsAdded}<div class="message success"><p>{$msgCatalogCommentIsAdded}</p></div>{/option:commentIsAdded}#}
-			{#{form:commentsForm}#}
-				{#<p {option:txtAuthorError}class="errorArea"{/option:txtAuthorError}>#}
-					{#<label for="author">{$lblName|ucfirst}<abbr title="{$lblRequiredField}">*</abbr></label>#}
-					{#{$txtAuthor} {$txtAuthorError}#}
-				{#</p>#}
-				{##}
-				{#<p {option:txtEmailError}class="errorArea"{/option:txtEmailError}>#}
-					{#<label for="email">{$lblEmail|ucfirst}<abbr title="{$lblRequiredField}">*</abbr></label>#}
-					{#{$txtEmail} {$txtEmailError}#}
-				{#</p>#}
-				{##}
-				{#<p class="bigInput{option:txtWebsiteError} errorArea{/option:txtWebsiteError}">#}
-					{#<label for="website">{$lblWebsite|ucfirst}</label>#}
-					{#{$txtWebsite} {$txtWebsiteError}#}
-				{#</p>#}
-	{##}
-				{#<p class="bigInput{option:txtMessageError} errorArea{/option:txtMessageError}">#}
-					{#<label for="message">{$lblMessage|ucfirst}<abbr title="{$lblRequiredField}">*</abbr></label>#}
-					{#{$txtMessage} {$txtMessageError}#}
-				{#</p>#}
-	{##}
-				{#<p>#}
-					{#<input class="inputSubmit" type="submit" name="comment" value="{$msgComment|ucfirst}" />#}
-				{#</p>#}
-			{#{/form:commentsForm}#}
-		{#</div>#}
-		{#<hr>#}
-	{#{/option:item.allow_comments}#}
-	{##}
-	{#{* Back to overview *}#}
-	{#<p><a href="{$var|geturlforblock:'catalog'}" title="{$msgToCatalogOverview|ucfirst}">{$msgToCatalogOverview|ucfirst}</a></p>#}
-	{##}
-{#{/option:item}#}
-{#</div>#}
-
-<div id="productContainer">
-	<div class="title"><h1>{{ product.title }}</h1></div>
-	<div class="price"><p><b>{{ 'lbl.Price'|trans|ucfirst }}:</b> {{ product.activePrice|formatcurrency }}</p></div>
-	<div class="category"><p><b>{{ 'lbl.Category'|trans|ucfirst }}:</b> <a href="{$item.category_full_url}">{{ product.category.title }}</a></p></div>
-	<div class="brand"><p><b>{{ 'lbl.Brand'|trans|ucfirst}}:</b> <a href="{$item.brand.full_url}">{{ product.brand.title }}</a></p></div>
-
-	<div class="summary">{{ product.summary }}</div>
-	<div class="content">
-		<p><b>{{ 'lbl.Content'|trans|ucfirst}}:</b></p>
-		<p>{{ product.text|raw }}</p>
-	</div>
-
-	<div class="addProductToShoppingCart">
-		<p><a href="javascript:void(0);" id="{{ product.id }}">{{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}</a></p>
-	</div>
+<div class="col-md-8 col-sm-7 col-xs-12 left">
+  <div class="product-top padding-bottom-xsmall line-bottom-grey clearfix">
+    <div class="quality-type">
+      <span class="good">
+        <img src="{{ product.category.image.webPath('source') }}" alt="{{ product.category.title }}"/>
+      </span>
+    </div>
 
     {# Product images #}
-	{{ images|raw }}
+    {{ images|raw }}
 
-	{# Product specifications #}
-	{% if product.specificationValues %}
-		<hr>
-		<h2>{{ 'lbl.Specifications'|trans|ucfirst }}</h2>
-		<div class="specifications">
-			{% for value in product.specificationValues %}
-				<p><b>{{ value.specification.title }}:</b> {{ value.value }}</p>
-			{% endfor %}
-		</div>
-	{% endif %}
+    <div class="col-md-6 no-gutter product-quick-info">
+      <h1>{{ product.title }}</h1>
+      <p>
+        <span class="article-number">Artikelnummer: <strong>{{ product.sku }}</strong></span>
+        Ons complete assortiment aanhangwagens kunt u vinden op deze website. <a href="{{ product.category.url }}">Ga
+          hier naar het overzicht</a>.
+      </p>
+      <h6>* Gegarandeerd goedkoper in Kesteren.</h6>
+      <p>
+        <a href="#" class="btn btn-default arrow addToQuote" data-id="{{ product.id }}">Offerte aanvragen</a>
+        <a href="#specifications" class="btn btn-light scrollTo">Specificaties</a>
+        <a href="#information" class="btn btn-light scrollTo">Informatie</a>
+      </p>
+    </div>
+  </div>
 
+  <div class="product-information padding-top-small">
+    <h2 id="information">Meer over {{ product.title }}</h2>
+    <div id="productText">
+      {{ product.text|raw }}
+    </div>
+    {% if product.specificationValues.count > 0 %}
+      <h2 id="specifications">Specificaties {{ product.title }}</h2>
+      <table class="table">
+        <tbody>
+        {% for specification in specifications %}
+          {% for specificationValue in specification.specificationValues %}
+            <tr>
+              <td>{{ specification.title }}:</td>
+              <td>{{ specificationValue.value }}</td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
 
-	{# Related products #}
-	{% if product.relatedProducts %}
-		<hr>
-		<h2>{{ 'lbl.RelatedProducts'|trans|ucfirst }}</h2>
-		<div class="relatedProducts">
-			{% for related in product.relatedProducts %}
-			<div class="relatedProduct">
-				<div class="title"><h3>{{ related.title }}</h3></div>
-				<div class="price"><p><b>{{ 'lbl.Price'|trans|ucfirst}}:</b> {{ related.activePrice|formatcurrency }}</p></div>
-				<div class="category"><p><b>{{ 'lbl.Category'|trans|ucfirst }}:</b> <a href="$item.category_full_url">{{ related.category.title }}</a></p></div>
-				<div class="addProductToShoppingCart">
-					<p><a href="javascript:void(0);" id="{{ related.id }}">{{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}</a></p>
-				</div>
-			</div>
-			{% endfor %}
-		</div>
-		<div class="clearfix"></div>
-	{% endif %}
+    {# Product downloads #}
+    {{ downloads|raw }}
+  </div>
+  {% if product.relatedProducts.count > 0 %}
+    <div class="parts related-products padding-top-xsmall">
+      <div class="col-md-12 col-xs-12 no-gutter">
+        <h2>Vergelijkbare producten</h2>
+      </div>
+      <div class="slider-inner col-md-12 col-xs-12 no-gutter">
+        <div class="owl-carousel parts-small">
+          {% for relatedProduct in product.relatedProducts %}
+            <div class="bg-light clickable" data-url="{{ relatedProduct.url }}">
+              <img src="{{ (relatedProduct.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
+                   alt="{{ relatedProduct.title }}"/>
+              <div class="inner-padding">
+                <h3>{{ relatedProduct.title }}</h3>
+                <div class="button-holder">
+                  <p class="price">€ {{ relatedProduct.activePrice(false)|formatnumber(2) }}</p>
+                  <div class="btn-group">
+                    <a href="{{ relatedProduct.url }}" class="btn btn-primary">Meer informatie</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
 
-	<p><a href="{{ geturlforblock('Catalog') }}" title="{{ 'msg.ToCatalogOverview'|trans|ucfirst}}">{{ 'msg.ToCatalogOverview'|trans|ucfirst }}</a></p>
+<div class="col-md-4 col-sm-5 col-xs-12 right">
+  <div class="widget bg-light inner-padding into-cart">
+    {% form_theme form with ['Catalog/Layout/Templates/ProductForm.html.twig'] %}
+    {{ form_start(form) }}
+    <input type="hidden" name="fork[module]" value="Catalog"/>
+    <input type="hidden" name="fork[action]" value="UpdateCart"/>
+    <h3>Voeg toe aan winkelwagen</h3>
+    {% if product.inStock %}
+      <div class="price-box">
+        {% if product.hasActiveSpecialPrice %}
+          <p class="price-old">
+            <span>€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
+          </p>
+          <p class="price-new">
+            <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+          </p>
+        {% else %}
+          <p class="price">
+            <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+          </p>
+        {% endif %}
+        <p class="price-btw">
+          <span>Exclusief {{ product.vat.percentage|formatnumber(0) }}% BTW. (&euro; {{ product.activePrice(true)|number_format(2, ',', '.') }} incl. {{ product.vat.percentage|number_format(0, ',', '.') }}% BTW )</span>
+        </p>
+      </div>
+    {% else %}
+      <p class="stock-status">{{ product.stockStatus.title }}</p>
+    {% endif %}
+    {{ form_row(form.amount) }}
+    {{ form_rest(form) }}
+    <p>
+      {% if product.inStock %}
+        <a href="javascript:void(0);" class="btn btn-cart arrow addToCart" data-id="{{ product.id }}">Plaats in
+          winkelwagen</a>
+      {% endif %}
+      <a href="javascript:void(0);" class="btn btn-default addToQuote" data-id="{{ product.id }}">Offerte aanvragen</a>
+    </p>
+    {{ form_end(form) }}
+  </div>
+
+  <div class="bg-primary inner-padding widget">
+    <p>Ons complete assortiment aanhangwagens kunt u vinden op deze website. <a class="text-white"
+                                                                                href="{{ product.category.url }}"><strong>Ga
+          hier naar het overzicht</strong></a>.</p>
+  </div>
+</div>
+
+{% include '/Modules/Catalog/Layout/Templates/Modals/ProductAdded.html.twig' %}
+
+<div id="productAddedQuoteModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ 'lbl.ProductAddedToQuote'|trans|ucfirst }}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">{{ 'lbl.ContinueShopping'|trans|ucfirst }}</button>
+        <a href="{{ geturlforblock('Catalog', 'Cart') ~ '/' ~ ('lbl.RequestQuoteUrl'|trans) }}"
+           class="btn btn-primary">{{ 'lbl.RequestQuote'|trans|ucfirst }}</a>
+      </div>
+    </div>
+  </div>
 </div>

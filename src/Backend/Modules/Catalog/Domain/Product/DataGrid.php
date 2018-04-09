@@ -35,6 +35,9 @@ class DataGrid extends DataGridDatabase
             );
         }
 
+        $this->enableSequenceByDragAndDrop();
+        $this->setAttributes(array('data-action' => 'SequenceProducts'));
+
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(array('id' => 'row-[id]'));
         $this->setColumnsHidden(array('sequence'));

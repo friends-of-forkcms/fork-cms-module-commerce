@@ -1,0 +1,17 @@
+{% if category %}
+  <div class="product-categories bg-dark widget-width padding-top padding-bottom">
+    <div class="container">
+      <h2 class="col-md-12">{{ 'lbl.MakeYourChoice'|trans|ucfirst }}</h2>
+    </div>
+    <div class="container-fluid product-overview">
+      {% for subCategory in category.children %}
+        <div class="col-md-3 col-sm-4 col-xs-6 product-item text-center clickable" data-url="{{ subCategory.url }}">
+          <div class="inner bg-white">
+            <img src="{{ subCategory.image.webPath('source') }}" alt="{{ subCategory.title }}"/>
+            <a class="arrow" href="{{ subCategory.url }}">{{ subCategory.title }}</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

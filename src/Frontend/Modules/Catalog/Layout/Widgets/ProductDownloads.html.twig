@@ -1,0 +1,13 @@
+{% if mediaItems %}
+  <h2 id="attachments">{{ title }}</h2>
+  <table class="table attachments">
+    <tbody>
+    {% for mediaItem in mediaItems %}
+      <tr>
+        <td>{{ mediaItem.title }}</td>
+        <td><a href="{{ mediaItem.getWebPath() }}" class="btn btn-default btn-sm" download><span class="glyphicons glyphicons-download-alt"></span>{{ 'lbl.Download'|trans|ucfirst }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endif %}

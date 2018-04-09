@@ -1,0 +1,60 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+{% block form_row -%}
+  <div
+    class="bg-white inner-padding-small {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+    {{- form_label(form) -}}
+    {{- form_widget(form) -}}
+    {{- form_errors(form) -}}
+  </div>
+{%- endblock form_row %}
+
+{%- block _product_up_sell_row %}
+  {% if not choices is empty %}
+    <h6>{{ label }}</h6>
+    <div class="into-cart-checkbox">
+      {% for choice in choices %}
+        <div class="bg-white inner-padding-small clearfix">
+          {% set child = form.children[choice.value] %}
+          <input type="checkbox" id="{{ child.vars.id }}" name="{{ child.vars.full_name }}"
+                 value="{{ child.vars.value }}"/>
+
+          <label for="{{ child.vars.id }}">
+            <a href="{{ choice.data.url }}" target="_blank">
+              <img class="checkbox-left"
+                   src="{{ (choice.data.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
+                   alt="{{ choice.data.title }}"/>
+            </a>
+            <div class="checkbox-right">
+              <h4><a href="{{ choice.data.url }}" target="_blank">{{ choice.data.title }}</a></h4>
+              <p class="price">€ {{ choice.data.activePrice(false)|formatnumber(2) }}</p>
+            </div>
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{%- endblock _product_up_sell_row %}
+
+{%- block choice_widget_collapsed -%}
+  {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+    {% set required = false %}
+  {%- endif -%}
+  <div class="select-style">
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+      {%- if placeholder is not none -%}
+        <option
+          value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+      {%- endif -%}
+      {%- if preferred_choices|length > 0 -%}
+        {% set options = preferred_choices %}
+        {{- block('choice_widget_options') -}}
+        {%- if choices|length > 0 and separator is not none -%}
+          <option disabled="disabled">{{ separator }}</option>
+        {%- endif -%}
+      {%- endif -%}
+      {%- set options = choices -%}
+      {{- block('choice_widget_options') -}}
+    </select>
+  </div>
+{%- endblock choice_widget_collapsed -%}

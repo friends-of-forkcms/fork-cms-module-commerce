@@ -5,12 +5,13 @@ namespace Frontend\Modules\Catalog\Widgets;
 use Frontend\Modules\MediaLibrary\Widgets\Base\FrontendMediaWidget;
 
 /**
- * This will show a MediaGroup (Custom Module) or a MediaGallery (Media Module) in a slider using BxSlider.
+ * This will show the product downloads
  */
-class ProductImages extends FrontendMediaWidget
+class ProductDownloads extends FrontendMediaWidget
 {
     public function execute(): void
     {
+        // We need to have a MediaGroup to show this widget
         try {
             $this->loadData();
         } catch (\Exception $e) {

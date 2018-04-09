@@ -3,16 +3,14 @@
 namespace Backend\Modules\Catalog\Ajax;
 
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
-use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\Specification\Command\UpdateSpecification;
+use Backend\Modules\Catalog\Domain\SpecificationValue\Command\UpdateSpecificationValue;
+use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Alters the sequence of specification values
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
-class SequenceSpecifications extends BackendBaseAJAXAction
+class SequenceSpecificationValues extends BackendBaseAJAXAction
 {
     public function execute(): void
     {
@@ -22,9 +20,11 @@ class SequenceSpecifications extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the specifications repository
+         * get the specification values repository
+         *
+         * @var SpecificationValueRepository $specificationValueRepository
          */
-        $specificationRepository = $this->get('catalog.repository.specification');
+        $specificationValueRepository = $this->get('catalog.repository.specification_value');
 
         // list id
         $ids = (array) explode(',', rtrim($newIdSequence, ','));
@@ -33,8 +33,8 @@ class SequenceSpecifications extends BackendBaseAJAXAction
         foreach ($ids as $i => $id) {
 
             // update sequence
-            if ($vat = $specificationRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateSequence = new UpdateSpecification($vat);
+            if ($item = $specificationValueRepository->findOneById($id)) {
+                $updateSequence = new UpdateSpecificationValue($item);
                 $updateSequence->sequence = $i + 1;
 
                 $this->get('command_bus')->handle($updateSequence);

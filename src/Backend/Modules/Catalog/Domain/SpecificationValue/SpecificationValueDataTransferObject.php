@@ -3,6 +3,7 @@
 namespace Backend\Modules\Catalog\Domain\SpecificationValue;
 
 use Backend\Core\Language\Locale;
+use Backend\Modules\Catalog\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,7 +28,15 @@ class SpecificationValueDataTransferObject
      */
     public $value;
 
+    /**
+     * @var Product
+     */
     public $product;
+
+    /**
+     * @var integer
+     */
+    public $sequence;
 
     /**
      * @var Meta
@@ -38,14 +47,15 @@ class SpecificationValueDataTransferObject
     {
         $this->specificationValueEntity = $specificationValue;
 
-        if ( ! $this->hasExistingSpecificationValue()) {
+        if (!$this->hasExistingSpecificationValue()) {
             return;
         }
 
-        $this->id            = $specificationValue->getId();
+        $this->id = $specificationValue->getId();
         $this->specification = $specificationValue->getSpecification();
-        $this->value         = $specificationValue->getValue();
-        $this->meta          = $specificationValue->getMeta();
+        $this->value = $specificationValue->getValue();
+        $this->meta = $specificationValue->getMeta();
+        $this->sequence = $specificationValue->getSequence();
     }
 
     public function getSpecificationValueEntity(): SpecificationValue

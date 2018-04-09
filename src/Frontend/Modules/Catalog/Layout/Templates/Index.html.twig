@@ -5,7 +5,9 @@
 #}
 
 {% if categories %}
+  <div class="col-md-12 left">
     {% include '/Modules/Catalog/Layout/Templates/IndexCategory.html.twig' with{'parentUrl' : categoriesBaseUrl, 'categories' : categories} %}
+  </div>
 {% else %}
     {{ 'msg.NoCategories'|trans|ucfirst }}
 {% endif %}

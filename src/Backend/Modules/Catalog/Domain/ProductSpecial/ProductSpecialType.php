@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Domain\ProductSpecial;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,24 +15,24 @@ class ProductSpecialType extends AbstractType
     {
         $builder->add(
             'price',
-            TextType::class,
+            MoneyType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Price',
+                'label' => 'lbl.Price',
             ]
         )->add(
             'start_date',
             DateType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.StartDate',
+                'label' => 'lbl.StartDate',
             ]
         )->add(
             'end_date',
             DateType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.EndDate',
+                'label' => 'lbl.EndDate',
             ]
         );
     }

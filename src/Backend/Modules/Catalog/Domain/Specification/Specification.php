@@ -36,7 +36,7 @@ class Specification
      * @var SpecificationValue[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue", mappedBy="specification", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"value" = "ASC"})
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $specification_values;
 

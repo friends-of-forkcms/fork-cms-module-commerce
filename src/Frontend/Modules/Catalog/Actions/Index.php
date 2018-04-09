@@ -206,6 +206,7 @@ class Index extends FrontendBaseBlock
         $this->addJS('jquery.sudoSlider.min.js');
         $this->addJS('jquery.fancybox.min.js');
         $this->addJS('owl.carousel.min.js');
+        $this->addJs('Product.js');
 
         // Add js data
         $this->addJSData('isProductDetail', true);
@@ -218,16 +219,25 @@ class Index extends FrontendBaseBlock
         $form = $this->createForm(AddToCartType::class, new AddToCartDataTransferObject($product), ['product' => $product]);
 
         // build the images widget
-        $this->template->assign(
-            'images',
-            $this->get('media_library.helper.frontend')->parseWidget(
-                'ProductImages',
-                $product->getImages()->getId(),
-                'MyCustomOptionalTitle',
-                'Catalog'
-            )
+        $images = $this->get('media_library.helper.frontend')->parseWidget(
+            'ProductImages',
+            $product->getImages()->getId(),
+            ucfirst(Language::lbl('Images')),
+            'Catalog'
         );
 
+        $downloads = null;
+        if ($product->getDownloads()) {
+            $downloads = $this->get('media_library.helper.frontend')->parseWidget(
+                'ProductDownloads',
+                $product->getDownloads()->getId(),
+                sprintf(ucfirst(Language::lbl('FilesFor')), $product->getTitle()),
+                'Catalog'
+            );
+        }
+
+        $this->template->assign('images', $images);
+        $this->template->assign('downloads', $downloads);
         $this->template->assign('specifications', $this->getSpecificationRepository()->findByProduct($product));
         $this->template->assign('product', $product);
         $this->template->assign('form', $form->createView());

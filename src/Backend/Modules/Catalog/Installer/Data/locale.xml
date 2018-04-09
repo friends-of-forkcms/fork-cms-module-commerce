@@ -346,7 +346,7 @@
         <translation language="nl"><![CDATA[De specificatie is succesvol verwijderd.]]></translation>
         <translation language="en"><![CDATA[The specification has been succesfully removed.]]></translation>
       </item>
-      <item type="message" name="EditSpecification">
+      <item type="label" name="EditSpecification">
         <translation language="nl"><![CDATA[bewerk specificatie]]></translation>
         <translation language="en"><![CDATA[edit specification]]></translation>
       </item>
@@ -630,6 +630,10 @@
       <item type="label" name="DefaultValue">
         <translation language="nl"><![CDATA[standaard waarde]]></translation>
         <translation language="en"><![CDATA[default value]]></translation>
+      </item>
+      <item type="label" name="Downloads">
+        <translation language="nl"><![CDATA[downloads]]></translation>
+        <translation language="en"><![CDATA[downloads]]></translation>
       </item>
       <item type="message" name="CannotAddProductOptionsWhenCreatingANewProduct">
         <translation language="nl"><![CDATA[Kan geen product opties toevoegen wanneer een nieuw product wordt toegevoegd.]]></translation>
@@ -1139,6 +1143,14 @@
       <item type="label" name="MakeYourChoice">
         <translation language="nl"><![CDATA[maak direct een keuze]]></translation>
         <translation language="en"><![CDATA[make your choice]]></translation>
+      </item>
+      <item type="label" name="FilesFor">
+        <translation language="nl"><![CDATA[bestanden voor %s]]></translation>
+        <translation language="en"><![CDATA[files for %s]]></translation>
+      </item>
+      <item type="label" name="Download">
+        <translation language="nl"><![CDATA[download]]></translation>
+        <translation language="en"><![CDATA[download]]></translation>
       </item>
     </Core>
   </Frontend>
