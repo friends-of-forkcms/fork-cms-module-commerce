@@ -146,6 +146,9 @@ class Installer extends ModuleInstaller
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Cart');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Brand', 'Brand');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Cart', 'Cart');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Cart', 'Search');
+        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Search', 'Search');
+        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'GoogleSiteSearch', 'GoogleSiteSearch');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Categories', 'Categories');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'ShoppingCart', 'ShoppingCart');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'RecentProducts', 'RecentProducts');

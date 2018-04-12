@@ -4,13 +4,12 @@ namespace Frontend\Modules\Catalog\Ajax;
 
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartRepository;
-use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Cart\CartValueRepository;
+use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\TemplateModifiers;
-use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
@@ -104,7 +103,11 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         }
 
         // Retrieve our product
-        $product = $this->getProductRepository()->findOneByIdAndLocale($productData['id'], Locale::frontendLanguage());
+        try {
+            $product = $this->getProductRepository()->findOneByIdAndLocale($productData['id'], Locale::frontendLanguage());
+        } catch (ProductNotFound $e) {
+            return false;
+        }
 
         // Retrieve the cart value
         $cartValueRepository = $this->getCartValueRepository();

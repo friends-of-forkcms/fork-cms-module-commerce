@@ -14,20 +14,22 @@ class CartValueRepository extends EntityRepository
      * @param Cart $cart
      * @param Product $product
      *
-     * @throws NonUniqueResultException
-     *
      * @return CartValue
      */
     public function getByCartAndProduct(Cart $cart, Product $product): CartValue
     {
         $query_builder = $this->createQueryBuilder('i');
 
-        $entity = $query_builder->where('i.cart = :cart')
-                                ->andWhere('i.product = :product')
-                                ->setParameter('cart', $cart)
-                                ->setParameter('product', $product)
-                                ->getQuery()
-                                ->getOneOrNullResult();
+        try {
+            $entity = $query_builder->where('i.cart = :cart')
+                ->andWhere('i.product = :product')
+                ->setParameter('cart', $cart)
+                ->setParameter('product', $product)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            $entity = null;
+        }
 
         if (!$entity) {
             $entity = new CartValue();

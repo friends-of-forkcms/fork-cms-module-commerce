@@ -12,12 +12,21 @@ use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationValueRepository extends EntityRepository
 {
+    /**
+     * @param SpecificationValue $product
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function add(SpecificationValue $product): void
     {
         // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->persist($product);
     }
 
+    /**
+     * @param int|null $id
+     * @return SpecificationValue|null
+     * @throws SpecificationValueNotFound
+     */
     public function findOneById(?int $id): ?SpecificationValue
     {
         if ($id === null) {

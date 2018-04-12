@@ -665,6 +665,10 @@
         <translation language="nl"><![CDATA[bewerk bestelling]]></translation>
         <translation language="en"><![CDATA[edit order]]></translation>
       </item>
+      <item type="label" name="GoogleSiteSearch">
+        <translation language="nl"><![CDATA[google site search]]></translation>
+        <translation language="en"><![CDATA[google site search]]></translation>
+      </item>
     </Core>
   </Backend>
 
@@ -1151,6 +1155,26 @@
       <item type="label" name="Download">
         <translation language="nl"><![CDATA[download]]></translation>
         <translation language="en"><![CDATA[download]]></translation>
+      </item>
+      <item type="label" name="Search">
+        <translation language="nl"><![CDATA[zoeken]]></translation>
+        <translation language="en"><![CDATA[search]]></translation>
+      </item>
+      <item type="label" name="SearchFor">
+        <translation language="nl"><![CDATA[zoeken naar "%s"]]></translation>
+        <translation language="en"><![CDATA[search for "%s"]]></translation>
+      </item>
+      <item type="label" name="WhatDoYouWantToSearch">
+        <translation language="nl"><![CDATA[Waar bent u naar opzoek?]]></translation>
+        <translation language="en"><![CDATA[What are you looking for?]]></translation>
+      </item>
+      <item type="message" name="EnterSearchTerm">
+        <translation language="nl"><![CDATA[Vul een zoekterm in voordat er resultaten getoont kunnen worden.]]></translation>
+        <translation language="en"><![CDATA[Enter a search term before we can show any search results.]]></translation>
+      </item>
+      <item type="message" name="NoSearchResultsFor">
+        <translation language="nl"><![CDATA[Helaas hebben we niks kunnen voor de zoekopdracht "%s".]]></translation>
+        <translation language="en"><![CDATA[We can not find anything for the search term "%s".]]></translation>
       </item>
     </Core>
   </Frontend>

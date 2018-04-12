@@ -5,24 +5,31 @@ namespace Backend\Modules\Catalog\Domain\Specification;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Specification\Exception\SpecificationNotFound;
-use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
-use Doctrine\ORM\Query\Expr\OrderBy;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationRepository extends EntityRepository
 {
+    /**
+     * @param Specification $specification
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function add(Specification $specification): void
     {
         // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->persist($specification);
     }
 
+    /**
+     * @param int|null $id
+     * @param Locale $locale
+     * @return Specification|null
+     * @throws SpecificationNotFound
+     */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Specification
     {
         if ($id === null) {
@@ -54,6 +61,8 @@ class SpecificationRepository extends EntityRepository
      * Get the next sequence in line
      *
      * @param Locale $locale
+     *
+     * @throws NonUniqueResultException
      *
      * @return integer
      */
@@ -143,6 +152,31 @@ class SpecificationRepository extends EntityRepository
             ->where('p.id = :product')
             ->orderBy('s.sequence', 'ASC')
             ->setParameter('product', $product->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find the specification filters based on the given category
+     *
+     * @param string $searchTerm
+     *
+     * @return array
+     */
+    public function findFiltersBySearchTerm(string $searchTerm): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        return $queryBuilder->select(['s', 'sv'])
+            ->leftJoin('s.specification_values', 'sv')
+            ->leftJoin('sv.products', 'p')
+            ->where('s.filter = :filter')
+            ->andWhere($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like('p.title', ':search_term')
+            ))
+            ->orderBy('s.sequence', 'ASC')
+            ->setParameter('filter', true)
+            ->setParameter('search_term', '%' . $searchTerm .'%')
             ->getQuery()
             ->getResult();
     }

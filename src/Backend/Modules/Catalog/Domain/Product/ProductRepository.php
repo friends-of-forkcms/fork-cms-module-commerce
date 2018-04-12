@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Composite;
 use Doctrine\ORM\QueryBuilder;
 
 class ProductRepository extends EntityRepository
@@ -88,6 +89,8 @@ class ProductRepository extends EntityRepository
      * @param string $category
      * @param string $url
      *
+     * @throws NonUniqueResultException
+     *
      * @return Product|null
      */
     public function findByCategoryAndUrl(Locale $locale, string $category, $url): ?Product
@@ -128,6 +131,8 @@ class ProductRepository extends EntityRepository
      * @param Locale $locale
      * @param Category $category
      *
+     * @throws NonUniqueResultException
+     *
      * @return integer
      */
     public function getNextSequence(Locale $locale, ?Category $category): int
@@ -152,6 +157,8 @@ class ProductRepository extends EntityRepository
      * Count the products
      *
      * @param Locale $locale
+     *
+     * @throws NonUniqueResultException
      *
      * @return integer
      */
@@ -196,6 +203,17 @@ class ProductRepository extends EntityRepository
                             ->getResult();
     }
 
+    /**
+     * Find a product based on the url part
+     *
+     * @param Locale $locale
+     * @param string $url
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     *
+     * @return Product
+     */
     public function findByLocaleAndUrl(Locale $locale, string $url): Product
     {
         $queryBuilder = $this->createQueryBuilder('i');
@@ -386,5 +404,180 @@ class ProductRepository extends EntityRepository
         }
 
         return $query;
+    }
+
+    /**
+     * Filter the products based on specification values and search string
+     *
+     * @param string $searchTerm
+     * @param array $filters
+     * @param integer $limit
+     * @param integer $offset
+     * @param string $sorting
+     *
+     * @return array
+     */
+    public function filterSearchedProducts(string $searchTerm, array $filters, int $limit, int $offset, string $sorting): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $query = $queryBuilder->innerJoin('p.category', 'c')
+            ->where($this->buildSearchQuery('p', $queryBuilder));
+
+        // Counter needed for the parameters
+        $i = 0;
+        foreach ($filters as $specification => $specificationValue) {
+            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+
+            // Prepare our IN query
+            $query2 = $queryBuilder2->select('p'.$i.'.id')
+                ->from(Specification::class, 's'.$i)
+                ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
+                ->leftJoin('sv'.$i.'.products', 'p'.$i)
+                ->innerJoin('s'.$i.'.meta', 'm'.$i)
+                ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
+                ->where('s'.$i.'.filter = :filter')
+                ->andWhere('m'.$i.'.url = :specification' . $i)
+                ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
+
+            // Add the IN query to our root query
+            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
+
+            // Set the specification parameters
+            $query->setParameter('specification' . $i, $specification);
+
+            // Update the counter
+            $i++;
+        }
+
+        // Set the parameters
+        $query->setParameter('filter', true)
+            ->setParameter('search_term', '%' . $searchTerm . '%')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        $query = $this->setProductSorting($query, $sorting);
+
+        return $query->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Filter and search the products and count the result
+     *
+     * @param string $searchTerm
+     * @param array $filters
+     *
+     * @return integer
+     */
+    public function filterSearchedProductsCount(string $searchTerm, array $filters): int
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $query = $queryBuilder->select('count(p.id)')
+            ->where($this->buildSearchQuery('p', $queryBuilder));
+
+        // We need a counter to set the parameters
+        $i = 0;
+        foreach ($filters as $specification => $specificationValue) {
+            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+
+            // Prepare our IN query
+            $query2 = $queryBuilder2->select('p'.$i.'.id')
+                ->from(Specification::class, 's'.$i)
+                ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
+                ->leftJoin('sv'.$i.'.products', 'p'.$i)
+                ->innerJoin('s'.$i.'.meta', 'm'.$i)
+                ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
+                ->where('s'.$i.'.filter = :filter')
+                ->andWhere('m'.$i.'.url = :specification' . $i)
+                ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
+
+            // Add the IN query to our root query
+            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
+
+            // Set the specification parameters
+            $query->setParameter('specification' . $i, $specification);
+
+            $i++;
+        }
+
+        // Set the parameters
+        $query->setParameter('filter', true)
+            ->setParameter('search_term', '%' . $searchTerm . '%');
+
+        try {
+            return $query->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Search the products by the given search string
+     *
+     * @param string $searchTerm
+     * @param integer $limit
+     * @param integer $offset
+     * @param string $sorting
+     *
+     * @return Product[]
+     */
+    public function searchProductsLimited(string $searchTerm, int $limit, int $offset = 0, ?string $sorting)
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $queryBuilder = $queryBuilder->where($this->buildSearchQuery('p', $queryBuilder));
+
+        return $this->setProductSorting($queryBuilder, $sorting)
+            ->setParameter('search_term', '%' . $searchTerm . '%')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Count the products
+     *
+     * @param string $searchTerm
+     * @param Locale $locale
+     *
+     * @return integer
+     */
+    public function getSearchProductCount(string $searchTerm, Locale $locale): int
+    {
+        $queryBuilder = $this->createQueryBuilder('i');
+
+        try {
+            return $queryBuilder->select('COUNT(i.id)')
+                ->where($this->buildSearchQuery('i', $queryBuilder))
+                ->andWhere('i.locale = :locale')
+                ->setParameter('locale', $locale)
+                ->setParameter('search_term', '%' . $searchTerm . '%')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Build the search query
+     *
+     * @param string $alias
+     * @param QueryBuilder $queryBuilder
+     *
+     * @return Composite
+     */
+    private function buildSearchQuery(string $alias, QueryBuilder $queryBuilder): Composite
+    {
+        return $queryBuilder->expr()->orX(
+            $queryBuilder->expr()->like($alias .'.title', ':search_term'),
+            $queryBuilder->expr()->like($alias .'.summary', ':search_term'),
+            $queryBuilder->expr()->like($alias .'.text', ':search_term'),
+            $queryBuilder->expr()->like($alias .'.sku', ':search_term')
+        );
     }
 }

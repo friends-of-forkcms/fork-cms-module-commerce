@@ -26,11 +26,10 @@ class FilterProducts extends FrontendBaseAJAXAction
         $itemsPerPage = $this->get('fork.settings')->get('Catalog', 'overview_num_items', 10);
         $currentPage = $this->getRequest()->get('page', 1);
         $productOffset = ($currentPage - 1) * $itemsPerPage;
+        $sortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
 
-        // Get the category
-        try {
-            $category = $categoryRepository->findOneByIdAndLocale($this->getRequest()->get('category'), $locale);
-        } catch (CategoryNotFound $e) {
+        // Category or search term must be set
+        if (!$this->getRequest()->request->has('category') && !$this->getRequest()->request->has('searchTerm')) {
             $this->output(Response::HTTP_NOT_FOUND);
             return;
         }
@@ -39,15 +38,69 @@ class FilterProducts extends FrontendBaseAJAXAction
         $pagination = new Pagination();
         $pagination->setCurrentPage($currentPage);
         $pagination->setItemsPerPage($itemsPerPage);
-        $pagination->setBaseUrl($category->getUrl());
 
-        // Filter the products
-        if ($filters = $this->getRequest()->get('filters')) {
-            $products = $productRepository->filterProducts($filters, $category, $itemsPerPage, $productOffset, $this->getRequest()->get('sort', Product::SORT_RANDOM));
-            $pagination->setItemCount($productRepository->filterProductsCount($filters, $category));
-        } else {
-            $products = $productRepository->findLimitedByCategory($category, $itemsPerPage, $productOffset, $this->getRequest()->get('sort', Product::SORT_RANDOM));
-            $pagination->setItemCount($category->getProducts()->count());
+        // Get the category
+        if ($this->getRequest()->request->has('category') && !$this->getRequest()->request->has('searchTerm')) {
+            try {
+                $category = $categoryRepository->findOneByIdAndLocale($this->getRequest()->get('category'), $locale);
+                $pagination->setBaseUrl($category->getUrl());
+
+                // Filter the products
+                if ($filters = $this->getRequest()->get('filters')) {
+                    $products = $productRepository->filterProducts(
+                        $filters,
+                        $category,
+                        $itemsPerPage,
+                        $productOffset,
+                        $sortOrder
+                    );
+
+                    $pagination->setItemCount($productRepository->filterProductsCount($filters, $category));
+                } else {
+                    $products = $productRepository->findLimitedByCategory(
+                        $category,
+                        $itemsPerPage,
+                        $productOffset,
+                        $sortOrder
+                    );
+                    
+                    $pagination->setItemCount($category->getProducts()->count());
+                }
+            } catch (CategoryNotFound $e) {
+                $this->output(Response::HTTP_NOT_FOUND);
+                return;
+            }
+        } else { // Search on search term
+            if ($filters = $this->getRequest()->get('filters')) {
+                $products = $productRepository->filterSearchedProducts(
+                    $this->getRequest()->request->get('searchTerm'),
+                    $filters,
+                    $itemsPerPage,
+                    $productOffset,
+                    $sortOrder
+                );
+
+                $pagination->setItemCount(
+                    $productRepository->filterSearchedProductsCount(
+                        $this->getRequest()->request->get('searchTerm'),
+                        $filters
+                    )
+                );
+            } else {
+                $products = $productRepository->searchProductsLimited(
+                    $this->getRequest()->request->get('searchTerm'),
+                    $itemsPerPage,
+                    $productOffset,
+                    $sortOrder
+                );
+
+                $pagination->setItemCount(
+                    $productRepository->getSearchProductCount(
+                        $this->getRequest()->request->get('searchTerm'),
+                        Locale::frontendLanguage()
+                    )
+                );
+            }
         }
 
         // Return everything

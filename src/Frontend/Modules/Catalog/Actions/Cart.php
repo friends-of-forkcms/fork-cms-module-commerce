@@ -38,6 +38,9 @@ class Cart extends FrontendBaseBlock
 
     /**
      * Execute the action
+     *
+     * @throws RedirectException
+     * @throws \Exception
      */
     public function execute(): void
     {
@@ -229,6 +232,8 @@ class Cart extends FrontendBaseBlock
 
     /**
      * Store our order and handle our payment method
+     *
+     * @throws \Exception
      *
      * @return void
      */

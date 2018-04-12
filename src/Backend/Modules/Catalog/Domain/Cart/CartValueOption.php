@@ -24,7 +24,7 @@ class CartValueOption
     /**
      * @var CartValue
      *
-     * @ORM\ManyToOne(targetEntity="CartValue", inversedBy="value_options")
+     * @ORM\ManyToOne(targetEntity="CartValue", inversedBy="cart_value_options")
      * @ORM\JoinColumn(name="cart_value_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $cart_value;

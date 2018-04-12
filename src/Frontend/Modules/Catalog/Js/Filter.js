@@ -31,7 +31,7 @@ $(function(){
 
     function updateUrl() {
         var queryParts = [],
-            url = jsData['Catalog']['categoryUrl'];
+            url = jsData['Catalog']['filterUrl'];
 
         // Convert our filters to a normal url
         $.each(filters, function(key, values){
@@ -40,6 +40,10 @@ $(function(){
 
         queryParts.push(jsFrontend.locale.lbl('Page') +'='+ page);
         queryParts.push('sort='+ sort);
+
+        if (jsData['Catalog'].hasOwnProperty('searchTerm')) {
+            queryParts.push('query='+ jsData['Catalog']['searchTerm']);
+        }
 
         // Add query parts when there are
         if (queryParts.length > 0) {
@@ -61,6 +65,32 @@ $(function(){
     }
 
     /**
+     * Build the request data
+     */
+    function buildRequestData(filters, page, sort)
+    {
+        var data = {
+            fork: {
+                module: 'Catalog',
+                action: 'FilterProducts'
+            },
+            filters: filters,
+            page: page,
+            sort: sort
+        };
+
+        if (jsData['Catalog'].hasOwnProperty('category')) {
+            data['category'] = jsData['Catalog']['category'];
+        }
+
+        if (jsData['Catalog'].hasOwnProperty('searchTerm')) {
+            data['searchTerm'] = jsData['Catalog']['searchTerm'];
+        }
+
+        return data;
+    }
+
+    /**
      * Start filtering our products
      */
     function filterProducts() {
@@ -71,16 +101,7 @@ $(function(){
         setTimeout(function() {
           // Some defaults are ok but others need a rewrite
           ajaxAction = $.ajax({
-            data: {
-              fork: {
-                module: 'Catalog',
-                action: 'FilterProducts'
-              },
-              filters: filters,
-              category: jsData['Catalog']['category'],
-              page: page,
-              sort: sort
-            }
+            data: buildRequestData(filters, page, sort)
           }).done(function (response) {
             // Scroll to product top
             var productOverviewHolder = $('.product-overview'),

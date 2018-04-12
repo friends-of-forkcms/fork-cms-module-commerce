@@ -40,8 +40,11 @@ class Index extends FrontendBaseBlock
         $parameterCount = count($parameters);
 
         if ($parameterCount >= 3) { // Parent category, category and product
-            if ($product = $productRepository->findByCategoryAndUrl(Locale::frontendLanguage(), $parameters[1],
-                $parameters[2])) {
+            if ($product = $productRepository->findByCategoryAndUrl(
+                Locale::frontendLanguage(),
+                $parameters[1],
+                $parameters[2]
+            )) {
                 $this->parseProduct($product);
             } else {
                 $this->redirect(FrontendNavigation::getUrl(404));
@@ -115,9 +118,9 @@ class Index extends FrontendBaseBlock
         $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/catalog.css');
 
         // Add JS
-        $this->addJSData('categoryUrl', $baseUrl);
+        $this->addJSData('filterUrl', $baseUrl);
         $this->addJSData('category', $category->getId());
-        $this->addJS('Category.js');
+        $this->addJS('Filter.js');
         $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
 
         // Build pagination
