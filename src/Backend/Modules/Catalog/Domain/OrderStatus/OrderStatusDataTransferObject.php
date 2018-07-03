@@ -3,8 +3,6 @@
 namespace Backend\Modules\Catalog\Domain\OrderStatus;
 
 use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\OrderStatusValue\OrderStatusValue;
-use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderStatusDataTransferObject

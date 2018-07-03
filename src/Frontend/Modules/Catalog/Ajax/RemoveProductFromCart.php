@@ -4,8 +4,10 @@ namespace Frontend\Modules\Catalog\Ajax;
 
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartRepository;
+use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Cart\CartValueRepository;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
+use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
@@ -48,7 +50,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         }
 
         // Failed to update product, does not exists?
-        if (!$this->removeProduct()) {
+        if (!$cartValue = $this->removeProduct()) {
             $this->output( Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
             return;
         }
@@ -63,6 +65,14 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
                     'subTotal' => TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
                     'total' => TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
                     'vats' => $this->getFormattedVats(),
+                ],
+                'product' => [
+                    'sku' => $cartValue->getProduct()->getSku(),
+                    'name' => $cartValue->getProduct()->getTitle(),
+                    'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
+                    'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
+                    'quantity' => $cartValue->getQuantity(),
+                    'total' => TemplateModifiers::formatNumber($cartValue->getTotal(), 2),
                 ],
             ]
         );
@@ -88,25 +98,25 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     /**
      * Add or update the product in our cart
      *
-     * @return bool
+     * @return CartValue|null
      */
-    private function removeProduct(): bool
+    private function removeProduct(): ?CartValue
     {
         $productData = $this->getRequest()->request->get('product');
 
         if (!is_array($productData)) {
-            return false;
+            return null;
         }
 
         if (!array_key_exists('id', $productData)) {
-            return false;
+            return null;
         }
 
         // Retrieve our product
         try {
             $product = $this->getProductRepository()->findOneByIdAndLocale($productData['id'], Locale::frontendLanguage());
         } catch (ProductNotFound $e) {
-            return false;
+            return null;
         }
 
         // Retrieve the cart value
@@ -117,7 +127,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         $this->cart->removeValue($cartValue);
         $cartValueRepository->removeByIdAndCart($cartValue->getId(), $this->cart);
 
-        return true;
+        return $cartValue;
     }
 
     /**
@@ -164,5 +174,25 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         }
 
         return $vats;
+    }
+
+    /**
+     * Build the ecommerce category in required format
+     *
+     * @param Product $product
+     *
+     * @return string
+     */
+    private function buildEcommerceCategory(Product $product)
+    {
+        $categories = [];
+        $category = $product->getCategory();
+
+        while ($category) {
+            array_unshift($categories, $category->getTitle());
+            $category = $category->getParent();
+        }
+
+        return implode('/', $categories);
     }
 }

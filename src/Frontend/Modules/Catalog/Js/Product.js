@@ -31,6 +31,6 @@ $(function(){
     nav:true,
     dots: false,
     items: 4,
-    loop:true
+    loop:false
   });
 });

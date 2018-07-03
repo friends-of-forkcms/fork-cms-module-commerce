@@ -82,9 +82,11 @@ abstract class Quote {
     /**
      * Calculate the vat price based on the given price
      *
+     * @param float $price
+     *
      * @return array
      */
-    protected abstract function getVatPrice(): array;
+    protected abstract function getVatPrice(float $price): array;
 
     /**
      * Get the vat repository

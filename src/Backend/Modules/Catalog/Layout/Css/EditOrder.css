@@ -1,3 +1,6 @@
+.order-detail{width:100%;}
+.order-detail tr td:first-child{text-align:left;width:20px;}
+
 .order-total tr td:last-child{text-align:right;width:120px;}
 .order-total tr td:first-child{font-weight:bold;}
 

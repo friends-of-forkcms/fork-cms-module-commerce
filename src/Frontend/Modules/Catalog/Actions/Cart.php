@@ -10,11 +10,13 @@ use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\Order\OrderRepository;
 use Backend\Modules\Catalog\Domain\OrderProduct\Command\CreateOrderProduct;
 use Backend\Modules\Catalog\Domain\OrderVat\Command\CreateOrderVat;
+use Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethodRepository;
 use Backend\Modules\Catalog\Domain\Quote\Event\QuoteCreated;
 use Backend\Modules\Catalog\Domain\Quote\QuoteDataTransferObject;
 use Backend\Modules\Catalog\Domain\Quote\QuoteType;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\ConfirmOrder;
+use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\Quote;
 use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Model;
@@ -108,6 +110,7 @@ class Cart extends FrontendBaseBlock
         $this->template->assign('cart', $this->cart);
 
         $this->addJSData('isQuote', !$this->cart->isProductsInStock());
+        $this->addJS('EnhancedEcommerce.js');
     }
 
     /**
@@ -120,6 +123,7 @@ class Cart extends FrontendBaseBlock
         $this->loadTemplate('Catalog/Layout/Templates/Checkout.html.twig');
 
         $this->addJS('Checkout.js');
+        $this->addJS('EnhancedEcommerce.js');
 
         $this->header->setPageTitle(ucfirst(Language::lbl('Checkout')));
 
@@ -249,6 +253,7 @@ class Cart extends FrontendBaseBlock
         $this->get('command_bus')->handle($createShipmentAddress);
 
         $shipmentMethod = $session->get('shipment_method');
+        $paymentMethod = $session->get('payment_method');
 
         // Recalculate order
         $this->cart->calculateTotals();
@@ -277,6 +282,7 @@ class Cart extends FrontendBaseBlock
         $createOrder = new CreateOrder();
         $createOrder->sub_total = $this->cart->getSubTotal();
         $createOrder->total = $cartTotal;
+        $createOrder->paymentMethod = $this->getPaymentMethods()[$paymentMethod->payment_method]['label'];
         $createOrder->invoiceAddress = $createAddress->getOrderAddressEntity();
         $createOrder->shipmentAddress = $createShipmentAddress->getOrderAddressEntity();
         $createOrder->shipment_method = $shipmentMethod['data']['name'];
@@ -425,6 +431,36 @@ class Cart extends FrontendBaseBlock
         $class = new $className($method[0], $method[1]);
 
         return $class;
+    }
+
+    /**
+     * Get the payment methods to populate our form
+     *
+     * @return array
+     */
+    private function getPaymentMethods(): array
+    {
+        /**
+         * @var PaymentMethodRepository $paymentMethodRepository
+         */
+        $paymentMethodRepository = $this->get('catalog.repository.payment_method');
+        $availablePaymentMethods = $paymentMethodRepository->findInstalledPaymentMethods(Locale::frontendLanguage());
+        $session = Model::getSession();
+
+        $paymentMethods = [];
+        foreach ($availablePaymentMethods as $paymentMethod) {
+            $className = "\\Backend\\Modules\\Catalog\\PaymentMethods\\{$paymentMethod}\\Checkout\\Quote";
+
+            /**
+             * @var Quote $class
+             */
+            $class = new $className($paymentMethod, $this->cart, $session->get('guest_address'));
+            foreach ($class->getQuote() as $key => $options) {
+                $paymentMethods[$paymentMethod.'.'. $key] = $options;
+            }
+        }
+
+        return $paymentMethods;
     }
 
     /**

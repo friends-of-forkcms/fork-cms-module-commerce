@@ -26,27 +26,34 @@ class OrderType extends AbstractType
             EntityType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.OrderStatus',
-                'class'    => OrderStatus::class,
+                'label' => 'lbl.OrderStatus',
+                'class' => OrderStatus::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
-                              ->orderBy('i.title', 'ASC');
+                        ->orderBy('i.title', 'ASC');
                 },
-                'choice_label'  => 'title'
+                'choice_label' => 'title'
             ]
         )->add(
             'message',
             TextareaType::class,
             [
-                'required'    => false,
-                'label'       => 'lbl.Comment',
+                'required' => false,
+                'label' => 'lbl.Comment',
             ]
         )->add(
             'notify',
             CheckboxType::class,
             [
-                'required'     => false,
-                'label'        => 'lbl.NotifyCustomer',
+                'required' => false,
+                'label' => 'lbl.NotifyCustomer',
+            ]
+        )->add(
+            'attach_invoice',
+            CheckboxType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.AttachInvoice',
             ]
         );
     }

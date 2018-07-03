@@ -2,12 +2,16 @@
 
 namespace Backend\Modules\Catalog\Domain\Order\EventListener;
 
+use Backend\Core\Engine\Model;
 use Backend\Modules\Catalog\Domain\Order\Event\OrderCreated as OrderCreatedEvent;
+use Backend\Modules\Catalog\Domain\Order\Event\OrderGenerateInvoiceNumber;
 use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory;
 use Common\Mailer\Message;
 use Common\ModulesSettings;
+use Frontend\Core\Engine\TwigTemplate;
 use Frontend\Core\Language\Language;
+use Knp\Snappy\Pdf;
 use Swift_Mailer;
 use Swift_Mime_SimpleMessage;
 
@@ -70,12 +74,30 @@ final class OrderCreated
                               '/Catalog/Layout/Templates/Mails/Order/ConfirmationCustomer.html.twig',
                               [
                                   'order' => $order,
-                                  'orderHistory' => $orderHistory
+                                  'orderHistory' => $orderHistory,
                               ],
                               true
                           )
                           ->setTo($order->getInvoiceAddress()->getEmailAddress())
                           ->setFrom([$from['email'] => $from['name']]);
+
+        if ($orderHistory->isAttachInvoice()) {
+            /** @var OrderGenerateInvoiceNumber $orderGenerateInvoiceNumber */
+            $orderGenerateInvoiceNumber = Model::get('event_dispatcher')->dispatch(
+                OrderGenerateInvoiceNumber::EVENT_NAME,
+                new OrderGenerateInvoiceNumber($order)
+            );
+
+            $filename = Language::lbl('Invoice') . '-' . $orderGenerateInvoiceNumber->getOrder()->getInvoiceNumber() .'.pdf';
+
+            $attachment = new \Swift_Attachment(
+                $this->generateInvoice($orderGenerateInvoiceNumber->getOrder()),
+                $filename,
+                'application/pdf'
+            );
+
+            $message->attach($attachment);
+        }
 
         return $message;
     }
@@ -99,7 +121,7 @@ final class OrderCreated
                               '/Catalog/Layout/Templates/Mails/Order/ConfirmationCompany.html.twig',
                               [
                                   'order' => $order,
-                                  'orderHistory' => $orderHistory
+                                  'orderHistory' => $orderHistory,
                               ],
                               true
                           )
@@ -107,5 +129,18 @@ final class OrderCreated
                           ->setFrom([$from['email'] => $from['name']]);
 
         return $message;
+    }
+
+    private function generateInvoice($order): string
+    {
+        /** @var TwigTemplate $template */
+        $template = Model::get('templating');
+        $template->assign('order', $order);
+
+        /** @var Pdf $pdf */
+        $pdf = Model::get('knp_snappy.pdf');
+        $pdf->setOption('viewport-size', '1024x768');
+
+        return $pdf->getOutputFromHtml($template->getContent('Catalog/Layout/Templates/Invoice.html.twig'));
     }
 }

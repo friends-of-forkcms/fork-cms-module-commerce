@@ -20,6 +20,8 @@ final class UpdateSettingsHandler
     {
         $this->set('overview_num_items', (int) $updateSettings->overview_num_items);
         $this->set('filters_show_more_num_items', (int) $updateSettings->filters_show_more_num_items);
+        $this->set('next_invoice_number', (int) $updateSettings->next_invoice_number);
+        $this->set('automatic_invoice_statuses', $updateSettings->automatic_invoice_statuses);
     }
 
     /**

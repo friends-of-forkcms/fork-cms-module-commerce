@@ -487,6 +487,10 @@
         <translation language="nl"><![CDATA[betaalmethoden]]></translation>
         <translation language="en"><![CDATA[payment methods]]></translation>
       </item>
+      <item type="label" name="PaymentMethod">
+        <translation language="nl"><![CDATA[betaalmethode]]></translation>
+        <translation language="en"><![CDATA[payment method]]></translation>
+      </item>
       <item type="label" name="EditPaymentMethod">
         <translation language="nl"><![CDATA[bewerk betaalmethode]]></translation>
         <translation language="en"><![CDATA[edit payment method]]></translation>
@@ -643,6 +647,62 @@
         <translation language="nl"><![CDATA[Kan geen product optie waarden toevoegen wanneer een nieuw product opties wordt toegevoegd.]]></translation>
         <translation language="en"><![CDATA[Cannot add product option values when creating a new product option.]]></translation>
       </item>
+      <item type="label" name="FromWeight">
+        <translation language="nl"><![CDATA[vanaf gewicht]]></translation>
+        <translation language="en"><![CDATA[from weight]]></translation>
+      </item>
+      <item type="label" name="TillWeight">
+        <translation language="nl"><![CDATA[tot gewicht]]></translation>
+        <translation language="en"><![CDATA[till weight]]></translation>
+      </item>
+      <item type="label" name="SubTotal">
+        <translation language="nl"><![CDATA[subtotaal]]></translation>
+        <translation language="en"><![CDATA[sub total]]></translation>
+      </item>
+      <item type="label" name="Invoice">
+        <translation language="nl"><![CDATA[factuur]]></translation>
+        <translation language="en"><![CDATA[invoice]]></translation>
+      </item>
+      <item type="label" name="NextInvoiceNumber">
+        <translation language="nl"><![CDATA[volgende factuurnummer]]></translation>
+        <translation language="en"><![CDATA[next invoice number]]></translation>
+      </item>
+      <item type="label" name="InvoiceNumber">
+        <translation language="nl"><![CDATA[factuurnummer]]></translation>
+        <translation language="en"><![CDATA[invoice number]]></translation>
+      </item>
+      <item type="label" name="InvoiceDate">
+        <translation language="nl"><![CDATA[factuurdatum]]></translation>
+        <translation language="en"><![CDATA[invoice date]]></translation>
+      </item>
+      <item type="label" name="GenerateInvoiceNumber">
+        <translation language="nl"><![CDATA[genereer factuurnummer]]></translation>
+        <translation language="en"><![CDATA[generate invoice number]]></translation>
+      </item>
+      <item type="label" name="PackingSlip">
+        <translation language="nl"><![CDATA[pakbon]]></translation>
+        <translation language="en"><![CDATA[packing slip]]></translation>
+      </item>
+      <item type="label" name="PhoneNumber">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone number]]></translation>
+      </item>
+      <item type="label" name="SubTotal">
+        <translation language="nl"><![CDATA[subtotaal]]></translation>
+        <translation language="en"><![CDATA[sub total]]></translation>
+      </item>
+      <item type="label" name="AutomaticallyGenerateInvoiceWhenStatusBecomesOneOfThese">
+        <translation language="nl"><![CDATA[genereer een factuur wanneer de status veranderd in een van deze]]></translation>
+        <translation language="en"><![CDATA[automatically generate invoice when status becomes one of these]]></translation>
+      </item>
+      <item type="label" name="AttachInvoice">
+        <translation language="nl"><![CDATA[factuur bijvoegen]]></translation>
+        <translation language="en"><![CDATA[attach invoice]]></translation>
+      </item>
+      <item type="label" name="InvoiceAttached">
+        <translation language="nl"><![CDATA[factuur bijvoegd]]></translation>
+        <translation language="en"><![CDATA[invoice attached]]></translation>
+      </item>
     </Catalog>
     <Core>
       <item type="label" name="Catalog">
@@ -668,6 +728,26 @@
       <item type="label" name="GoogleSiteSearch">
         <translation language="nl"><![CDATA[google site search]]></translation>
         <translation language="en"><![CDATA[google site search]]></translation>
+      </item>
+      <item type="label" name="Order">
+        <translation language="nl"><![CDATA[bestelling]]></translation>
+        <translation language="en"><![CDATA[order]]></translation>
+      </item>
+      <item type="label" name="CreatedAt">
+        <translation language="nl"><![CDATA[aangemaakt op]]></translation>
+        <translation language="en"><![CDATA[created at]]></translation>
+      </item>
+      <item type="label" name="InvoiceNumber">
+        <translation language="nl"><![CDATA[factuur nummer]]></translation>
+        <translation language="en"><![CDATA[invoice number]]></translation>
+      </item>
+      <item type="label" name="PhoneNumber">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone number]]></translation>
+      </item>
+      <item type="label" name="ShipmentMethod">
+        <translation language="nl"><![CDATA[verzendmethode]]></translation>
+        <translation language="en"><![CDATA[shipment method]]></translation>
       </item>
     </Core>
   </Backend>
@@ -1175,6 +1255,30 @@
       <item type="message" name="NoSearchResultsFor">
         <translation language="nl"><![CDATA[Helaas hebben we niks kunnen voor de zoekopdracht "%s".]]></translation>
         <translation language="en"><![CDATA[We can not find anything for the search term "%s".]]></translation>
+      </item>
+      <item type="label" name="PackingSlip">
+        <translation language="nl"><![CDATA[pakbon]]></translation>
+        <translation language="en"><![CDATA[packing slip]]></translation>
+      </item>
+      <item type="label" name="Invoice">
+        <translation language="nl"><![CDATA[factuur]]></translation>
+        <translation language="en"><![CDATA[invoice]]></translation>
+      </item>
+      <item type="label" name="Order">
+        <translation language="nl"><![CDATA[bestelling]]></translation>
+        <translation language="en"><![CDATA[order]]></translation>
+      </item>
+      <item type="label" name="CreatedAt">
+        <translation language="nl"><![CDATA[aangemaakt op]]></translation>
+        <translation language="en"><![CDATA[created at]]></translation>
+      </item>
+      <item type="label" name="InvoiceNumber">
+        <translation language="nl"><![CDATA[factuur nummer]]></translation>
+        <translation language="en"><![CDATA[invoice number]]></translation>
+      </item>
+      <item type="label" name="PhoneNumber">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone number]]></translation>
       </item>
     </Core>
   </Frontend>

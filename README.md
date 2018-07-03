@@ -20,16 +20,45 @@ We also removed some components:
 Upload this module as usual, copy the `Catalog` folder from the `Backend` and `Frontend`.
 
 ### 2. Run composer
-This module requires extra depencies, you can install these by running:
+This module requires extra dependencies, you can install these by running:
 
 ```
 composer require tetranz/select2entity-bundle
+composer require knplabs/knp-snappy-bundle
+composer require h4cc/wkhtmltopdf-amd64
 ```
+Enable the KnpSnappyBundle in your kernel:
+```php
+// app/AppKernel.php
+public function registerBundles()  
+{
+    $bundles = [
+        //...
+        new \Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+        //...
+    ];
+}
+```
+
+Add the wkhtmltopdf path to your config file:
+```yaml
+# app/config/config.yml
+knp_snappy:  
+    pdf:
+        enabled:    true
+        binary:     %wkhtmltopdf.binary%
+```
+
+And update your parameters.yml with the following:
+```yaml
+    wkhtmltopdf.binary:     %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64
+```
+You may edit this value match your needs.
 
 ### 3. Install extra JavaScript and CSS
 
 Run:
-```
+```npm
 yarn add select2
 ```
 

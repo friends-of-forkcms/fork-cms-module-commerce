@@ -32,6 +32,6 @@ class OrderHistoryType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'vat';
+        return 'order_history';
     }
 }

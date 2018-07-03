@@ -2,11 +2,8 @@
 
 namespace Backend\Modules\Catalog\Domain\OrderHistory;
 
-use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Order\Order;
-use Backend\Modules\Catalog\Domain\OrderHistoryValue\OrderHistoryValue;
 use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
-use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderHistoryDataTransferObject
@@ -41,7 +38,12 @@ class OrderHistoryDataTransferObject
     /**
      * @var bool
      */
-    public $notify;
+    public $notify = false;
+
+    /**
+     * @var bool
+     */
+    public $attach_invoice = false;
 
     /**
      * @var \DateTime
@@ -51,19 +53,19 @@ class OrderHistoryDataTransferObject
     public function __construct(OrderHistory $orderHistory = null)
     {
         $this->orderHistoryEntity = $orderHistory;
-        $this->notify             = false;
-        $this->created_at         = new \DateTime();
+        $this->created_at = new \DateTime();
 
-        if ( ! $this->hasExistingOrderHistory()) {
+        if (!$this->hasExistingOrderHistory()) {
             return;
         }
 
-        $this->id          = $orderHistory->getId();
-        $this->order       = $orderHistory->getOrder();
+        $this->id = $orderHistory->getId();
+        $this->order = $orderHistory->getOrder();
         $this->orderStatus = $orderHistory->getOrderStatus();
-        $this->message     = $orderHistory->getMessage();
-        $this->notify      = $orderHistory->isNotify();
-        $this->created_at  = $orderHistory->getCreatedAt();
+        $this->message = $orderHistory->getMessage();
+        $this->notify = $orderHistory->isNotify();
+        $this->attach_invoice = $orderHistory->isAttachInvoice();
+        $this->created_at = $orderHistory->getCreatedAt();
     }
 
     public function getOrderHistoryEntity(): OrderHistory

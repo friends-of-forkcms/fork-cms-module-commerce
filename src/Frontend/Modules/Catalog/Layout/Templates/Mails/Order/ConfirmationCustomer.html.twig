@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale = 1.0" name="viewport">
-  <title><?php echo $title; ?></title>
+  <title></title>
   <style type="text/css">* { margin: 0; padding: 0}
     body img { display:inherit!important; font-family: 'Hind', sans-serif; }
     body {margin: 0; padding: 0; min-width: 100%!important;}
@@ -128,12 +128,12 @@
                                 <tbody>
                                 <tr>
                                   <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>{{ 'lbl.OrderNumber'|trans|ucfirst }}</b> {{ order.id }}<br />
-                                    <b>{{ 'lbl.OrderCreatedAt'|trans|ucfirst }}</b> {{ order.date.format('d-m-Y') }}<br />
+                                    <b>{{ 'lbl.CreatedAt'|trans|ucfirst }}</b> {{ order.date.format('d-m-Y') }}<br />
                                       {% if order.shipmentMethod %}
                                         <b>{{ 'lbl.ShipmentMethod'|trans|ucfirst }}</b> {{ order.shipmentMethod }}
                                       {% endif %}
                                   <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>{{ 'lbl.Email'|trans|ucfirst }}</b> {{ order.invoiceAddress.emailAddress }}<br />
-                                    <b>{{ 'lbl.Phone'|trans|ucfirst }}</b> {{ order.invoiceAddress.phone }}<br />
+                                    <b>{{ 'lbl.PhoneNumber'|trans|ucfirst }}</b> {{ order.invoiceAddress.phone }}<br />
                                     <b>{{ 'lbl.OrderStatus'|trans|ucfirst }}</b> {{ orderHistory.orderStatus.title }}</td>
                                 </tr>
                                 </tbody>

@@ -1,4 +1,4 @@
-<div class="col-md-12 no-gutter padding-bottom-small">
+<div class="col-md-12 no-gutter padding-bottom-small clearfix">
   <h1 class="col-md-10 col-sm-10 col-xs-10 col-xs-push-2 col-sm-push-2 col-md-push-2">{{ category.title }}</h1>
   {% if category.parent %}
   <p class="col-md-2 col-sm-2 col-sm-pull-10 col-xs-2 col-xs-pull-10 col-md-pull-10"><a href="{{ category.parent.url }}"
@@ -56,7 +56,7 @@
 </div>
 
 {% if category.products.count > 0 %}
-  <div class="col-lg-6 col-md-7 col-sm-9 col-xs-12 product-overview">
+  <div class="col-lg-6 col-md-7 col-sm-9 col-xs-12 product-overview" data-product-list="Category">
     <div class="col-md-12 no-gutter overview-bar clearfix">
       <div class="col-md-5 col-sm-5 col-xs-12 no-gutter overview-nav">
         <ul>

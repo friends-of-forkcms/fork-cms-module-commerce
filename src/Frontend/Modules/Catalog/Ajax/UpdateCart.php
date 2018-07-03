@@ -83,6 +83,11 @@ class UpdateCart extends FrontendBaseAJAXAction
                     'vats' => $this->getFormattedVats(),
                 ],
                 'product' => [
+                    'sku' => $cartValue->getProduct()->getSku(),
+                    'name' => $cartValue->getProduct()->getTitle(),
+                    'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
+                    'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
+                    'quantity' => $cartValue->getQuantity(),
                     'total' => TemplateModifiers::formatNumber($cartValue->getTotal(), 2),
                     'options' => $this->getCartValueOptionTotals($cartValue),
                 ],
@@ -297,7 +302,7 @@ class UpdateCart extends FrontendBaseAJAXAction
                     $cartValue->addCartValueOption(
                         $repository->getByCartValueAndProductOptionValue($cartValue, $formData->$fieldName)
                     );
-                }catch (NonUniqueResultException $e) {
+                } catch (NonUniqueResultException $e) {
                     continue;
                 }
             }
@@ -320,6 +325,26 @@ class UpdateCart extends FrontendBaseAJAXAction
         }
 
         return $totals;
+    }
+
+    /**
+     * Build the ecommerce category in required format
+     *
+     * @param Product $product
+     *
+     * @return string
+     */
+    private function buildEcommerceCategory(Product $product)
+    {
+        $categories = [];
+        $category = $product->getCategory();
+
+        while ($category) {
+            array_unshift($categories, $category->getTitle());
+            $category = $category->getParent();
+        }
+
+        return implode('/', $categories);
     }
 
     /**

@@ -83,6 +83,7 @@ class Index extends FrontendBaseBlock
 
         // add noty js
         $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
+        $this->addJS('EnhancedEcommerce.js');
 
         $this->template->assign('categories', $this->getCategoryRepository()->findParents(Locale::frontendLanguage()));
         $this->template->assign('categoriesBaseUrl', FrontendNavigation::getURLForBlock('Catalog'));
@@ -121,6 +122,7 @@ class Index extends FrontendBaseBlock
         $this->addJSData('filterUrl', $baseUrl);
         $this->addJSData('category', $category->getId());
         $this->addJS('Filter.js');
+        $this->addJS('EnhancedEcommerce.js');
         $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
 
         // Build pagination
@@ -210,6 +212,7 @@ class Index extends FrontendBaseBlock
         $this->addJS('jquery.fancybox.min.js');
         $this->addJS('owl.carousel.min.js');
         $this->addJs('Product.js');
+        $this->addJS('EnhancedEcommerce.js');
 
         // Add js data
         $this->addJSData('isProductDetail', true);

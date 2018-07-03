@@ -1,5 +1,20 @@
-<div class="product-item text-center bg-light clickable" data-url="{{ product.url }}">
-  <img src="{{ (product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}" alt="{{ product.title }}" />
+{% set category_path = product.category.title %}
+{% set current_category = product.category %}
+{% for i in 0..5 %}
+  {% if current_category.parent %}
+    {% set category_path = current_category.title ~'/'~ category_path %}
+    {% set current_category = current_category.parent %}
+  {% endif %}
+{% endfor %}
+
+<div class="product-item text-center bg-light clickable"
+     data-url="{{ product.url }}"
+     data-sku="{{ product.sku }}"
+     data-name="{{ product.title }}"
+     data-brand="{{ product.brand.title }}"
+     data-category="{{ category_path }}"
+>
+  <img src="{{ (product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}" alt="{{ product.title }}"/>
   <div class="inner">
     <h3>
       <a href="{{ product.url }}">{{ product.title }}</a>
@@ -13,7 +28,7 @@
       <div class="price-box">
         {% if product.hasActiveSpecialPrice %}
           <p class="price-old">
-            <span >€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
+            <span>€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
           </p>
           <p class="price-new">
             <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>

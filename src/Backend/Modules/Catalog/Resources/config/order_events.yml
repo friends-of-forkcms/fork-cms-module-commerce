@@ -13,3 +13,11 @@ services:
             - "@fork.settings"
         tags:
             - { name: kernel.event_listener, event: catalog.event.order.updated, method: onOrderUpdated }
+
+    catalog.event.order_generate_invoice_number:
+        class: Backend\Modules\Catalog\Domain\Order\EventListener\GenerateInvoiceNumber
+        arguments:
+            - "@command_bus"
+            - "@fork.settings"
+        tags:
+            - { name: kernel.event_listener, event: catalog.event.order.generate_invoice_number, method: onGenerateInvoiceNumber }

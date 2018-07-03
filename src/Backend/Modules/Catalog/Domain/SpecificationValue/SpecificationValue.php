@@ -45,8 +45,8 @@ class SpecificationValue
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Catalog\Domain\Product\Product", mappedBy="specification_values")
      * @ORM\JoinTable(
      *     name="catalog_products_specification_values",
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     joinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id", onDelete="CASCADE")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     joinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id")}
      * )
      */
     private $products;

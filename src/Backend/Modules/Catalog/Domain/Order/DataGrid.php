@@ -25,7 +25,7 @@ class DataGrid extends DataGridDatabase
      */
     public function __construct(Locale $locale, int $status = null)
     {
-        $query = 'SELECT i.id as order_number, CONCAT_WS(" ", a.first_name, a.last_name) as name, i.total,
+        $query = 'SELECT i.id as order_number, i.invoice_number, CONCAT_WS(" ", a.first_name, a.last_name) as name, i.total,
             (SELECT s.title FROM catalog_order_statuses s INNER JOIN catalog_order_histories h ON h.order_status_id = s.id WHERE h.order_id = i.id ORDER BY h.created_at DESC LIMIT 1) as order_status
             , UNIX_TIMESTAMP(i.date) as `order_date`
             FROM catalog_orders AS i INNER JOIN catalog_order_addresses a ON a.id = i.invoice_address_id';
@@ -37,7 +37,7 @@ class DataGrid extends DataGridDatabase
         $this->setColumnFunction(array(self::class, 'getFormatPrice'), '[total]', 'total', true);
 
         // sorting
-        $this->setSortingColumns(array('order_date', 'order_number'), 'order_date');
+        $this->setSortingColumns(array('order_date', 'order_number', 'invoice_number'), 'order_date');
         $this->setSortParameter('desc');
 
         // check if this action is allowed

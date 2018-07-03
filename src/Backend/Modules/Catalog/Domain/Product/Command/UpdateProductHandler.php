@@ -5,8 +5,6 @@ namespace Backend\Modules\Catalog\Domain\Product\Command;
 use Backend\Core\Engine\Model;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-
 
 final class UpdateProductHandler
 {
@@ -53,7 +51,6 @@ final class UpdateProductHandler
         }
 
         $entityManager->flush();
-
 
         // store the product
         $this->productRepository->add($product);

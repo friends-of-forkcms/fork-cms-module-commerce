@@ -2,7 +2,16 @@
 {% import "Layout/Templates/macros.html.twig" as macro %}
 
 {% block actionbar %}
-
+    <div class="btn-toolbar pull-right">
+      <div class="btn-group" role="group">
+        {% if showCatalogPackingSlip %}
+          {{ macro.buttonIcon( geturl('PackingSlip') ~ '&id=' ~ order.id, '', 'lbl.PackingSlip'|trans|ucfirst) }}
+        {% endif %}
+        {% if showCatalogInvoice %}
+          {{ macro.buttonIcon( geturl('Invoice') ~ '&id=' ~ order.id, '', 'lbl.Invoice'|trans|ucfirst) }}
+        {% endif %}
+      </div>
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -11,32 +20,56 @@
     <div class="col-md-6">
       <div class="panel form-group panel-default">
         <div class="panel-heading">{{ 'lbl.Details'|trans|ucfirst }}</div>
-        <table class="order-detail">
-          <tr>
-            <td><i class="fa fa-calendar" aria-hidden="true"></i></td>
-            <td>{{ order.date.format('d-m-Y') }}</td>
-          </tr>
-        </table>
+        <div class="panel-body">
+          <table class="order-detail">
+            <tr>
+              <td><i class="fa fa-calendar" aria-hidden="true"></i></td>
+              <td>{{ order.date.format('d-m-Y') }}</td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-truck" aria-hidden="true" title="{{ 'lbl.ShipmentMethod'|trans|ucfirst }}"></i></td>
+              <td>{{ order.shipmentMethod }}</td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-shopping-cart" aria-hidden="true" title="{{ 'lbl.PaymentMethod'|trans|ucfirst }}"></i></td>
+              <td>{{ order.paymentMethod }}</td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-ticket" aria-hidden="true" title="{{ 'lbl.InvoiceNumber'|trans|ucfirst }}"></i></td>
+              {% if order.invoiceNumber %}
+                <td>{{ order.invoiceNumber }}</td>
+              {% else %}
+                <td><a href="javascript:void(0);" id="generateInvoiceNumber" data-order="{{ order.id }}">{{ 'lbl.GenerateInvoiceNumber'|trans|ucfirst }}</a></td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td><i class="fa fa-calendar" aria-hidden="true"></i></td>
+              <td><span id="invoiceDate">{% if order.invoiceNumber %}{{ order.invoiceDate.format('d-m-Y') }}{% endif %}</span></td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="panel form-group panel-default">
         <div class="panel-heading">{{ 'lbl.CustomerDetails'|trans|ucfirst }}</div>
-        <table class="order-detail">
-          <tr>
-            <td><i class="fa fa-user" aria-hidden="true"></i></td>
-            <td>{{ order.invoiceAddress.fullName }}</td>
-          </tr>
-          <tr>
-            <td><i class="fa fa-envelope" aria-hidden="true"></i></td>
-            <td><a href="mailto:{{ order.invoiceAddress.emailAddress }}">{{ order.invoiceAddress.emailAddress }}</a>
-            </td>
-          </tr>
-          <tr>
-            <td><i class="fa fa-phone" aria-hidden="true"></i></td>
-            <td><a href="tel:{{ order.invoiceAddress.phone }}">{{ order.invoiceAddress.phone }}</a></td>
-          </tr>
-        </table>
+        <div class="panel-body">
+          <table class="order-detail">
+            <tr>
+              <td><i class="fa fa-user" aria-hidden="true"></i></td>
+              <td>{{ order.invoiceAddress.fullName }}</td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-envelope" aria-hidden="true"></i></td>
+              <td><a href="mailto:{{ order.invoiceAddress.emailAddress }}">{{ order.invoiceAddress.emailAddress }}</a>
+              </td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-phone" aria-hidden="true"></i></td>
+              <td><a href="tel:{{ order.invoiceAddress.phone }}">{{ order.invoiceAddress.phone }}</a></td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -129,6 +162,11 @@
             {{ form_label(form.notify) }}
             {{ form_widget(form.notify) }}
             {{ form_errors(form.notify) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.attach_invoice) }}
+            {{ form_widget(form.attach_invoice) }}
+            {{ form_errors(form.attach_invoice) }}
           </div>
           <div class="form-group">
             {{ form_label(form.message) }}

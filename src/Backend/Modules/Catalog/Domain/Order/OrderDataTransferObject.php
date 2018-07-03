@@ -22,6 +22,11 @@ class OrderDataTransferObject
     /**
      * @var string
      */
+    public $paymentMethod;
+
+    /**
+     * @var string
+     */
     public $shipment_method;
 
     /**
@@ -48,6 +53,16 @@ class OrderDataTransferObject
      * @var float
      */
     public $total;
+
+    /**
+     * @var string
+     */
+    public $invoiceNumber;
+
+    /**
+     * @var \DateTime
+     */
+    public $invoiceDate;
 
     /**
      * @var OrderAddress
@@ -77,25 +92,28 @@ class OrderDataTransferObject
     public function __construct(Order $order = null)
     {
         $this->orderEntity = $order;
-        $this->date        = new \DateTime();
-        $this->products    = new ArrayCollection();
-        $this->vats        = new ArrayCollection();
+        $this->date = new \DateTime();
+        $this->products = new ArrayCollection();
+        $this->vats = new ArrayCollection();
 
-        if ( ! $this->hasExistingOrder()) {
+        if (!$this->hasExistingOrder()) {
             return;
         }
 
-        $this->id              = $order->getId();
+        $this->id = $order->getId();
+        $this->paymentMethod = $order->getPaymentMethod();
         $this->shipment_method = $order->getShipmentMethod();
-        $this->shipment_price  = $order->getShipmentPrice();
-        $this->date            = $order->getDate();
-        $this->comment         = $order->getComment();
-        $this->sub_total       = $order->getSubTotal();
-        $this->total           = $order->getTotal();
-        $this->invoiceAddress  = $order->getInvoiceAddress();
+        $this->shipment_price = $order->getShipmentPrice();
+        $this->date = $order->getDate();
+        $this->comment = $order->getComment();
+        $this->sub_total = $order->getSubTotal();
+        $this->total = $order->getTotal();
+        $this->invoiceNumber = $order->getInvoiceNumber();
+        $this->invoiceDate = $order->getInvoiceDate();
+        $this->invoiceAddress = $order->getInvoiceAddress();
         $this->shipmentAddress = $order->getShipmentAddress();
-        $this->products        = $order->getProducts();
-        $this->vats            = $order->getVats();
+        $this->products = $order->getProducts();
+        $this->vats = $order->getVats();
     }
 
     /**

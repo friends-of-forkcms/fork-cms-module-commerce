@@ -13,6 +13,8 @@ class EditShipmentMethod extends BackendBaseActionEdit
 {
     /**
      * Execute the action
+     *
+     * @throws \Exception
      */
     public function execute(): void
     {

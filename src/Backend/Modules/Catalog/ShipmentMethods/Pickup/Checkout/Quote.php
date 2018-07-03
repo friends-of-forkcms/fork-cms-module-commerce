@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Catalog\ShipmentMethods\Pickup\Checkout;
 
+use Backend\Modules\Catalog\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Catalog\ShipmentMethods\Base\Checkout\Quote as BaseQuote;
 
 class Quote extends BaseQuote
@@ -16,7 +17,7 @@ class Quote extends BaseQuote
                 'label' => $this->getSetting('name') .' (&euro; '. number_format($this->getSetting('price'), 2, ',', '.') .')',
                 'name' => $this->getSetting('name'),
                 'price' => (float) $this->getSetting('price'),
-                'vat' => $this->getVatPrice(),
+                'vat' => $this->getVatPrice((float) $this->getSetting('price')),
             ]
         ];
     }
@@ -24,12 +25,17 @@ class Quote extends BaseQuote
     /**
      * {@inheritdoc}
      */
-    protected function getVatPrice(): array
+    protected function getVatPrice(float $price): array
     {
-        $vat = $this->getVatRepository()->findOneByIdAndLocale($this->getSetting('vat'), $this->language);
+        try {
+            $vat = $this->getVatRepository()->findOneByIdAndLocale($this->getSetting('vat'), $this->language);
+        } catch (VatNotFound $e) {
+            $vat = 0;
+        }
+
         return [
             'id' => $vat->getId(),
-            'price' => (float) $this->getSetting('price') * $vat->getAsPercentage(),
+            'price' => $price * $vat->getAsPercentage(),
         ];
     }
 }

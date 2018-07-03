@@ -15,10 +15,16 @@ class VatRepository extends EntityRepository
         $this->getEntityManager()->persist($vat);
     }
 
+    /**
+     * @param int|null $id
+     * @param Locale $locale
+     * @return Vat|null
+     * @throws VatNotFound
+     */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Vat
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw VatNotFound::forEmptyId();
         }
 
         /** @var Vat $vat */

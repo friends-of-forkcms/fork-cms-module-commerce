@@ -2,7 +2,14 @@
 
 namespace Backend\Modules\Catalog\Domain\Settings;
 
+use Backend\Core\Engine\Model;
+use Backend\Modules\Catalog\Domain\OrderStatus\Exception\OrderStatusNotFound;
+use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
+use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,15 +23,67 @@ class SettingsType extends AbstractType
             NumberType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.ItemsPerPage',
+                'label' => 'lbl.ItemsPerPage',
             ]
         )->add(
             'filters_show_more_num_items',
             NumberType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.ShowMoreAfterFilterItems',
+                'label' => 'lbl.ShowMoreAfterFilterItems',
             ]
+        )->add(
+            'next_invoice_number',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.NextInvoiceNumber',
+            ]
+        )->add(
+            $builder->create(
+                'automatic_invoice_statuses',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'label' => 'lbl.AutomaticallyGenerateInvoiceWhenStatusBecomesOneOfThese',
+                    'class' => OrderStatus::class,
+                    'choice_label' => 'title',
+                    'choice_value' => function (OrderStatus $entity = null) {
+                        return $entity ? $entity->getId() : '';
+                    },
+                    'multiple' => true,
+                    'expanded' => true,
+                ]
+            )->addModelTransformer(
+                new CallbackTransformer(
+                    function ($statusesArray) {
+                        $collection = new ArrayCollection();
+
+                        /** @var OrderStatusRepository $orderStatusRepository */
+                        $orderStatusRepository = Model::get('catalog.repository.order_status');
+
+                        foreach ($statusesArray as $id) {
+                            try {
+                                $collection->add($orderStatusRepository->findOneById($id));
+                            } catch (OrderStatusNotFound $e) {
+                                // Skip when nothing is found
+                            }
+                        }
+
+                        return $collection;
+                    },
+                    function ($statusesAsCollection) {
+                        $ids = [];
+
+                        /** @var OrderStatus $item */
+                        foreach ($statusesAsCollection as $item) {
+                            $ids[] = $item->getId();
+                        }
+
+                        return $ids;
+                    }
+                )
+            )
         );
     }
 

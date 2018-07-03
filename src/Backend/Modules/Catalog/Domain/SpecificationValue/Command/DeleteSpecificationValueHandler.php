@@ -2,14 +2,14 @@
 
 namespace Backend\Modules\Catalog\Domain\SpecificationValue\Command;
 
-use Backend\Modules\Catalog\Domain\SpecificationValue\ProductOptionValueRepository;
+use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository;
 
 final class DeleteSpecificationValueHandler
 {
-    /** @var ProductOptionValueRepository */
+    /** @var SpecificationValueRepository */
     private $specificationValueRepository;
 
-    public function __construct(ProductOptionValueRepository $specificationValueRepository)
+    public function __construct(SpecificationValueRepository $specificationValueRepository)
     {
         $this->specificationValueRepository = $specificationValueRepository;
     }

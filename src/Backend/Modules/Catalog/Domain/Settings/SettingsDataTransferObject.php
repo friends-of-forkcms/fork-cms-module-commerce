@@ -34,12 +34,29 @@ class SettingsDataTransferObject
      */
     public $filters_show_more_num_items;
 
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $next_invoice_number;
+
+    /**
+     * @var string
+     */
+    public $automatic_invoice_statuses;
+
+    /**
+     * @param ModulesSettings $modulesSettings
+     */
     public function __construct(ModulesSettings $modulesSettings)
     {
         $this->modulesSettings = $modulesSettings;
 
         $this->overview_num_items = $this->get('overview_num_items', 10);
         $this->filters_show_more_num_items = $this->get('filters_show_more_num_items', 5);
+        $this->next_invoice_number = $this->get('next_invoice_number', 1);
+        $this->automatic_invoice_statuses = $this->get('automatic_invoice_statuses', []);
     }
 
     /**

@@ -48,6 +48,7 @@ class Installer extends ModuleInstaller
         // general settings
         $this->setSetting('Catalog', 'overview_num_items', 10);
         $this->setSetting('Catalog', 'filters_show_more_num_items', 5);
+        $this->setSetting('Catalog', 'next_invoice_number', (int) date('Y') . "0001");
 
         $this->makeSearchable('Catalog');
 
@@ -87,6 +88,9 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'EditOrder');
         $this->setActionRights(1, 'Catalog', 'DeleteCompleted');
         $this->setActionRights(1, 'Catalog', 'MassOrderAction');
+        $this->setActionRights(1, 'Catalog', 'GenerateInvoiceNumber');
+        $this->setActionRights(1, 'Catalog', 'PackingSlip');
+        $this->setActionRights(1, 'Catalog', 'Invoice');
 
         // settings
         $this->setActionRights(1, 'Catalog', 'Settings');

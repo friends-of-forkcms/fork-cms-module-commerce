@@ -1,3 +1,12 @@
+{% set category_path = product.category.title %}
+{% set current_category = product.category %}
+{% for i in 0..5 %}
+  {% if current_category.parent %}
+    {% set category_path = current_category.title ~'/'~ category_path %}
+    {% set current_category = current_category.parent %}
+  {% endif %}
+{% endfor %}
+
 <div class="col-md-8 col-sm-7 col-xs-12 left">
   <div class="product-top padding-bottom-xsmall line-bottom-grey clearfix">
     <div class="quality-type">
@@ -143,3 +152,41 @@
     </div>
   </div>
 </div>
+
+<span data-product-detail=""
+      data-url="{{ product.url }}"
+      data-sku="{{ product.sku }}"
+      data-name="{{ product.title }}"
+      data-brand="{{ product.brand.title }}"
+      data-category="{{ category_path }}"></span>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  {% if product.images.connectedMediaItems.count > 0%}
+  "image": [
+    {% for image in product.images.connectedMediaItems %}
+      "{{ image.absoluteWebPath }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+   ],
+   {% endif %}
+  "description": "{{ product.text|raw|striptags }}",
+  "sku": "{{ product.sku }}",
+  "brand": {
+    "@type": "Thing",
+    "name": "{{ product.brand.title }}"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "EUR",
+    "price": "{{ product.activePrice(false)|number_format(2) }}",
+    "itemCondition": "http://schema.org/NewCondition",
+    {% if product.inStock %}
+    "availability": "http://schema.org/InStock"
+    {% else %}
+    "availability": "http://schema.org/OutOfStock"
+    {% endif %}
+  }
+}
+</script>

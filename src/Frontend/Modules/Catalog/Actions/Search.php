@@ -159,6 +159,7 @@ class Search extends FrontendBaseBlock
         $this->addJSData('filterUrl', $baseUrl);
         $this->addJSData('searchTerm', $form->getData()->query);
         $this->addJS('Filter.js');
+        $this->addJS('EnhancedEcommerce.js');
 
         // Assign to our template
         $this->template->assign('searchTerm', $form->getData()->query);

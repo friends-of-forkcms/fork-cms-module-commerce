@@ -27,6 +27,23 @@ class Order
     private $id;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $invoice_number;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $invoice_date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $payment_method;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
@@ -58,7 +75,6 @@ class Order
      * @var OrderProduct[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct", mappedBy="order")
-     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $products;
 
@@ -100,8 +116,24 @@ class Order
      */
     private $total;
 
+    /**
+     * @param DateTime $date
+     * @param string $paymentMethod
+     * @param string $shipment_method
+     * @param string $shipment_price
+     * @param null|string $comment
+     * @param float $sub_total
+     * @param float $total
+     * @param OrderAddress $invoiceAddress
+     * @param OrderAddress $shipmentAddress
+     * @param ArrayCollection $products
+     * @param ArrayCollection $vats
+     * @param null|string $invoiceNumber
+     * @param null|DateTime $invoiceDate
+     */
     private function __construct(
         DateTime $date,
+        string $paymentMethod,
         string $shipment_method,
         string $shipment_price,
         ?string $comment,
@@ -110,21 +142,27 @@ class Order
         OrderAddress $invoiceAddress,
         OrderAddress $shipmentAddress,
         ArrayCollection $products,
-        ArrayCollection $vats
-    ) {
-        $this->date             = $date;
-        $this->shipment_method  = $shipment_method;
-        $this->shipment_price   = $shipment_price;
-        $this->comment          = $comment;
-        $this->sub_total        = $sub_total;
-        $this->total            = $total;
-        $this->invoice_address  = $invoiceAddress;
+        ArrayCollection $vats,
+        ?string $invoiceNumber,
+        ?\DateTime $invoiceDate
+    )
+    {
+        $this->date = $date;
+        $this->payment_method = $paymentMethod;
+        $this->shipment_method = $shipment_method;
+        $this->shipment_price = $shipment_price;
+        $this->comment = $comment;
+        $this->sub_total = $sub_total;
+        $this->total = $total;
+        $this->invoice_address = $invoiceAddress;
         $this->shipment_address = $shipmentAddress;
-        $this->products         = $products;
-        $this->vats             = $vats;
+        $this->products = $products;
+        $this->vats = $vats;
+        $this->invoice_number = $invoiceNumber;
+        $this->invoice_date = $invoiceDate;
     }
 
-    public static function fromDataTransferObject(OrderDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderDataTransferObject $dataTransferObject): Order
     {
         if ($dataTransferObject->hasExistingOrder()) {
             return self::update($dataTransferObject);
@@ -137,6 +175,7 @@ class Order
     {
         return new self(
             $dataTransferObject->date,
+            $dataTransferObject->paymentMethod,
             $dataTransferObject->shipment_method,
             $dataTransferObject->shipment_price,
             $dataTransferObject->comment,
@@ -145,7 +184,9 @@ class Order
             $dataTransferObject->invoiceAddress,
             $dataTransferObject->shipmentAddress,
             $dataTransferObject->products,
-            $dataTransferObject->vats
+            $dataTransferObject->vats,
+            $dataTransferObject->invoiceNumber,
+            $dataTransferObject->invoiceDate
         );
     }
 
@@ -155,6 +196,30 @@ class Order
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInvoiceNumber(): ?string
+    {
+        return $this->invoice_number;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getInvoiceDate(): ?\DateTime
+    {
+        return $this->invoice_date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentMethod(): ?string
+    {
+        return $this->payment_method;
     }
 
     /**
@@ -241,8 +306,10 @@ class Order
     {
         $order = $dataTransferObject->getOrderEntity();
 
-        $order->date  = $dataTransferObject->date;
+        $order->date = $dataTransferObject->date;
         $order->total = $dataTransferObject->total;
+        $order->invoice_number = $dataTransferObject->invoiceNumber;
+        $order->invoice_date = $dataTransferObject->invoiceDate;
 
         return $order;
     }

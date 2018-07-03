@@ -53,6 +53,13 @@ class OrderHistory
     private $notify;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $attach_invoice;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -64,13 +71,16 @@ class OrderHistory
         OrderStatus $order_status,
         ?string $message,
         bool $notify,
+        bool $attach_invoice,
         \DateTime $created_at
-    ) {
-        $this->order        = $order;
+    )
+    {
+        $this->order = $order;
         $this->order_status = $order_status;
-        $this->message      = $message;
-        $this->notify       = $notify;
-        $this->created_at   = $created_at;
+        $this->message = $message;
+        $this->notify = $notify;
+        $this->attach_invoice = $attach_invoice;
+        $this->created_at = $created_at;
     }
 
     public static function fromDataTransferObject(OrderHistoryDataTransferObject $dataTransferObject)
@@ -85,6 +95,7 @@ class OrderHistory
             $dataTransferObject->orderStatus,
             $dataTransferObject->message,
             $dataTransferObject->notify,
+            $dataTransferObject->attach_invoice,
             $dataTransferObject->created_at
         );
     }
@@ -124,6 +135,14 @@ class OrderHistory
     public function isNotify(): bool
     {
         return $this->notify;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAttachInvoice(): bool
+    {
+        return $this->attach_invoice;
     }
 
     /**

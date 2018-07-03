@@ -2,13 +2,13 @@
 {% import "Layout/Templates/macros.html.twig" as macro %}
 
 {% block actionbar %}
-    {% if showCatalogAdd %}
-		<div class="btn-toolbar pull-right">
-			<div class="btn-group" role="group">
+  {% if showCatalogAdd %}
+    <div class="btn-toolbar pull-right">
+      <div class="btn-group" role="group">
         {{ macro.buttonIcon( geturl('Add'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
-			</div>
-		</div>
-    {% endif %}
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block content %}

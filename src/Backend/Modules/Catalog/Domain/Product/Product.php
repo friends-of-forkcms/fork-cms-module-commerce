@@ -17,7 +17,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Table(name="catalog_products")
@@ -92,11 +91,11 @@ class Product
     /**
      * @var SpecificationValue[]
      *
-     * @ORM\ManyToMany(targetEntity="Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue", inversedBy="products", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue", inversedBy="products", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="catalog_products_specification_values",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id", onDelete="CASCADE")}
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id")}
      * )
      * @ORM\OrderBy({"value" = "ASC"})
      */

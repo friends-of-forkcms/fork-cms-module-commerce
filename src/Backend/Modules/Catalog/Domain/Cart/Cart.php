@@ -86,6 +86,11 @@ class Cart
     private $allProductsInStock;
 
     /**
+     * @var double
+     */
+    private $totalWeight;
+
+    /**
      * Cart constructor.
      */
     public function __construct()
@@ -267,6 +272,18 @@ class Cart
     }
 
     /**
+     * @return float|null
+     */
+    public function getTotalWeight(): float
+    {
+        if ($this->totalWeight === null) {
+            $this->calculateTotals();
+        }
+
+        return $this->totalWeight;
+    }
+
+    /**
      * Calculate the cart totals
      *
      * @return void
@@ -277,6 +294,7 @@ class Cart
         $this->subTotal = 0;
         $this->total = 0;
         $this->vats = [];
+        $this->totalWeight = 0;
 
         // Store new values
         foreach ($this->values as $value) {
@@ -284,6 +302,10 @@ class Cart
             $product = $value->getProduct();
             $vat = $product->getVat();
             $vatPrice = $product->getVatPrice() * $value->getQuantity();
+
+            if ($product->getWeight() !== null) {
+                $this->totalWeight += $product->getWeight() * $value->getQuantity();
+            }
 
             $this->subTotal += $value->getTotal();
 

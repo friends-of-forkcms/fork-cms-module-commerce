@@ -8,12 +8,22 @@ use Doctrine\ORM\EntityRepository;
 
 class OrderStatusRepository extends EntityRepository
 {
+    /**
+     * @param OrderStatus $orderStatus
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function add(OrderStatus $orderStatus): void
     {
         // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->persist($orderStatus);
     }
 
+    /**
+     * @param int|null $id
+     * @param Locale $locale
+     * @return OrderStatus|null
+     * @throws OrderStatusNotFound
+     */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?OrderStatus
     {
         if ($id === null) {
@@ -22,6 +32,23 @@ class OrderStatusRepository extends EntityRepository
 
         /** @var OrderStatus $orderStatus */
         $orderStatus = $this->findOneBy(['id' => $id, 'locale' => $locale]);
+
+        if ($orderStatus === null) {
+            throw OrderStatusNotFound::forId($id);
+        }
+
+        return $orderStatus;
+    }
+
+    /**
+     * @param int $id
+     * @return OrderStatus
+     * @throws OrderStatusNotFound
+     */
+    public function findOneById(int $id): OrderStatus
+    {
+        /** @var OrderStatus $orderStatus */
+        $orderStatus = $this->findOneBy(['id' => $id]);
 
         if ($orderStatus === null) {
             throw OrderStatusNotFound::forId($id);

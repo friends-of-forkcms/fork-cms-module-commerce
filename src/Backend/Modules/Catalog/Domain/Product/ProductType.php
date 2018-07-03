@@ -14,7 +14,6 @@ use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueT
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
-use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -163,6 +162,9 @@ class ProductType extends AbstractType
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.UpSellProducts',
                 'action' => 'AutoCompleteProducts',
+                'attr' => [
+                    'data-sortable' => true,
+                ]
             ]
         )->add(
             $builder->create(
