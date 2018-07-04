@@ -5,6 +5,7 @@ namespace Backend\Modules\Catalog\Domain\Product;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
+use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
@@ -13,6 +14,8 @@ use Backend\Core\Engine\Model;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Composite;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\ORM\QueryBuilder;
 
 class ProductRepository extends EntityRepository
@@ -57,32 +60,6 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Find the products limited by category
-     *
-     * @param Category $category
-     * @param integer $limit
-     * @param integer $offset
-     * @param string $sorting
-     *
-     * @return Product[]
-     */
-    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, ?string $sorting)
-    {
-        $queryBuilder = $this->createQueryBuilder('p');
-
-        $query = $queryBuilder->where('p.category = :category')
-                              ->setParameter('category', $category);
-
-        $query = $this->setProductSorting($query, $sorting);
-
-
-        return $query->setMaxResults($limit)
-                     ->setFirstResult($offset)
-                     ->getQuery()
-                     ->getResult();
-    }
-
-    /**
      * Find a product by category and product url
      *
      * @param Locale $locale
@@ -95,34 +72,34 @@ class ProductRepository extends EntityRepository
      */
     public function findByCategoryAndUrl(Locale $locale, string $category, $url): ?Product
     {
-        $queryBuilder         = $this->createQueryBuilder('i');
+        $queryBuilder = $this->createQueryBuilder('i');
         $categoryQueryBuilder = $this->getEntityManager()->createQueryBuilder();
 
         $categoryQuery = $categoryQueryBuilder->select('c.id')
-                                              ->from(Category::class, 'c')
-                                              ->join(Meta::class, 'm2', 'WITH', 'm2.id = c.meta')
-                                              ->where('m2.url = :category')
-                                              ->andWhere('c.locale = :locale')
-                                              ->setParameter('locale', $locale);
+            ->from(Category::class, 'c')
+            ->join(Meta::class, 'm2', 'WITH', 'm2.id = c.meta')
+            ->where('m2.url = :category')
+            ->andWhere('c.locale = :locale')
+            ->setParameter('locale', $locale);
 
         return $queryBuilder->join(Meta::class, 'm', 'WITH', 'm.id = i.meta')
-                            ->where('i.locale = :locale')
-                            ->andWhere('m.url = :url')
-                            ->andWhere(
-                                $queryBuilder->expr()->in(
-                                    'i.category',
-                                    $categoryQuery->getDQL()
-                                )
-                            )
-                            ->setParameters(
-                                [
-                                    'locale'   => $locale,
-                                    'url'      => $url,
-                                    'category' => $category
-                                ]
-                            )
-                            ->getQuery()
-                            ->getOneOrNullResult();
+            ->where('i.locale = :locale')
+            ->andWhere('m.url = :url')
+            ->andWhere(
+                $queryBuilder->expr()->in(
+                    'i.category',
+                    $categoryQuery->getDQL()
+                )
+            )
+            ->setParameters(
+                [
+                    'locale' => $locale,
+                    'url' => $url,
+                    'category' => $category
+                ]
+            )
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -139,8 +116,8 @@ class ProductRepository extends EntityRepository
     {
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->select('MAX(i.sequence) as sequence')
-                      ->where('i.locale = :locale')
-                      ->setParameter('locale', $locale);
+            ->where('i.locale = :locale')
+            ->setParameter('locale', $locale);
 
         // Include the parent if is set
         if ($category) {
@@ -150,7 +127,7 @@ class ProductRepository extends EntityRepository
 
         // Return the new sequence
         return $query_builder->getQuery()
-                             ->getSingleScalarResult() + 1;
+                ->getSingleScalarResult() + 1;
     }
 
     /**
@@ -167,10 +144,10 @@ class ProductRepository extends EntityRepository
         $query_builder = $this->createQueryBuilder('i');
 
         return $query_builder->select('COUNT(i.id)')
-                             ->where('i.locale = :locale')
-                             ->setParameter('locale', $locale)
-                             ->getQuery()
-                             ->getSingleScalarResult();
+            ->where('i.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function findForAutoComplete(
@@ -179,28 +156,29 @@ class ProductRepository extends EntityRepository
         ?int $excluded_id,
         ?int $page_limit = 10,
         ?int $page = 1
-    ) {
+    )
+    {
         $queryBuilder = $this->createQueryBuilder('i');
 
         $queryBuilder->where('i.locale = :locale')
-                     ->andWhere(
-                         $queryBuilder->expr()->orX(
-                             $queryBuilder->expr()->like('i.sku', ':query'),
-                             $queryBuilder->expr()->like('i.title', ':query')
-                         )
-                     )
-                     ->setParameter('locale', $locale)
-                     ->setParameter('query', '%' . $query . '%');
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->like('i.sku', ':query'),
+                    $queryBuilder->expr()->like('i.title', ':query')
+                )
+            )
+            ->setParameter('locale', $locale)
+            ->setParameter('query', '%' . $query . '%');
 
         if ($excluded_id) {
             $queryBuilder->andWhere('i.id != :excluded_id')
-                         ->setParameter('excluded_id', $excluded_id);
+                ->setParameter('excluded_id', $excluded_id);
         }
 
         return $queryBuilder->getQuery()
-                            ->setMaxResults($page_limit)
-                            ->setFirstResult(($page - 1) * $page_limit)
-                            ->getResult();
+            ->setMaxResults($page_limit)
+            ->setFirstResult(($page - 1) * $page_limit)
+            ->getResult();
     }
 
     /**
@@ -219,17 +197,17 @@ class ProductRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('i');
 
         return $queryBuilder->select('i')
-                            ->join(Meta::class, 'm', 'WITH', 'm.id = i.meta')
-                            ->where('i.locale = :locale')
-                            ->andWhere('m.url = :url')
-                            ->setParameters(
-                                [
-                                    'locale' => $locale,
-                                    'url'    => $url
-                                ]
-                            )
-                            ->getQuery()
-                            ->getSingleResult();
+            ->join(Meta::class, 'm', 'WITH', 'm.id = i.meta')
+            ->where('i.locale = :locale')
+            ->andWhere('m.url = :url')
+            ->setParameters(
+                [
+                    'locale' => $locale,
+                    'url' => $url
+                ]
+            )
+            ->getQuery()
+            ->getSingleResult();
     }
 
     /**
@@ -241,21 +219,21 @@ class ProductRepository extends EntityRepository
      */
     public function getUrl($url, Locale $locale, $id)
     {
-        $url           = Uri::getUrl((string)$url);
+        $url = Uri::getUrl((string)$url);
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
-                      ->where($query_builder->expr()->eq('m.url', ':url'))
-                      ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
-                      ->setParameters(
-                          [
-                              'url'    => $url,
-                              'locale' => $locale
-                          ]
-                      );
+            ->where($query_builder->expr()->eq('m.url', ':url'))
+            ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
+            ->setParameters(
+                [
+                    'url' => $url,
+                    'locale' => $locale
+                ]
+            );
 
         if ($id !== null) {
             $query_builder->andWhere($query_builder->expr()->neq('i.id', ':id'))
-                          ->setParameter('id', $id);
+                ->setParameter('id', $id);
         }
 
         if (count($query_builder->getQuery()->getResult())) {
@@ -265,6 +243,35 @@ class ProductRepository extends EntityRepository
         }
 
         return $url;
+    }
+
+    /**
+     * Find the products limited by category
+     *
+     * @param Category $category
+     * @param integer $limit
+     * @param integer $offset
+     * @param string $sorting
+     *
+     * @return Product[]
+     */
+    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, ?string $sorting)
+    {
+        $sql = 'SELECT p.* FROM catalog_products p WHERE p.category_id = :category';
+        $parameters = [
+            'category' => $category,
+        ];
+
+        $this->setProductSorting($sql, $sorting);
+        $sql .= ' LIMIT '. $offset .', ' . $limit;
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameters($parameters);
+
+        return $query->getResult();
     }
 
     /**
@@ -280,48 +287,22 @@ class ProductRepository extends EntityRepository
      */
     public function filterProducts(array $filters, Category $category, int $limit, int $offset, string $sorting): array
     {
-        $queryBuilder = $this->createQueryBuilder('p');
+        $sql = 'SELECT p.* FROM catalog_products p WHERE p.category_id = :category';
+        $parameters = [
+            'category' => $category,
+        ];
 
-        $query = $queryBuilder->innerJoin('p.category', 'c')
-                              ->where('c.id = :category');
+        $this->buildFilterQuery($sql, $parameters, $filters);
+        $this->setProductSorting($sql, $sorting);
+        $sql .= ' LIMIT '. $offset .', ' . $limit;
 
-        // Counter needed for the parameters
-        $i = 0;
-        foreach ($filters as $specification => $specificationValue) {
-            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
 
-            // Prepare our IN query
-            $query2 = $queryBuilder2->select('p'.$i.'.id')
-                                    ->from(Specification::class, 's'.$i)
-                                    ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
-                                    ->leftJoin('sv'.$i.'.products', 'p'.$i)
-                                    ->innerJoin('s'.$i.'.meta', 'm'.$i)
-                                    ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
-                                    ->where('s'.$i.'.filter = :filter')
-                                    ->andWhere('p'.$i.'.category = :category')
-                                    ->andWhere('m'.$i.'.url = :specification' . $i)
-                                    ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameters($parameters);
 
-            // Add the IN query to our root query
-            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
-
-            // Set the specification parameters
-            $query->setParameter('specification' . $i, $specification);
-
-            // Update the counter
-            $i++;
-        }
-
-        // Set the parameters
-        $query->setParameter('category', $category)
-              ->setParameter('filter', true)
-              ->setMaxResults($limit)
-              ->setFirstResult($offset);
-
-        $query = $this->setProductSorting($query, $sorting);
-
-        return $query->getQuery()
-                     ->getResult();
+        return $query->getResult();
     }
 
     /**
@@ -334,76 +315,18 @@ class ProductRepository extends EntityRepository
      */
     public function filterProductsCount(array $filters, Category $category): int
     {
-        $queryBuilder = $this->createQueryBuilder('p');
+        $sql = 'SELECT count(p.id) as total_products FROM catalog_products p WHERE p.category_id = :category';
+        $parameters = [
+            'category' => $category->getId(),
+        ];
 
-        $query = $queryBuilder->select('count(p.id)')
-                              ->innerJoin('p.category', 'c')
-                              ->where('c.id = :category');
+        $this->buildFilterQuery($sql, $parameters, $filters);
 
-        // We need a counter to set the parameters
-        $i = 0;
-        foreach ($filters as $specification => $specificationValue) {
-            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+        $connection = $this->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute($parameters);
 
-            // Prepare our IN query
-            $query2 = $queryBuilder2->select('p'.$i.'.id')
-                                    ->from(Specification::class, 's'.$i)
-                                    ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
-                                    ->leftJoin('sv'.$i.'.products', 'p'.$i)
-                                    ->innerJoin('s'.$i.'.meta', 'm'.$i)
-                                    ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
-                                    ->where('s'.$i.'.filter = :filter')
-                                    ->andWhere('p'.$i.'.category = :category')
-                                    ->andWhere('m'.$i.'.url = :specification' . $i)
-                                    ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
-
-            // Add the IN query to our root query
-            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
-
-            // Set the specification parameters
-            $query->setParameter('specification' . $i, $specification);
-
-            $i++;
-        }
-
-        // Set the parameters
-        $query->setParameter('category', $category)
-              ->setParameter('filter', true);
-
-        try {
-            return $query->getQuery()
-                         ->getSingleScalarResult();
-        } catch (NonUniqueResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
-     * @param QueryBuilder $query
-     * @param string $sorting
-     *
-     * @return QueryBuilder
-     */
-    private function setProductSorting(QueryBuilder $query, string $sorting): QueryBuilder
-    {
-        switch ($sorting) {
-            case Product::SORT_RANDOM:
-            default:
-                $query->orderBy('p.sequence', 'ASC')
-                      ->addOrderBy('p.id', 'DESC');
-                break;
-            case Product::SORT_PRICE_ASC:
-                $query->orderBy('p.price', 'ASC');
-                break;
-            case Product::SORT_PRICE_DESC:
-                $query->orderBy('p.price', 'DESC');
-                break;
-            case Product::SORT_CREATED_AT:
-                $query->orderBy('p.createdOn', 'DESC');
-                break;
-        }
-
-        return $query;
+        return (int) $stmt->fetchColumn(0);
     }
 
     /**
@@ -419,47 +342,21 @@ class ProductRepository extends EntityRepository
      */
     public function filterSearchedProducts(string $searchTerm, array $filters, int $limit, int $offset, string $sorting): array
     {
-        $queryBuilder = $this->createQueryBuilder('p');
+        $sql = 'SELECT p.* FROM catalog_products p WHERE ';
+        $parameters = [];
 
-        $query = $queryBuilder->innerJoin('p.category', 'c')
-            ->where($this->buildSearchQuery('p', $queryBuilder));
+        $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
+        $this->buildFilterQuery($sql, $parameters, $filters);
+        $this->setProductSorting($sql, $sorting);
+        $sql .= ' LIMIT '. $offset .', ' . $limit;
 
-        // Counter needed for the parameters
-        $i = 0;
-        foreach ($filters as $specification => $specificationValue) {
-            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
 
-            // Prepare our IN query
-            $query2 = $queryBuilder2->select('p'.$i.'.id')
-                ->from(Specification::class, 's'.$i)
-                ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
-                ->leftJoin('sv'.$i.'.products', 'p'.$i)
-                ->innerJoin('s'.$i.'.meta', 'm'.$i)
-                ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
-                ->where('s'.$i.'.filter = :filter')
-                ->andWhere('m'.$i.'.url = :specification' . $i)
-                ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameters($parameters);
 
-            // Add the IN query to our root query
-            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
-
-            // Set the specification parameters
-            $query->setParameter('specification' . $i, $specification);
-
-            // Update the counter
-            $i++;
-        }
-
-        // Set the parameters
-        $query->setParameter('filter', true)
-            ->setParameter('search_term', '%' . $searchTerm . '%')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        $query = $this->setProductSorting($query, $sorting);
-
-        return $query->getQuery()
-            ->getResult();
+        return $query->getResult();
     }
 
     /**
@@ -472,46 +369,17 @@ class ProductRepository extends EntityRepository
      */
     public function filterSearchedProductsCount(string $searchTerm, array $filters): int
     {
-        $queryBuilder = $this->createQueryBuilder('p');
+        $sql = 'SELECT p.* FROM catalog_products p WHERE ';
+        $parameters = [];
 
-        $query = $queryBuilder->select('count(p.id)')
-            ->where($this->buildSearchQuery('p', $queryBuilder));
+        $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
+        $this->buildFilterQuery($sql, $parameters, $filters);
 
-        // We need a counter to set the parameters
-        $i = 0;
-        foreach ($filters as $specification => $specificationValue) {
-            $queryBuilder2 = $this->getEntityManager()->createQueryBuilder();
+        $connection = $this->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute($parameters);
 
-            // Prepare our IN query
-            $query2 = $queryBuilder2->select('p'.$i.'.id')
-                ->from(Specification::class, 's'.$i)
-                ->leftJoin('s'.$i.'.specification_values', 'sv'.$i)
-                ->leftJoin('sv'.$i.'.products', 'p'.$i)
-                ->innerJoin('s'.$i.'.meta', 'm'.$i)
-                ->innerJoin('sv'.$i.'.meta', 'm_'.$i)
-                ->where('s'.$i.'.filter = :filter')
-                ->andWhere('m'.$i.'.url = :specification' . $i)
-                ->andWhere($queryBuilder->expr()->in('m_'.$i.'.url', $specificationValue));
-
-            // Add the IN query to our root query
-            $query->andWhere($queryBuilder->expr()->in('p.id', $query2->getDql()));
-
-            // Set the specification parameters
-            $query->setParameter('specification' . $i, $specification);
-
-            $i++;
-        }
-
-        // Set the parameters
-        $query->setParameter('filter', true)
-            ->setParameter('search_term', '%' . $searchTerm . '%');
-
-        try {
-            return $query->getQuery()
-                ->getSingleScalarResult();
-        } catch (NonUniqueResultException $e) {
-            return 0;
-        }
+        return (int) $stmt->fetchColumn(0);
     }
 
     /**
@@ -526,16 +394,20 @@ class ProductRepository extends EntityRepository
      */
     public function searchProductsLimited(string $searchTerm, int $limit, int $offset = 0, ?string $sorting)
     {
-        $queryBuilder = $this->createQueryBuilder('p');
+        $sql = 'SELECT p.* FROM catalog_products p WHERE ';
+        $parameters = [];
 
-        $queryBuilder = $queryBuilder->where($this->buildSearchQuery('p', $queryBuilder));
+        $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
+        $this->setProductSorting($sql, $sorting);
+        $sql .= ' LIMIT '. $offset .', ' . $limit;
 
-        return $this->setProductSorting($queryBuilder, $sorting)
-            ->setParameter('search_term', '%' . $searchTerm . '%')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->getQuery()
-            ->getResult();
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameters($parameters);
+
+        return $query->getResult();
     }
 
     /**
@@ -548,18 +420,68 @@ class ProductRepository extends EntityRepository
      */
     public function getSearchProductCount(string $searchTerm, Locale $locale): int
     {
-        $queryBuilder = $this->createQueryBuilder('i');
+        $sql = 'SELECT p.* FROM catalog_products p WHERE ';
+        $parameters = [];
 
-        try {
-            return $queryBuilder->select('COUNT(i.id)')
-                ->where($this->buildSearchQuery('i', $queryBuilder))
-                ->andWhere('i.locale = :locale')
-                ->setParameter('locale', $locale)
-                ->setParameter('search_term', '%' . $searchTerm . '%')
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NonUniqueResultException $e) {
-            return 0;
+        $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
+
+        $connection = $this->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute($parameters);
+
+        return (int) $stmt->fetchColumn(0);
+    }
+
+    /**
+     * @param string $sql
+     * @param array $parameters
+     * @param array $filters
+     */
+    public function buildFilterQuery(string &$sql, array &$parameters, array $filters): void
+    {
+        // Counter needed for the parameters
+        $i = 0;
+        foreach ($filters as $specification => $specificationValue) {
+            $sql .= ' AND p.id IN(
+                SELECT psv.product_id
+                FROM catalog_specification_values sv
+                INNER JOIN catalog_products_specification_values psv ON psv.specification_value_id = sv.id
+                INNER JOIN meta svmeta ON svmeta.id = sv.meta_id
+                INNER JOIN catalog_specifications s ON s.id = sv.`specification_id`
+                INNER JOIN meta smeta ON smeta.id = s.meta_id
+                WHERE s.filter = 1
+                AND smeta.url = :specification' . $i .'
+                AND svmeta.url IN (:specificationValue' .$i .')              
+            )';
+
+            $parameters['specification' . $i] = $specification;
+            $parameters['specificationValue' .$i] = implode(', ', $specificationValue);
+
+            // Update the counter
+            $i++;
+        }
+    }
+
+    /**
+     * @param string $query
+     * @param string $sorting
+     */
+    private function setProductSorting(string &$query, string $sorting): void
+    {
+        switch ($sorting) {
+            case Product::SORT_RANDOM:
+            default:
+                $query .= ' ORDER BY p.sequence ASC, p.id DESC';
+                break;
+            case Product::SORT_PRICE_ASC:
+                $query .= ' ORDER BY p.price ASC';
+                break;
+            case Product::SORT_PRICE_DESC:
+                $query .= ' ORDER BY p.price DESC';
+                break;
+            case Product::SORT_CREATED_AT:
+                $query .= ' ORDER BY p.created_on DESC';
+                break;
         }
     }
 
@@ -567,17 +489,19 @@ class ProductRepository extends EntityRepository
      * Build the search query
      *
      * @param string $alias
-     * @param QueryBuilder $queryBuilder
-     *
-     * @return Composite
+     * @param string $sql
+     * @param string $searchTerm
+     * @param array $parameters
      */
-    private function buildSearchQuery(string $alias, QueryBuilder $queryBuilder): Composite
+    private function buildSearchQuery(string $alias, string &$sql, string $searchTerm, array &$parameters): void
     {
-        return $queryBuilder->expr()->orX(
-            $queryBuilder->expr()->like($alias .'.title', ':search_term'),
-            $queryBuilder->expr()->like($alias .'.summary', ':search_term'),
-            $queryBuilder->expr()->like($alias .'.text', ':search_term'),
-            $queryBuilder->expr()->like($alias .'.sku', ':search_term')
-        );
+        $sql .= ' (';
+        $sql .= $alias . '.title LIKE :search_term OR ';
+        $sql .= $alias . '.summary LIKE :search_term OR ';
+        $sql .= $alias . '.text LIKE :search_term OR ';
+        $sql .= $alias . '.sku LIKE :search_term';
+        $sql .= ') ';
+
+        $parameters['search_term'] = '%' . $searchTerm .'%';
     }
 }
