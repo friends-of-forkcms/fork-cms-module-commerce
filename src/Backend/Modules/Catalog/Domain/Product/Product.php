@@ -122,13 +122,8 @@ class Product
     private $related_products;
 
     /**
-     * Many Users have many Users.
-     * @ORM\ManyToMany(targetEntity="Product")
-     * @ORM\JoinTable(name="catalog_up_sell_products",
-     *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="up_sell_product_id", referencedColumnName="id")}
-     *      )
-     * @ORM\OrderBy({"sequence" = "ASC", "category" = "ASC"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProduct", mappedBy="product", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     protected $up_sell_products;
 

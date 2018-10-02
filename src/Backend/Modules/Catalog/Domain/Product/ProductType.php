@@ -12,6 +12,8 @@ use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecialType;
 use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueDataTransferObject;
 use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueType;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
+use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProductDataTransferObject;
+use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProductType;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
 use Common\Form\CollectionType;
@@ -142,30 +144,19 @@ class ProductType extends AbstractType
                 'action' => 'AutoCompleteProducts',
             ]
         )->add(
-            'up_sell_products',
-            Select2EntityType::class,
-            [
-                'multiple' => true,
-                'remote_route' => 'backend_ajax',
-                'remote_params' => [
-                    'excluded_id' => ($options['product'] ? $options['product']->getId() : null)
-                ],
-                'class' => Product::class,
-                'primary_key' => 'id',
-                'text_property' => 'getTitle',
-                'minimum_input_length' => 3,
-                'page_limit' => 10,
-                'allow_clear' => true,
-                'delay' => 250,
-                'cache' => false,
-                'cache_timeout' => 60000, // if 'cache' is true
-                'language' => Locale::workingLocale(),
-                'label' => 'lbl.UpSellProducts',
-                'action' => 'AutoCompleteProducts',
-                'attr' => [
-                    'data-sortable' => true,
+                'up_sell_products',
+                CollectionType::class,
+                [
+                    'required' => false,
+                    'label' => 'lbl.UpSellProducts',
+                    'entry_type' => UpSellProductType::class,
+                    'entry_options' => [
+                        'product' => ($options['product'] ? $options['product'] : null),
+                    ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
                 ]
-            ]
         )->add(
             $builder->create(
                 'specification_values',

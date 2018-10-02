@@ -707,6 +707,10 @@
         <translation language="nl"><![CDATA[factuur bijvoegd]]></translation>
         <translation language="en"><![CDATA[invoice attached]]></translation>
       </item>
+      <item type="label" name="Relations">
+        <translation language="nl"><![CDATA[relaties]]></translation>
+        <translation language="en"><![CDATA[relations]]></translation>
+      </item>
     </Catalog>
     <Core>
       <item type="label" name="Catalog">

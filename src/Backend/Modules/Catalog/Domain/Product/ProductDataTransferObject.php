@@ -10,6 +10,7 @@ use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
+use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
@@ -161,6 +162,11 @@ class ProductDataTransferObject
     /**
      * @var PersistentCollection
      */
+    public $remove_up_sell_products;
+
+    /**
+     * @var PersistentCollection
+     */
     public $remove_specification_values;
 
     /**
@@ -193,6 +199,7 @@ class ProductDataTransferObject
         $this->remove_specials = new ArrayCollection();
         $this->related_products = new ArrayCollection();
         $this->up_sell_products = new ArrayCollection();
+        $this->remove_up_sell_products = new ArrayCollection();
         $this->remove_related_products = new ArrayCollection();
         $this->images = MediaGroup::create(MediaGroupType::fromString(Type::IMAGE));
         $this->downloads = MediaGroup::create(MediaGroupType::fromString(Type::FILE));
@@ -282,15 +289,17 @@ class ProductDataTransferObject
         $this->remove_related_products->add($product);
     }
 
-    public function addUpSellProduct(Product $product)
+    public function addUpSellProduct(UpSellProduct $upSellProduct)
     {
-        $this->up_sell_products->add($product);
+        $this->up_sell_products->add($upSellProduct);
     }
 
-    public function removeUpSellProduct(Product $product)
+    public function removeUpSellProduct(UpSellProduct $upSellProduct)
     {
         // for our current entity
-        $this->up_sell_products->removeElement($product);
+        $this->up_sell_products->removeElement($upSellProduct);
+
+        $this->remove_up_sell_products->add($upSellProduct);
     }
 
     public function addSpecial(ProductSpecial $special)

@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Domain\Product;
 
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
+use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProduct;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -94,9 +95,14 @@ class AddToCartType extends AbstractType
             [
                 'required' => false,
                 'label' => 'Optionele accessoires',
-                'class' => Product::class,
+                'class' => UpSellProduct::class,
                 'choices' => $product->getUpSellProducts(),
-                'choice_label' => 'title',
+                'choice_label' => function(UpSellProduct $upSellProduct) {
+                    return $upSellProduct->getUpSellProduct()->getTitle();
+                },
+                'choice_value' => function (UpSellProduct $upSellProduct) {
+                    return $upSellProduct->getUpSellProduct()->getId();
+                },
                 'expanded' => true,
                 'multiple' => true,
             ]

@@ -42,6 +42,10 @@ final class CreateProductHandler
             $special->setProduct($product);
         }
 
+        foreach ($createProduct->up_sell_products as $up_sell_product) {
+            $up_sell_product->setProduct($product);
+        }
+
         // add our new product to the relating products
         foreach ($createProduct->related_products as $related_product) {
             $related_product->addRelatedProduct($product);

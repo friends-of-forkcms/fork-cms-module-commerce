@@ -20,14 +20,14 @@
                  value="{{ child.vars.value }}"/>
 
           <label for="{{ child.vars.id }}">
-            <a href="{{ choice.data.url }}" target="_blank">
+            <a href="{{ choice.data.upSellProduct.url }}" target="_blank">
               <img class="checkbox-left"
-                   src="{{ (choice.data.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
-                   alt="{{ choice.data.title }}"/>
+                   src="{{ (choice.data.upSellProduct.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
+                   alt="{{ choice.data.upSellProduct.title }}"/>
             </a>
             <div class="checkbox-right">
-              <h4><a href="{{ choice.data.url }}" target="_blank">{{ choice.data.title }}</a></h4>
-              <p class="price">€ {{ choice.data.activePrice(false)|formatnumber(2) }}</p>
+              <h4><a href="{{ choice.upSellProduct.data.url }}" target="_blank">{{ choice.data.upSellProduct.title }}</a></h4>
+              <p class="price">€ {{ choice.data.upSellProduct.activePrice(false)|formatnumber(2) }}</p>
             </div>
           </label>
         </div>

@@ -30,10 +30,18 @@ final class UpdateProductHandler
             $special->setProduct($product);
         }
 
+        foreach ($updateProduct->up_sell_products as $up_sell_product) {
+            $up_sell_product->setProduct($product);
+        }
+
         // remove specials
         $entityManager = Model::get('doctrine.orm.entity_manager');
         foreach ($updateProduct->remove_specials as $special) {
             $entityManager->remove($special);
+        }
+
+        foreach ($updateProduct->remove_up_sell_products as $up_sell_product) {
+            $entityManager->remove($up_sell_product);
         }
 
         // first update all the relating product

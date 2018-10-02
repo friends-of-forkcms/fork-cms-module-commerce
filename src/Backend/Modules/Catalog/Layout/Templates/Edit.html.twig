@@ -27,6 +27,10 @@
                data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
           </li>
           <li role="presentation">
+            <a href="#tabRelations" aria-controls="tabRelations" role="tab"
+               data-toggle="tab">{{ 'lbl.Relations'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
             <a href="#tabOptions" aria-controls="tabOptions" role="tab"
                data-toggle="tab">{{ 'lbl.Options'|trans|ucfirst }}</a>
           </li>
@@ -69,8 +73,6 @@
                   </div>
                   {{ form_errors(form.text) }}
                 </div>
-                {{ form_row(form.related_products) }}
-                {{ form_row(form.up_sell_products) }}
               </div>
               <div class="col-md-4">
                 <div class="panel form-group panel-default">
@@ -130,6 +132,10 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabRelations">
+            {{ form_row(form.related_products) }}
+            {{ form_row(form.up_sell_products) }}
           </div>
           <div role="tabpanel" class="tab-pane" id="tabOptions">
             <div class="row">

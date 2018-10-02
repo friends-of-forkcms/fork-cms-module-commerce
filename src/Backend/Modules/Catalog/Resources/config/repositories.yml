@@ -118,3 +118,9 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue
+
+    catalog.repository.up_sell_product:
+        class: Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProductRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProduct

@@ -113,3 +113,9 @@ doctrine:
         dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/ProductOptionValue"
         alias: CatalogProductOption
         prefix: Backend\Modules\Catalog\Domain\ProductOptionValue
+      catalog_up_sell_product:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Catalog/Domain/UpSellProduct"
+        alias: CatalogUpSellProduct
+        prefix: Backend\Modules\Catalog\Domain\UpSellProduct

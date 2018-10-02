@@ -111,6 +111,34 @@
       selectElement.select2entity(options);
     });
 
+    var addUpSellProductButton = $('[data-collection="product_up_sell_products"]'),
+        upSellListGroup = addUpSellProductButton.closest('.panel').find('.list-group');
+    addUpSellProductButton.on('collection-field-added', function () {
+      var selectElement = $('[data-action="AutoCompleteProducts"]:last'),
+        row = selectElement.closest('.list-group-item'),
+        options = selectElement.data();
+
+      options['parentElement'] = row.find('[name*="[upSellProduct]"]');
+
+      row.find('[name*="[sequence]"]').val(row.index() + 1);
+
+      selectElement.select2entity(options);
+    });
+
+    upSellListGroup.sortable(
+      {
+        items: '.list-group-item',
+        // handle: 'td.dragAndDropHandle',
+        placeholder: 'dragAndDropPlaceholder',
+        forcePlaceholderSize: true,
+        stop: function (e, ui) {
+          upSellListGroup.find('.list-group-item').each(function(){
+            $(this).find('[name*="[sequence]"]').val($(this).index() + 1);
+          });
+        }
+      }
+    );
+
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
       activateAutoCompleteSpecificationValue();
     });
