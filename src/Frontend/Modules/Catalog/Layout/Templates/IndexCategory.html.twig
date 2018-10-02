@@ -1,7 +1,7 @@
 <div class="padding-bottom">
   <div class="product-overview clearfix">
     {% for category in categories %}
-      <div class="col-md-4 col-sm-6 col-xs-6 no-gutter product-item text-center clickable"
+      <div class="col-md-4 col-sm-6 col-xs-12 no-gutter product-item text-center clickable"
            data-url="{{ category.url }}">
         <div class="inner bg-light">
           <img src="{{ category.image.webPath('source') }}" alt="{{ category.title }}"/>

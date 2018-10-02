@@ -15,28 +15,41 @@ use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
  */
 class DataGrid extends DataGridDatabase
 {
-    public function __construct(Locale $locale, ?Category $category)
+    public function __construct(Locale $locale, ?Category $category, ?string $sku, int $offset = 0)
     {
+        $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
+		          FROM catalog_products AS i
+		          WHERE i.language = :language';
+
+        $parameters = [
+            'language' => $locale
+        ];
+
         if ($category) {
-            parent::__construct(
-                'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
-		 FROM catalog_products AS i
-		 WHERE i.language = :language and i.category_id = :category
-		 ORDER BY i.sequence ASC',
-                ['language' => $locale, 'category' => $category->getId()]
-            );
-        } else {
-            parent::__construct(
-                'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
-		 FROM catalog_products AS i
-		 WHERE i.language = :language
-		 ORDER BY i.sequence ASC',
-                ['language' => $locale]
-            );
+            $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
+		              FROM catalog_products AS i
+		              WHERE i.language = :language AND i.category_id = :category';
+
+            $parameters['category'] = $category->getId();
         }
 
+        if ($sku) {
+            $query .= ' AND i.`sku` LIKE :sku';
+            $parameters['sku'] = '%' . $sku .'%';
+        }
+
+        $query .= ' ORDER BY i.sequence ASC';
+
+        parent::__construct($query, $parameters);
+
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceProducts'));
+        $this->setPaging(true);
+        $this->setAttributes(
+            [
+                'data-action' => 'SequenceProducts',
+                'data-extra-params' => '{\'currentOffset\' : '. $offset .'}',
+            ]
+        );
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(array('id' => 'row-[id]'));
@@ -58,9 +71,9 @@ class DataGrid extends DataGridDatabase
         }
     }
 
-    public static function getHtml(Locale $locale, ?Category $category): string
+    public static function getHtml(Locale $locale, ?Category $category, ?string $sku, int $offset = 0): string
     {
-        return (new self($locale, $category))->getContent();
+        return (new self($locale, $category, $sku, $offset))->getContent();
     }
 
     public static function categoryName(int $categoryId): string
@@ -79,7 +92,7 @@ class DataGrid extends DataGridDatabase
     {
         $name = null;
         if ($category->getParent()) {
-            $name = self::generateCategoryName($category->getParent(), $separator,false) . $separator;
+            $name = self::generateCategoryName($category->getParent(), $separator, false) . $separator;
         }
 
         if ($first) {

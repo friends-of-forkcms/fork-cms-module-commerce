@@ -17,6 +17,7 @@ use Backend\Modules\Catalog\Domain\Quote\QuoteType;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\ConfirmOrder;
 use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\Quote;
+use Common\Exception\ExitException;
 use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Model;
@@ -90,7 +91,7 @@ class Cart extends FrontendBaseBlock
                         break;
                 }
             } elseif ($parameters[0] == 'webhook') {
-                $this->runWebhook();
+                throw new ExitException('', $this->runWebhook());
             } else {
                 $this->redirect(Navigation::getUrl(404));
             }
@@ -109,7 +110,7 @@ class Cart extends FrontendBaseBlock
         $this->loadTemplate();
         $this->template->assign('cart', $this->cart);
 
-        $this->addJSData('isQuote', !$this->cart->isProductsInStock());
+        $this->addJSData('isQuote', $this->cart ? !$this->cart->isProductsInStock() : false);
         $this->addJS('EnhancedEcommerce.js');
     }
 
@@ -355,17 +356,15 @@ class Cart extends FrontendBaseBlock
      *
      * @throws \Exception
      *
-     * @return void
+     * @return string
      */
-    private function runWebhook(): void
+    private function runWebhook(): string
     {
         // Start the payment
         $paymentMethod = $this->getPaymentMethod($this->getRequest()->get('payment_method'));
         $paymentMethod->setRequest($this->getRequest());
 
-        echo $paymentMethod->runWebhook();
-
-        die();
+        return $paymentMethod->runWebhook();
     }
 
     /**

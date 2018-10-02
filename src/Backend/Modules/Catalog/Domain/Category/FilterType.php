@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Domain\Category;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,7 +17,7 @@ class FilterType extends AbstractType
             EntityType::class,
             [
                 'required'     => false,
-                'label'        => 'lbl.Category',
+                'label'        => 'lbl.ShowOnlyProductsInCategory',
                 'placeholder'  => 'lbl.None',
                 'class'        => Category::class,
                 'choices'      => $options['categories'],
@@ -28,6 +29,13 @@ class FilterType extends AbstractType
 
                     return $prefix . $category->getTitle();
                 }
+            ]
+        )->add(
+            'sku',
+            TextType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.FilterOnSku',
             ]
         );
     }

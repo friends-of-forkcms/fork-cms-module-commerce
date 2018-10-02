@@ -28,16 +28,17 @@ class SequenceProducts extends BackendBaseAJAXAction
 
         // list id
         $ids = (array) explode(',', rtrim($newIdSequence, ','));
+        $offset = $this->getRequest()->request->getInt('currentOffset', 0);
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
 
             // update sequence
             if ($product = $productRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateproduct = new UpdateProduct($product);
-                $updateproduct->sequence = $i + 1;
+                $updateProduct = new UpdateProduct($product);
+                $updateProduct->sequence = $offset + $i + 1;
 
-                $this->get('command_bus')->handle($updateproduct);
+                $this->get('command_bus')->handle($updateProduct);
             }
         }
 

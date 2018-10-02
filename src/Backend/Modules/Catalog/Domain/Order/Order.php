@@ -51,7 +51,7 @@ class Order
     private $shipment_method;
 
     /**
-     * @var integer
+     * @var float
      *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
@@ -233,7 +233,7 @@ class Order
     /**
      * @return int
      */
-    public function getShipmentPrice(): int
+    public function getShipmentPrice(): ?string
     {
         return $this->shipment_price;
     }

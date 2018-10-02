@@ -459,9 +459,13 @@
         <translation language="nl"><![CDATA[Het merk werd opgeslagen.]]></translation>
         <translation language="en"><![CDATA[The brand is saved.]]></translation>
       </item>
-      <item type="message" name="ShowOnlyCategoriesUnderCategory">
-        <translation language="nl"><![CDATA[Toon enkel categorieen onder de categorie:]]></translation>
-        <translation language="en"><![CDATA[Show only categories under:]]></translation>
+      <item type="label" name="ShowOnlyProductsInCategory">
+        <translation language="nl"><![CDATA[toon enkel producten in de categorie:]]></translation>
+        <translation language="en"><![CDATA[show only products in category:]]></translation>
+      </item>
+      <item type="label" name="FilterOnSku">
+        <translation language="nl"><![CDATA[filter op artikelnummer:]]></translation>
+        <translation language="en"><![CDATA[filter on sku:]]></translation>
       </item>
       <item type="label" name="UpSellProducts">
         <translation language="nl"><![CDATA[upsell producten]]></translation>

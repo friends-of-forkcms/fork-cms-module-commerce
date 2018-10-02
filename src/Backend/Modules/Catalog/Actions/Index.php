@@ -27,6 +27,13 @@ class Index extends BackendBaseActionIndex
     private $category;
 
     /**
+     * An sku number to filter on
+     *
+     * @var string
+     */
+    private $sku;
+
+    /**
      * The id of the category where is filtered on
      *
      * @var    int
@@ -43,7 +50,8 @@ class Index extends BackendBaseActionIndex
     {
         parent::execute();
 
-        $this->categoryId   = (int)$this->getRequest()->query->get('category', null);
+        $this->categoryId = $this->getRequest()->query->getInt('category', null);
+        $this->sku = $this->getRequest()->query->get('sku');
         $categoryRepository = $this->getCategoryRepository();
 
         if ($this->categoryId) {
@@ -55,7 +63,15 @@ class Index extends BackendBaseActionIndex
             }
         }
 
-        $this->template->assign('dataGrid', DataGrid::getHtml(Locale::workingLocale(), $this->category));
+        $this->template->assign(
+            'dataGrid',
+            DataGrid::getHtml(
+                Locale::workingLocale(),
+                $this->category,
+                $this->sku,
+                $this->getRequest()->query->getInt('offset')
+            )
+        );
 
         $this->loadFilterForm();
         $this->parse();
@@ -71,7 +87,8 @@ class Index extends BackendBaseActionIndex
         $filterForm = $this->createForm(
             FilterType::class,
             [
-                'category' => $this->category
+                'category' => $this->category,
+                'sku' => $this->sku,
             ],
             [
                 'categories' => $this->getCategoryRepository()->getTree(Locale::workingLocale())
@@ -90,6 +107,10 @@ class Index extends BackendBaseActionIndex
                 $parameters['category'] = $data['category']->getId();
             }
 
+            if ($data['sku']) {
+                $parameters['sku'] = $data['sku'];
+            }
+
             // redirect to a filtered page
             $this->redirect(
                 $this->getBackLink($parameters)
@@ -97,7 +118,7 @@ class Index extends BackendBaseActionIndex
         }
 
         // assign the form to our template
-        $this->template->assign('filterCategory', $filterForm->createView());
+        $this->template->assign('form', $filterForm->createView());
     }
 
     /**
