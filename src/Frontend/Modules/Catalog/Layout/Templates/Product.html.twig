@@ -180,7 +180,7 @@
   "offers": {
     "@type": "Offer",
     "priceCurrency": "EUR",
-    "price": "{{ product.activePrice(false)|number_format(2) }}",
+    "price": "{{ product.activePrice(false)|number_format(2,'.', '') }}",
     "itemCondition": "http://schema.org/NewCondition",
     {% if product.inStock %}
     "availability": "http://schema.org/InStock"
