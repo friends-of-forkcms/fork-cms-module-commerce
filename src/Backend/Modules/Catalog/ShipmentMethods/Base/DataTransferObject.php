@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Catalog\ShipmentMethods\Base;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class DataTransferObject
@@ -10,4 +11,9 @@ abstract class DataTransferObject
      * @var bool
      */
     public $installed = false;
+
+    /**
+     * @var ArrayCollection
+     */
+    public $available_payment_methods;
 }

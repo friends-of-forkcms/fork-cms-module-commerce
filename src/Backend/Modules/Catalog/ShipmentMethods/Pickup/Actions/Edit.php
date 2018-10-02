@@ -50,8 +50,10 @@ class Edit extends BaseEdit
         return $form;
     }
 
-    private function updateData(Form $form): void
+    protected function updateData(Form $form): void
     {
+        parent::updateData($form);
+
         // Get the form data
         $data = $form->getData();
 
@@ -59,8 +61,5 @@ class Edit extends BaseEdit
         $this->saveSetting('name', $data->name);
         $this->saveSetting('price', (float) $data->price);
         $this->saveSetting('vat', $data->vat->getId());
-
-        // Install our shipment method or not
-        $this->installShipmentMethod($data->installed);
     }
 }

@@ -18,6 +18,7 @@ class Quote extends BaseQuote
                 'name' => $this->getSetting('name'),
                 'price' => (float) $this->getSetting('price'),
                 'vat' => $this->getVatPrice((float) $this->getSetting('price')),
+                'available_payment_methods' => $this->getSetting('available_payment_methods'),
             ]
         ];
     }

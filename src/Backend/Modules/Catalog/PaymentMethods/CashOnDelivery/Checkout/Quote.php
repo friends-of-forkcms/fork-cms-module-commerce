@@ -11,6 +11,10 @@ class Quote extends BaseQuote
      */
     public function getQuote(): array
     {
+        if (!$this->isAllowedPaymentMethod()) {
+            return [];
+        }
+
         $name = $this->getSetting('name');
 
         if ($this->getSetting('price')) {

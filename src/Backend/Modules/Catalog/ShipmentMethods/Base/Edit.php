@@ -146,6 +146,18 @@ abstract class Edit
         return Model::get('form.factory')->create($type, $data, $options);
     }
 
+    protected function updateData(Form $form): void
+    {
+        // Get the form data
+        $data = $form->getData();
+
+        // Install our shipment method or not
+        $this->installShipmentMethod($data->installed);
+
+        // Set available payment methods
+        $this->saveSetting('available_payment_methods', $data->available_payment_methods);
+    }
+
     /**
      * Save settings for our current shipment method
      *

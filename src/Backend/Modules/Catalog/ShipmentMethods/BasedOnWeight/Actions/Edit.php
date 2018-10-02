@@ -50,16 +50,15 @@ class Edit extends BaseEdit
         return $form;
     }
 
-    private function updateData(Form $form): void
+    protected function updateData(Form $form): void
     {
+        parent::updateData($form);
+
         // Get the form data
         $data = $form->getData();
 
         // Save the form data
         $this->saveSetting('values', $data->values);
         $this->saveSetting('vat', $data->vat->getId());
-
-        // Install our shipment method or not
-        $this->installShipmentMethod($data->installed);
     }
 }

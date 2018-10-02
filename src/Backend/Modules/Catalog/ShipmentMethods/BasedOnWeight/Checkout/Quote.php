@@ -36,6 +36,7 @@ class Quote extends BaseQuote
                 'name' => $value->name,
                 'price' => $price,
                 'vat' => $vatPrice,
+                'available_payment_methods' => $this->getSetting('available_payment_methods'),
             ];
         }
 
