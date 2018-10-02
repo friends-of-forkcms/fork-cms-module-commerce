@@ -100,12 +100,14 @@ $(function () {
     setTimeout(function () {
       // Scroll to product top
       var productOverviewHolder = $('.product-overview'),
-        body = $('html,body');
+        body = $('html, body');
 
       if (body.scrollTop() > (productOverviewHolder.offset().top + 100)) {
-        body.animate({
-          scrollTop: productOverviewHolder.offset().top - 100
-        }, 500);
+        if ($(window).width() > 768) {
+          body.animate({
+            scrollTop: productOverviewHolder.offset().top - 100
+          }, 500);
+        }
       }
 
       // Some defaults are ok but others need a rewrite
@@ -165,6 +167,10 @@ $(function () {
 
         // Set HTML
         paginationHolder.html(ul);
+
+        if ($(window).width() <= 768) {
+          $('body').scrollTop(productOverviewHolder.offset().top - 100);
+        }
 
         $(document).trigger('catalog.products.filtered');
       });
