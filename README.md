@@ -27,13 +27,14 @@ composer require tetranz/select2entity-bundle
 composer require knplabs/knp-snappy-bundle
 composer require h4cc/wkhtmltopdf-amd64
 ```
-Enable the KnpSnappyBundle in your kernel:
+Enable KnpSnappyBundle and new TetranzSelect2EntityBundle in your kernel:
 ```php
 // app/AppKernel.php
 public function registerBundles()  
 {
     $bundles = [
         //...
+        new \Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
         new \Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         //...
     ];
