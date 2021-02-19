@@ -40,7 +40,7 @@ use Common\ModuleExtraType;
  */
 class Installer extends ModuleInstaller
 {
-    public function install()
+    public function install(): void
     {
         $this->configureEntities();
 
@@ -48,7 +48,7 @@ class Installer extends ModuleInstaller
         $this->addModule('Catalog');
 
         // import locale
-        $this->importLocale(dirname(__FILE__) . '/Data/locale.xml');
+        $this->importLocale(__DIR__ . '/Data/locale.xml');
 
         // general settings
         $this->setSetting('Catalog', 'overview_num_items', 10);
@@ -302,31 +302,33 @@ class Installer extends ModuleInstaller
 
     private function configureEntities(): void
     {
-        Model::get('fork.entity.create_schema')->forEntityClass(Category::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Brand::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Vat::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(StockStatus::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(OrderStatus::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Product::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(ProductOption::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(ProductOptionValue::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(ProductSpecial::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(ProductDimension::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(UpSellProduct::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Country::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(OrderAddress::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(OrderProduct::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(OrderProductOption::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(OrderVat::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(OrderHistory::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Specification::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(SpecificationValue::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(Cart::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(CartValue::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(CartValueOption::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(CartRule::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(ShipmentMethod::class);
-        Model::get('fork.entity.create_schema')->forEntityClass(PaymentMethod::class);
+        Model::get('fork.entity.create_schema')->forEntityClasses([
+            Category::class,
+            Brand::class,
+            Vat::class,
+            StockStatus::class,
+            OrderStatus::class,
+            Product::class,
+            ProductOption::class,
+            ProductOptionValue::class,
+            ProductSpecial::class,
+            ProductDimension::class,
+            UpSellProduct::class,
+            Country::class,
+            OrderAddress::class,
+            Order::class,
+            OrderProduct::class,
+            OrderProductOption::class,
+            OrderVat::class,
+            OrderHistory::class,
+            Specification::class,
+            SpecificationValue::class,
+            Cart::class,
+            CartValue::class,
+            CartValueOption::class,
+            CartRule::class,
+            ShipmentMethod::class,
+            PaymentMethod::class,
+        ]);
     }
 }
