@@ -60,7 +60,7 @@ class ProductType extends AbstractType
             ]
         )->add(
             'weight',
-            TextType::class,
+            NumberType::class,
             [
                 'required' => false,
                 'label' => 'lbl.Weight',
