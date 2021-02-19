@@ -117,7 +117,7 @@ When you assign Google Shopping Categories to your categories you would be able 
 
 Setup is really easy:
 1. Assign the right categories
-2. Create a cronjob which generates the feed daily, the cronjob command is: `pbin/console catalog:generate-merchant-feed`
+2. Create a cronjob which generates the feed daily, the cronjob command is: `php bin/console catalog:generate-merchant-feed`
 3. Add the feed to your Google Mechant Center
 4. Start selling products
 
