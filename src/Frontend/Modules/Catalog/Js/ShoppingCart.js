@@ -10,7 +10,12 @@ $(function () {
 
     // Some special stuff when we are on a product detail page
     if (jsFrontend.data.exists('Catalog') && jsFrontend.data.get('Catalog')['isProductDetail']) {
-      var data = $('form[name=product]').serialize();
+      var data = getFormData($('form[name=product]'), {
+        'fork[module]' : 'Catalog',
+        'fork[action]' : 'UpdateCart'
+      });
+
+      data['cartId'] = jsFrontend.data.get('Catalog.cartId')
 
       // Cleanup errors
       var errorFields = $('.bg-white.error');
@@ -29,6 +34,7 @@ $(function () {
         });
 
         $('[data-cart-total-quantity]').html(response.data.cart.totalQuantity);
+        $('[data-cart-total]').html('&euro; ' + response.data.cart.total);
 
         $('#productAddedOrderModal').modal('show');
       }).fail(function (response) {
@@ -62,6 +68,7 @@ $(function () {
         });
 
         $('[data-cart-total-quantity]').html(response.data.cart.totalQuantity);
+        $('[data-cart-total]').html('&euro; ' + response.data.cart.total);
 
         $('#productAddedOrderModal').modal('show');
       }).fail(function (response) {
@@ -97,4 +104,20 @@ $(function () {
 
     }
   });
+
+  function getFormData (form, override) {
+    var data = {}
+
+    $.map(form.serializeArray(), function (i, j) {
+      var value = i['value'];
+
+      if (override.hasOwnProperty(i['name'])) {
+        value = override[i['name']];
+      }
+
+      data[i['name']] = value;
+    })
+
+    return data
+  }
 });

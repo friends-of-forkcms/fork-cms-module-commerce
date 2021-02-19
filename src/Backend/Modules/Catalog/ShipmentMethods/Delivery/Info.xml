@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shipmentMethod>
+  <name>Delivery shipment</name>
+  <version>1.0.0</version>
+  <description>
+    <![CDATA[
+			Let your customers choose to deliver the product at home.
+		]]>
+  </description>
+</shipmentMethod>

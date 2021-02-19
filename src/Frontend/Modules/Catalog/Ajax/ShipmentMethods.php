@@ -13,6 +13,7 @@ use Frontend\Core\Engine\TwigTemplate;
 use Frontend\Core\Language\Locale;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -74,17 +75,17 @@ class ShipmentMethods extends FrontendBaseAJAXAction
         if($form->isSubmitted()) {
             if (!$form->isValid()) {
                 $this->hasErrors = true;
+            } else {
+                // Store data in session
+                $shipmentMethods = $this->getShipmentMethods();
+                $this->session->set(
+                    'shipment_method',
+                    [
+                        'code' => $form->getNormData()->shipment_method,
+                        'data' => $shipmentMethods[$form->getNormData()->shipment_method]
+                    ]
+                );
             }
-
-            // Store data in session
-            $shipmentMethods = $this->getShipmentMethods();
-            $this->session->set(
-                'shipment_method',
-                [
-                    'code' => $form->getNormData()->shipment_method,
-                    'data' => $shipmentMethods[$form->getNormData()->shipment_method]
-                ]
-            );
         }
 
         // Invalid form
@@ -161,7 +162,17 @@ class ShipmentMethods extends FrontendBaseAJAXAction
 
         if (!$cartHash = $cookie->get('cart_hash')) {
             $cartHash = Uuid::uuid4();
-            $cookie->set('cart_hash', $cartHash);
+            $cookie->set(
+                'cart_hash',
+                $cartHash,
+                2592000,
+                '/',
+                null,
+                null,
+                true,
+                false,
+                SymfonyCookie::SAMESITE_NONE
+            );
         }
 
         return $cartRepository->findBySessionId($cartHash, $this->getRequest()->getClientIp());

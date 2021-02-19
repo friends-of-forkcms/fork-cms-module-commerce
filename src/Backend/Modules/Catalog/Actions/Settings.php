@@ -30,7 +30,7 @@ class Settings extends BackendBaseActionEdit
 
         $form = $this->getForm();
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
 
             $this->parse();
@@ -49,7 +49,7 @@ class Settings extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
+                    'report' => 'edited',
                 ]
             )
         );

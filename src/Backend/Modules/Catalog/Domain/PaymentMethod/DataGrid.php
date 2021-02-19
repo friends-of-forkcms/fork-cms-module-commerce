@@ -123,15 +123,11 @@ class DataGrid extends DataGridArray
     {
         $paymentMethods = [];
 
-        $excludedDirectories = [
-            'Base'
-        ];
-
         $finder = new Finder();
         $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Catalog/PaymentMethods')->depth('==0');
         foreach ($directories as $directory) {
             // Exclude some directories
-            if (in_array($directory->getBasename(), $excludedDirectories)) {
+            if (!file_exists($directory . '/Info.xml')) {
                 continue;
             }
 

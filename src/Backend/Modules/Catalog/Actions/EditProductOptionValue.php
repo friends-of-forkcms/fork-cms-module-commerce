@@ -4,7 +4,9 @@ namespace Backend\Modules\Catalog\Actions;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Catalog\Domain\ProductOption\DataGrid as ProductOptionDataGrid;
 use Backend\Modules\Catalog\Domain\ProductOptionValue\Exception\ProductOptionValueNotFound;
 use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValueRepository;
@@ -36,14 +38,22 @@ class EditProductOptionValue extends BackendBaseActionEdit
             ['id' => $productOptionValue->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteProductOptionValue'
+                'action' => 'DeleteProductOptionValue',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('productOptionValue', $productOptionValue);
+            $this->template->assign('productOption', $productOptionValue->getProductOption());
+            $this->template->assign(
+                'productOptionsDataGrid',
+                ProductOptionDataGrid::getHtmlProductOptionValue($productOptionValue)
+            );
+            $this->template->assign('backLink', $this->getBackLink([
+                    'id' => $productOptionValue->getProductOption()->getId(),
+                ]) . '#tabValues');
 
             $this->parse();
             $this->display();
@@ -62,12 +72,44 @@ class EditProductOptionValue extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'id'        => $updateProductOptionValue->getProductOptionValueEntity()->getProductOption()->getId(),
-                    'report'    => 'edited',
+                    'id' => $updateProductOptionValue->getProductOptionValueEntity()->getProductOption()->getId(),
+                    'report' => 'edited',
                     'highlight' => 'row-' . $updateProductOptionValue->getProductOptionValueEntity()->getId(),
                 ]
-            ) .'#tabValues'
+            ) . '#tabValues'
         );
+    }
+
+    protected function parse(): void
+    {
+        parent::parse();
+
+        $this->header->addJS(
+            '/js/vendors/select2.full.min.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS(
+            '/js/vendors/' . Locale::workingLocale() . '.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS('Select2Entity.js');
+
+        $this->header->addCSS(
+            '/css/vendors/select2.min.css',
+            null,
+            true,
+            false
+        );
+
+
+        // Needs to be here to disable any ckeditor load after adding a collection field
+        $this->header->addJsData('Core', 'preferred_editor', '');
     }
 
     private function getProductOptionValue(): ProductOptionValue
@@ -98,7 +140,10 @@ class EditProductOptionValue extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             ProductOptionValueType::class,
-            new UpdateProductOptionValue($productOptionValue)
+            new UpdateProductOptionValue($productOptionValue),
+            [
+                'product_option' => $productOptionValue->getProductOption(),
+            ]
         );
 
         $form->handleRequest($this->getRequest());

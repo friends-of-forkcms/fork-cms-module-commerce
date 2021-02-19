@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,6 +39,23 @@ class SettingsType extends AbstractType
             [
                 'required' => true,
                 'label' => 'lbl.NextInvoiceNumber',
+            ]
+        )->add(
+            'products_in_widget',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.AmountOfProductsToDisplayInAWidget',
+            ]
+        )->add(
+            'google_product_categories',
+            UrlType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.GoogleProductCategoriesUrl',
+                'attr' => [
+                    'help' => 'msg.GoogleProductCategoriesUrlHelp',
+                ],
             ]
         )->add(
             $builder->create(

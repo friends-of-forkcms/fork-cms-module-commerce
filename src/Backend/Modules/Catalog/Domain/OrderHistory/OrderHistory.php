@@ -25,7 +25,7 @@ class OrderHistory
     /**
      * @var Order
      *
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Order\Order", inversedBy="order_histories")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Order\Order", inversedBy="history")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $order;
@@ -39,27 +39,6 @@ class OrderHistory
     private $order_status;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $message;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $notify;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $attach_invoice;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -69,17 +48,11 @@ class OrderHistory
     private function __construct(
         Order $order,
         OrderStatus $order_status,
-        ?string $message,
-        bool $notify,
-        bool $attach_invoice,
         \DateTime $created_at
     )
     {
         $this->order = $order;
         $this->order_status = $order_status;
-        $this->message = $message;
-        $this->notify = $notify;
-        $this->attach_invoice = $attach_invoice;
         $this->created_at = $created_at;
     }
 
@@ -93,9 +66,6 @@ class OrderHistory
         return new self(
             $dataTransferObject->order,
             $dataTransferObject->orderStatus,
-            $dataTransferObject->message,
-            $dataTransferObject->notify,
-            $dataTransferObject->attach_invoice,
             $dataTransferObject->created_at
         );
     }
@@ -119,30 +89,6 @@ class OrderHistory
     public function getOrderStatus(): OrderStatus
     {
         return $this->order_status;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage(): string
-    {
-        return $this->message;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNotify(): bool
-    {
-        return $this->notify;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAttachInvoice(): bool
-    {
-        return $this->attach_invoice;
     }
 
     /**

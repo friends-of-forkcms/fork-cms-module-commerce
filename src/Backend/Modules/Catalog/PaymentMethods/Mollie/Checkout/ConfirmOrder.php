@@ -5,52 +5,52 @@ namespace Backend\Modules\Catalog\PaymentMethods\Mollie\Checkout;
 use Backend\Modules\Catalog\Domain\Order\Event\OrderCreated;
 use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Catalog\Domain\OrderHistory\Command\CreateOrderHistory;
+use Backend\Modules\Catalog\Domain\OrderStatus\Exception\OrderStatusNotFound;
+use Backend\Modules\Catalog\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\ConfirmOrder as BaseConfirmOrder;
+use Backend\Modules\Catalog\PaymentMethods\Exception\PaymentException;
+use Doctrine\DBAL\DBALException;
 use Frontend\Core\Engine\Navigation;
+use Frontend\Core\Language\Language;
+use Mollie\Api\Exceptions\ApiException;
+use Mollie\Api\MollieApiClient;
+use Mollie\Api\Resources\Payment;
+use Mollie\Api\Types\PaymentMethod;
 
 class ConfirmOrder extends BaseConfirmOrder
 {
     /**
-     * {@inheritdoc}
+     * @var MollieApiClient
+     */
+    private $mollie;
+
+    /**
+     * @var string
+     */
+    private $currency = 'EUR'; // @TODO change when shop uses multi currency
+
+    /**
+     * @throws ApiException
+     * @throws PaymentException
+     * @throws OrderStatusNotFound
+     * @throws DBALException
+     * @throws \Common\Exception\RedirectException
      */
     public function prePayment(): void
     {
-        $mollie = new \Mollie_API_Client();
-        $mollie->setApiKey($this->getSetting('apiKey'));
+        $this->mollie = new MollieApiClient();
+        $this->mollie->setApiKey($this->getSetting('apiKey'));
 
-        // Create a new payment
-        $payment = $mollie->payments->create(
-            [
-                'amount'      => $this->order->getTotal(),
-                'description' => 'Order ' . $this->order->getId(),
-                'redirectUrl' => SITE_URL . Navigation::getUrlForBlock('Catalog',
-                        'Cart') . '/post-payment?order_id=' . $this->order->getId(),
-                'webhookUrl'  => SITE_URL . Navigation::getUrlForBlock('Catalog',
-                        'Cart') . '/webhook?payment_method=Mollie.Mollie',
-                'method'      => \Mollie_API_Object_Method::IDEAL,
-                'issuer'      => $this->data->issuer,
-                'metadata'    => [
-                    'order_id' => $this->order->getId(),
-                ],
-            ]
-        );
+        if (!$this->redirectUrl) {
+            $this->redirectUrl = '/post-payment?order_id=' . $this->order->getId();
+        }
 
-        // Store the payment id
-        $this->entityManager->getConnection()
-                            ->insert(
-                                'catalog_orders_mollie_payments',
-                                [
-                                    'order_id'       => $this->order->getId(),
-                                    'transaction_id' => $payment->id
-                                ]
-                            );
+        $payment = $this->getPayment();
 
         // Update the order history
-        $createOrderHistory              = new CreateOrderHistory();
-        $createOrderHistory->order       = $this->order;
+        $createOrderHistory = new CreateOrderHistory();
+        $createOrderHistory->order = $this->order;
         $createOrderHistory->orderStatus = $this->getOrderStatus($this->getSetting('orderInitId'));
-        $createOrderHistory->message     = 'Mollie order intialized with payment url: ' . $payment->getPaymentUrl();
-        $createOrderHistory->notify      = true;
         $this->commandBus->handle($createOrderHistory);
 
         // Trigger an event to notify or not
@@ -60,7 +60,7 @@ class ConfirmOrder extends BaseConfirmOrder
         );
 
         // Lets collect some money
-        $this->redirect($payment->getPaymentUrl());
+        $this->redirect($payment->getCheckoutUrl());
     }
 
     /**
@@ -69,62 +69,120 @@ class ConfirmOrder extends BaseConfirmOrder
     public function postPayment(): void
     {
         $query = $this->entityManager->getConnection()->prepare(
-            'SELECT order_id, method, transaction_id FROM catalog_orders_mollie_payments WHERE order_id = :order_id'
-
+            'SELECT order_id, method, transaction_id
+            FROM catalog_orders_mollie_payments
+            WHERE order_id = :order_id'
         );
         $query->bindValue('order_id', $this->order->getId());
         $query->execute();
 
         $result = $query->fetch(\PDO::FETCH_ASSOC);
 
-        $mollie = new \Mollie_API_Client();
+        $mollie = new MollieApiClient();
         $mollie->setApiKey($this->getSetting('apiKey'));
 
         $payment = $mollie->payments->get($result['transaction_id']);
 
-        $order = null;
-        try {
-            $order = $this->getOrder($result['order_id']);
-        } catch (OrderNotFound $e) {
-            $this->goToErrorPage();
+        $this->paid = $payment->isPaid();
+        $this->open = $payment->isOpen();
+        $this->expired = $payment->isExpired();
+        $this->canceled = $payment->isCanceled();
+        $this->failed = $payment->isFailed();
+    }
+
+    /**
+     * @return Payment
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Mollie\Api\Exceptions\ApiException
+     * @throws PaymentException
+     */
+    private function getPayment(): Payment
+    {
+        $query = $this->entityManager->getConnection()->prepare(
+            'SELECT order_id, method, transaction_id FROM catalog_orders_mollie_payments WHERE order_id = :order_id'
+        );
+        $query->bindValue('order_id', $this->order->getId());
+        $query->execute();
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return $this->updatePayment($result['transaction_id']);
         }
+
+        return $this->createPayment();
+    }
+
+    /**
+     * Create a new payment
+     *
+     * @return Payment
+     * @throws \Mollie\Api\Exceptions\ApiException
+     * @throws DBALException
+     */
+    private function createPayment(): Payment
+    {
+        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Catalog', 'Cart');
+        $payment = $this->mollie->payments->create(
+            [
+                'amount' => [
+                    'currency' => $this->currency,
+                    'value' => number_format($this->order->getTotal(), 2, '.', ''),
+                ],
+                'description' => 'Order ' . $this->order->getId(),
+                'redirectUrl' => SITE_URL . $this->redirectUrl,
+                'webhookUrl' => $baseUrl . '/webhook?payment_method=Mollie.'. $this->option,
+                'method' => $this->option,
+                'issuer' => $this->data->issuer,
+                'metadata' => [
+                    'order_id' => $this->order->getId(),
+                ],
+            ]
+        );
+
+        $this->entityManager->getConnection()
+            ->insert(
+                'catalog_orders_mollie_payments',
+                [
+                    'order_id' => $this->order->getId(),
+                    'method' => $this->option,
+                    'transaction_id' => $payment->id,
+                ]
+            );
+
+        return $payment;
+    }
+
+    /**
+     * @param $transactionId
+     * @return Payment
+     * @throws \Mollie\Api\Exceptions\ApiException
+     * @throws PaymentException
+     */
+    private function updatePayment($transactionId): Payment
+    {
+        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Catalog', 'Cart');
+
+        $payment = $this->mollie->payments->get($transactionId);
 
         if ($payment->isPaid()) {
-            $this->updateOrderStatus(
-                $order,
-                $this->getSetting('orderCompletedId'),
-                'Order payed: ' . $payment->paidDatetime,
-                true
-            );
-
-            $this->goToSuccessPage();
+            throw new PaymentException(Language::msg('OrderAlreadyExistsPleaseContactUs'));
         }
 
-        if ($payment->isOpen()) {
-            $this->goToSuccessPage();
-        }
+        $payment->amount = [
+            'currency' => $this->currency,
+            'value' => number_format($this->order->getTotal(), 2, '.', ''),
+        ];
+        $payment->description = 'Order ' . $this->order->getId();
+        $payment->redirectUrl = SITE_URL . $this->redirectUrl;
+        $payment->webhookUrl = $baseUrl . '/webhook?payment_method=Mollie.'. $this->option;
+        $payment->method = $this->option;
+        $payment->metadata = [
+            'order_id' => $this->order->getId(),
+        ];
 
-        if ($payment->isExpired()) {
-            $this->updateOrderStatus(
-                $order,
-                $this->getSetting('orderExpiredId'),
-                'Order expired: ' . $payment->expiredDatetime,
-                true
-            );
+        $payment->update();
 
-            $this->goToCancelledPage();
-        }
-
-        if ($payment->isCancelled()) {
-            $this->updateOrderStatus(
-                $order,
-                $this->getSetting('orderCancelledId'),
-                'Order cancelled: ' . $payment->cancelledDatetime,
-                true
-            );
-
-            $this->goToCancelledPage();
-        }
+        return $payment;
     }
 
     /**
@@ -132,11 +190,11 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     public function runWebhook()
     {
-        if ( ! $this->request->request->has('id')) {
+        if (!$this->request->request->has('id')) {
             return 'Order not found';
         }
 
-        $mollie = new \Mollie_API_Client();
+        $mollie = new MollieApiClient();
         $mollie->setApiKey($this->getSetting('apiKey'));
 
         $payment = $mollie->payments->get($this->request->request->get('id'));
@@ -150,36 +208,28 @@ class ConfirmOrder extends BaseConfirmOrder
         if ($payment->isPaid()) {
             $this->updateOrderStatus(
                 $order,
-                $this->getSetting('orderCompletedId'),
-                'Order payed: ' . $payment->paidDatetime,
-                true
+                $this->getSetting('orderCompletedId')
             );
         }
 
         if ($payment->isExpired()) {
             $this->updateOrderStatus(
                 $order,
-                $this->getSetting('orderExpiredId'),
-                'Order expired: ' . $payment->expiredDatetime,
-                true
+                $this->getSetting('orderExpiredId')
             );
         }
 
-        if ($payment->isCancelled()) {
+        if ($payment->isCanceled()) {
             $this->updateOrderStatus(
                 $order,
-                $this->getSetting('orderCancelledId'),
-                'Order cancelled: ' . $payment->cancelledDatetime,
-                true
+                $this->getSetting('orderCancelledId')
             );
         }
 
-        if ($payment->isRefunded()) {
+        if ($payment->hasRefunds()) {
             $this->updateOrderStatus(
                 $order,
-                $this->getSetting('orderRefundedId'),
-                'Order refunded',
-                true
+                $this->getSetting('orderRefundedId')
             );
         }
 

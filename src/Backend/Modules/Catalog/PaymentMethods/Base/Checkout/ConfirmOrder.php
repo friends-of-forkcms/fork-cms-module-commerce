@@ -86,6 +86,36 @@ abstract class ConfirmOrder
     protected $orderRepository;
 
     /**
+     * @var string
+     */
+    protected $redirectUrl;
+
+    /**
+     * @var bool
+     */
+    protected $paid = false;
+
+    /**
+     * @var bool
+     */
+    protected $open = false;
+
+    /**
+     * @var bool
+     */
+    protected $expired = false;
+
+    /**
+     * @var bool
+     */
+    protected $canceled = false;
+
+    /**
+     * @var bool
+     */
+    protected $failed = false;
+
+    /**
      * Confirm order constructor.
      *
      * @param string $name
@@ -158,6 +188,51 @@ abstract class ConfirmOrder
         }
 
         return $this->settings->get('Catalog', $baseKey . '_' . $key, $defaultValue);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaid(): bool
+    {
+        return $this->paid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return $this->open;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        return $this->expired;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanceled(): bool
+    {
+        return $this->canceled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFailed(): bool
+    {
+        return $this->failed;
+    }
+
+    public function setRedirectUrl(string $url): void
+    {
+        $this->redirectUrl = $url;
     }
 
     /**
@@ -285,7 +360,7 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Post payment action
+     * Pre payment action
      *
      * @throws RedirectException
      *
@@ -317,26 +392,22 @@ abstract class ConfirmOrder
      *
      * @param Order $order
      * @param integer $statusId
-     * @param string $message
-     * @param bool $notify
      *
      * @throws OrderStatusNotFound
      *
      * @return void
      */
-    protected function updateOrderStatus(Order $order, int $statusId, string $message, bool $notify):void
+    protected function updateOrderStatus(Order $order, int $statusId):void
     {
         $createOrderHistory = new CreateOrderHistory();
         $createOrderHistory->order = $order;
         $createOrderHistory->orderStatus = $this->getOrderStatus($statusId);
-        $createOrderHistory->message = $message;
-        $createOrderHistory->notify = $notify;
         $this->commandBus->handle($createOrderHistory);
 
         // Trigger an event to notify or not
         $this->eventDispatcher->dispatch(
             OrderUpdated::EVENT_NAME,
-            new OrderUpdated($this->order, $createOrderHistory->getOrderHistoryEntity())
+            new OrderUpdated($order, $createOrderHistory->getOrderHistoryEntity())
         );
     }
 }

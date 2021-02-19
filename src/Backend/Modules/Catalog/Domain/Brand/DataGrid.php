@@ -20,8 +20,7 @@ class DataGrid extends DataGridDatabase
 		 FROM catalog_brands AS b
 		 LEFT JOIN catalog_products AS p ON p.brand_id = b.id
 		 WHERE b.language = :language
-		 GROUP BY b.id
-		 ORDER BY b.sequence ASC',
+		 GROUP BY b.id',
             ['language' => $locale]
         );
 

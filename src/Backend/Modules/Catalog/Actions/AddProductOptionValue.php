@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Actions;
 
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\ProductOption\Exception\ProductOptionNotFound;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOptionRepository;
@@ -36,6 +37,10 @@ class AddProductOptionValue extends BackendBaseActionAdd
         $form = $this->getForm();
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
+            $this->template->assign('productOption', $this->productOption);
+            $this->template->assign('backLink', $this->getBackLink([
+                'id' => $this->productOption->getId(),
+            ]));
 
             $this->parse();
             $this->display();
@@ -51,13 +56,11 @@ class AddProductOptionValue extends BackendBaseActionAdd
         );
 
         $this->redirect(
-            $this->getBackLink(
-                [
-                    'id' => $this->productOption->getId(),
-                    'report' => 'added',
-                    'var' => $createProductOptionValue->title,
-                ]
-            )
+            $this->getBackLink([
+                'id' => $this->productOption->getId(),
+                'report' => 'added',
+                'var' => $createProductOptionValue->title,
+            ])
         );
         return;
     }
@@ -76,6 +79,38 @@ class AddProductOptionValue extends BackendBaseActionAdd
         }
     }
 
+    protected function parse(): void
+    {
+        parent::parse();
+
+        $this->header->addJS(
+            '/js/vendors/select2.full.min.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS(
+            '/js/vendors/' . Locale::workingLocale() . '.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS('Select2Entity.js');
+
+        $this->header->addCSS(
+            '/css/vendors/select2.min.css',
+            null,
+            true,
+            false
+        );
+
+
+        // Needs to be here to disable any ckeditor load after adding a collection field
+        $this->header->addJsData('Core', 'preferred_editor', '');
+    }
+
     private function createProductOptionValue(Form $form): CreateProductOptionValue
     {
         $createProductOptionValue = $form->getData();
@@ -90,18 +125,24 @@ class AddProductOptionValue extends BackendBaseActionAdd
     private function getBackLink(array $parameters = []): string
     {
         return BackendModel::createUrlForAction(
-            'EditProductOption',
-            null,
-            null,
-            $parameters
-        ) . '#tabValues';
+                'EditProductOption',
+                null,
+                null,
+                $parameters
+            ) . '#tabValues';
     }
 
     private function getForm(): Form
     {
+        $data = new CreateProductOptionValue();
+        $data->productOption = $this->productOption;
+
         $form = $this->createForm(
             ProductOptionValueType::class,
-            new CreateProductOptionValue()
+            $data,
+            [
+                'product_option' => $this->productOption,
+            ]
         );
 
         $form->handleRequest($this->getRequest());

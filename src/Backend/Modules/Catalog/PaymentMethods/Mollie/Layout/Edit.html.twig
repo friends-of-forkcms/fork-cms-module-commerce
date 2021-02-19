@@ -14,6 +14,12 @@
             <a href="#tabContent" aria-controls="tabContent" role="tab"
                data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
           </li>
+          {% for method in enabledMethods %}
+            <li role="presentation">
+              <a href="#tabMethod{{ method.id }}" aria-controls="tabContent" role="tab"
+                 data-toggle="tab">{{ method.description }}</a>
+            </li>
+          {% endfor %}
         </ul>
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="tabContent">
@@ -69,6 +75,11 @@
               </div>
             </div>
           </div>
+          {% for method in enabledMethods %}
+            <div role="tabpanel" class="tab-pane" id="tabMethod{{ method.id }}">
+              {{ form_widget(form[method.id]) }}
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>

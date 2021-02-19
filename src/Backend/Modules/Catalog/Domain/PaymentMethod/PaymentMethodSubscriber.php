@@ -15,11 +15,11 @@ class PaymentMethodSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SUBMIT    => 'preSubmit'
+            FormEvents::PRE_SUBMIT => 'preSubmit'
         );
     }
 
-    private function addPaymentMethodForm(FormInterface $form, string $paymentMethod)
+    private function addPaymentMethodForm(FormInterface $form, ?string $paymentMethod)
     {
         try {
             $options = $this->getPaymentMethodOptions($paymentMethod);
@@ -35,11 +35,11 @@ class PaymentMethodSubscriber implements EventSubscriberInterface
      *
      * @param string $paymentMethod
      *
+     * @return Options
      * @throws \Exception
      *
-     * @return Options
      */
-    private function getPaymentMethodOptions(string $paymentMethod): Options
+    private function getPaymentMethodOptions(?string $paymentMethod): Options
     {
         $method = explode('.', $paymentMethod);
 

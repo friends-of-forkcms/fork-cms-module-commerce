@@ -11,6 +11,9 @@ use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Backend\Modules\Catalog\Domain\ProductOption\Command\CreateProductOption;
 use Backend\Modules\Catalog\Domain\ProductOption\Event\CreatedProductOption;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOptionType;
+use Backend\Modules\Catalog\Domain\ProductOptionValue\Exception\ProductOptionValueNotFound;
+use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
+use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValueRepository;
 use Symfony\Component\Form\Form;
 
 /**
@@ -24,6 +27,10 @@ class AddProductOption extends BackendBaseActionAdd
      * @var Product
      */
     private $product;
+    /**
+     * @var ProductOptionValue
+     */
+    private $productOptionValue;
 
     /**
      * Execute the action
@@ -32,11 +39,12 @@ class AddProductOption extends BackendBaseActionAdd
     {
         parent::execute();
 
-        $this->product = $this->getProduct();
+        $this->loadData();
 
         $form = $this->getForm();
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
+            $this->template->assign('backLink', $this->getBackLink());
 
             $this->parse();
             $this->display();
@@ -75,9 +83,22 @@ class AddProductOption extends BackendBaseActionAdd
 
     private function getBackLink(array $parameters = []): string
     {
-        $parameters = array_merge([
+        if ($this->productOptionValue) {
+            $parameters = array_merge($parameters, [
+                'id' => $this->productOptionValue->getId(),
+            ]);
+
+            return BackendModel::createUrlForAction(
+                    'EditProductOptionValue',
+                    null,
+                    null,
+                    $parameters
+                ) . '#tabSubOptions';
+        }
+
+        $parameters = array_merge($parameters, [
             'id' => $this->product->getId(),
-        ], $parameters);
+        ]);
 
         return BackendModel::createUrlForAction(
             'Edit',
@@ -89,14 +110,32 @@ class AddProductOption extends BackendBaseActionAdd
 
     private function getForm(): Form
     {
+        $createProductOption = new CreateProductOption();
+        $createProductOption->parent_product_option_value = $this->productOptionValue;
+
         $form = $this->createForm(
             ProductOptionType::class,
-            new CreateProductOption()
+            $createProductOption,
+            [
+                'product' => $this->product,
+            ]
         );
 
         $form->handleRequest($this->getRequest());
 
         return $form;
+    }
+
+    private function loadData()
+    {
+        if ($this->getRequest()->query->has('product')) {
+            $this->product = $this->getProduct();
+        }
+
+        if ($this->getRequest()->query->has('product_option_value')) {
+            $this->productOptionValue = $this->getProductOptionValue();
+            $this->product = $this->productOptionValue->getProductOption()->getProduct();
+        }
     }
 
     private function getProduct(): Product
@@ -112,5 +151,23 @@ class AddProductOption extends BackendBaseActionAdd
         } catch (ProductNotFound $e) {
             $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
+
+        return null;
+    }
+
+    private function getProductOptionValue(): ProductOptionValue
+    {
+        /** @var ProductOptionValueRepository $productOptionValueRepository */
+        $productOptionValueRepository = $this->get('catalog.repository.product_option_value');
+
+        try {
+            return $productOptionValueRepository->findOneById(
+                $this->getRequest()->query->getInt('product_option_value')
+            );
+        } catch (ProductOptionValueNotFound $e) {
+            $this->redirect($this->getBackLink(['error' => 'non-existing']));
+        }
+
+        return null;
     }
 }

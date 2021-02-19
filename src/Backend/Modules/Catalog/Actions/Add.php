@@ -3,19 +3,12 @@
 namespace Backend\Modules\Catalog\Actions;
 
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
-use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Language as BL;
-use Backend\Core\Engine\Language;
 use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Engine\Meta as BackendMeta;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Product\Command\CreateProduct;
 use Backend\Modules\Catalog\Domain\Product\Event\Created;
+use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductType;
-use Backend\Modules\Catalog\Engine\Model as BackendCatalogModel;
-use Backend\Modules\Search\Engine\Model as BackendSearchModel;
-use Backend\Modules\Tags\Engine\Model as BackendTagsModel;
-use League\Flysystem\Adapter\Local;
 use Symfony\Component\Form\Form;
 
 /**
@@ -80,6 +73,7 @@ class Add extends BackendBaseActionAdd
         );
 
         $this->header->addJS('Select2Entity.js');
+        $this->header->addJS('ProductDimensions.js');
 
         $this->header->addCSS(
             '/css/vendors/select2.min.css',
@@ -87,6 +81,12 @@ class Add extends BackendBaseActionAdd
             true,
             false
         );
+        $this->header->addCSS('ProductDimensions.css');
+
+        $this->header->addJsData($this->getModule(), 'types', [
+            'default' => Product::TYPE_DEFAULT,
+            'dimensions' => Product::TYPE_DIMENSIONS,
+        ]);
     }
 
     private function createProduct(Form $form): CreateProduct

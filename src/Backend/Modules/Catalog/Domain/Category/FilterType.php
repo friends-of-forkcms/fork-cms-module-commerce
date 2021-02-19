@@ -16,26 +16,19 @@ class FilterType extends AbstractType
             'category',
             EntityType::class,
             [
-                'required'     => false,
-                'label'        => 'lbl.ShowOnlyProductsInCategory',
-                'placeholder'  => 'lbl.None',
-                'class'        => Category::class,
-                'choices'      => $options['categories'],
-                'choice_label' => function($category) {
+                'required' => false,
+                'label' => 'lbl.ShowOnlyProductsInCategory',
+                'placeholder' => 'lbl.None',
+                'class' => Category::class,
+                'choices' => $options['categories'],
+                'choice_label' => function ($category) {
                     $prefix = null;
                     if ($category->path > 0) {
-                        $prefix = str_repeat('-', $category->path) .' ';
+                        $prefix = str_repeat('-', $category->path) . ' ';
                     }
 
                     return $prefix . $category->getTitle();
                 }
-            ]
-        )->add(
-            'sku',
-            TextType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.FilterOnSku',
             ]
         );
     }

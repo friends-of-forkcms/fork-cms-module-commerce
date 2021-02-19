@@ -1,0 +1,29 @@
+services:
+    catalog.handler.create_account:
+        class: Backend\Modules\Catalog\Domain\Account\Command\CreateAccountHandler
+        arguments:
+            - "@catalog.repository.account"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Account\Command\CreateAccount }
+
+    catalog.handler.update_account:
+        class: Backend\Modules\Catalog\Domain\Account\Command\UpdateAccountHandler
+        arguments:
+            - "@catalog.repository.account"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Account\Command\UpdateAccount }
+
+    catalog.handler.delete_account:
+        class: Backend\Modules\Catalog\Domain\Account\Command\DeleteAccountHandler
+        arguments:
+            - "@catalog.repository.account"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Account\Command\DeleteAccount }
+
+    catalog.event.account_created:
+        class: Backend\Modules\Catalog\Domain\Account\EventListener\AccountCreated
+        arguments:
+            - "@mailer"
+            - "@fork.settings"
+        tags:
+            - { name: kernel.event_listener, event: catalog.event.account.created, method: onCreated }

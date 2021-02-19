@@ -1,0 +1,14 @@
+{% form_theme form with ["Catalog/Layout/Templates/FormHelper.html.twig"] %}
+
+{{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+<div class="row">
+  <div class="col-md-12">
+    {{ form_widget(form.payment_method) }}
+    {{ form_errors(form.payment_method) }}
+  </div>
+  <div class="col-md-12" id="payment_options">
+    {{ form_rest(form) }}
+  </div>
+</div>
+{% include 'Catalog/Layout/Templates/Checkout/Step/_partials/StepFooter.html.twig' with {checkoutStep: 'paymentMethod', checkoutStepValueSelector : '.radio input:checked + label'} %}
+{{ form_end(form) }}

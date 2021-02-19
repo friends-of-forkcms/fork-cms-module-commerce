@@ -56,4 +56,19 @@ class MollieDataTransferObject extends DataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $orderExpiredId;
+
+    public $paymentMethods = [];
+
+    public function __set($key, $value) {
+        $this->paymentMethods[$key] = $value;
+    }
+
+    public function __get($key)
+    {
+        if (!isset($this->paymentMethods[$key])) {
+            return null;
+        }
+
+        return $this->paymentMethods[$key];
+    }
 }

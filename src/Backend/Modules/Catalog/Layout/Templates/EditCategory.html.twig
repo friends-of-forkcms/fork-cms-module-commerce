@@ -1,4 +1,5 @@
 {% extends 'Layout/Templates/base.html.twig' %}
+{% form_theme form with ["Catalog/Layout/Templates/Select2Entity.html.twig"] %}
 
 {% block actionbar %}
 
@@ -6,6 +7,15 @@
 
 {% block content %}
   {{ form_start(form) }}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
+        {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
+      </div>
+    </div>
+  </div>
+
   <div class="row fork-module-content">
     <div class="col-md-12">
       <div role="tabpanel">
@@ -23,12 +33,13 @@
           <div role="tabpanel" class="tab-pane active" id="tabContent">
             <div class="row">
               <div class="col-md-8">
-                {{ form_row(form.title) }}
+                {{ form_row(form.intro) }}
                 {{ form_row(form.text) }}
               </div>
               <div class="col-md-4">
                 {{ form_row(form.image) }}
                 {{ form_row(form.parent) }}
+                {{ form_row(form.googleTaxonomyId) }}
               </div>
             </div>
           </div>

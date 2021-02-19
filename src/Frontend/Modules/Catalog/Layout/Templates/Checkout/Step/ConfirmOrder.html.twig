@@ -1,0 +1,203 @@
+{% if flashErrors %}
+  <div class="row">
+    <div class="col-md-12">
+      {% for error in flashErrors %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="panel panel-primary panel-checkout">
+      <div class="panel-heading">
+        <h4 class="panel-title">{{ 'lbl.AddressDetails'|trans|ucfirst }}</h4>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="mb-1">{{ 'lbl.ShipmentAddress'|trans|ucfirst }}</h3>
+            {% include 'Catalog/Layout/Templates/Checkout/Step/_partials/Address.html.twig' with {'address': cart.shipmentAddress} %}
+          </div>
+          <div class="col-md-6">
+            <h3 class="mb-1">{{ 'lbl.InvoiceAddress'|trans|ucfirst }}</h3>
+            {% if cart.invoiceAddress %}
+              {% include 'Catalog/Layout/Templates/Checkout/Step/_partials/Address.html.twig' with {'address': cart.invoiceAddress} %}
+            {% else %}
+              {% include 'Catalog/Layout/Templates/Checkout/Step/_partials/Address.html.twig' with {'address': cart.shipmentAddress} %}
+            {% endif %}
+          </div>
+          <p class="col-md-12">
+            <a href="{{ addressUrl }}">{{ 'lbl.ChangeAddressData'|trans|ucfirst }}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-primary panel-checkout">
+      <div class="panel-heading">
+        <h4 class="panel-title">{{ 'lbl.Delivery'|trans|ucfirst }}</h4>
+      </div>
+      <div class="panel-body">
+        <p>
+          {{ cart.shipmentMethodData.name }}<br/>
+          <a href="{{ shipmentMethodUrl }}">{{ 'lbl.ChangeShipmentMethod'|trans|ucfirst }}</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="panel panel-primary panel-checkout">
+      <div class="panel-heading">
+        <h4 class="panel-title">{{ 'lbl.PaymentMethod'|trans|ucfirst }}</h4>
+      </div>
+      <div class="panel-body">
+        <p>
+          {{ cart.paymentMethodData.label }}<br/>
+          <a href="{{ paymentMethodUrl }}">{{ 'lbl.ChangePaymentMethod'|trans|ucfirst }}</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row mb-5">
+          <p class="col-md-12 m-0">
+            <button type="button" class="btn btn-link" data-target="#addCartRule" data-toggle="collapse">
+              + {{ 'lbl.AddCartRule'|trans|ucfirst }}</button>
+          </p>
+          <div class="col-md-12 collapse" id="addCartRule">
+            <div class="form-row form-group">
+              <div class="col-md-4">
+                <label for="discountCode">{{ 'lbl.DiscountCode'|trans|ucfirst }}</label>
+              </div>
+              <div class="col-md-8">
+                <input type="text" name="discount_code" id="discountCode" value="" class="form-control"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary"
+                        id="addDiscountCode">{{ 'lbl.AddDiscountCode'|trans|ucfirst }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {{ 'lbl.IAcceptTermsAndConditions'|trans|ucfirst|raw }}
+      </div>
+      <div class="col-md-4 text-right">
+        {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+        <button type="submit" class="btn btn-primary"
+                data-checkout-step="confirmOrder">{{ 'lbl.Checkout'|trans|ucfirst }}
+          {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="cart miniature">
+      <div class="panel panel-default panel-checkout">
+        <div class="panel-heading">
+          <h4 class="panel-title">{{ 'lbl.Cart'|trans|ucfirst }}</h4>
+        </div>
+      </div>
+      <h5></h5>
+      {% for value in cart.values %}
+{#        <div class="row">#}
+          <div class="shopping-cart-row border-bg-light bg-light col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="shopping-cart-title mb-2"><a href="{{ value.product.url }}">{{ value.product.title }}</a>
+                    </p>
+                  </div>
+                  <div class="col-md-3 text-right">
+                    {{ value.quantity }} x {{ value.price|formatcurrency }}
+                  </div>
+                  <div class="col-md-3">
+                    <p class="mb-2 text-right"><strong>{{ value.total|formatcurrency }}</strong></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 shopping-cart-image">
+                <img src="{{ (value.product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
+                     alt="{{ value.product.title }}" class="thumbnail img-responsive"/>
+              </div>
+              <div class="col-md-9 shopping-cart-details">
+                <p class="shopping-cart-information">
+                  <strong>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</strong> {{ value.product.sku }} <br/>
+                  {% if value.product.usesDimensions %}
+                    <strong>{{ 'lbl.Dimensions'|trans|ucfirst }}:</strong> {{ value.width }} MM x {{ value.height }} MM
+                    <br/>
+                  {% endif %}
+                  {% for option in value.cartValueOptions %}
+                    <strong>{{ option.name }}:</strong> {{ option.value }}
+                    {% if not loop.last %}<br/>{% endif %}
+                  {% endfor %}
+                </p>
+                {% for notification in value.product.allDimensionNotificationsByDimension(value.width*10, value.height*10) %}
+                  <p class="text-warning m-0">{{ notification.message }}</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+{#        </div>#}
+      {% endfor %}
+      <div class="shopping-cart-total clearfix padding-bottom-small">
+        <div class="col-md-6 col-md-offset-6">
+          <div class="row no-gutters">
+            <div class="col-md-6 text-right bg-light"><span class="label">{{ 'lbl.SubTotal'|trans|ucfirst }}</span>
+            </div>
+            <div class="col-md-6 text-right bg-light" data-sub-total>
+              <span class="price">&euro; {{ cart.subTotal|formatnumber(2) }}</span></div>
+          </div>
+          {% if cart.shipmentMethod %}
+            <div class="row no-gutters">
+              <div class="col-md-6 text-right bg-light"><span class="label">{{ cart.shipmentMethodData.name }}</span>
+              </div>
+              <div class="col-md-6 text-right bg-light">
+                <span class="price">&euro; {{ cart.shipmentMethodData.price|formatnumber(2) }}</span>
+              </div>
+            </div>
+          {% endif %}
+          {% for cartRule in cart.cartRules %}
+            <div class="row no-gutters">
+              <div class="col-md-6 text-right bg-light">
+                <button type="button" class="btn btn-link btn-sm" data-discount="{{ cartRule.code }}"><span
+                    class="far fa-trash"></span></button>
+                <span class="label">{{ cartRule.title }} ({{ cartRule.code }})</span></div>
+              <div class="col-md-6 text-right bg-light">
+                {% if cartRule.reductionPercentage %}
+                  <span class="price">{{ cartRule.reductionPercentage }}% {{ 'lbl.Discount'|trans }}</span>
+                {% endif %}
+                {% if cartRule.reductionAmount %}
+                  <span class="price">&euro; -{{ cartRule.reductionAmount|formatnumber(2) }}</span>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+          {% for key, vat in cart.vats %}
+            <div class="row no-gutters">
+              <div class="col-md-6 text-right bg-light"><span class="label">{{ vat.title }}</span></div>
+              <div class="col-md-6 text-right bg-light" data-vat="{{ key }}">
+                <span class="price">&euro; {{ vat.total|formatnumber(2) }}</span>
+              </div>
+            </div>
+          {% endfor %}
+          <div class="row no-gutters total">
+            <div class="col-md-6 text-right bg-light"><span class="label">{{ 'lbl.Total'|trans|ucfirst }}</span></div>
+            <div class="col-md-6 text-right bg-light" data-cart-total>
+              <span class="price">&euro; {{ cart.total|formatnumber(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

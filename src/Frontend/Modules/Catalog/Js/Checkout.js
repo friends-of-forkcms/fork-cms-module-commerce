@@ -1,392 +1,475 @@
-$(function(){
-    $('#checkout-account').click(function(e){
-        e.preventDefault();
+$(function () {
+  $('[data-toggle]').on('change', function () {
+    $($(this).data('toggle')).toggleClass($(this).data('toggleClass'))
+  })
 
-        var checkoutType = $('[name="checkout_type"]:checked').val();
+  $('.card.order-address').click(function () {
+    $('[data-type="' + $(this).data('type') + '"]')
+      .removeClass('order-address-checked')
+      .find('input[type=radio]').prop('checked', false)
 
-        // Only run when checkout type is set
-        if (!checkoutType) {
-            return;
-        }
+    $(this).addClass('order-address-checked')
+      .find('input[type=radio]').prop('checked', true)
+  })
+})
 
-        $.ajax(
-            {
-                method : "POST",
-                data : {
-                    fork : {
-                        module : 'Catalog',
-                        action : 'CheckoutAccount'
-                    },
-                    type : checkoutType
-                }
-            }
-        ).done(function(response){
-            var stepTwoHeader = $('#headingTwo').find('h4'),
-                stepTwo = $('#stepTwo');
-
-            // Store our text
-            if (!stepTwoHeader.data('text')) {
-                stepTwoHeader.data('text', stepTwoHeader.html());
-            }
-
-            stepTwoHeader.html(
-                $('<a>').attr(
-                        {
-                            role : 'button',
-                            'data-toggle' : 'collapse',
-                            'data-parent' : '#checkoutAccordion',
-                            href : '#stepTwo',
-                            'aria-expanded' : true,
-                            'aria-controls' : 'stepTwo'
-                        }
-                    )
-                    .html(stepTwoHeader.data('text'))
-            );
-
-            stepTwo.collapse('show');
-
-            $('html,body').animate({
-                scrollTop : stepTwoHeader.offset().top - 100
-            }, 500);
-
-            stepTwo.find('.panel-body').html(response.data.html);
-        });
-    });
-
-    $(document).on('submit', 'form[name=account_guest]', function(e){
-        e.preventDefault();
-
-        // Build request data
-        var requestData = $(this).serializeArray();
-        requestData.push({
-            name : 'fork[module]',
-            value : 'Catalog'
-        });
-        requestData.push({
-            name : 'fork[action]',
-            value : 'CheckoutAccount'
-        });
-        requestData.push({
-            name : 'type',
-            value : 'guest'
-        });
-
-        $.ajax(
-            {
-                method : "POST",
-                data : requestData
-            }
-        ).done(function(response){
-            // If our form has an error
-            var stepTwoHeader = $('#headingTwo').find('h4'),
-                stepTwo = $('#stepTwo');
-
-            stepTwo.find('.panel-body').html(response.data.html);
-
-            if (response.data.hasErrors) {
-                $('html,body').animate({
-                    scrollTop: stepTwoHeader.offset().top - 100
-                }, 500);
-            } else {
-                switch (response.data.nextStep) {
-                    case 'shipmentAddress':
-                        loadGuestShipmentAddress(true);
-                        break;
-                    case 'shipmentMethods':
-                        loadGuestShipmentAddress(false);
-                        loadShipmentMethods(true);
-                        break;
-                }
-            }
-        });
-    });
-
-    $(document).on('submit', 'form[name=account_shipment_address]', function(e) {
-        e.preventDefault();
-
-        // Build request data
-        var requestData = $(this).serializeArray();
-        requestData.push({
-            name: 'fork[module]',
-            value: 'Catalog'
-        });
-        requestData.push({
-            name: 'fork[action]',
-            value: 'GuestShipmentAddress'
-        });
-
-        $.ajax(
-            {
-                method: "POST",
-                data: requestData
-            }
-        ).done(function (response) {
-            // If our form has an error
-            var stepThreeHeader = $('#headingThree').find('h4'),
-                stepThree = $('#stepThree');
-
-            stepThree.find('.panel-body').html(response.data.html);
-
-            if (response.data.hasErrors) {
-                $('html,body').animate({
-                    scrollTop: stepThreeHeader.offset().top - 100
-                }, 500);
-            } else {
-                loadShipmentMethods(true)
-            }
-        });
-    });
-
-    $(document).on('submit', 'form[name=checkout_shipment_method]', function (e) {
-        e.preventDefault();
-
-        // Build request data
-        var requestData = $(this).serializeArray();
-        requestData.push({
-            name: 'fork[module]',
-            value: 'Catalog'
-        });
-        requestData.push({
-            name: 'fork[action]',
-            value: 'ShipmentMethods'
-        });
-
-        $.ajax(
-            {
-                method: "POST",
-                data: requestData
-            }
-        ).done(function (response) {
-            // If our form has an error
-            var stepFourHeader = $('#headingFour').find('h4'),
-                stepFour = $('#stepFour');
-
-            stepFour.find('.panel-body').html(response.data.html);
-
-            if (response.data.hasErrors) {
-                $('html,body').animate({
-                    scrollTop: stepFourHeader.offset().top - 100
-                }, 500);
-            } else {
-                loadPaymentMethods(true)
-            }
-        });
-    });
-
-    $(document).on('submit', 'form[name=checkout_payment_method]', function (e) {
-        e.preventDefault();
-
-        // Build request data
-        var requestData = $(this).serializeArray();
-        requestData.push({
-            name: 'fork[module]',
-            value: 'Catalog'
-        });
-        requestData.push({
-            name: 'fork[action]',
-            value: 'PaymentMethods'
-        });
-
-        $.ajax(
-            {
-                method: "POST",
-                data: requestData
-            }
-        ).done(function (response) {
-            // If our form has an error
-            var stepHeader = $('#headingFive').find('h4'),
-                step = $('#stepFive');
-
-            step.find('.panel-body').html(response.data.html);
-
-            if (response.data.hasErrors) {
-                $('html,body').animate({
-                    scrollTop: stepHeader.offset().top - 100
-                }, 500);
-            } else {
-                loadConfirmOrder(true)
-            }
-        });
-    });
-
-    $(document).on('submit', 'form[name=checkout_confirm_order]', function (e) {
-        e.preventDefault();
-
-        // Build request data
-        var requestData = $(this).serializeArray();
-        requestData.push({
-            name: 'fork[module]',
-            value: 'Catalog'
-        });
-        requestData.push({
-            name: 'fork[action]',
-            value: 'ConfirmOrder'
-        });
-
-        $.ajax(
-            {
-                method: "POST",
-                data: requestData
-            }
-        ).done(function (response) {
-            // If our form has an error
-            var stepHeader = $('#headingSix').find('h4'),
-                step = $('#stepSix');
-
-            step.find('.panel-body').html(response.data.html);
-
-            if (response.data.hasErrors) {
-                $('html,body').animate({
-                    scrollTop: stepHeader.offset().top - 100
-                }, 500);
-            } else {
-                window.location = response.data.nextStep;
-            }
-        });
-    });
-
-    $(document).on('change', 'form[name=checkout_payment_method] input[name*=payment_method][type=radio]', function(e){
-        e.preventDefault();
-
-        // Build request data
-        var requestData = $(this).serializeArray();
-        requestData.push({
-            name: 'fork[module]',
-            value: 'Catalog'
-        });
-        requestData.push({
-            name: 'fork[action]',
-            value: 'PaymentMethods'
-        });
-
-        $.ajax(
-            {
-                method: "POST",
-                data: requestData
-            }
-        ).done(function (response) {
-            // If our form has an error
-            var stepHeader = $('#headingFive').find('h4'),
-                step = $('#stepFive');
-
-            step.find('.panel-body').html(response.data.html);
-        });
-    });
-
-    function loadGuestShipmentAddress(show) {
-        $.ajax(
-            {
-                method : "POST",
-                data : {
-                    fork : {
-                        module : 'Catalog',
-                        action : 'GuestShipmentAddress'
-                    }
-                }
-            }
-        ).done(function(response){
-            loadStep(
-                response.data.html,
-                '#headingThree',
-                '#stepThree',
-                show
-            );
-        });
-    }
-
-    function loadShipmentMethods(show) {
-        $.ajax(
-            {
-                method : "POST",
-                data : {
-                    fork : {
-                        module : 'Catalog',
-                        action : 'ShipmentMethods'
-                    }
-                }
-            }
-        ).done(function(response){
-            loadStep(
-                response.data.html,
-                '#headingFour',
-                '#stepFour',
-                show
-            );
-        });
-    }
-
-    function loadPaymentMethods(show) {
-        $.ajax(
-            {
-                method : "POST",
-                data : {
-                    fork : {
-                        module : 'Catalog',
-                        action : 'PaymentMethods'
-                    }
-                }
-            }
-        ).done(function(response){
-            loadStep(
-                response.data.html,
-                '#headingFive',
-                '#stepFive',
-                show
-            );
-        });
-    }
-
-    function loadConfirmOrder(show) {
-        $.ajax(
-            {
-                method : "POST",
-                data : {
-                    fork : {
-                        module : 'Catalog',
-                        action : 'ConfirmOrder'
-                    }
-                }
-            }
-        ).done(function(response){
-            loadStep(
-                response.data.html,
-                '#headingSix',
-                '#stepSix',
-                show
-            );
-        });
-    }
-
-    function loadStep(html, headerSelector, contentSelector, show) {
-        var stepHeader = $(headerSelector).find('h4'),
-            step = $(contentSelector);
-
-        // Store our text
-        if (!stepHeader.data('text')) {
-            stepHeader.data('text', stepHeader.html());
-        }
-
-        stepHeader.html(
-            $('<a>').attr(
-                {
-                    role : 'button',
-                    'data-toggle' : 'collapse',
-                    'data-parent' : '#checkoutAccordion',
-                    href : contentSelector,
-                    'aria-expanded' : true,
-                    'aria-controls' : contentSelector
-                })
-                .html(stepHeader.data('text'))
-        );
-
-        step.find('.panel-body').html(html);
-
-        if (show) {
-            step.collapse('show');
-
-            $('html,body').animate({
-                scrollTop: step.offset().top - 100
-            }, 500);
-        }
-    }
-});
+// $(function () {
+//   $(document).on('submit', 'form[name=account_customer]', function (e) {
+//     e.preventDefault()
+//
+//     var requestData = $(this).serializeArray()
+//
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'CheckoutAccount'
+//     })
+//
+//     $(this).find('.is-invalid').removeClass('is-invalid')
+//     $(this).find('.invalid-feedback').remove()
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       showStep('#stepTwo', response.data.html, true)
+//     }).fail(function (response) {
+//       $.each(response.responseJSON.data.errors, function (field, error) {
+//         var element = $('[name="account_customer[' + field + ']"]')
+//
+//         element.addClass('is-invalid')
+//
+//         $('<div>').addClass('invalid-feedback').html(error).insertAfter(element)
+//       })
+//     })
+//   })
+//
+//   $(document).on('submit', 'form[name=account_register]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'CheckoutAccount'
+//     })
+//     requestData.push({
+//       name: 'type',
+//       value: 'register'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var stepTwo = $('#stepTwo')
+//
+//       stepTwo.find('.panel-body').html(response.data.html)
+//
+//       if (response.data.hasErrors) {
+//         $('html,body').animate({
+//           scrollTop: stepTwo.closest('.card').offset().top - 100
+//         }, 500)
+//       } else {
+//         switch (response.data.nextStep) {
+//           case 'shipmentAddress':
+//             loadGuestShipmentAddress(true)
+//             break
+//           case 'shipmentMethods':
+//             loadGuestShipmentAddress(false)
+//             loadShipmentMethods(true)
+//             break
+//         }
+//       }
+//     })
+//   })
+//
+//   $(document).on('submit', 'form[name=account_guest]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'CheckoutAccount'
+//     })
+//     requestData.push({
+//       name: 'type',
+//       value: 'guest'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var stepTwo = $('#stepTwo')
+//
+//       stepTwo.find('.panel-body').html(response.data.html)
+//
+//       if (response.data.hasErrors) {
+//         $('html,body').animate({
+//           scrollTop: stepTwo.closest('.card').offset().top - 100
+//         }, 500)
+//       } else {
+//         switch (response.data.nextStep) {
+//           case 'shipmentAddress':
+//             loadGuestShipmentAddress(true)
+//             break
+//           case 'shipmentMethods':
+//             loadGuestShipmentAddress(false)
+//             loadShipmentMethods(true)
+//             break
+//         }
+//       }
+//     })
+//   })
+//
+//   $(document).on('submit', 'form[name=account_shipment_address]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'GuestShipmentAddress'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var stepThree = $('#stepThree')
+//
+//       stepThree.find('.panel-body').html(response.data.html)
+//
+//       if (response.data.hasErrors) {
+//         $('html,body').animate({
+//           scrollTop: stepThree.closest('.card').offset().top - 100
+//         }, 500)
+//       } else {
+//         loadShipmentMethods(true)
+//       }
+//     })
+//   })
+//
+//   $(document).on('submit', 'form[name=checkout_shipment_method]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'ShipmentMethods'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var stepFour = $('#stepFour')
+//
+//       stepFour.find('.panel-body').html(response.data.html)
+//
+//       if (response.data.hasErrors) {
+//         $('html,body').animate({
+//           scrollTop: stepFour.closest('.card').offset().top - 100
+//         }, 500)
+//       } else {
+//         loadPaymentMethods(true)
+//       }
+//     })
+//   })
+//
+//   $(document).on('submit', 'form[name=checkout_payment_method]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'PaymentMethods'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var step = $('#stepFive')
+//
+//       step.find('.panel-body').html(response.data.html)
+//
+//       if (response.data.hasErrors) {
+//         $('html,body').animate({
+//           scrollTop: step.closest('.card').offset().top - 100
+//         }, 500)
+//       } else {
+//         loadConfirmOrder(true)
+//       }
+//     })
+//   })
+//
+//   $(document).on('submit', 'form[name=checkout_confirm_order]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'ConfirmOrder'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var step = $('#stepSix')
+//
+//       step.find('.panel-body').html(response.data.html)
+//
+//       if (response.data.hasErrors) {
+//         $('html,body').animate({
+//           scrollTop: step.closest('.card').offset().top - 100
+//         }, 500)
+//       } else {
+//         window.location = response.data.nextStep
+//       }
+//     })
+//   })
+//
+//   $(document).on('change', 'form[name=checkout_payment_method] input[name*=payment_method][type=radio]', function (e) {
+//     e.preventDefault()
+//
+//     // Build request data
+//     var requestData = $(this).serializeArray()
+//     requestData.push({
+//       name: 'fork[module]',
+//       value: 'Catalog'
+//     })
+//     requestData.push({
+//       name: 'fork[action]',
+//       value: 'PaymentMethods'
+//     })
+//
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: requestData,
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       // If our form has an error
+//       var step = $('#stepFive')
+//
+//       step.find('.panel-body').html(response.data.html)
+//     })
+//   })
+//
+//   function loadGuestShipmentAddress (show) {
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: {
+//           fork: {
+//             module: 'Catalog',
+//             action: 'GuestShipmentAddress'
+//           }
+//         },
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       showStep('#stepThree', response.data.html, show)
+//
+//       // loadStep(
+//       //   response.data.html,
+//       //   '#headingThree',
+//       //   '#stepThree',
+//       //   show
+//       // )
+//     })
+//   }
+//
+//   function loadShipmentMethods (show) {
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: {
+//           fork: {
+//             module: 'Catalog',
+//             action: 'ShipmentMethods'
+//           }
+//         },
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       showStep('#stepFour', response.data.html, show)
+//       // loadStep(
+//       //   response.data.html,
+//       //   '#headingFour',
+//       //   '#stepFour',
+//       //   show
+//       // )
+//     })
+//   }
+//
+//   function loadPaymentMethods (show) {
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: {
+//           fork: {
+//             module: 'Catalog',
+//             action: 'PaymentMethods'
+//           }
+//         },
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       showStep('#stepFive', response.data.html, show)
+//       // loadStep(
+//       //   response.data.html,
+//       //   '#headingFive',
+//       //   '#stepFive',
+//       //   show
+//       // )
+//     })
+//   }
+//
+//   function loadConfirmOrder (show) {
+//     $.ajax(
+//       {
+//         method: 'POST',
+//         data: {
+//           fork: {
+//             module: 'Catalog',
+//             action: 'ConfirmOrder'
+//           }
+//         },
+//         cache: false
+//       }
+//     ).done(function (response) {
+//       showStep('#stepSix', response.data.html, show)
+//       // loadStep(
+//       //   response.data.html,
+//       //   '#headingSix',
+//       //   '#stepSix',
+//       //   show
+//       // )
+//     })
+//   }
+//
+//   // function loadStep (html, headerSelector, contentSelector, show) {
+//   //   var stepHeader = $(headerSelector).find('h4'),
+//   //     step = $(contentSelector)
+//   //
+//   //   // Store our text
+//   //   if (!stepHeader.data('text')) {
+//   //     stepHeader.data('text', stepHeader.html())
+//   //   }
+//   //
+//   //   stepHeader.html(
+//   //     $('<a>').attr(
+//   //       {
+//   //         role: 'button',
+//   //         'data-toggle': 'collapse',
+//   //         'data-parent': '#checkoutAccordion',
+//   //         href: contentSelector,
+//   //         'aria-expanded': true,
+//   //         'aria-controls': contentSelector
+//   //       })
+//   //       .html(stepHeader.data('text'))
+//   //   )
+//   //
+//   //   step.find('.panel-body').html(html)
+//   //
+//   //   if (show) {
+//   //     step.collapse('show')
+//   //
+//   //     $('html,body').animate({
+//   //       scrollTop: step.offset().top - 100
+//   //     }, 500)
+//   //   }
+//   // }
+//
+//   function showStep (id, content, show) {
+//     var cardContent = $(id)
+//     var card = cardContent.closest('.card')
+//     var cardHeader = card.find('.card-header')
+//
+//     if (!cardHeader.data('text')) {
+//       cardHeader.data('text', cardHeader.html())
+//     }
+//
+//     cardHeader.html(
+//       $('<a>').attr({
+//         'data-toggle': 'collapse',
+//         'href': id,
+//         'class': 'card-link'
+//       })
+//         .html(cardHeader.data('text'))
+//     )
+//
+//     cardContent.find('.card-body').html(content)
+//
+//     if (show) {
+//       cardContent.collapse('show')
+//
+//       $('html,body').animate({
+//         scrollTop: cardContent.offset().top - 100
+//       }, 500)
+//     }
+//   }
+// })

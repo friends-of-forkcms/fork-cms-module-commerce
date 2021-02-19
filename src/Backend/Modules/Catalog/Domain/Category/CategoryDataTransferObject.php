@@ -33,6 +33,11 @@ class CategoryDataTransferObject
     /**
      * @var string
      */
+    public $intro;
+
+    /**
+     * @var string
+     */
     public $text;
 
     /**
@@ -58,24 +63,31 @@ class CategoryDataTransferObject
     /**
      * @var int
      */
+    public $googleTaxonomyId;
+
+    /**
+     * @var int
+     */
     public $sequence;
 
     public function __construct(Category $category = null)
     {
         $this->categoryEntity = $category;
 
-        if ( ! $this->hasExistingCategory()) {
+        if (!$this->hasExistingCategory()) {
             return;
         }
 
-        $this->id       = $category->getId();
-        $this->extraId  = $category->getExtraId();
-        $this->title    = $category->getTitle();
-        $this->text     = $category->getText();
-        $this->locale   = $category->getLocale();
-        $this->parent   = $category->getParent();
-        $this->meta     = $category->getMeta();
-        $this->image    = $category->getImage();
+        $this->id = $category->getId();
+        $this->extraId = $category->getExtraId();
+        $this->googleTaxonomyId = $category->getGoogleTaxonomyId();
+        $this->title = $category->getTitle();
+        $this->intro = $category->getIntro();
+        $this->text = $category->getText();
+        $this->locale = $category->getLocale();
+        $this->parent = $category->getParent();
+        $this->meta = $category->getMeta();
+        $this->image = $category->getImage();
         $this->sequence = $category->getSequence();
     }
 

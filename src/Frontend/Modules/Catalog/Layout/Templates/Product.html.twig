@@ -108,7 +108,9 @@
           </p>
         {% endif %}
         <p class="price-btw">
-          <span>Exclusief {{ product.vat.percentage|formatnumber(0) }}% BTW. (&euro; {{ product.activePrice(true)|number_format(2, ',', '.') }} incl. {{ product.vat.percentage|number_format(0, ',', '.') }}% BTW )</span>
+          <span>Exclusief {{ product.vat.percentage|formatnumber(0) }}
+            % BTW. (&euro; {{ product.activePrice(true)|number_format(2, ',', '.') }}
+            incl. {{ product.vat.percentage|number_format(0, ',', '.') }}% BTW )</span>
         </p>
       </div>
     {% else %}
@@ -164,15 +166,15 @@
   "@context": "http://schema.org/",
   "@type": "Product",
   "name": "{{ product.title }}",
-  {% if product.images.connectedMediaItems.count > 0%}
+  {% if product.images.connectedMediaItems.count > 0 %}
   "image": [
-    {% for image in product.images.connectedMediaItems %}
-      "{{ image.absoluteWebPath }}"{% if not loop.last %},{% endif %}
-    {% endfor %}
+      {% for image in product.images.connectedMediaItems %}
+        "{{ image.absoluteWebPath }}"{% if not loop.last %},{% endif %}
+      {% endfor %}
    ],
    {% endif %}
   "description": "{{ product.text|raw|striptags }}",
-  "sku": "{{ product.sku }}",
+  "mpn": "{{ product.sku }}",
   "brand": {
     "@type": "Thing",
     "name": "{{ product.brand.title }}"
@@ -183,10 +185,14 @@
     "price": "{{ product.activePrice(false)|number_format(2,'.', '') }}",
     "itemCondition": "http://schema.org/NewCondition",
     {% if product.inStock %}
-    "availability": "http://schema.org/InStock"
+    "availability": "http://schema.org/InStock",
     {% else %}
-    "availability": "http://schema.org/OutOfStock"
+    "availability": "http://schema.org/OutOfStock",
     {% endif %}
+    "seller": {
+      "@type": "Organization",
+      "name": "{{ siteTitle }}"
+    }
   }
 }
 </script>

@@ -17,6 +17,7 @@ abstract class Type extends AbstractType
             [
                 'required' => false,
                 'label'    => 'lbl.Installed',
+                'placeholder' => false,
                 'choices'  => [
                     'lbl.Yes' => true,
                     'lbl.No'  => false

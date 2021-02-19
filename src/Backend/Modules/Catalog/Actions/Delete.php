@@ -6,6 +6,7 @@ use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Catalog\Domain\Product\Event\BeforeDelete;
 use Backend\Modules\Catalog\Domain\Product\Event\Deleted;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\Product;
@@ -36,13 +37,18 @@ class Delete extends BackendBaseActionDelete
 
         $product = $this->getProduct((int)$deleteFormData['id']);
 
+        $this->get('event_dispatcher')->dispatch(
+            BeforeDelete::EVENT_NAME,
+            new BeforeDelete($product)
+        );
+
         try {
             // The command bus will handle the saving of the content block in the database.
             $this->get('command_bus')->handle(new DeleteCommand($product));
 
             $this->get('event_dispatcher')->dispatch(
                 Deleted::EVENT_NAME,
-                new Deleted($product)
+                new Deleted($product, $deleteFormData['id'])
             );
 
             $this->redirect($this->getBackLink(['report' => 'deleted', 'var' => $product->getTitle()]));

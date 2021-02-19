@@ -28,6 +28,7 @@ class AccountGuestDataTransferObject extends AddressDataTransferObject
     public function toShipmentAddress(): CreateShipmentAddress
     {
         $shipmentAddress = new CreateShipmentAddress();
+        $shipmentAddress->company_name = $this->company_name;
         $shipmentAddress->first_name = $this->first_name;
         $shipmentAddress->last_name = $this->last_name;
         $shipmentAddress->phone = $this->phone;

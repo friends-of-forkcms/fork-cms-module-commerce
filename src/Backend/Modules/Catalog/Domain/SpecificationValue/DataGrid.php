@@ -19,8 +19,7 @@ class DataGrid extends DataGridDatabase
         parent::__construct(
             'SELECT c.id, c.value, (SELECT COUNT(*) FROM `catalog_products_specification_values` WHERE `specification_value_id` = c.id) as products
 					 FROM catalog_specification_values AS c
-					 WHERE c.specification_id = :specification
-					 ORDER BY c.sequence ASC',
+					 WHERE c.specification_id = :specification',
             ['specification' => $specification->getId()]
         );
 

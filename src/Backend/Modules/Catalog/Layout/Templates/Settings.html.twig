@@ -19,15 +19,23 @@
             <a href="#tabOrders" aria-controls="tabOrders" role="tab"
                data-toggle="tab">{{ 'lbl.Orders'|trans|ucfirst }}</a>
           </li>
+          <li role="presentation">
+            <a href="#tabOthers" aria-controls="tabOthers" role="tab"
+               data-toggle="tab">{{ 'lbl.Others'|trans|ucfirst }}</a>
+          </li>
         </ul>
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="tabOverview">
             {{ form_row(form.overview_num_items) }}
             {{ form_row(form.filters_show_more_num_items) }}
+            {{ form_row(form.products_in_widget) }}
           </div>
-          <div role="tabpanel" class="tab-pane active" id="tabOrders">
+          <div role="tabpanel" class="tab-pane" id="tabOrders">
             {{ form_row(form.next_invoice_number) }}
             {{ form_row(form.automatic_invoice_statuses) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabOthers">
+            {{ form_rest(form) }}
           </div>
         </div>
       </div>

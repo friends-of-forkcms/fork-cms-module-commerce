@@ -165,11 +165,11 @@
         </ul>
         <div class="panel-footer clearfix">
           {% if form.vars.allow_add %}
-              <div class="btn-group-sm pull-right">
-                <a href="#" class="btn btn-success btn-sm" data-addfield="collection"
-                   data-collection="{{ form.vars.id }}"
-                   data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|raw }}</a>
-              </div>
+            <div class="btn-group-sm pull-right">
+              <a href="#" class="btn btn-success btn-sm" data-addfield="collection"
+                 data-collection="{{ form.vars.id }}"
+                 data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|raw }}</a>
+            </div>
           {% endif %}
           {{ form_errors(form) }}
         </div>
@@ -202,3 +202,224 @@
     </div>
   </div>
 {% endblock _product_up_sell_products_entry_widget %}
+
+{% block _product_dimensions_entry_widget %}
+  {{ form_widget(form.price) }}
+  {{ form_errors(form.price) }}
+  {{ form_widget(form.width, { 'attr': {'data-width': ''}}) }}
+  {{ form_widget(form.height, { 'attr': {'data-height': ''} }) }}
+{% endblock _product_dimensions_entry_widget %}
+
+{% block _product_dimensions_row %}
+  {% spaceless %}
+    {% if prototype is defined %}
+      {% set prototype_vars = {} %}
+      {% if style is defined %}
+        {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+      {% endif %}
+      {% if form.vars.allow_delete %}
+        {% set prototype_vars = prototype_vars|merge({'vars' : {'allow_delete': form.vars.allow_delete, 'delete_button_text' : form.vars.delete_button_text}}) %}
+      {% endif %}
+      {% set prototype_html = form_widget(prototype, prototype_vars) %}
+
+      {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+      {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+    {% endif %}
+
+    {% set cols = [] %}
+    {% set rows = [] %}
+    {% set elements = {} %}
+
+    {% for field in form %}
+      {% set data = field.vars.data %}
+      {% if data.width not in cols %}
+        {% set cols = cols|merge([data.width]) %}
+      {% endif %}
+
+      {% if data.height not in rows %}
+        {% set rows = rows|merge([data.height]) %}
+      {% endif %}
+
+      {% set elements = elements|merge({(data.width ~ '-' ~ data.height) : field}) %}
+    {% endfor %}
+
+    <table id="dimensionsTable" class="table" {{ block('widget_container_attributes') }}>
+      <thead>
+      <tr>
+        <th scope="col">
+          Breedte x Hoogte
+        </th>
+        {% for col in cols|sort %}
+          <th scope="col">
+            <div class="input-group">
+              <input data-reference="width" type="text" value="{{ col }}" class="form-control"><span
+                class="input-group-addon">mm</span>
+            </div>
+          </th>
+        {% endfor %}
+        <th scope="col">
+          <a href="javascript:void(0);" class="btn btn-primary" data-add-column
+             data-prototype-name="{{ prototype_name }}">
+            <span class="fa fa-plus-square" aria-hidden="true"></span>
+          </a>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for row in rows %}
+        <tr>
+          <th>
+            <div class="input-group">
+              <input data-reference="height" type="text" class="form-control" value="{{ row }}"><span
+                class="input-group-addon">mm</span>
+            </div>
+          </th>
+          {% for col in cols %}
+            {% set field = elements[(col ~ '-' ~ row)] %}
+            <td>
+              {% if field %}
+              {{ form_widget(field, {'vars' : form.vars}) }}
+              {{ form_errors(field) }}
+              {% endif %}
+            </td>
+          {% endfor %}
+          <td>
+            <a href="javascript:void(0);" class="btn btn-danger" data-remove-row>
+              <span class="fa fa-trash-o" aria-hidden="true"></span>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <th scope="row">
+          <a href="javascript:void(0);" class="btn btn-primary" data-add-row data-prototype-name="{{ prototype_name }}">
+            <span class="fa fa-plus-square" aria-hidden="true"></span>
+          </a>
+        </th>
+        {% for col in cols %}
+          <td>
+            <a href="javascript:void(0);" class="btn btn-danger" data-remove-col>
+              <span class="fa fa-trash-o" aria-hidden="true"></span>
+            </a>
+          </td>
+        {% endfor %}
+      </tr>
+      </tbody>
+    </table>
+  {% endspaceless %}
+{% endblock _product_dimensions_row %}
+
+{% block _product_dimension_notifications_entry_widget %}
+  <div class="row">
+    <div class="col-md-3">
+      {{ form_row(form.width) }}
+    </div>
+    <div class="col-md-3">
+      {{ form_row(form.height) }}
+    </div>
+    <div class="col-md-6">
+      {{ form_row(form.message) }}
+    </div>
+    <div class="col-md-3">
+      {% if vars.allow_delete %}
+        <label>&nbsp;</label>
+        <div class="btn-toolbar">
+          <div class="btn-group-sm pull-right">
+            <a href="#" class="btn btn-danger btn-sm" data-removefield="collection"
+               data-field="{{ field.vars.id }}" title="{{ vars.delete_button_text|trans({}, translation_domain)|raw }}"><span class="fa fa-trash"></span></a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock _product_dimension_notifications_entry_widget %}
+
+{% block _product_option_dimension_notifications_entry_widget %}
+  <div class="row">
+    <div class="col-md-3">
+      {{ form_row(form.width) }}
+    </div>
+    <div class="col-md-3">
+      {{ form_row(form.height) }}
+    </div>
+    <div class="col-md-6">
+      {{ form_row(form.message) }}
+    </div>
+    <div class="col-md-3">
+      {% if vars.allow_delete %}
+        <label>&nbsp;</label>
+        <div class="btn-toolbar">
+          <div class="btn-group-sm pull-right">
+            <a href="#" class="btn btn-danger btn-sm" data-removefield="collection"
+               data-field="{{ field.vars.id }}" title="{{ vars.delete_button_text|trans({}, translation_domain)|raw }}"><span class="fa fa-trash"></span></a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock _product_option_dimension_notifications_entry_widget %}
+
+{% block _product_option_value_dependencies_entry_widget %}
+  <div class="row">
+    <div class="col-md-5">
+      {{ form_label(form.product_option) }}
+      {{ form_widget(form.product_option) }}
+    </div>
+    <div class="col-md-5">
+      {{ form_label(form.values) }}
+      {{ form_widget(form.values) }}
+    </div>
+    <div class="col-md-2">
+      {% if vars.allow_delete %}
+        <label>&nbsp;</label>
+        <div class="btn-toolbar">
+          <div class="btn-group-sm pull-right">
+            <a href="#" class="btn btn-danger btn-sm" data-removefield="collection"
+               data-field="{{ field.vars.id }}">{{ vars.delete_button_text|trans({}, translation_domain)|raw }}</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock _product_option_value_dependencies_entry_widget %}
+
+{% block _product_option_value_dependencies_row %}
+  {% spaceless %}
+    {% if prototype is defined %}
+      {% set prototype_vars = {} %}
+      {% if style is defined %}
+        {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+      {% endif %}
+      {% if form.vars.allow_delete %}
+        {% set prototype_vars = prototype_vars|merge({'vars' : {'allow_delete': form.vars.allow_delete, 'delete_button_text' : form.vars.delete_button_text}}) %}
+      {% endif %}
+      {% set prototype_html = form_widget(prototype, prototype_vars) %}
+
+
+      {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+      {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+    {% endif %}
+    <div {{ block('widget_container_attributes') }}>
+      <ul class="list-group js-collection">
+        {% for field in form %}
+          <li class="list-group-item">
+            {{ form_widget(field, {'vars' : form.vars}) }}
+            {{ form_errors(field) }}
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="row">
+        {% if form.vars.allow_add %}
+          <div class="col-md-12">
+            <div class="btn-group-sm pull-right">
+              <a href="#" class="btn btn-success btn-sm" data-addfield="collection"
+                 data-collection="{{ form.vars.id }}"
+                 data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|raw }}</a>
+            </div>
+          </div>
+        {% endif %}
+        {{ form_errors(form) }}
+      </div>
+    </div>
+  {% endspaceless %}
+{% endblock _product_option_value_dependencies_row %}

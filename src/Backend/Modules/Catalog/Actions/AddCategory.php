@@ -8,6 +8,7 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Category\CategoryType;
 use Backend\Modules\Catalog\Domain\Category\Command\CreateCategory;
 use Backend\Modules\Catalog\Domain\Category\Event\Created;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
 
 /**
@@ -52,6 +53,34 @@ class AddCategory extends BackendBaseActionAdd
         );
     }
 
+    public function parse(): void
+    {
+        parent::parse();
+
+        $this->header->addJS(
+            '/js/vendors/select2.full.min.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS(
+            '/js/vendors/' . Locale::workingLocale() . '.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS('Select2Entity.js');
+
+        $this->header->addCSS(
+            '/css/vendors/select2.min.css',
+            null,
+            true,
+            false
+        );
+    }
+
     private function createCategory(Form $form): CreateCategory
     {
         $createCategory = $form->getData();
@@ -78,12 +107,42 @@ class AddCategory extends BackendBaseActionAdd
             CategoryType::class,
             new CreateCategory(),
             [
-                'categories' => $this->get('catalog.repository.category')->getTree(Locale::workingLocale())
+                'categories' => $this->get('catalog.repository.category')->getTree(Locale::workingLocale()),
+                'google_taxonomies' => $this->getGoogleTaxonomies(),
             ]
         );
 
         $form->handleRequest($this->getRequest());
 
         return $form;
+    }
+
+    private function getGoogleTaxonomies()
+    {
+        $filesystem = new Filesystem();
+        $kernelRootDir = $this->getKernel()->getRootDir();
+        $googleTaxonomyFile = $kernelRootDir . '/../src/Backend/Modules/Catalog/GoogleTaxonomy/'
+            . Locale::workingLocale()->getLocale()
+            . '/taxonomies.txt';
+
+        $categories = [];
+        $query = strtolower($this->getRequest()->request->get('q'));
+        if ($filesystem->exists($googleTaxonomyFile)) {
+            $lines = explode("\n", file_get_contents($googleTaxonomyFile));
+            foreach ($lines as $line) {
+                if (!preg_match('/^([0-9]+) - (.*)/', $line, $matches)) {
+                    continue;
+                }
+
+                if (strpos(strtolower($line), strtolower($query)) !== false) {
+                    $categories[] = [
+                        'id' => $matches[1],
+                        'value' => $line,
+                    ];
+                }
+            }
+        }
+
+        return $categories;
     }
 }

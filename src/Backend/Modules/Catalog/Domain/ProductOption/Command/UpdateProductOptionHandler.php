@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Catalog\Domain\ProductOption\Command;
 
+use Backend\Core\Engine\Model;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOptionRepository;
 
@@ -17,7 +18,23 @@ final class UpdateProductOptionHandler
 
     public function handle(UpdateProductOption $updateProductOption): void
     {
+        if ($updateProductOption->custom_value_price === null) {
+            $updateProductOption->custom_value_price = 0.00;
+        }
+
         $productOption = ProductOption::fromDataTransferObject($updateProductOption);
+        $entityManager = Model::get('doctrine.orm.entity_manager');
+
+        // save the dimension notifications
+        foreach ($updateProductOption->dimension_notifications as $dimension_notification) {
+            $dimension_notification->setProductOption($productOption);
+        }
+
+        foreach ($updateProductOption->remove_dimension_notifications as $dimension_notification) {
+            $entityManager->remove($dimension_notification);
+        }
+
+        $entityManager->flush();
 
         // store the product
         $this->productOptionRepository->add($productOption);

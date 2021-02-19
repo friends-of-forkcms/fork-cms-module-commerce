@@ -1,12 +1,26 @@
 {% extends 'Layout/Templates/base.html.twig' %}
 {% import "Layout/Templates/macros.html.twig" as macro %}
+{% form_theme form with ["Catalog/Layout/Templates/FormHelper.html.twig"] %}
 
 {% block actionbar %}
-
+  <div class="pull-right">
+    {% if showCatalogAddProductOptionValue %}
+      {{ macro.buttonIcon( geturl('AddProductOptionValue', null, '&product_option=' ~ productOption.id), 'plus-square', 'lbl.AddValue'|trans|ucfirst) }}
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block content %}
   {{ form_start(form) }}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
+        {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
+      </div>
+    </div>
+  </div>
+
   <div class="row fork-module-content">
     <div class="col-md-12">
       <div role="tabpanel">
@@ -19,20 +33,29 @@
             <a href="#tabValues" aria-controls="tabValues" role="tab"
                data-toggle="tab">{{ 'lbl.Values'|trans|ucfirst }}</a>
           </li>
+          <li role="presentation">
+            <a href="#tabNotifications" aria-controls="tabNotifications" role="tab"
+               data-toggle="tab">{{ 'lbl.Notifications'|trans|ucfirst }}</a>
+          </li>
         </ul>
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="tabContent">
             <div class="row">
               <div class="col-md-8">
-                {{ form_row(form.title) }}
                 {{ form_row(form.type) }}
                 {{ form_row(form.placeholder) }}
+                {{ form_row(form.text) }}
               </div>
               <div class="col-md-4">
                 <div class="panel form-group panel-default">
                   <div class="panel-heading">{{ 'lbl.MetaData'|trans|ucfirst }}</div>
                   <div class="panel-body">
                     {{ form_row(form.required) }}
+                    {{ form_row(form.custom_value_allowed) }}
+                    {{ form_row(form.custom_value_price) }}
+                    {{ form_row(form.parent_product_option_value) }}
+                    {{ form_row(form.prefix) }}
+                    {{ form_row(form.suffix) }}
                   </div>
                 </div>
               </div>
@@ -44,9 +67,11 @@
                 {{ macro.dataGrid(productOptionValuesDataGrid) }}
               </div>
             </div>
+          </div>
+          <div role="tabpanel" class="tab-pane clearfix" id="tabNotifications">
             <div class="row">
               <div class="col-md-12">
-                {{ macro.buttonIcon( geturl('AddProductOptionValue', null, '&product_option=' ~ productOption.id), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
+                {{ form_row(form.dimension_notifications) }}
               </div>
             </div>
           </div>
@@ -58,6 +83,7 @@
     <div class="col-md-12">
       <div class="btn-toolbar">
         <div class="btn-group pull-left" role="group">
+{#          {{ macro.buttonIcon(geturl('Edit', null, '&id=' ~ productOption.product.id ~ '#tabOptions'), 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default') }}#}
           {% if showCatalogDeleteProductOption %}
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete">
               <span class="fa fa-trash-o"></span>
@@ -66,6 +92,9 @@
           {% endif %}
         </div>
         <div class="btn-group pull-right" role="group">
+          <a href="{{ backLink }}" class="btn btn-default">
+            <span class="fa fa-times"></span>{{ 'lbl.Cancel'|trans|ucfirst }}
+          </a>
           <button id="editButton" type="submit" name="edit" class="btn btn-primary">
             <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}
           </button>

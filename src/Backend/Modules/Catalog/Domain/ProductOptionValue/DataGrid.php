@@ -17,15 +17,21 @@ class DataGrid extends DataGridDatabase
     public function __construct(ProductOption $productOption)
     {
         parent::__construct(
-            'SELECT c.id, c.title, c.price, c.default_value, c.sequence
+            'SELECT c.id, IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title, c.impact_type, c.percentage, c.price, c.default_value, c.sequence,
+                            (SELECT(count(*)) FROM catalog_product_options i WHERE i.product_option_value_id = c.id) as sub_options
 					 FROM catalog_product_option_values AS c
-					 WHERE c.product_option_id = :product_option
-					 GROUP BY c.sequence ASC',
-            ['product_option' => $productOption->getId()]
+                     INNER JOIN catalog_product_options AS po ON po.id = c.product_option_id
+					 WHERE c.product_option_id = :product_option',
+            [
+                'titleSeparator' => ' - ',
+                'typeBetween' => ProductOption::DISPLAY_TYPE_BETWEEN,
+                'product_option' => $productOption->getId(),
+            ]
         );
 
         // Data grid options
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[default_value]'], 'default_value');
+        $this->setColumnFunction([self::class, 'getImpactTypeText'], ['[impact_type]'], 'impact_type');
         $this->setColumnsHidden(array('sequence'));
         $this->enableSequenceByDragAndDrop();
         $this->setAttributes(array('data-action' => 'SequenceProductOptionValues'));
@@ -41,5 +47,20 @@ class DataGrid extends DataGridDatabase
     public static function getHtml(ProductOption $productOption): string
     {
         return (new self($productOption))->getContent();
+    }
+
+    public static function getImpactTypeText($value)
+    {
+        switch ($value) {
+            case ProductOptionValue::IMPACT_TYPE_ADD:
+            default:
+                $returnValue = ucfirst(Language::lbl('Add'));
+                break;
+            case ProductOptionValue::IMPACT_TYPE_SUBTRACT:
+                $returnValue = ucfirst(Language::lbl('SubTract'));
+                break;
+        }
+
+        return $returnValue;
     }
 }

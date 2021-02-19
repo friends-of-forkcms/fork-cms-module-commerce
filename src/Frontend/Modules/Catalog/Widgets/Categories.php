@@ -2,58 +2,76 @@
 
 namespace Frontend\Modules\Catalog\Widgets;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
+use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
+use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
-use Frontend\Modules\Catalog\Engine\Model as FrontendCatalogModel;
+use Frontend\Core\Language\Locale;
 
 /**
  * This is a widget with the Catalog-categories
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
+ * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Categories extends FrontendBaseWidget
 {
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
         $this->loadTemplate();
-        $this->parse();
+
+        $categoryRepository = $this->getCategoryRepository();
+        $productRepository = $this->getProductRepository();
+
+        $parameters = $this->url->getParameters(false);
+        $parameterCount = count($parameters);
+        $activeCategory = null;
+        $activeProduct = null;
+
+        if ($parameterCount >= 3) { // Parent category, category and product
+            if ($product = $productRepository->findByCategoryAndUrl(
+                Locale::frontendLanguage(),
+                $parameters[1],
+                $parameters[2]
+            )) {
+                $activeProduct = $product;
+                $activeCategory = $product->getCategory();
+            }
+        } elseif ($parameterCount == 2) {
+            if ($product = $productRepository->findByCategoryAndUrl(Locale::frontendLanguage(), $parameters[0],
+                $parameters[1])) {
+                $activeProduct = $product;
+                $activeCategory = $product->getCategory();
+            } elseif ($category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[1])) {
+                $activeCategory = $category;
+            }
+        } elseif (
+            $parameterCount == 1 && (
+            $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
+            )
+        ) {
+            $activeCategory = $category;
+        }
+
+        $this->template->assign('activeCategory', $activeCategory);
+        $this->template->assign('activeProduct', $activeProduct);
+        $this->template->assign('categories', $categoryRepository->findParents(Locale::frontendLanguage()));
+    }
+
+    private function getCategoryRepository(): CategoryRepository
+    {
+        return $this->get('catalog.repository.category');
     }
 
     /**
-     * Parse
+     * @return ProductRepository
      */
-    private function parse()
+    private function getProductRepository(): ProductRepository
     {
-        // get categories
-        $categories = FrontendCatalogModel::getAllCategories();
-
-        // get tree of all categories
-        $tree = FrontendCatalogModel::getCategoriesTree();
-
-        // any categories?
-        if (!empty($categories)) {
-            // build link
-            $link = FrontendNavigation::getURLForBlock('Catalog', 'Category');
-
-            // loop and reset url
-            foreach ($categories as &$row) {
-                $row['url'] = $link . '/' . $row['url'];
-            }
-        }
-
-        // assign comments
-        $this->tpl->assign('widgetCatalogCategoriesFlat', $categories);
-        $this->tpl->assign('widgetCatalogCategoriesTree', $tree);
+        return $this->get('catalog.repository.product');
     }
 }

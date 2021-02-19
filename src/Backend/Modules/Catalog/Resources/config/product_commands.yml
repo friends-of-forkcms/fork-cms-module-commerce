@@ -19,3 +19,6 @@ services:
             - "@catalog.repository.product"
         tags:
             - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Product\Command\DeleteProduct }
+
+    catalog.form.product_validation_resolver:
+        class: Backend\Modules\Catalog\Domain\Product\ValidationGroupResolver

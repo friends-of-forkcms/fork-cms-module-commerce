@@ -1,0 +1,41 @@
+{% form_theme loginForm with ["Catalog/Layout/Templates/FormHelper.html.twig", "Catalog/Layout/Templates/Checkout/Step/_partials/FormHelper.html.twig"] %}
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-primary panel-checkout">
+      <div class="panel-heading">
+        <h4 class="panel-title">{{ 'lbl.ExistingCustomer'|trans|ucfirst }}</h4>
+      </div>
+      <div class="panel-body">
+        {{ form_start(loginForm) }}
+        {{ form_rest(loginForm) }}
+        <div class="row">
+          <div class="col-md-6">
+            <a href="{{ geturlforblock('Profiles','ForgotPassword') }}"
+               title="{{ 'msg.ForgotPassword'|trans }}">{{ 'msg.ForgotPassword'|trans }}</a>
+          </div>
+          <div class="col-md-6 text-right">
+            <button type="submit" class="btn btn-primary" data-checkout-step="login-or-guest"
+                    data-checkout-step-value="login">{{ 'lbl.Login'|trans|ucfirst }}</button>
+          </div>
+        </div>
+        {{ form_end(loginForm) }}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-primary panel-checkout">
+      <div class="panel-heading">
+        <h4 class="panel-title">{{ 'lbl.NewCustomer'|trans|ucfirst }}</h4>
+      </div>
+      <div class="panel-body">
+        <p>{{ 'msg.NewCustomerCheckoutDescription'|trans }}</p>
+        <p>
+            <a href="{{ accountUrl }}" class="btn btn-default btn-secondary btn-lg btn-block"
+               data-checkout-step="login-or-guest"
+               data-checkout-step-value="guest">{{ 'lbl.ContinueWithoutLogin'|trans|ucfirst }}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

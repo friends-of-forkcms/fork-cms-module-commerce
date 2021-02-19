@@ -30,6 +30,10 @@
             <a href="#tabRelations" aria-controls="tabRelations" role="tab"
                data-toggle="tab">{{ 'lbl.Relations'|trans|ucfirst }}</a>
           </li>
+          <li role="presentation"{% if not product.usesDimensions %} class="hidden"{% endif %}>
+            <a href="#tabDimensions" aria-controls="tabDimensions" role="tab"
+               data-toggle="tab">{{ 'lbl.Dimensions'|trans|ucfirst }}</a>
+          </li>
           <li role="presentation">
             <a href="#tabOptions" aria-controls="tabOptions" role="tab"
                data-toggle="tab">{{ 'lbl.Options'|trans|ucfirst }}</a>
@@ -78,56 +82,21 @@
                 <div class="panel form-group panel-default">
                   <div class="panel-heading">{{ 'lbl.MetaData'|trans|ucfirst }}</div>
                   <div class="panel-body">
-                    <div class="form-group">
-                      {{ form_label(form.sku) }}
-                      {{ form_widget(form.sku) }}
-                      {{ form_errors(form.sku) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.category) }}
-                      {{ form_widget(form.category) }}
-                      {{ form_errors(form.category) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.brand) }}
-                      {{ form_widget(form.brand) }}
-                      {{ form_errors(form.brand) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.weight) }}
-                      {{ form_widget(form.weight) }}
-                      {{ form_errors(form.weight) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.price) }}
-                      {{ form_widget(form.price) }}
-                      {{ form_errors(form.price) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.vat) }}
-                      {{ form_widget(form.vat) }}
-                      {{ form_errors(form.vat) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.order_quantity) }}
-                      {{ form_widget(form.order_quantity) }}
-                      {{ form_errors(form.order_quantity) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.stock) }}
-                      {{ form_widget(form.stock) }}
-                      {{ form_errors(form.stock) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.from_stock) }}
-                      {{ form_widget(form.from_stock) }}
-                      {{ form_errors(form.from_stock) }}
-                    </div>
-                    <div class="form-group">
-                      {{ form_label(form.stock_status) }}
-                      {{ form_widget(form.stock_status) }}
-                      {{ form_errors(form.stock_status) }}
-                    </div>
+                    {{ form_row(form.sku) }}
+                    {{ form_row(form.ean13) }}
+                    {{ form_row(form.isbn) }}
+                    {{ form_row(form.category) }}
+                    {{ form_row(form.brand) }}
+                    {{ form_row(form.weight) }}
+                    {{ form_row(form.price) }}
+                    {{ form_row(form.vat) }}
+                    {{ form_row(form.order_quantity) }}
+                    {{ form_row(form.stock) }}
+                    {{ form_row(form.from_stock) }}
+                    {{ form_row(form.stock_status) }}
+                    {{ form_row(form.hidden) }}
+                    {{ form_row(form.type) }}
+                    {{ form_row(form.sequence) }}
                   </div>
                 </div>
               </div>
@@ -136,6 +105,71 @@
           <div role="tabpanel" class="tab-pane" id="tabRelations">
             {{ form_row(form.related_products) }}
             {{ form_row(form.up_sell_products) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabDimensions">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      {{ form_label(form.min_width) }}
+                      <div class="input-group">
+                        {{ form_widget(form.min_width) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.min_height) }}
+                      <div class="input-group">
+                        {{ form_widget(form.min_height) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.max_width) }}
+                      <div class="input-group">
+                        {{ form_widget(form.max_width) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.max_height) }}
+                      <div class="input-group">
+                        {{ form_widget(form.max_height) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.extra_production_width) }}
+                      <div class="input-group">
+                        {{ form_widget(form.extra_production_width) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.extra_production_height) }}
+                      <div class="input-group">
+                        {{ form_widget(form.extra_production_height) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    {{ form_row(form.dimension_notifications) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ form_row(form.dimensions) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ form_row(form.dimension_instructions) }}
+              </div>
+            </div>
           </div>
           <div role="tabpanel" class="tab-pane" id="tabOptions">
             <div class="row">
@@ -156,8 +190,8 @@
             {{ form_row(form.specials) }}
           </div>
           <div role="tabpanel" class="tab-pane" id="tabMedia">
-            {{ form_row(form.images, {'mediaGroup': mediaGroup}) }}
-            {{ form_row(form.downloads, {'mediaGroup': mediaGroup}) }}
+            {{ form_row(form.images) }}
+            {{ form_row(form.downloads) }}
           </div>
           <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
             {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}
@@ -178,6 +212,9 @@
           {% endif %}
         </div>
         <div class="btn-group pull-right" role="group">
+          {% if showCatalogCopy %}
+            {{ macro.buttonIcon('', 'copy', 'lbl.Copy'|trans|ucfirst, 'btn-default', {'data-toggle' : 'modal', 'data-target': '#confirmCopy'}) }}
+          {% endif %}
           <button id="editButton" type="submit" name="edit" class="btn btn-primary">
             <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}
           </button>
@@ -214,5 +251,30 @@
     {{ form_end(deleteForm) }}
   {% endif %}
 
-  {% include "MediaLibrary/Resources/views/BackendMediaGroupsHelper.html.twig" %}
+  {% if showCatalogCopy %}
+    {{ form_start(copyForm) }}
+    {{ form_row(copyForm._token) }}
+    {{ form_row(copyForm.id) }}
+    <div class="modal fade" id="confirmCopy" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="modal-title h4">{{ 'lbl.Copy'|trans|ucfirst }}</span>
+          </div>
+          <div class="modal-body">
+            <p>{{ 'Weet je zeker dat je "%s" wilt kopieëren naar een nieuw product?'|trans|format(product.title)|raw }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <span class="fa fa-times"></span>{{ 'lbl.Cancel'|trans|ucfirst }}
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <span class="fa fa-copy"></span>{{ 'lbl.Copy'|trans|ucfirst }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(copyForm) }}
+  {% endif %}
 {% endblock %}

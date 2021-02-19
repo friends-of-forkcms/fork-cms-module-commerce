@@ -12,6 +12,7 @@ use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Backend\Modules\Catalog\Domain\Product\ProductType;
+use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension;
 use Backend\Modules\Catalog\Domain\ProductOption\DataGrid as ProductOptionDataGrid;
 use Symfony\Component\Form\Form;
 
@@ -44,14 +45,26 @@ class Edit extends BackendBaseActionEdit
             ['id' => $this->product->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'Delete'
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        $copyForm = $this->get('form.factory')->createNamed(
+            'copy',
+            DeleteType::class,
+            ['id' => $this->product->getId()],
+            [
+                'module' => $this->getModule(),
+                'action' => 'Copy',
+                'block_name' => 'copy',
+            ]
+        );
+        $this->template->assign('copyForm', $copyForm->createView());
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('product', $this->product);
+            $this->template->assign('productOptionsDataGrid', ProductOptionDataGrid::getHtml($this->product));
 
             $this->parse();
             $this->display();
@@ -70,8 +83,8 @@ class Edit extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateProduct->title,
+                    'report' => 'edited',
+                    'var' => $updateProduct->title,
                     'highlight' => 'row-' . $updateProduct->getProductEntity()->getId(),
                 ]
             )
@@ -97,6 +110,7 @@ class Edit extends BackendBaseActionEdit
         );
 
         $this->header->addJS('Select2Entity.js');
+        $this->header->addJS('ProductDimensions.js');
 
         $this->header->addCSS(
             '/css/vendors/select2.min.css',
@@ -104,8 +118,12 @@ class Edit extends BackendBaseActionEdit
             true,
             false
         );
+        $this->header->addCSS('ProductDimensions.css');
 
-        $this->template->assign('productOptionsDataGrid', ProductOptionDataGrid::getHtml($this->product));
+        $this->header->addJsData($this->getModule(), 'types', [
+            'default' => Product::TYPE_DEFAULT,
+            'dimensions' => Product::TYPE_DIMENSIONS,
+        ]);
     }
 
     private function getProduct(): Product
@@ -140,7 +158,8 @@ class Edit extends BackendBaseActionEdit
             new UpdateProduct($product),
             [
                 'categories' => $this->get('catalog.repository.category')->getTree(Locale::workingLocale()),
-                'product'    => $product
+                'product' => $product,
+                'validation_groups' => $this->get('catalog.form.product_validation_resolver'),
             ]
         );
 

@@ -4,6 +4,6 @@
 .order-total tr td:last-child{text-align:right;width:120px;}
 .order-total tr td:first-child{font-weight:bold;}
 
-.table .total, .table .price{text-align:right;width:120px;}
-.table .amount{width:50px;}
-.table .article_number{width:200px;}
+.table .total, .table .price{text-align:right;width:120px;vertical-align: top;}
+.table .amount{width:50px;vertical-align: top;}
+.table .article_number{width:200px;vertical-align: top;}

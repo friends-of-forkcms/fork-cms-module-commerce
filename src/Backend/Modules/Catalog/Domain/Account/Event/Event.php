@@ -1,22 +1,22 @@
 <?php
 
-namespace Backend\Modules\Catalog\Domain\Brand\Event;
+namespace Backend\Modules\Catalog\Domain\Account\Event;
 
-use Backend\Modules\Catalog\Domain\Brand\Brand;
+use Backend\Modules\Catalog\Domain\Account\Account;
 use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Brand */
-    private $brand;
+    /** @var Account */
+    private $account;
 
-    public function __construct(Brand $brand)
+    public function __construct(Account $account)
     {
-        $this->brand = $brand;
+        $this->account = $account;
     }
 
-    public function getBrand(): Brand
+    public function getAccount(): Account
     {
-        return $this->brand;
+        return $this->account;
     }
 }

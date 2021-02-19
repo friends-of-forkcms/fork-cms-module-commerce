@@ -20,10 +20,6 @@ final class CreateProductHandler
     public function handle(CreateProduct $createProduct): void
     {
         $createProduct->extraId = $this->getNewExtraId();
-        $createProduct->sequence = $this->productRepository->getNextSequence(
-            $createProduct->locale,
-            $createProduct->category
-        );
 
         /**
          * @var Product $product
@@ -31,6 +27,16 @@ final class CreateProductHandler
          * create our product
          */
         $product = Product::fromDataTransferObject($createProduct);
+
+        // save the dimensions
+        foreach ($createProduct->dimensions as $dimension) {
+            $dimension->setProduct($product);
+        }
+
+        // save the dimension notifications
+        foreach ($createProduct->dimension_notifications as $dimension_notification) {
+            $dimension_notification->setProduct($product);
+        }
 
         // set the new product entity
         foreach ($createProduct->specification_values as $specification_value) {

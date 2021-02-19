@@ -78,3 +78,47 @@ gulp build
 Now you should be able to run this module.
 
 At the moment we are working on the backend, frontend is slowly to be finished.
+
+## Start selling
+
+After setting up Mollie or Buckaroo you are able to sell your products!
+
+But to increase sales and SEO we added some tools.
+
+### 1. Sitemap generator
+Install the sitemap generator build bij jeroondesloovere: https://github.com/friends-of-forkcms/fork-cms-module-sitemaps
+
+When you create a Cronjob you should be able to generate a sitemap each day.
+
+### 2. Google Shopping Feed
+When you assign Google Shopping Categories to your categories you would be able to display products in Google Shopping.
+
+Setup is really easy:
+1. Assign the right categories
+2. Create a cronjob which generates the feed daily, the cronjob command is: `pbin/console catalog:generate-merchant-feed`
+3. Add the feed to your Google Mechant Center
+4. Start selling products
+
+This feeds also works for Bing!
+
+## Start selling
+
+After setting up Mollie or Buckaroo you are able to sell your products!
+
+But to increase sales and SEO we added some tools.
+
+### 1. Sitemap generator
+Install the sitemap generator build bij jeroondesloovere: https://github.com/friends-of-forkcms/fork-cms-module-sitemaps
+
+When you create a Cronjob you should be able to generate a sitemap each day.
+
+### 2. Google Shopping Feed
+When you assign Google Shopping Categories to your categories you would be able to display products in Google Shopping.
+
+Setup is really easy:
+1. Assign the right categories
+2. Create a cronjob which generates the feed daily, the cronjob command is: `pbin/console catalog:generate-merchant-feed`
+3. Add the feed to your Google Mechant Center
+4. Start selling products
+
+This feeds also works for Bing!

@@ -1,0 +1,6 @@
+#dimensionsTable th{min-width:120px;}
+#dimensionsTable thead th:last-child{text-align:center;}
+#dimensionsTable tbody th{border-right:1px solid #e5e5e5;}
+#dimensionsTable tbody tr:last-child > * {text-align: center}
+#dimensionsTable tbody tr > td:last-child {text-align: center;}
+#dimensionsTable tbody tr:last-child > th {border-top:1px solid #e5e5e5;}

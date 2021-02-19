@@ -2,8 +2,11 @@
 
 namespace Backend\Modules\Catalog\Domain\Order;
 
+use Backend\Modules\Catalog\Domain\Account\Account;
+use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderRule\OrderRule;
 use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -18,6 +21,16 @@ class OrderDataTransferObject
      * @var int
      */
     public $id;
+
+    /**
+     * @var Account
+     */
+    public $account;
+
+    /**
+     * @var Cart
+     */
+    public $cart;
 
     /**
      * @var string
@@ -77,6 +90,11 @@ class OrderDataTransferObject
     /**
      * @var ArrayCollection
      */
+    public $rules;
+
+    /**
+     * @var ArrayCollection
+     */
     public $products;
 
     /**
@@ -87,12 +105,14 @@ class OrderDataTransferObject
     /**
      * OrderDataTransferObject constructor.
      *
-     * @param Order|null $order @
+     * @param Order|null $order
+     * @throws \Exception
      */
     public function __construct(Order $order = null)
     {
         $this->orderEntity = $order;
         $this->date = new \DateTime();
+        $this->rules = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->vats = new ArrayCollection();
 
@@ -101,6 +121,8 @@ class OrderDataTransferObject
         }
 
         $this->id = $order->getId();
+        $this->account = $order->getAccount();
+        $this->cart = $order->getCart();
         $this->paymentMethod = $order->getPaymentMethod();
         $this->shipment_method = $order->getShipmentMethod();
         $this->shipment_price = $order->getShipmentPrice();
@@ -112,8 +134,30 @@ class OrderDataTransferObject
         $this->invoiceDate = $order->getInvoiceDate();
         $this->invoiceAddress = $order->getInvoiceAddress();
         $this->shipmentAddress = $order->getShipmentAddress();
+        $this->rules = $order->getRules();
         $this->products = $order->getProducts();
         $this->vats = $order->getVats();
+    }
+
+    public function setOrderEntity(Order $orderEntity): void
+    {
+        $this->orderEntity = $orderEntity;
+    }
+
+    /**
+     * @param OrderRule $orderRule
+     */
+    public function addRule(OrderRule $orderRule): void
+    {
+        $this->rules->add($orderRule);
+    }
+
+    /**
+     * @param OrderRule $orderRule
+     */
+    public function removeRule(OrderRule $orderRule): void
+    {
+        $this->rules->removeElement($orderRule);
     }
 
     /**

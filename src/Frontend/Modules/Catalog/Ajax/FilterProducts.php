@@ -63,8 +63,8 @@ class FilterProducts extends FrontendBaseAJAXAction
                         $productOffset,
                         $sortOrder
                     );
-                    
-                    $pagination->setItemCount($category->getProducts()->count());
+
+                    $pagination->setItemCount($category->getActiveProducts()->count());
                 }
             } catch (CategoryNotFound $e) {
                 $this->output(Response::HTTP_NOT_FOUND);

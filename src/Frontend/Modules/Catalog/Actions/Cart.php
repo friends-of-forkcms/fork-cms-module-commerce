@@ -4,26 +4,26 @@ namespace Frontend\Modules\Catalog\Actions;
 
 use Backend\Modules\Catalog\Domain\Cart\CartRepository;
 use Backend\Modules\Catalog\Domain\Cart\Command\DeleteCart;
-use Backend\Modules\Catalog\Domain\Order\Command\CreateOrder;
-use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
-use Backend\Modules\Catalog\Domain\Order\Order;
-use Backend\Modules\Catalog\Domain\Order\OrderRepository;
-use Backend\Modules\Catalog\Domain\OrderProduct\Command\CreateOrderProduct;
-use Backend\Modules\Catalog\Domain\OrderVat\Command\CreateOrderVat;
-use Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethodRepository;
 use Backend\Modules\Catalog\Domain\Quote\Event\QuoteCreated;
 use Backend\Modules\Catalog\Domain\Quote\QuoteDataTransferObject;
 use Backend\Modules\Catalog\Domain\Quote\QuoteType;
-use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\ConfirmOrder;
-use Backend\Modules\Catalog\PaymentMethods\Base\Checkout\Quote;
+use Frontend\Modules\Catalog\CheckoutProgress;
+use Frontend\Modules\Catalog\CheckoutStep\Account as AccountStep;
+use Frontend\Modules\Catalog\CheckoutStep\Addresses as AddressesStep;
+use Frontend\Modules\Catalog\CheckoutStep\ChangeStepException;
+use Frontend\Modules\Catalog\CheckoutStep\ConfirmOrder as ConfirmOrderStep;
+use Frontend\Modules\Catalog\CheckoutStep\ShipmentMethod as ShipmentMethodStep;
+use Frontend\Modules\Catalog\CheckoutStep\PaymentMethod as PaymentMethodStep;
+use Frontend\Modules\Catalog\CheckoutStep\PayOrder as PayOrderStep;
+use Frontend\Modules\Catalog\CheckoutStep\Login as LoginStep;
+use Frontend\Modules\Catalog\CheckoutStep\OrderPlaced as OrderPlacedStep;
 use Common\Exception\ExitException;
 use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
-use Frontend\Core\Engine\Model;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
-use Frontend\Core\Language\Locale;
+use Frontend\Modules\Profiles\Engine\Authentication;
 
 /**
  * This is the cart-action, it will display the cart
@@ -53,7 +53,7 @@ class Cart extends FrontendBaseBlock
         $parameters = $this->url->getParameters(false);
         $parameterCount = count($parameters);
 
-        if($parameterCount == 0) {
+        if ($parameterCount == 0) {
             $this->overview();
         } elseif ($parameterCount == 1) {
             if ($this->cart && $this->cart->getValues()->count() > 0) {
@@ -66,26 +66,6 @@ class Cart extends FrontendBaseBlock
                     case Language::lbl('RequestQuoteUrl'):
                         $this->requestQuote();
                         break;
-                    case Language::lbl('PaymentSuccessUrl'):
-                        $this->isAllowedToCheckout();
-
-                        $this->paymentSuccess();
-                        break;
-                    case Language::lbl('PaymentCancelledUrl'):
-                        $this->isAllowedToCheckout();
-
-                        $this->paymentCancelled();
-                        break;
-                    case 'store-order':
-                        $this->isAllowedToCheckout();
-
-                        $this->storeOrder();
-                        break;
-                    case 'post-payment':
-                        $this->isAllowedToCheckout();
-
-                        $this->postPayment();
-                        break;
                     default:
                         $this->redirect(Navigation::getUrl(404));
                         break;
@@ -94,6 +74,13 @@ class Cart extends FrontendBaseBlock
                 throw new ExitException('', $this->runWebhook());
             } else {
                 $this->redirect(Navigation::getUrl(404));
+            }
+        } elseif ($parameterCount == 2) {
+            switch ($this->url->getParameter(0)) {
+                case Language::lbl('Checkout'):
+                    $this->isAllowedToCheckout();
+                    $this->checkout();
+                    break;
             }
         } else {
             $this->redirect(Navigation::getUrl(404));
@@ -117,6 +104,8 @@ class Cart extends FrontendBaseBlock
     /**
      * Display the checkout page
      *
+     * @throws RedirectException
+     *
      * @return void
      */
     private function checkout(): void
@@ -125,21 +114,69 @@ class Cart extends FrontendBaseBlock
 
         $this->addJS('Checkout.js');
         $this->addJS('EnhancedEcommerce.js');
-
         $this->header->setPageTitle(ucfirst(Language::lbl('Checkout')));
 
         $this->breadcrumb->addElement(
             ucfirst(Language::lbl('Checkout')),
-            Navigation::getUrlForBlock('Catalog', 'Cart') .'/'. Language::lbl('Checkout')
+            Navigation::getUrlForBlock('Catalog', 'Cart') . '/' . Language::lbl('Checkout')
         );
+
+        $baseUrl = Navigation::getUrlForBlock('Catalog', 'Cart');
+
+        $checkoutProgress = new CheckoutProgress();
+
+        if (!Authentication::isLoggedIn()) {
+            $checkoutProgress->addStep(new LoginStep())
+                ->addStep(new AccountStep());
+        } else {
+            $checkoutProgress->addStep(new AddressesStep());
+        }
+
+        $checkoutProgress->addStep(new ShipmentMethodStep())
+            ->addStep(new PaymentMethodStep())
+            ->addStep(new ConfirmOrderStep())
+            ->addStep(new PayOrderStep())
+            ->addStep(new OrderPlacedStep());
+
+        $urlParameters = $this->url->getParameters(false);
+        $requestedUrl = $baseUrl . '/'. implode('/', $urlParameters);
+
+        // Load the first step
+        if (count($urlParameters) == 1) {
+            $requestedUrl = $checkoutProgress->getFirstStep()->getUrl();
+        }
+
+        $currentStep = $checkoutProgress->getStepByUrl($requestedUrl);
+
+        if ($currentStep === false) {
+            $this->redirect($baseUrl);
+        }
+
+        if (!$currentStep->isReachable()) {
+            $this->redirect($currentStep->getPreviousStep()->getUrl());
+        }
+
+        $checkoutProgress->setCurrentStep($currentStep);
+
+        try {
+            $currentStep->execute();
+            foreach ($currentStep->getJsFiles() as $file) {
+                $this->addJS('Checkout/' . $file);
+            }
+        } catch (ChangeStepException $exception) {
+            $url = $exception->getStep()->getUrl();
+            $this->redirect($url);
+        }
+
+        $this->template->assign('steps', $checkoutProgress->getSteps());
+        $this->template->assign('currentStep', $currentStep);
     }
 
     /**
      * Display the request quote page
      *
-     * @throws RedirectException
-     *
      * @return void
+     * @throws RedirectException
      */
     private function requestQuote(): void
     {
@@ -155,10 +192,10 @@ class Cart extends FrontendBaseBlock
         $form->handleRequest($this->getRequest());
 
         // Check if there are any errors in our submit
-        if(!$form->isSubmitted() || !$form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->breadcrumb->addElement(
                 ucfirst(Language::lbl('RequestQuote')),
-                Navigation::getUrlForBlock('Catalog', 'Cart') .'/'. Language::lbl('RequestQuoteUrl')
+                Navigation::getUrlForBlock('Catalog', 'Cart') . '/' . Language::lbl('RequestQuoteUrl')
             );
 
             if ($this->getRequest()->get('submitted')) {
@@ -186,177 +223,16 @@ class Cart extends FrontendBaseBlock
         );
 
         $this->redirect(
-            Navigation::getUrlForBlock('Catalog', 'Cart') .'/'. Language::lbl('RequestQuoteUrl') .'?submitted=1'
+            Navigation::getUrlForBlock('Catalog', 'Cart') . '/' . Language::lbl('RequestQuoteUrl') . '?submitted=1'
         );
-    }
-
-    /**
-     * Display the success page
-     *
-     * @return void
-     */
-    private function paymentSuccess(): void
-    {
-        // Clear our session
-        $session = Model::get('session');
-        $session->remove('checkout_type');
-        $session->remove('guest_address');
-        $session->remove('guest_shipment_address');
-        $session->remove('payment_method');
-        $session->remove('shipment_method');
-
-        $deleteCart = new DeleteCart($this->cart);
-        $this->get('command_bus')->handle($deleteCart);
-
-        $this->loadTemplate('Catalog/Layout/Templates/PaymentSuccess.html.twig');
-
-        $this->header->setPageTitle(ucfirst(Language::lbl('ThankYouForYourOrder')));
-
-        $this->breadcrumb->addElement(
-            ucfirst(Language::lbl('Checkout')),
-            Navigation::getUrlForBlock('Catalog', 'Cart') .'/'. Language::lbl('Checkout')
-        );
-    }
-
-    /**
-     * Display the error page
-     *
-     * @return void
-     */
-    private function paymentCancelled(): void
-    {
-        $this->loadTemplate('Catalog/Layout/Templates/PaymentCancelled.html.twig');
-
-        $this->header->setPageTitle(ucfirst(Language::lbl('OrderCancelled')));
-
-        $this->breadcrumb->addElement(
-            ucfirst(Language::lbl('Checkout')),
-            Navigation::getUrlForBlock('Catalog', 'Cart') .'/'. Language::lbl('Checkout')
-        );
-    }
-
-    /**
-     * Store our order and handle our payment method
-     *
-     * @throws \Exception
-     *
-     * @return void
-     */
-    private function storeOrder(): void
-    {
-        $session = Model::getSession();
-
-        // Save the addresses
-        $createAddress = $session->get('guest_address')->toCommand();
-        $createShipmentAddress = $session->get('guest_shipment_address')->toCommand();
-
-        $this->get('command_bus')->handle($createAddress);
-        $this->get('command_bus')->handle($createShipmentAddress);
-
-        $shipmentMethod = $session->get('shipment_method');
-        $paymentMethod = $session->get('payment_method');
-
-        // Recalculate order
-        $this->cart->calculateTotals();
-
-        // Some variables we need later
-        $cartTotal = $this->cart->getTotal();
-        $vats = $this->cart->getVats();
-
-        // Add shipment method to order
-        if ($shipmentMethod['data']['vat']) {
-            $cartTotal += $shipmentMethod['data']['price'];
-            $cartTotal += $shipmentMethod['data']['vat']['price'];
-
-            if (!array_key_exists($shipmentMethod['data']['vat']['id'], $vats)) {
-                $vat = $this->getVat($shipmentMethod['data']['vat']['id']);
-                $vats[$vat->getId()] = [
-                    'title' => $vat->getTitle(),
-                    'total' => 0,
-                ];
-            }
-
-            $vats[$shipmentMethod['data']['vat']['id']]['total'] += $shipmentMethod['data']['vat']['price'];
-        }
-
-        // Order
-        $createOrder = new CreateOrder();
-        $createOrder->sub_total = $this->cart->getSubTotal();
-        $createOrder->total = $cartTotal;
-        $createOrder->paymentMethod = $this->getPaymentMethods()[$paymentMethod->payment_method]['label'];
-        $createOrder->invoiceAddress = $createAddress->getOrderAddressEntity();
-        $createOrder->shipmentAddress = $createShipmentAddress->getOrderAddressEntity();
-        $createOrder->shipment_method = $shipmentMethod['data']['name'];
-        $createOrder->shipment_price = $shipmentMethod['data']['price'];
-
-        $this->get('command_bus')->handle($createOrder);
-
-        // Vats
-        foreach ($vats as $vat) {
-            $createOrderVat = new CreateOrderVat();
-            $createOrderVat->title = $vat['title'];
-            $createOrderVat->total = $vat['total'];
-            $createOrderVat->order = $createOrder->getOrderEntity();
-
-            $this->get('command_bus')->handle($createOrderVat);
-
-            $createOrder->addVat($createOrderVat->getOrderVatEntity());
-        }
-
-        // Products
-        foreach ($this->cart->getValues() as $product) {
-            $createOrderProduct = new CreateOrderProduct();
-            $createOrderProduct->sku = $product->getProduct()->getSku();
-            $createOrderProduct->title = $product->getProduct()->getTitle();
-            $createOrderProduct->price = $product->getProduct()->getPrice();
-            $createOrderProduct->amount = $product->getQuantity();
-            $createOrderProduct->total = $product->getTotal();
-            $createOrderProduct->order = $createOrder->getOrderEntity();
-
-            $this->get('command_bus')->handle($createOrderProduct);
-
-            $createOrder->addProduct($createOrderProduct->getOrderProductEntity());
-        }
-
-        // Start the payment
-        $paymentMethod = $this->getPaymentMethod($session->get('payment_method')->payment_method);
-        $paymentMethod->setOrder($createOrder->getOrderEntity());
-        $paymentMethod->setData($session->get('payment_method'));
-        $paymentMethod->prePayment();
-    }
-
-    /**
-     * Return from payment provider
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     *
-     * @return void
-     */
-    private function postPayment(): void
-    {
-        $session = Model::getSession();
-
-        try {
-            /** @var Order $order */
-            $order = $this->getOrderRepository()->findOneById($this->getRequest()->get('order_id'));
-        } catch (OrderNotFound $e) {
-            $this->redirect(Navigation::getUrl(404));
-        }
-
-        // Start the payment
-        $paymentMethod = $this->getPaymentMethod($session->get('payment_method')->payment_method);
-        $paymentMethod->setOrder($order);
-        $paymentMethod->setData($session->get('payment_method'));
-        $paymentMethod->postPayment();
     }
 
     /**
      * Handle the webhook which is called by the payment provider.
      *
+     * @return string
      * @throws \Exception
      *
-     * @return string
      */
     private function runWebhook(): string
     {
@@ -365,16 +241,6 @@ class Cart extends FrontendBaseBlock
         $paymentMethod->setRequest($this->getRequest());
 
         return $paymentMethod->runWebhook();
-    }
-
-    /**
-     * Get the order repository
-     *
-     * @return OrderRepository
-     */
-    private function getOrderRepository(): OrderRepository
-    {
-        return $this->get('catalog.repository.order');
     }
 
     /**
@@ -388,27 +254,13 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Get a vat by its id
-     *
-     * @param int $id
-     *
-     * @return Vat
-     */
-    private function getVat(int $id): Vat
-    {
-        $vatRepository = $this->get('catalog.repository.vat');
-
-        return $vatRepository->findOneByIdAndLocale($id, Locale::frontendLanguage());
-    }
-
-    /**
      * Get the payment method handler
      *
      * @param string $paymentMethod
      *
+     * @return ConfirmOrder
      * @throws \Exception
      *
-     * @return ConfirmOrder
      */
     private function getPaymentMethod(string $paymentMethod): ConfirmOrder
     {
@@ -433,43 +285,13 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Get the payment methods to populate our form
-     *
-     * @return array
-     */
-    private function getPaymentMethods(): array
-    {
-        /**
-         * @var PaymentMethodRepository $paymentMethodRepository
-         */
-        $paymentMethodRepository = $this->get('catalog.repository.payment_method');
-        $availablePaymentMethods = $paymentMethodRepository->findInstalledPaymentMethods(Locale::frontendLanguage());
-        $session = Model::getSession();
-
-        $paymentMethods = [];
-        foreach ($availablePaymentMethods as $paymentMethod) {
-            $className = "\\Backend\\Modules\\Catalog\\PaymentMethods\\{$paymentMethod}\\Checkout\\Quote";
-
-            /**
-             * @var Quote $class
-             */
-            $class = new $className($paymentMethod, $this->cart, $session->get('guest_address'));
-            foreach ($class->getQuote() as $key => $options) {
-                $paymentMethods[$paymentMethod.'.'. $key] = $options;
-            }
-        }
-
-        return $paymentMethods;
-    }
-
-    /**
      * Check if it is allowed to checkout
      *
      * @throws RedirectException
      */
     private function isAllowedToCheckout(): void
     {
-        if (!$this->cart->isProductsInStock()) {
+        if (!$this->cart || !$this->cart->isProductsInStock()) {
             $this->redirect(Navigation::getUrlForBlock('Catalog', 'Cart'));
         }
     }

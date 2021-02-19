@@ -3,7 +3,6 @@
 namespace Backend\Modules\Catalog\Domain\Vat;
 
 use Backend\Modules\Catalog\Domain\Vat\Exception\VatNotFound;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 

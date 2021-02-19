@@ -19,8 +19,7 @@ class DataGrid extends DataGridDatabase
             'SELECT c.id, c.title, c.percentage, c.sequence
 					 FROM catalog_vats AS c
 					 WHERE c.language = :language
-					 GROUP BY c.id
-					 ORDER BY c.sequence ASC',
+					 GROUP BY c.id',
             ['language' => $locale]
         );
 

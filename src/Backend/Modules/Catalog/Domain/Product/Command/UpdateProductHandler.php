@@ -19,10 +19,29 @@ final class UpdateProductHandler
     public function handle(UpdateProduct $updateProduct): void
     {
         $product = Product::fromDataTransferObject($updateProduct);
+        $entityManager = Model::get('doctrine.orm.entity_manager');
 
         // remove the specification values
         foreach ($updateProduct->remove_specification_values as $specification_value) {
             $product->removeSpecificationValue($specification_value);
+        }
+
+        // save the dimensions
+        foreach ($updateProduct->dimensions as $dimension) {
+            $dimension->setProduct($product);
+        }
+
+        foreach ($updateProduct->remove_dimensions as $dimension) {
+            $entityManager->remove($dimension);
+        }
+
+        // save the dimension notifications
+        foreach ($updateProduct->dimension_notifications as $dimension_notification) {
+            $dimension_notification->setProduct($product);
+        }
+
+        foreach ($updateProduct->remove_dimension_notifications as $dimension_notification) {
+            $entityManager->remove($dimension_notification);
         }
 
         // set the new product entity
@@ -35,7 +54,6 @@ final class UpdateProductHandler
         }
 
         // remove specials
-        $entityManager = Model::get('doctrine.orm.entity_manager');
         foreach ($updateProduct->remove_specials as $special) {
             $entityManager->remove($special);
         }

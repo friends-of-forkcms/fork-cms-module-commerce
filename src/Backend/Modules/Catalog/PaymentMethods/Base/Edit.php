@@ -62,10 +62,10 @@ abstract class Edit
      */
     public function __construct()
     {
-        $this->locale                  = Locale::workingLocale();
-        $this->settings                = Model::get('fork.settings');
+        $this->locale = Locale::workingLocale();
+        $this->settings = Model::get('fork.settings');
         $this->paymentMethodRepository = Model::get('catalog.repository.payment_method');
-        $this->entityManager           = Model::get('doctrine.orm.entity_manager');
+        $this->entityManager = Model::get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -236,8 +236,8 @@ abstract class Edit
                 continue;
             }
 
-            $key                             = $this->getBaseKey($includeLanguage) . '_' . $property;
-            $value                           = $this->settings->get('Catalog', $key, $defaultValue);
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
+            $value = $this->settings->get('Catalog', $key, $defaultValue);
             $dataTransferObject->{$property} = $value;
         }
 
@@ -272,7 +272,7 @@ abstract class Edit
                 continue;
             }
 
-            $key   = $this->getBaseKey($includeLanguage) . '_' . $property;
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
             $value = $dataTransferObject->{$property};
 
             $this->settings->set('Catalog', $key, $value);

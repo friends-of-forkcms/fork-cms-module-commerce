@@ -8,15 +8,19 @@ use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Cart\CartValueOption;
+use Backend\Modules\Catalog\Domain\CartRule\CartRule;
 use Backend\Modules\Catalog\Domain\Category\Category;
+use Backend\Modules\Catalog\Domain\Country\Country;
 use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory;
 use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
 use Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Catalog\Domain\Product\Product;
+use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
@@ -24,6 +28,7 @@ use Backend\Modules\Catalog\Domain\ShipmentMethod\ShipmentMethod;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
+use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Common\ModuleExtraType;
 
@@ -60,6 +65,7 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'Add');
         $this->setActionRights(1, 'Catalog', 'Edit');
         $this->setActionRights(1, 'Catalog', 'Delete');
+        $this->setActionRights(1, 'Catalog', 'Copy');
         $this->setActionRights(1, 'Catalog', 'SequenceProducts');
         $this->setActionRights(1, 'Catalog', 'AutoCompleteProducts');
 
@@ -144,13 +150,30 @@ class Installer extends ModuleInstaller
         $this->setActionRights(1, 'Catalog', 'EditProductOptionValue');
         $this->setActionRights(1, 'Catalog', 'DeleteProductOptionValue');
         $this->setActionRights(1, 'Catalog', 'SequenceProductOptionValues');
+        $this->setActionRights(1, 'Catalog', 'AutoCompleteProductOptionValue');
+
+        // product option values methods
+        $this->setActionRights(1, 'Catalog', 'CartRules');
+        $this->setActionRights(1, 'Catalog', 'AddCartRule');
+        $this->setActionRights(1, 'Catalog', 'EditCartRule');
+        $this->setActionRights(1, 'Catalog', 'DeleteCartRule');
+
+        // countries
+        $this->setActionRights(1, 'Catalog', 'Countries');
+        $this->setActionRights(1, 'Catalog', 'AddCountry');
+        $this->setActionRights(1, 'Catalog', 'EditCountry');
+        $this->setActionRights(1, 'Catalog', 'DeleteCountry');
 
         // add extra's
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Index');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Cart');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Brand', 'Brand');
         $this->insertExtra('Catalog', ModuleExtraType::block(), 'Cart', 'Cart');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Cart', 'Search');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Search', 'Search');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Register', 'Register');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'CustomerOrders', 'CustomerOrders');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'CustomerAddresses', 'CustomerAddresses');
+        $this->insertExtra('Catalog', ModuleExtraType::block(), 'GuestOrderTracking', 'GuestOrderTracking');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Search', 'Search');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'GoogleSiteSearch', 'GoogleSiteSearch');
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Categories', 'Categories');
@@ -159,8 +182,7 @@ class Installer extends ModuleInstaller
         $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Brands', 'Brands');
 
         // set navigation
-        $navigationModulesId = $this->setNavigation(null, 'Modules');
-        $navigationCatalogId = $this->setNavigation($navigationModulesId, 'Catalog');
+        $navigationCatalogId = $this->setNavigation(0, 'Catalog');
         $this->setNavigation(
             $navigationCatalogId,
             'Products',
@@ -194,7 +216,7 @@ class Installer extends ModuleInstaller
             ]
         );
         $this->setNavigation(
-            $navigationCatalogId,
+            0,
             'Orders',
             'catalog/orders',
             [
@@ -253,6 +275,24 @@ class Installer extends ModuleInstaller
                 'catalog/edit_payment_method',
             ]
         );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Discounts',
+            'catalog/cart_rules',
+            [
+                'catalog/add_cart_rule',
+                'catalog/edit_cart_rule',
+            ]
+        );
+        $this->setNavigation(
+            $navigationCatalogId,
+            'Countries',
+            'catalog/countries',
+            [
+                'catalog/add_country',
+                'catalog/edit_country',
+            ]
+        );
 
         // settings navigation
         $navigationSettingsId = $this->setNavigation(null, 'Settings');
@@ -271,9 +311,13 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(ProductOption::class);
         Model::get('fork.entity.create_schema')->forEntityClass(ProductOptionValue::class);
         Model::get('fork.entity.create_schema')->forEntityClass(ProductSpecial::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(ProductDimension::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(UpSellProduct::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(Country::class);
         Model::get('fork.entity.create_schema')->forEntityClass(OrderAddress::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Order::class);
         Model::get('fork.entity.create_schema')->forEntityClass(OrderProduct::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(OrderProductOption::class);
         Model::get('fork.entity.create_schema')->forEntityClass(OrderVat::class);
         Model::get('fork.entity.create_schema')->forEntityClass(OrderHistory::class);
         Model::get('fork.entity.create_schema')->forEntityClass(Specification::class);
@@ -281,6 +325,7 @@ class Installer extends ModuleInstaller
         Model::get('fork.entity.create_schema')->forEntityClass(Cart::class);
         Model::get('fork.entity.create_schema')->forEntityClass(CartValue::class);
         Model::get('fork.entity.create_schema')->forEntityClass(CartValueOption::class);
+        Model::get('fork.entity.create_schema')->forEntityClass(CartRule::class);
         Model::get('fork.entity.create_schema')->forEntityClass(ShipmentMethod::class);
         Model::get('fork.entity.create_schema')->forEntityClass(PaymentMethod::class);
     }

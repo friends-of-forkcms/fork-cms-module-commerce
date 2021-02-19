@@ -23,8 +23,8 @@ class Quote extends BaseQuote
 
         return [
             $this->name => [
-                'label' =>  $name,
-                'name' => $this->getSetting('name'),
+                'label' =>  $this->getSetting('name'),
+                'name' => $name,
                 'price' => (float) $this->getSetting('price'),
             ]
         ];

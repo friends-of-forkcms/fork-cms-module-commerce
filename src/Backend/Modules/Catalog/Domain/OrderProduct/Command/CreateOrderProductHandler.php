@@ -18,6 +18,16 @@ final class CreateOrderProductHandler
     public function handle(CreateOrderProduct $createOrderProduct): void
     {
         $orderProduct = OrderProduct::fromDataTransferObject($createOrderProduct);
+
+        // set the new product entity
+        foreach ($createOrderProduct->productOptions as $productOption) {
+            $productOption->setOrderProduct($orderProduct);
+        }
+
+        foreach ($createOrderProduct->productNotifications as $productNotification) {
+            $productNotification->setOrderProduct($orderProduct);
+        }
+
         $this->orderProductRepository->add($orderProduct);
 
         $createOrderProduct->setOrderProductEntity($orderProduct);

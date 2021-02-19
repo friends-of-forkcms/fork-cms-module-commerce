@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\ShipmentMethods\Base\Checkout;
 
 use Backend\Modules\Catalog\Domain\Account\AddressDataTransferObject;
 use Backend\Modules\Catalog\Domain\Cart\Cart;
+use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Catalog\Domain\Vat\VatRepository;
 use Common\Core\Model;
 use Common\ModulesSettings;
@@ -22,7 +23,7 @@ abstract class Quote {
     protected $cart;
 
     /**
-     * @var AddressDataTransferObject
+     * @var OrderAddress
      */
     protected $address;
 
@@ -41,9 +42,9 @@ abstract class Quote {
      *
      * @param string $name
      * @param Cart $cart
-     * @param AddressDataTransferObject $address
+     * @param OrderAddress $address
      */
-    public function __construct(string $name, Cart $cart, AddressDataTransferObject $address)
+    public function __construct(string $name, Cart $cart, OrderAddress $address)
     {
         $this->name = $name;
         $this->cart = $cart;
