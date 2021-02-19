@@ -6,8 +6,6 @@
       {{ form_widget(form.shipment_method) }}
       {{ form_errors(form.shipment_method) }}
     </div>
-    <div class="text-right">
-      <button type="submit" class="btn btn-primary" id="submit-step-four">{{ 'lbl.Continue'|trans|ucfirst }}</button>
-    </div>
   </div>
+  {% include 'Catalog/Layout/Templates/Checkout/Step/_partials/StepFooter.html.twig' with {checkoutStep: 'shipmentMethod', checkoutStepValueSelector : '.radio input:checked + label'} %}
 {{ form_end(form) }}

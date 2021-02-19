@@ -1,0 +1,9 @@
+<p class="mb-1">
+  {% if address.companyName %}
+    {{ address.companyName }} <br/>
+  {% endif %}
+  {{ address.fullName }}<br/>
+  {{ address.street }} {{ address.houseNumber }}{{ address.houseNumberAddition }}<br/>
+  {{ address.zipCode }} {{ address.city }}<br />
+  {{ address.country.name }}
+</p>
