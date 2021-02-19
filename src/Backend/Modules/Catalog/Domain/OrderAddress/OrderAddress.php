@@ -2,16 +2,22 @@
 
 namespace Backend\Modules\Catalog\Domain\OrderAddress;
 
-use Backend\Modules\Catalog\Domain\Product\Product;
+use Backend\Modules\Catalog\Domain\Account\Account;
+use Backend\Modules\Catalog\Domain\Country\Country;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Table(name="catalog_order_addresses")
  * @ORM\Entity(repositoryClass="OrderAddressRepository")
  * @ORM\HasLifecycleCallbacks
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
  */
 class OrderAddress
 {
+    use SoftDeleteableEntity;
+
     /**
      * @var int
      *
@@ -20,6 +26,29 @@ class OrderAddress
      * @ORM\Column(type="integer", name="id")
      */
     private $id;
+
+    /**
+     * @var Account
+     *
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Account\Account", inversedBy="addresses")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $account;
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Country\Country", inversedBy="addresses")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $country;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $company_name;
 
     /**
      * @var string
@@ -85,6 +114,9 @@ class OrderAddress
     private $zip_code;
 
     private function __construct(
+        ?Account $account,
+        ?Country $country,
+        ?string $company_name,
         ?string $first_name,
         ?string $last_name,
         ?string $email_address,
@@ -95,6 +127,9 @@ class OrderAddress
         ?string $city,
         ?string $zip_code
     ) {
+        $this->account = $account;
+        $this->country = $country;
+        $this->company_name = $company_name;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->email_address = $email_address;
@@ -106,36 +141,52 @@ class OrderAddress
         $this->zip_code = $zip_code;
     }
 
-    public static function fromDataTransferObject(OrderAddressDataTransferObject $dataTransferObject)
-    {
-        if ($dataTransferObject->hasExistingOrderAddress()) {
-            return self::update($dataTransferObject);
-        }
-
-        return self::create($dataTransferObject);
-    }
-
-    private static function create(OrderAddressDataTransferObject $dataTransferObject): self
-    {
-        return new self(
-            $dataTransferObject->first_name,
-            $dataTransferObject->last_name,
-            $dataTransferObject->email_address,
-            $dataTransferObject->phone,
-            $dataTransferObject->street,
-            $dataTransferObject->house_number,
-            $dataTransferObject->house_number_addition,
-            $dataTransferObject->city,
-            $dataTransferObject->zip_code
-        );
-    }
-
     /**
      * @return int
      */
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Account
+     */
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    /**
+     * @return Country
+     */
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param Account $account
+     */
+    public function setAccount(Account $account): void
+    {
+        $this->account = $account;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyName(): ?string
+    {
+        return $this->company_name;
+    }
+
+    /**
+     * @param string $company_name
+     */
+    public function setCompanyName(string $company_name): void
+    {
+        $this->company_name = $company_name;
     }
 
     /**
@@ -149,7 +200,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->last_name;
     }
@@ -173,7 +224,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getStreet(): string
+    public function getStreet(): ?string
     {
         return $this->street;
     }
@@ -181,7 +232,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getHouseNumber(): string
+    public function getHouseNumber(): ?string
     {
         return $this->house_number;
     }
@@ -197,7 +248,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -205,9 +256,54 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getZipCode(): string
+    public function getZipCode(): ?string
     {
         return $this->zip_code;
+    }
+
+    public static function fromDataTransferObject(OrderAddressDataTransferObject $dataTransferObject)
+    {
+        if ($dataTransferObject->hasExistingOrderAddress()) {
+            return self::update($dataTransferObject);
+        }
+
+        return self::create($dataTransferObject);
+    }
+
+    private static function create(OrderAddressDataTransferObject $dataTransferObject): self
+    {
+        return new self(
+            $dataTransferObject->account,
+            $dataTransferObject->country,
+            $dataTransferObject->company_name,
+            $dataTransferObject->first_name,
+            $dataTransferObject->last_name,
+            $dataTransferObject->email_address,
+            $dataTransferObject->phone,
+            $dataTransferObject->street,
+            $dataTransferObject->house_number,
+            $dataTransferObject->house_number_addition,
+            $dataTransferObject->city,
+            $dataTransferObject->zip_code
+        );
+    }
+
+    private static function update(OrderAddressDataTransferObject $dataTransferObject)
+    {
+        $orderAddress = $dataTransferObject->getOrderAddressEntity();
+        $orderAddress->country = $dataTransferObject->country;
+        $orderAddress->company_name = $dataTransferObject->company_name;
+        $orderAddress->first_name = $dataTransferObject->first_name;
+        $orderAddress->last_name = $dataTransferObject->last_name;
+        $orderAddress->email_address = $dataTransferObject->email_address;
+        $orderAddress->phone = $dataTransferObject->phone;
+        $orderAddress->street = $dataTransferObject->street;
+        $orderAddress->house_number = $dataTransferObject->house_number;
+        $orderAddress->house_number_addition = $dataTransferObject->house_number_addition;
+        $orderAddress->city = $dataTransferObject->city;
+        $orderAddress->zip_code = $dataTransferObject->zip_code;
+
+        return $orderAddress;
     }
 
     /**
@@ -216,13 +312,6 @@ class OrderAddress
     public function getFullName(): string
     {
         return $this->getFirstName() .' '. $this->getLastName();
-    }
-
-    private static function update(OrderAddressDataTransferObject $dataTransferObject)
-    {
-        $orderAddress = $dataTransferObject->getOrderAddressEntity();
-
-        return $orderAddress;
     }
 
     public function getDataTransferObject(): OrderAddressDataTransferObject

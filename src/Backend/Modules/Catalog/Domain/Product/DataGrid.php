@@ -17,7 +17,7 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(Locale $locale, ?Category $category, ?string $sku, int $offset = 0)
     {
-        $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
+        $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence, i.hidden, i.sequence as `sort_order`
 		          FROM catalog_products AS i
 		          WHERE i.language = :language';
 
@@ -26,7 +26,7 @@ class DataGrid extends DataGridDatabase
         ];
 
         if ($category) {
-            $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence
+            $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence, i.hidden, i.sequence as `sort_order`
 		              FROM catalog_products AS i
 		              WHERE i.language = :language AND i.category_id = :category';
 
@@ -37,8 +37,6 @@ class DataGrid extends DataGridDatabase
             $query .= ' AND i.`sku` LIKE :sku';
             $parameters['sku'] = '%' . $sku .'%';
         }
-
-        $query .= ' ORDER BY i.sequence ASC';
 
         parent::__construct($query, $parameters);
 
@@ -59,6 +57,7 @@ class DataGrid extends DataGridDatabase
             [
                 'category_id' => ucfirst(Language::lbl('Category')),
                 'sku' => ucfirst(Language::lbl('ArticleNumber')),
+                'sort_order' => ucfirst(Language::lbl('Sequence')),
             ]
         );
 

@@ -34,27 +34,6 @@ class OrderType extends AbstractType
                 },
                 'choice_label' => 'title'
             ]
-        )->add(
-            'message',
-            TextareaType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.Comment',
-            ]
-        )->add(
-            'notify',
-            CheckboxType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.NotifyCustomer',
-            ]
-        )->add(
-            'attach_invoice',
-            CheckboxType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.AttachInvoice',
-            ]
         );
     }
 

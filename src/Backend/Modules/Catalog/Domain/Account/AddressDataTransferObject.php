@@ -9,6 +9,11 @@ class AddressDataTransferObject
 {
     /**
      * @var string
+     */
+    public $company_name;
+
+    /**
+     * @var string
      *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
@@ -75,16 +80,17 @@ class AddressDataTransferObject
      */
     public function toCommand(): CreateOrderAddress
     {
-        $command                        = new CreateOrderAddress();
-        $command->first_name            = $this->first_name;
-        $command->last_name             = $this->last_name;
-        $command->email_address         = $this->email_address;
-        $command->phone                 = $this->phone;
-        $command->street                = $this->street;
-        $command->house_number          = $this->house_number;
+        $command = new CreateOrderAddress();
+        $command->company_name = $this->company_name;
+        $command->first_name = $this->first_name;
+        $command->last_name = $this->last_name;
+        $command->email_address = $this->email_address;
+        $command->phone = $this->phone;
+        $command->street = $this->street;
+        $command->house_number = $this->house_number;
         $command->house_number_addition = $this->house_number_addition;
-        $command->city                  = $this->city;
-        $command->zip_code              = $this->zip_code;
+        $command->city = $this->city;
+        $command->zip_code = $this->zip_code;
 
         return $command;
     }

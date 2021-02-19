@@ -3,6 +3,7 @@
 namespace Backend\Modules\Catalog\Domain\Cart;
 
 use Backend\Modules\Catalog\Domain\Product\Product;
+use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,7 +34,7 @@ class CartValue
     /**
      * @var CartValueOption[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\Cart\CartValueOption", mappedBy="cart_value", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\Cart\CartValueOption", mappedBy="cart_value", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $cart_value_options;
 
@@ -44,6 +45,42 @@ class CartValue
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $product;
+
+    /**
+     * @var ProductDimension
+     *
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension", inversedBy="cart_values")
+     * @ORM\JoinColumn(name="product_dimension_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     */
+    private $product_dimension;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $width = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $height = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $order_width = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $order_height = 0;
 
     /**
      * @var integer
@@ -65,6 +102,11 @@ class CartValue
      * @ORM\Column(type="datetime", name="date")
      */
     private $date;
+
+    /**
+     * @var float
+     */
+    private $price;
 
     /**
      * @var bool
@@ -111,7 +153,7 @@ class CartValue
     /**
      * @param CartValueOption[] $cart_value_options
      */
-    public function setCartValueOptions(array $cart_value_options): void
+    public function setCartValueOptions($cart_value_options): void
     {
         $this->cart_value_options = $cart_value_options;
     }
@@ -127,9 +169,21 @@ class CartValue
     }
 
     /**
+     * @param CartValueOption $cartValueOption
+     */
+    public function removeCartValueOption(CartValueOption $cartValueOption): void
+    {
+        if (!$this->cart_value_options->contains($cartValueOption)) {
+            return;
+        }
+
+        $this->cart_value_options->removeElement($cartValueOption);
+    }
+
+    /**
      * @return Product
      */
-    public function getProduct(): Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
@@ -140,6 +194,86 @@ class CartValue
     public function setProduct(Product $product)
     {
         $this->product = $product;
+    }
+
+    /**
+     * @return ProductDimension
+     */
+    public function getProductDimension(): ?ProductDimension
+    {
+        return $this->product_dimension;
+    }
+
+    /**
+     * @param ProductDimension $product_dimension
+     */
+    public function setProductDimension(ProductDimension $product_dimension): void
+    {
+        $this->product_dimension = $product_dimension;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWidth(): ?float
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param float $width
+     */
+    public function setWidth(float $width): void
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHeight(): ?float
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param float $height
+     */
+    public function setHeight(float $height): void
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOrderWidth(): ?float
+    {
+        return $this->order_width;
+    }
+
+    /**
+     * @param float $order_width
+     */
+    public function setOrderWidth(float $order_width): void
+    {
+        $this->order_width = $order_width;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOrderHeight(): ?float
+    {
+        return $this->order_height;
+    }
+
+    /**
+     * @param float $order_height
+     */
+    public function setOrderHeight(float $order_height): void
+    {
+        $this->order_height = $order_height;
     }
 
     /**
@@ -217,5 +351,47 @@ class CartValue
         }
 
         return $this->isInStock;
+    }
+
+    /**
+     * Get the price for the product
+     *
+     * @return float|null
+     */
+    public function getPrice(): float
+    {
+        if ($this->price) {
+            return $this->price;
+        }
+
+        if ($this->product->usesDimensions()) {
+            $this->price = $this->product_dimension->getPrice();
+        } else {
+            $this->price = $this->product->getActivePrice(false);
+        }
+
+        foreach ($this->getCartValueOptions() as $option) {
+            if ($option->isImpactTypeAdd()) {
+                $this->price += $option->getPrice();
+            } else {
+                $this->price -= $option->getPrice();
+            }
+        }
+
+        return $this->price;
+    }
+
+    /**
+     * Get the vat price of a single product in this row
+     *
+     * @return float
+     */
+    public function getVatPrice(): float
+    {
+        if ($this->product->usesDimensions()) {
+            return $this->product_dimension->getVatPrice();
+        }
+
+        return $this->product->getVatPrice();
     }
 }

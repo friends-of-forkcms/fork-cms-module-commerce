@@ -2,6 +2,8 @@
 
 namespace Backend\Modules\Catalog\Domain\OrderAddress;
 
+use Backend\Modules\Catalog\Domain\Account\Account;
+use Backend\Modules\Catalog\Domain\Country\Country;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderAddressDataTransferObject
@@ -17,12 +19,31 @@ class OrderAddressDataTransferObject
     public $id;
 
     /**
+     * @var Account
+     */
+    public $account;
+
+    /**
+     * @var Country
+     */
+    public $country;
+
+    /**
      * @var string
+     */
+    public $company_name;
+
+    /**
+     * @var string
+     *
+     * @ Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $first_name;
 
     /**
      * @var string
+     *
+     * @ Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $last_name;
 
@@ -38,11 +59,15 @@ class OrderAddressDataTransferObject
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $street;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $house_number;
 
@@ -53,11 +78,15 @@ class OrderAddressDataTransferObject
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $city;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public $zip_code;
 
@@ -65,20 +94,28 @@ class OrderAddressDataTransferObject
     {
         $this->orderAddressEntity = $orderAddress;
 
-        if ( ! $this->hasExistingOrderAddress()) {
+        if (!$this->hasExistingOrderAddress()) {
             return;
         }
 
-        $this->id                    = $orderAddress->getId();
-        $this->first_name            = $orderAddress->getFirstName();
-        $this->last_name             = $orderAddress->getLastName();
-        $this->email_address         = $orderAddress->getEmailAddress();
-        $this->phone                 = $orderAddress->getPhone();
-        $this->street                = $orderAddress->getStreet();
-        $this->house_number          = $orderAddress->getHouseNumber();
+        $this->id = $orderAddress->getId();
+        $this->account = $orderAddress->getAccount();
+        $this->country = $orderAddress->getCountry();
+        $this->company_name = $orderAddress->getCompanyName();
+        $this->first_name = $orderAddress->getFirstName();
+        $this->last_name = $orderAddress->getLastName();
+        $this->email_address = $orderAddress->getEmailAddress();
+        $this->phone = $orderAddress->getPhone();
+        $this->street = $orderAddress->getStreet();
+        $this->house_number = $orderAddress->getHouseNumber();
         $this->house_number_addition = $orderAddress->getHouseNumberAddition();
-        $this->city                  = $orderAddress->getCity();
-        $this->zip_code              = $orderAddress->getZipCode();
+        $this->city = $orderAddress->getCity();
+        $this->zip_code = $orderAddress->getZipCode();
+    }
+
+    public function setOrderAddressEntity(OrderAddress $orderAddressEntity): void
+    {
+        $this->orderAddressEntity = $orderAddressEntity;
     }
 
     public function getOrderAddressEntity(): OrderAddress

@@ -39,6 +39,31 @@ class CartValueRepository extends EntityRepository
 
         return $entity;
     }
+    /**
+     * Get a cart value by cart and cart value id
+     *
+     * @param Cart $cart
+     * @param int $cartValueId
+     *
+     * @return CartValue|null
+     */
+    public function getByCartAndId(Cart $cart, int $cartValueId): ?CartValue
+    {
+        $query_builder = $this->createQueryBuilder('i');
+
+        try {
+            $entity = $query_builder->where('i.cart = :cart')
+                ->andWhere('i.id = :id')
+                ->setParameter('cart', $cart)
+                ->setParameter('id', $cartValueId)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            $entity = null;
+        }
+
+        return $entity;
+    }
 
     public function removeByIdAndCart($id, Cart $cart): void
     {

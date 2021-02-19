@@ -31,21 +31,6 @@ class OrderHistoryDataTransferObject
     public $orderStatus;
 
     /**
-     * @var string
-     */
-    public $message;
-
-    /**
-     * @var bool
-     */
-    public $notify = false;
-
-    /**
-     * @var bool
-     */
-    public $attach_invoice = false;
-
-    /**
      * @var \DateTime
      */
     public $created_at;
@@ -62,9 +47,6 @@ class OrderHistoryDataTransferObject
         $this->id = $orderHistory->getId();
         $this->order = $orderHistory->getOrder();
         $this->orderStatus = $orderHistory->getOrderStatus();
-        $this->message = $orderHistory->getMessage();
-        $this->notify = $orderHistory->isNotify();
-        $this->attach_invoice = $orderHistory->isAttachInvoice();
         $this->created_at = $orderHistory->getCreatedAt();
     }
 

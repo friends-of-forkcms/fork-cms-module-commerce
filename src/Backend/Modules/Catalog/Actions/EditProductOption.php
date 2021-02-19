@@ -22,30 +22,36 @@ use Symfony\Component\Form\Form;
 class EditProductOption extends BackendBaseActionEdit
 {
     /**
+     * @var ProductOption
+     */
+    private $productOption;
+
+    /**
      * Execute the action
      */
     public function execute(): void
     {
         parent::execute();
 
-        $productOption = $this->getProductOption();
+        $this->productOption = $this->getProductOption();
 
-        $form = $this->getForm($productOption);
+        $form = $this->getForm($this->productOption);
 
         $deleteForm = $this->createForm(
             DeleteType::class,
-            ['id' => $productOption->getId()],
+            ['id' => $this->productOption->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteProductOption'
+                'action' => 'DeleteProductOption',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
-            $this->template->assign('productOption', $productOption);
-            $this->template->assign('productOptionValuesDataGrid', DataGrid::getHtml($productOption));
+            $this->template->assign('productOption', $this->productOption);
+            $this->template->assign('productOptionValuesDataGrid', DataGrid::getHtml($this->productOption));
+            $this->template->assign('backLink', $this->getBackLink());
 
             $this->parse();
             $this->display();
@@ -68,7 +74,7 @@ class EditProductOption extends BackendBaseActionEdit
                     'report'    => 'edited',
                     'highlight' => 'row-' . $updateProductOption->getProductOptionEntity()->getId(),
                 ]
-            ) .'#tabOptions'
+            )
         );
     }
 
@@ -88,19 +94,39 @@ class EditProductOption extends BackendBaseActionEdit
 
     private function getBackLink(array $parameters = []): string
     {
+        if ($this->productOption->getParentProductOptionValue()) {
+            $parameters = array_merge($parameters, [
+                'id' => $this->productOption->getParentProductOptionValue()->getId(),
+            ]);
+
+            return BackendModel::createUrlForAction(
+                    'EditProductOptionValue',
+                    null,
+                    null,
+                    $parameters
+                ) . '#tabSubOptions';
+        }
+
+        $parameters = array_merge($parameters, [
+            'id' => $this->productOption->getProduct()->getId(),
+        ]);
+
         return BackendModel::createUrlForAction(
             'Edit',
             null,
             null,
             $parameters
-        );
+        ) . '#tabOptions';
     }
 
     private function getForm(ProductOption $productOption): Form
     {
         $form = $this->createForm(
             ProductOptionType::class,
-            new UpdateProductOption($productOption)
+            new UpdateProductOption($productOption),
+            [
+                'product' => $this->productOption->getProduct(),
+            ]
         );
 
         $form->handleRequest($this->getRequest());

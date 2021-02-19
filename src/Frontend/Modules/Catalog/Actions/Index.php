@@ -2,6 +2,9 @@
 
 namespace Frontend\Modules\Catalog\Actions;
 
+use Backend\Modules\Catalog\Domain\Cart\Cart;
+use Backend\Modules\Catalog\Domain\Cart\CartRepository;
+use Backend\Modules\Catalog\Domain\Cart\CartValueRepository;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
 use Backend\Modules\Catalog\Domain\Product\AddToCartDataTransferObject;
@@ -79,7 +82,7 @@ class Index extends FrontendBaseBlock
         $this->loadTemplate();
 
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/catalog.css');
+        $this->addCSS('Catalog.css');
 
         // add noty js
         $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
@@ -116,7 +119,7 @@ class Index extends FrontendBaseBlock
         $this->setMeta($category->getMeta());
 
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/catalog.css');
+        $this->addCSS('Catalog.css');
 
         // Add JS
         $this->addJSData('filterUrl', $baseUrl);
@@ -171,7 +174,7 @@ class Index extends FrontendBaseBlock
         } else {
             $products = $productRepository->findLimitedByCategory($category, $itemsPerPage, $productOffset,
                 $currentSortOrder);
-            $pagination->setItemCount($category->getProducts()->count());
+            $pagination->setItemCount($category->getActiveProducts()->count());
         }
 
         // When requesting an invalid page return to 404
@@ -220,9 +223,10 @@ class Index extends FrontendBaseBlock
         // Add css
         $this->addCSS('jquery.fancybox.min.css');
         $this->addCSS('owl.carousel.min.css');
-        $this->addCSS('catalog.css');
+        $this->addCSS('Catalog.css');
 
-        $form = $this->createForm(AddToCartType::class, new AddToCartDataTransferObject($product), ['product' => $product]);
+        // build the form
+        $form = $this->getForm($product);
 
         // build the images widget
         $images = $this->get('media_library.helper.frontend')->parseWidget(
@@ -247,6 +251,10 @@ class Index extends FrontendBaseBlock
         $this->template->assign('specifications', $this->getSpecificationRepository()->findByProduct($product));
         $this->template->assign('product', $product);
         $this->template->assign('form', $form->createView());
+        $this->template->assign(
+            'siteTitle',
+            $this->get('fork.settings')->get('Core', 'site_title_' . Locale::frontendLanguage())
+        );
     }
 
     /**
@@ -271,6 +279,49 @@ class Index extends FrontendBaseBlock
         }
 
         $this->header->setPageTitle($category->getTitle());
+    }
+
+    private function getForm(Product $product)
+    {
+        $cartValue = null;
+        $cart = $this->getActiveCart();
+        $cartId = $this->getRequest()->query->getInt('cart_id');
+
+        if ($cart && $cartId) {
+            $cartValue = $this->getCartValueRepository()->getByCartAndId($cart, $cartId);
+        }
+
+        $dataTransferObject = new AddToCartDataTransferObject($product, $cartValue);
+        if (!$cartValue && $this->getRequest()->query->has('width') && $this->getRequest()->query->has('height')) {
+            $dataTransferObject->width = $this->getRequest()->query->get('width');
+            $dataTransferObject->height = $this->getRequest()->query->get('height');
+        }
+
+        $this->addJSData('cartId', $cartId);
+
+        return $this->createForm(
+            AddToCartType::class,
+            $dataTransferObject,
+            [
+                'product' => $product,
+            ]
+        );
+    }
+
+    /**
+     * Get the active cart from the session
+     *
+     * @return Cart
+     */
+    private function getActiveCart(): ?Cart
+    {
+        if (!$cartHash = $this->get('fork.cookie')->get('cart_hash')) {
+            return null;
+        }
+
+        $cartRepository = $this->getCartRepository();
+
+        return $cartRepository->findBySessionId($cartHash, $this->getRequest()->getClientIp());
     }
 
     /**
@@ -307,10 +358,6 @@ class Index extends FrontendBaseBlock
         $filters = [];
 
         foreach ($this->getRequest()->query->all() as $key => $value) {
-            if ($this->isExcludedFromFilter($key)) {
-                continue;
-            }
-
             $filters[$key] = explode(',', $value);
         }
 
@@ -318,19 +365,22 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Check if query part is excluded from filters
+     * Get the cart repository
      *
-     * @param string $key
-     *
-     * @return boolean
+     * @return CartRepository
      */
-    private function isExcludedFromFilter(string $key): bool
+    private function getCartRepository(): CartRepository
     {
-        $excludedKeys = [
-            Language::lbl('Page'),
-            'sort',
-        ];
+        return $this->get('catalog.repository.cart');
+    }
 
-        return in_array($key, $excludedKeys);
+    /**
+     * Get the cart value repository
+     *
+     * @return CartValueRepository
+     */
+    private function getCartValueRepository(): CartValueRepository
+    {
+        return $this->get('catalog.repository.cart_value');
     }
 }

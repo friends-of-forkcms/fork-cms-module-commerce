@@ -2,8 +2,12 @@
 
 namespace Backend\Modules\Catalog\Domain\Order;
 
+use Backend\Modules\Catalog\Domain\Account\Account;
+use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory;
 use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderRule\OrderRule;
 use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use DateTime;
@@ -25,6 +29,22 @@ class Order
      * @ORM\Column(type="integer", name="id")
      */
     private $id;
+
+    /**
+     * @var Account
+     *
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Account\Account", inversedBy="carts")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $account;
+
+    /**
+     * @var Cart
+     *
+     * @ORM\OneToOne(targetEntity="Backend\Modules\Catalog\Domain\Cart\Cart", inversedBy="order")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $cart;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -72,16 +92,23 @@ class Order
     private $date;
 
     /**
+     * @var OrderRule[]
+     *
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderRule\OrderRule", mappedBy="order", cascade={"remove", "persist"})
+     */
+    private $rules;
+
+    /**
      * @var OrderProduct[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct", mappedBy="order", cascade={"remove", "persist"})
      */
     private $products;
 
     /**
      * @var OrderVat[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderVat\OrderVat", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderVat\OrderVat", mappedBy="order", cascade={"remove", "persist"})
      * @ORM\OrderBy({"title" = "ASC"})
      */
     private $vats;
@@ -89,7 +116,7 @@ class Order
     /**
      * @var OrderAddress
      *
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress", inversedBy="order")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress")
      * @ORM\JoinColumn(name="invoice_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $invoice_address;
@@ -97,10 +124,19 @@ class Order
     /**
      * @var OrderAddress
      *
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress", inversedBy="order")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress")
      * @ORM\JoinColumn(name="shipment_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $shipment_address;
+
+    /**
+     * @var OrderHistory[]
+     *
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory", mappedBy="order")
+     * @ORM\JoinColumn(name="order_id")
+     * @ORM\OrderBy({"created_at" = "DESC"}))
+     */
+    private $history;
 
     /**
      * @var float
@@ -116,22 +152,9 @@ class Order
      */
     private $total;
 
-    /**
-     * @param DateTime $date
-     * @param string $paymentMethod
-     * @param string $shipment_method
-     * @param string $shipment_price
-     * @param null|string $comment
-     * @param float $sub_total
-     * @param float $total
-     * @param OrderAddress $invoiceAddress
-     * @param OrderAddress $shipmentAddress
-     * @param ArrayCollection $products
-     * @param ArrayCollection $vats
-     * @param null|string $invoiceNumber
-     * @param null|DateTime $invoiceDate
-     */
     private function __construct(
+        Account $account,
+        ?Cart $cart,
         DateTime $date,
         string $paymentMethod,
         string $shipment_method,
@@ -141,12 +164,15 @@ class Order
         float $total,
         OrderAddress $invoiceAddress,
         OrderAddress $shipmentAddress,
+        ArrayCollection $rules,
         ArrayCollection $products,
         ArrayCollection $vats,
         ?string $invoiceNumber,
         ?\DateTime $invoiceDate
     )
     {
+        $this->account = $account;
+        $this->cart = $cart;
         $this->date = $date;
         $this->payment_method = $paymentMethod;
         $this->shipment_method = $shipment_method;
@@ -156,6 +182,7 @@ class Order
         $this->total = $total;
         $this->invoice_address = $invoiceAddress;
         $this->shipment_address = $shipmentAddress;
+        $this->rules = $rules;
         $this->products = $products;
         $this->vats = $vats;
         $this->invoice_number = $invoiceNumber;
@@ -174,6 +201,8 @@ class Order
     private static function create(OrderDataTransferObject $dataTransferObject): self
     {
         return new self(
+            $dataTransferObject->account,
+            $dataTransferObject->cart,
             $dataTransferObject->date,
             $dataTransferObject->paymentMethod,
             $dataTransferObject->shipment_method,
@@ -183,6 +212,7 @@ class Order
             $dataTransferObject->total,
             $dataTransferObject->invoiceAddress,
             $dataTransferObject->shipmentAddress,
+            $dataTransferObject->rules,
             $dataTransferObject->products,
             $dataTransferObject->vats,
             $dataTransferObject->invoiceNumber,
@@ -196,6 +226,22 @@ class Order
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Account
+     */
+    public function getAccount(): Account
+    {
+        return $this->account;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
     }
 
     /**
@@ -271,6 +317,14 @@ class Order
     }
 
     /**
+     * @return OrderRule[]
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    /**
      * @return OrderProduct[]
      */
     public function getProducts()
@@ -302,16 +356,39 @@ class Order
         return $this->shipment_address;
     }
 
+    /**
+     * @return OrderHistory[]
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
     private static function update(OrderDataTransferObject $dataTransferObject)
     {
         $order = $dataTransferObject->getOrderEntity();
 
+        $order->account = $dataTransferObject->account;
+        $order->cart = $dataTransferObject->cart;
         $order->date = $dataTransferObject->date;
         $order->total = $dataTransferObject->total;
         $order->invoice_number = $dataTransferObject->invoiceNumber;
         $order->invoice_date = $dataTransferObject->invoiceDate;
+        $order->shipment_method = $dataTransferObject->shipment_method;
+        $order->shipment_price = $dataTransferObject->shipment_price;
+        $order->shipment_address = $dataTransferObject->shipmentAddress;
+        $order->payment_method = $dataTransferObject->paymentMethod;
+        $order->rules = $dataTransferObject->rules;
 
         return $order;
+    }
+
+    /**
+     * @return OrderHistory
+     */
+    public function getLastHistory(): ?OrderHistory
+    {
+        return $this->getHistory()->last();
     }
 
     public function getDataTransferObject(): OrderDataTransferObject

@@ -3,7 +3,6 @@
 namespace Backend\Modules\Catalog\Domain\StockStatus;
 
 use Backend\Modules\Catalog\Domain\StockStatus\Exception\StockStatusNotFound;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 
@@ -18,7 +17,7 @@ class StockStatusRepository extends EntityRepository
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?StockStatus
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw StockStatusNotFound::forEmptyId();
         }
 
         /** @var StockStatus $stockStatus */

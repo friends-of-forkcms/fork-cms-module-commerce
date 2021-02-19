@@ -8,11 +8,12 @@ use Backend\Form\Type\EditorType;
 use Backend\Form\Type\MetaType;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Category\Category;
+use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimensionType;
+use Backend\Modules\Catalog\Domain\ProductDimensionNotification\ProductDimensionNotificationType;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecialType;
 use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueDataTransferObject;
 use Backend\Modules\Catalog\Domain\SpecificationValue\ProductSpecificationValueType;
 use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
-use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProductDataTransferObject;
 use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProductType;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
@@ -101,7 +102,92 @@ class ProductType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label' => 'lbl.ArticleNumber'
+                'label' => 'lbl.ArticleNumber',
+            ]
+        )->add(
+            'ean13',
+            TextType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.EAN13',
+            ]
+        )->add(
+            'isbn',
+            TextType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.ISBN',
+            ]
+        )->add(
+            'sequence',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.Sequence',
+            ]
+        )->add(
+            'type',
+            ChoiceType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.Type',
+                'choices' => [
+                    'lbl.Default' => Product::TYPE_DEFAULT,
+                    'lbl.ProductWithDimensions' => Product::TYPE_DIMENSIONS,
+                ],
+            ]
+        )->add(
+            'hidden',
+            ChoiceType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.Hidden',
+                'choices' => [
+                    'lbl.Yes' => true,
+                    'lbl.No' => false,
+                ],
+            ]
+        )->add(
+            'min_width',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.MinWidth',
+            ]
+        )->add(
+            'min_height',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.MinHeight',
+            ]
+        )->add(
+            'max_width',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.MaxWidth',
+            ]
+        )->add(
+            'max_height',
+            NumberType::class,
+            [
+                'required' => true,
+                'label' => 'lbl.MaxHeight',
+            ]
+        )->add(
+            'extra_production_width',
+            NumberType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.AddProductionWidth',
+            ]
+        )->add(
+            'extra_production_height',
+            NumberType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.AddProductionHeight',
             ]
         )->add(
             'category',
@@ -213,6 +299,35 @@ class ProductType extends AbstractType
                 'label' => 'lbl.Offer',
             ]
         )->add(
+            'dimensions',
+            CollectionType::class,
+            [
+                'required' => false,
+                'entry_type' => ProductDimensionType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => '',
+            ]
+        )->add(
+            'dimension_notifications',
+            CollectionType::class,
+            [
+                'required' => false,
+                'entry_type' => ProductDimensionNotificationType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => 'lbl.Notifications',
+            ]
+        )->add(
+            'dimension_instructions',
+            EditorType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.DimensionInstructions'
+            ]
+        )->add(
             'brand',
             EntityType::class,
             [
@@ -220,7 +335,7 @@ class ProductType extends AbstractType
                 'placeholder' => 'lbl.None',
                 'class' => Brand::class,
                 'choice_label' => 'title',
-                'required' => false,
+                'required' => true,
             ]
         )->add(
             'vat',
@@ -287,7 +402,8 @@ class ProductType extends AbstractType
             [
                 'data_class' => ProductDataTransferObject::class,
                 'categories' => null,
-                'product' => null
+                'product' => null,
+                'validation_groups' => ['Default'],
             ]
         );
     }

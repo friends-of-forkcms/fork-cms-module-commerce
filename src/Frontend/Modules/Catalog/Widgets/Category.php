@@ -4,9 +4,10 @@ namespace Frontend\Modules\Catalog\Widgets;
 
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
+use Backend\Modules\Catalog\Domain\Product\Product;
+use Backend\Modules\Catalog\Domain\Product\ProductRepository;
 use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
 use Frontend\Core\Language\Locale;
-use Frontend\Modules\Catalog\Engine\Model as FrontendCatalogModel;
 
 /**
  * This is a widget with the Catalog-categories
@@ -20,6 +21,11 @@ class Category extends FrontendBaseWidget
      * @var \Backend\Modules\Catalog\Domain\Category\Category
      */
     private $category;
+
+    /**
+     * @var Product[]
+     */
+    private $products;
 
     /**
      * Execute the extra
@@ -43,6 +49,11 @@ class Category extends FrontendBaseWidget
                 $this->data['id'],
                 Locale::frontendLanguage()
             );
+
+            $this->products = $this->getProductRepository()->findLimitedByCategory(
+                $this->category,
+                $this->get('fork.settings')->get($this->getModule(), 'products_in_widget', 6)
+            );
         } catch (CategoryNotFound $e) {
             $this->category = null;
         }
@@ -55,6 +66,7 @@ class Category extends FrontendBaseWidget
     {
         // assign comments
         $this->template->assign('category', $this->category);
+        $this->template->assign('products', $this->products);
     }
 
     /**
@@ -65,5 +77,15 @@ class Category extends FrontendBaseWidget
     private function getCategoryRepository(): CategoryRepository
     {
         return $this->get('catalog.repository.category');
+    }
+
+    /**
+     * Get the product repository
+     *
+     * @return ProductRepository
+     */
+    private function getProductRepository(): ProductRepository
+    {
+        return $this->get('catalog.repository.product');
     }
 }

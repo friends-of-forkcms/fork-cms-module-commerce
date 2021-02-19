@@ -6,6 +6,8 @@ use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Category\Category;
+use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension;
+use Backend\Modules\Catalog\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository;
@@ -13,6 +15,7 @@ use Backend\Modules\Catalog\Domain\StockStatus\StockStatus;
 use Backend\Modules\Catalog\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Catalog\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
+use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupDataTransferObject;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type;
 use Common\Doctrine\Entity\Meta;
@@ -31,6 +34,56 @@ class ProductDataTransferObject
      * @var int
      */
     public $id;
+
+    /**
+     * @var boolean
+     */
+    public $hidden = false;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $type = Product::TYPE_DEFAULT;
+
+    /**
+     * @var int
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $min_width = 0;
+
+    /**
+     * @var int
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $min_height = 0;
+
+    /**
+     * @var int
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $max_width = 0;
+
+    /**
+     * @var int
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public $max_height = 0;
+
+    /**
+     * @var int
+     */
+    public $extra_production_width = 0;
+
+    /**
+     * @var int
+     */
+    public $extra_production_height = 0;
 
     /**
      * @var string
@@ -82,7 +135,22 @@ class ProductDataTransferObject
     /**
      * @var string
      */
+    public $ean13;
+
+    /**
+     * @var string
+     */
+    public $isbn;
+
+    /**
+     * @var string
+     */
     public $text;
+
+    /**
+     * @var string
+     */
+    public $dimension_instructions;
 
     /**
      * @var Locale
@@ -138,7 +206,7 @@ class ProductDataTransferObject
     public $specification_values;
 
     /**
-     * @Assert\Valid
+     * @Assert\Valid(groups={"dimensions"})
      *
      * @var PersistentCollection
      */
@@ -148,6 +216,30 @@ class ProductDataTransferObject
      * @var PersistentCollection
      */
     public $remove_specials;
+
+    /**
+     * @Assert\Valid
+     *
+     * @var PersistentCollection
+     */
+    public $dimensions;
+
+    /**
+     * @var PersistentCollection
+     */
+    public $remove_dimensions;
+
+    /**
+     * @Assert\Valid
+     *
+     * @var PersistentCollection
+     */
+    public $dimension_notifications;
+
+    /**
+     * @var PersistentCollection
+     */
+    public $remove_dimension_notifications;
 
     /**
      * @var PersistentCollection
@@ -186,17 +278,25 @@ class ProductDataTransferObject
 
     /**
      * @var int
+     *
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     * @Assert\GreaterThanOrEqual(value=1, message="err.SequenceInvalid")
      */
     public $sequence;
 
     public function __construct(Product $product = null)
     {
         // Set some default values
+        $this->locale = Locale::workingLocale();
         $this->productEntity = $product;
         $this->specification_values = new ArrayCollection();
         $this->remove_specification_values = new ArrayCollection();
         $this->specials = new ArrayCollection();
         $this->remove_specials = new ArrayCollection();
+        $this->dimensions = new ArrayCollection();
+        $this->remove_dimensions = new ArrayCollection();
+        $this->dimension_notifications = new ArrayCollection();
+        $this->remove_dimension_notifications = new ArrayCollection();
         $this->related_products = new ArrayCollection();
         $this->up_sell_products = new ArrayCollection();
         $this->remove_up_sell_products = new ArrayCollection();
@@ -204,6 +304,7 @@ class ProductDataTransferObject
         $this->images = MediaGroup::create(MediaGroupType::fromString(Type::IMAGE));
         $this->downloads = MediaGroup::create(MediaGroupType::fromString(Type::FILE));
         $this->weight = (float)0.00;
+        $this->sequence = $this->getProductRepository()->getNextSequence($this->locale, $this->category);
 
         if (!$this->hasExistingProduct()) {
             return;
@@ -215,9 +316,18 @@ class ProductDataTransferObject
         $this->brand = $product->getBrand();
         $this->vat = $product->getVat();
         $this->stock_status = $product->getStockStatus();
+        $this->hidden = $product->isHidden();
+        $this->type = $product->getType();
+        $this->min_width = $product->getMinWidth();
+        $this->min_height = $product->getMinHeight();
+        $this->max_width = $product->getMaxWidth();
+        $this->max_height = $product->getMaxHeight();
+        $this->extra_production_width = $product->getExtraProductionWidth();
+        $this->extra_production_height = $product->getExtraProductionHeight();
         $this->title = $product->getTitle();
         $this->summary = $product->getSummary();
         $this->text = $product->getText();
+        $this->dimension_instructions = $product->getDimensionInstructions();
         $this->locale = $product->getLocale();
         $this->weight = $product->getWeight();
         $this->price = $product->getPrice();
@@ -225,9 +335,13 @@ class ProductDataTransferObject
         $this->order_quantity = $product->getOrderQuantity();
         $this->from_stock = $product->isFromStock();
         $this->sku = $product->getSku();
+        $this->ean13 = $product->getEan13();
+        $this->isbn = $product->getIsbn();
         $this->sequence = $product->getSequence();
         $this->specification_values = $product->getSpecificationValues();
         $this->specials = $product->getSpecials();
+        $this->dimensions = $product->getDimensions();
+        $this->dimension_notifications = $product->getDimensionNotifications();
         $this->images = $product->getImages();
         $this->downloads = $product->getDownloads();
         $this->related_products = $product->getRelatedProducts();
@@ -244,6 +358,11 @@ class ProductDataTransferObject
         }
     }
 
+    public function setProductEntity(Product $productEntity): void
+    {
+        $this->productEntity = $productEntity;
+    }
+
     public function getProductEntity(): Product
     {
         return $this->productEntity;
@@ -252,6 +371,12 @@ class ProductDataTransferObject
     public function hasExistingProduct(): bool
     {
         return $this->productEntity instanceof Product;
+    }
+
+    public function copy()
+    {
+        $this->id = null;
+        $this->productEntity = null;
     }
 
     public function addSpecificationValu(SpecificationValue $value)
@@ -311,5 +436,34 @@ class ProductDataTransferObject
     {
         // for our current entity
         $this->remove_specials->add($special);
+    }
+
+    public function addDimension(ProductDimension $dimension)
+    {
+        if ($this->type != Product::TYPE_DIMENSIONS) {
+            return;
+        }
+
+        $this->dimensions->add($dimension);
+    }
+
+    public function removeDimension(ProductDimension $dimension)
+    {
+        $this->remove_dimensions->add($dimension);
+    }
+
+    public function addDimensionNotification(ProductDimensionNotification $dimensionNotification)
+    {
+        $this->dimension_notifications->add($dimensionNotification);
+    }
+
+    public function removeDimensionNotification(ProductDimensionNotification $dimensionNotification)
+    {
+        $this->remove_dimension_notifications->add($dimensionNotification);
+    }
+
+    private function getProductRepository(): ProductRepository
+    {
+        return Model::get('catalog.repository.product');
     }
 }

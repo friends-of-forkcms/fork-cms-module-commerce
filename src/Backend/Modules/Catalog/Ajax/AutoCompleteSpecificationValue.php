@@ -3,11 +3,8 @@
 namespace Backend\Modules\Catalog\Ajax;
 
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
-use Backend\Core\Language\Locale;
-use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
-use Backend\Modules\Catalog\Domain\Category\Command\UpdateCategory;
-use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
+use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValueRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,8 +18,7 @@ class AutoCompleteSpecificationValue extends BackendBaseAJAXAction
     {
         parent::execute();
 
-        $entityManager = $this->get('catalog.repository.specification_value');
-        $page          = $this->getRequest()->query->get('page');
+        $page = $this->getRequest()->query->get('page');
 
         if ($page < 1) {
             $page = 1;
@@ -31,7 +27,7 @@ class AutoCompleteSpecificationValue extends BackendBaseAJAXAction
         /**
          * @var SpecificationValue[] $specificationValues
          */
-        $specificationValues = $entityManager->findForAutoComplete(
+        $specificationValues = $this->getSpecificationValueRepository()->findForAutoComplete(
             $this->getRequest()->request->get('q', ''),
             $this->getRequest()->request->get('parent'),
             $this->getRequest()->query->get('page_limit'),
@@ -40,17 +36,22 @@ class AutoCompleteSpecificationValue extends BackendBaseAJAXAction
 
         // build the return data
         $returnData = [
-            'query_data' => []
+            'query_data' => [],
         ];
 
         foreach ($specificationValues as $specificationValue) {
             $returnData['query_data'][] = [
-                'id'   => $specificationValue->getId(),
+                'id' => $specificationValue->getId(),
                 'text' => $specificationValue->getValue(),
             ];
         }
 
         // success output
         $this->output(Response::HTTP_OK, $returnData);
+    }
+
+    private function getSpecificationValueRepository(): SpecificationValueRepository
+    {
+        return $this->get('catalog.repository.specification_value');
     }
 }

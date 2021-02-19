@@ -3,29 +3,29 @@
 {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
   <div class="row">
     <div class="col-md-6">
-      {{ form_row(form.first_name) }}
-      {{ form_row(form.last_name) }}
-      {{ form_row(form.email_address) }}
-      {{ form_row(form.phone) }}
+      {{ form_row(form.company_name, { 'attr': {'tabindex': '101'} }) }}
+      {{ form_row(form.last_name, { 'attr': {'tabindex': '103'} }) }}
+      {{ form_row(form.email_address, { 'attr': {'tabindex': '105'} }) }}
+      {{ form_row(form.phone, { 'attr': {'tabindex': '109'} }) }}
     </div>
     <div class="col-md-6">
-      {{ form_row(form.street) }}
-      {{ form_row(form.street) }}
+      {{ form_row(form.first_name, { 'attr': {'tabindex': '102'} }) }}
+      {{ form_row(form.street, { 'attr': {'tabindex': '104'} }) }}
       <div class="row">
         <div class="col-md-4">
-          {{ form_row(form.zip_code) }}
+          {{ form_row(form.zip_code, { 'attr': {'tabindex': '106'} }) }}
         </div>
         <div class="col-md-4">
-          {{ form_row(form.house_number) }}
+          {{ form_row(form.house_number, { 'attr': {'tabindex': '107'} }) }}
         </div>
         <div class="col-md-4">
-          {{ form_row(form.house_number_addition) }}
+          {{ form_row(form.house_number_addition, { 'attr': {'tabindex': '108'} }) }}
         </div>
       </div>
-      {{ form_row(form.city) }}
-      {{ form_row(form.same_shipping_address) }}
+      {{ form_row(form.city, { 'attr': {'tabindex': '110'} }) }}
+      {{ form_row(form.same_shipping_address, { 'attr': {'tabindex': '111'} }) }}
       <div class="text-right">
-        <button type="submit" class="btn btn-primary" id="submit-step-two">{{ 'lbl.Continue'|trans|ucfirst }}</button>
+        <button type="submit" class="btn btn-primary" id="submit-step-two" tabindex="112">{{ 'lbl.Continue'|trans|ucfirst }}</button>
       </div>
     </div>
   </div>

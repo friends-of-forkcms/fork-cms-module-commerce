@@ -3,5 +3,6 @@ services:
         class: Backend\Modules\Catalog\Domain\Settings\Command\UpdateSettingsHandler
         arguments:
             - "@fork.settings"
+            - "%kernel.root_dir%"
         tags:
             - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Settings\Command\UpdateSettings }

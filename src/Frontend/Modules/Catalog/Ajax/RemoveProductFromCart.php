@@ -14,6 +14,7 @@ use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Locale;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
 
 class RemoveProductFromCart extends FrontendBaseAJAXAction
@@ -44,13 +45,13 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         $this->cart   = $this->getActiveCart();
 
         // Product must be set
-        if (!$this->getRequest()->request->has('product')) {
+        if (!$this->getRequest()->request->has('cart')) {
             $this->output( Response::HTTP_UNPROCESSABLE_ENTITY);
             return;
         }
 
         // Failed to update product, does not exists?
-        if (!$cartValue = $this->removeProduct()) {
+        if (!$cartValue = $this->removeCartValue()) {
             $this->output( Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
             return;
         }
@@ -89,7 +90,17 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
 
         if (!$cartHash = $this->cookie->get('cart_hash')) {
             $cartHash = Uuid::uuid4();
-            $this->cookie->set('cart_hash', $cartHash);
+            $this->cookie->set(
+                'cart_hash',
+                $cartHash,
+                2592000,
+                '/',
+                null,
+                null,
+                true,
+                false,
+                SymfonyCookie::SAMESITE_NONE
+            );
         }
 
         return $cartRepository->findBySessionId($cartHash, $this->getRequest()->getClientIp());
@@ -100,28 +111,23 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
      *
      * @return CartValue|null
      */
-    private function removeProduct(): ?CartValue
+    private function removeCartValue(): ?CartValue
     {
-        $productData = $this->getRequest()->request->get('product');
+        $cartData = $this->getRequest()->request->get('cart');
 
-        if (!is_array($productData)) {
+        if (!is_array($cartData)) {
             return null;
         }
 
-        if (!array_key_exists('id', $productData)) {
+        if (!array_key_exists('value_id', $cartData)) {
             return null;
         }
 
         // Retrieve our product
-        try {
-            $product = $this->getProductRepository()->findOneByIdAndLocale($productData['id'], Locale::frontendLanguage());
-        } catch (ProductNotFound $e) {
+        $cartValueRepository = $this->getCartValueRepository();
+        if (!$cartValue = $cartValueRepository->getByCartAndId($this->cart, $cartData['value_id'])) {
             return null;
         }
-
-        // Retrieve the cart value
-        $cartValueRepository = $this->getCartValueRepository();
-        $cartValue = $cartValueRepository->getByCartAndProduct($this->cart, $product);
 
         // Remove the value
         $this->cart->removeValue($cartValue);

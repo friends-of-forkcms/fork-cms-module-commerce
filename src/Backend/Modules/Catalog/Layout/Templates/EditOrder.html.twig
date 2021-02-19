@@ -5,10 +5,10 @@
     <div class="btn-toolbar pull-right">
       <div class="btn-group" role="group">
         {% if showCatalogPackingSlip %}
-          {{ macro.buttonIcon( geturl('PackingSlip') ~ '&id=' ~ order.id, '', 'lbl.PackingSlip'|trans|ucfirst) }}
+          {{ macro.buttonIcon( geturl('PackingSlip') ~ '&id=' ~ order.id, 'truck', 'lbl.PackingSlip'|trans|ucfirst) }}
         {% endif %}
         {% if showCatalogInvoice %}
-          {{ macro.buttonIcon( geturl('Invoice') ~ '&id=' ~ order.id, '', 'lbl.Invoice'|trans|ucfirst) }}
+          {{ macro.buttonIcon( geturl('Invoice') ~ '&id=' ~ order.id, 'ticket', 'lbl.Invoice'|trans|ucfirst) }}
         {% endif %}
       </div>
     </div>
@@ -61,12 +61,12 @@
             </tr>
             <tr>
               <td><i class="fa fa-envelope" aria-hidden="true"></i></td>
-              <td><a href="mailto:{{ order.invoiceAddress.emailAddress }}">{{ order.invoiceAddress.emailAddress }}</a>
+              <td><a href="mailto:{{ order.account.email }}">{{ order.account.email }}</a>
               </td>
             </tr>
             <tr>
               <td><i class="fa fa-phone" aria-hidden="true"></i></td>
-              <td><a href="tel:{{ order.invoiceAddress.phone }}">{{ order.invoiceAddress.phone }}</a></td>
+              <td><a href="tel:{{ order.account.phone }}">{{ order.account.phone }}</a></td>
             </tr>
           </table>
         </div>
@@ -82,13 +82,17 @@
               <div class="panel form-group panel-default">
                 <div class="panel-heading">{{ 'lbl.InvoiceAddress'|trans|ucfirst }}</div>
                 <div class="panel-body">
+                  {% if order.invoiceAddress.companyName %}{{ order.invoiceAddress.companyName }}<br/>{% endif %}
                   {{ order.invoiceAddress.fullName }}<br/>
-                  {{ order.invoiceAddress.street }} {{ order.invoiceAddress.houseNumber }}{{ order.invoiceAddress.houseNumberAddition }}
-                  <br/>
+                  {{ order.invoiceAddress.street }} {{ order.invoiceAddress.houseNumber }}{{ order.invoiceAddress.houseNumberAddition }}<br/>
                   {{ order.invoiceAddress.zipCode }} {{ order.invoiceAddress.city }}<br/>
-                  <a
-                    href="mailto:{{ order.invoiceAddress.emailAddress }}">{{ order.invoiceAddress.emailAddress }}</a><br/>
-                  <a href="tel:{{ order.invoiceAddress.phone }}">{{ order.invoiceAddress.phone }}</a>
+                  {{ order.invoiceAddress.country.name }}
+                  {% if order.invoiceAddress.emailAddress %}
+                    <br/><a href="mailto:{{ order.invoiceAddress.emailAddress }}">{{ order.invoiceAddress.emailAddress }}</a>
+                  {% endif %}
+                  {% if order.invoiceAddress.phone %}
+                    <br /><a href="tel:{{ order.invoiceAddress.phone }}">{{ order.invoiceAddress.phone }}</a>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -96,13 +100,17 @@
               <div class="panel form-group panel-default">
                 <div class="panel-heading">{{ 'lbl.ShipmentAddress'|trans|ucfirst }}</div>
                 <div class="panel-body">
+                  {% if order.shipmentAddress.companyName %}{{ order.shipmentAddress.companyName }}<br/>{% endif %}
                   {{ order.shipmentAddress.fullName }}<br/>
-                  {{ order.shipmentAddress.street }} {{ order.shipmentAddress.houseNumber }}{{ order.shipmentAddress.houseNumberAddition }}
-                  <br/>
+                  {{ order.shipmentAddress.street }} {{ order.shipmentAddress.houseNumber }}{{ order.shipmentAddress.houseNumberAddition }}<br/>
                   {{ order.shipmentAddress.zipCode }} {{ order.shipmentAddress.city }}<br/>
-                  <a
-                    href="mailto:{{ order.shipmentAddress.emailAddress }}">{{ order.shipmentAddress.emailAddress }}</a><br/>
-                  <a href="tel:{{ order.shipmentAddress.phone }}">{{ order.shipmentAddress.phone }}</a>
+                  {{ order.shipmentAddress.country.name }}
+                  {% if order.shipmentAddress.emailAddress %}
+                    <br/><a href="mailto:{{ order.shipmentAddress.emailAddress }}">{{ order.shipmentAddress.emailAddress }}</a>
+                  {% endif %}
+                  {% if order.shipmentAddress.phone %}
+                    <br /><a href="tel:{{ order.shipmentAddress.phone }}">{{ order.shipmentAddress.phone }}</a>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -116,21 +124,27 @@
                 <tbody>
                 <tr>
                   <td>{{ 'lbl.SubTotal'|trans|ucfirst }}</td>
-                  <td>&euro; {{ order.subTotal|formatnumber(2) }}</td>
+                  <td>{{ order.subTotal|formatcurrency }}</td>
                 </tr>
                 <tr>
                   <td>{{ order.shipmentMethod }}</td>
-                  <td>&euro; {{ order.shipmentPrice|formatnumber(2) }}</td>
+                  <td>{{ order.shipmentPrice|formatcurrency }}</td>
                 </tr>
+                {% for rule in order.rules %}
+                  <tr>
+                    <td>{{ rule.title }} ({{ rule.code }})</td>
+                    <td>{{ rule.value|raw }}</td>
+                  </tr>
+                {% endfor %}
                 {% for vat in order.vats %}
                   <tr>
                     <td>{{ vat.title }}</td>
-                    <td>&euro; {{ vat.total|formatnumber(2) }}</td>
+                    <td>{{ vat.total|formatcurrency }}</td>
                   </tr>
                 {% endfor %}
                 <tr>
                   <td>{{ 'lbl.Total'|trans|ucfirst }}</td>
-                  <td>&euro; {{ order.total|formatnumber(2) }}</td>
+                  <td>{{ order.total|formatcurrency }}</td>
                 </tr>
                 </tbody>
               </table>
@@ -145,44 +159,13 @@
         <div class="panel-heading">{{ 'lbl.OrderHistory'|trans|ucfirst }}</div>
         <div class="panel-body">
           {{ macro.dataGrid(dataGridOrderHistory) }}
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-12">
-      <div class="panel form-group panel-default">
-        <div class="panel-heading">{{ 'lbl.AddOrderHistory'|trans|ucfirst }}</div>
-        <div class="panel-body">
-          <div class="form-group">
-            {{ form_label(form.orderStatus) }}
-            {{ form_widget(form.orderStatus) }}
-            {{ form_errors(form.orderStatus) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.notify) }}
-            {{ form_widget(form.notify) }}
-            {{ form_errors(form.notify) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.attach_invoice) }}
-            {{ form_widget(form.attach_invoice) }}
-            {{ form_errors(form.attach_invoice) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.message) }}
-            {{ form_widget(form.message) }}
-            {{ form_errors(form.message) }}
-          </div>
           <div class="row">
             <div class="col-md-12">
-              <div class="btn-toolbar">
-                <div class="btn-group pull-right" role="group">
-                  <button id="addButton" type="submit" name="add" class="btn btn-primary">
-                    <span class="fa fa-plus-square"></span>&nbsp;
-                    {{ 'lbl.Add'|trans|ucfirst }}
-                  </button>
-                </div>
-              </div>
+              {{ form_row(form.orderStatus) }}
+              <button id="addButton" type="submit" name="add" class="btn btn-primary">
+                <span class="fa fa-plus-square"></span>&nbsp;
+                {{ 'lbl.Add'|trans|ucfirst }}
+              </button>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ use Backend\Modules\Catalog\Domain\Category\CategoryType;
 use Backend\Modules\Catalog\Domain\Category\Command\UpdateCategory;
 use Backend\Modules\Catalog\Domain\Category\Event\Updated;
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
 
 /**
@@ -43,7 +44,7 @@ class EditCategory extends BackendBaseActionEdit
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('category', $category);
 
@@ -64,11 +65,39 @@ class EditCategory extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateCategory->title,
+                    'report' => 'edited',
+                    'var' => $updateCategory->title,
                     'highlight' => 'row-' . $updateCategory->getCategoryEntity()->getId(),
                 ]
             )
+        );
+    }
+
+    public function parse(): void
+    {
+        parent::parse();
+
+        $this->header->addJS(
+            '/js/vendors/select2.full.min.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS(
+            '/js/vendors/' . Locale::workingLocale() . '.js',
+            null,
+            true,
+            true
+        );
+
+        $this->header->addJS('Select2Entity.js');
+
+        $this->header->addCSS(
+            '/css/vendors/select2.min.css',
+            null,
+            true,
+            false
         );
     }
 
@@ -101,7 +130,11 @@ class EditCategory extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             CategoryType::class,
-            new UpdateCategory($category)
+            new UpdateCategory($category),
+            [
+                'current_category' => $category,
+                'google_taxonomies' => $this->getGoogleTaxonomies(),
+            ]
         );
 
         $form->handleRequest($this->getRequest());
@@ -118,5 +151,28 @@ class EditCategory extends BackendBaseActionEdit
         $this->get('command_bus')->handle($updateCategory);
 
         return $updateCategory;
+    }
+
+    private function getGoogleTaxonomies()
+    {
+        $filesystem = new Filesystem();
+        $kernelRootDir = $this->getKernel()->getRootDir();
+        $googleTaxonomyFile = $kernelRootDir . '/../src/Backend/Modules/Catalog/GoogleTaxonomy/'
+            . Locale::workingLocale()->getLocale()
+            . '/taxonomies.txt';
+
+        $categories = [];
+        if ($filesystem->exists($googleTaxonomyFile)) {
+            $lines = explode("\n", file_get_contents($googleTaxonomyFile));
+            foreach ($lines as $line) {
+                if (!preg_match('/^([0-9]+) - (.*)/', $line, $matches)) {
+                    continue;
+                }
+
+                $categories[$line] = $matches[1];
+            }
+        }
+
+        return $categories;
     }
 }

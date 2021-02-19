@@ -24,7 +24,7 @@ class OrderVat
     /**
      * @var Order
      *
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Order\Order", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Catalog\Domain\Order\Order", inversedBy="vats")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $order;

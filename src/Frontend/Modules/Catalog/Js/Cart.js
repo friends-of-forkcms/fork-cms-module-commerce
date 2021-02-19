@@ -1,43 +1,59 @@
 $(function () {
   $('.shopping-cart [data-product]').change(function () {
     var productId = $(this).data('product'),
-      product = {
+      data = {
+        fork: {
+          module: 'Catalog',
+          action: 'UpdateProductCart'
+        },
         id: productId,
-        amount: $(this).val(),
+        cartValueId: null,
+        amount: parseInt($(this).val(), 10),
         overwrite: true
       };
 
+    if (data.amount < 1) {
+      data.amount = 1;
+      $(this).val(1);
+    }
+
+    if ($(this).data('cartValueId')) {
+      data.cartValueId = $(this).data('cartValueId');
+    }
+
     $('[name*="product[' + productId + ']"][data-option]').each(function () {
-      product[$(this).data('option')] = $(this).val();
+      data[$(this).data('option')] = $(this).val();
     });
 
     // When this is a quote request allow to overwrite
     if (jsFrontend.data.exists('Catalog.isQuote')) {
-      product['quote'] = true;
+      data['quote'] = true;
     }
 
     $.ajax(
       {
         method: "POST",
-        data: {
-          fork: {
-            module: 'Catalog',
-            action: 'UpdateCart'
-          },
-          product: product
-        },
+        data,
         xhrFields: {withCredentials: true}
       }
     ).done(function (response) {
       $('.productsInCart').html(response.data.totalQuantity);
-      $('[data-total="' + productId + '"]').html('&euro; ' + response.data.product.total);
       $('[data-sub-total]').html('&euro; ' + response.data.cart.subTotal);
       $('[data-cart-total]').html('&euro; ' + response.data.cart.total);
 
-      // Set the options totals
-      $.each(response.data.product.options, function (key, value) {
-        $('[data-total="' + productId + '_option_' + key + '"]').html('&euro; ' + value);
-      });
+
+      if (data.cartValueId) {
+        $('[data-cart-value-id="' + data.cartValueId + '"] [data-total="' + productId + '"]').html('&euro; ' + response.data.product.total);
+        $.each(response.data.product.options, function (key, value) {
+          $('[data-cart-value-id="' + data.cartValueId + '"] [data-total="' + productId + '_option_' + key + '"]').html('&euro; ' + value);
+        });
+      } else {
+        $('[data-total="' + productId + '"]').html('&euro; ' + response.data.product.total);
+        // Set the options totals
+        $.each(response.data.product.options, function (key, value) {
+          $('[data-total="' + productId + '_option_' + key + '"]').html('&euro; ' + value);
+        });
+      }
 
       $.each(response.data.cart.vats, function (key, vat) {
         $('[data-vat="' + key + '"]').html('&euro; ' + vat['total']);
@@ -64,8 +80,8 @@ $(function () {
             module: 'Catalog',
             action: 'RemoveProductFromCart'
           },
-          product: {
-            id: $(this).data('removeProduct')
+          cart: {
+            value_id: $(this).data('removeProduct')
           }
         },
         xhrFields: {withCredentials: true}

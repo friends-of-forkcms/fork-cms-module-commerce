@@ -24,7 +24,7 @@ class CheckoutPaymentMethodType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => $paymentMethods,
-                'expanded' => true
+                'expanded' => true,
             ]
         );
     }
@@ -34,7 +34,7 @@ class CheckoutPaymentMethodType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => CheckoutPaymentMethodDataTransferObject::class,
-                'payment_methods' => []
+                'payment_methods' => [],
             ]
         );
     }

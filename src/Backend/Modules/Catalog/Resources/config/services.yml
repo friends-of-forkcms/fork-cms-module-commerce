@@ -1,6 +1,8 @@
 imports:
+  - { resource: account_commands.yml }
   - { resource: brand_commands.yml }
   - { resource: cart_commands.yml }
+  - { resource: cart_rule_commands.yml }
   - { resource: category_commands.yml }
   - { resource: product_commands.yml }
   - { resource: order_commands.yml }
@@ -12,6 +14,9 @@ imports:
   - { resource: specification_value_commands.yml }
   - { resource: stock_status_commands.yml }
   - { resource: vat_commands.yml }
+  - { resource: country_commands.yml }
   - { resource: quote_events.yml }
   - { resource: product_option_commands.yml }
   - { resource: product_option_value_commands.yml }
+  - { resource: commands.yml }
+  - { resource: sitemap_providers.yml }

@@ -20,8 +20,7 @@ class DataGrid extends DataGridDatabase
             'SELECT c.id, c.title as specification, c.filter, c.sequence
 					 FROM catalog_specifications AS c
 					 WHERE c.language = :language
-					 GROUP BY c.id
-					 ORDER BY c.sequence ASC',
+					 GROUP BY c.id',
             ['language' => $locale]
         );
 

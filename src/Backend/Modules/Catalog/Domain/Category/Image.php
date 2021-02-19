@@ -2,7 +2,9 @@
 
 namespace Backend\Modules\Catalog\Domain\Category;
 
+use Backend\Core\Engine\Model;
 use Common\Doctrine\ValueObject\AbstractImage;
+use ForkCMS\Utility\Thumbnails;
 
 final class Image extends AbstractImage
 {
@@ -51,5 +53,33 @@ final class Image extends AbstractImage
         }
 
         parent::prepareToUpload();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWebPath(string $subDirectory = null): string
+    {
+        // Generate thumbnails when required
+        if (!file_exists($this->getAbsolutePath($subDirectory) ) && preg_match('/^([0-9]+)x([0-9]+)$/', $subDirectory)) {
+            if (!is_dir($this->getUploadRootDir($subDirectory))) {
+                mkdir($this->getUploadRootDir($subDirectory));
+            }
+
+            if (!file_exists($this->getAbsolutePath('source'))) {
+                return '';
+            }
+
+            try {
+                Model::get(Thumbnails::class)->generate(
+                    FRONTEND_FILES_PATH . '/' . $this->getTrimmedUploadDir(),
+                    $this->getAbsolutePath('source')
+                );
+            } catch (\SpoonThumbnailException $e) {
+                return parent::getWebPath($subDirectory);
+            }
+        }
+
+        return parent::getWebPath($subDirectory);
     }
 }

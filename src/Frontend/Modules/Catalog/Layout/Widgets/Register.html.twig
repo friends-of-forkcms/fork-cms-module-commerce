@@ -1,0 +1,168 @@
+{% import 'Core/Layout/Templates/Alerts.html.twig' as alerts %}
+{% import "Core/Layout/Templates/Macros.html.twig" as macro %}
+
+<div class="container pb-5">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="row">
+        <div class="offset-md-3 col-md-6">
+          <h1>{{ 'lbl.Register'|trans|ucfirst }}</h1>
+        </div>
+      </div>
+
+      {% if registered %}
+        <div class="row">
+          <div class="col-md-8 offset-md-2">
+            {% block block_alerts %}
+              <div class="block-alerts">
+                {% if registered %}
+                  {{ alerts.alert('success', 'msg.RegisterIsSuccess'|trans) }}
+                {% endif %}
+              </div>
+            {% endblock %}
+          </div>
+        </div>
+      {% else %}
+        {% if hasFormError %}
+          <div class="row">
+            <div class="col-md-8 offset-md-2">
+              {{ alerts.alert('danger', 'err.FormError'|trans) }}
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="row">
+          <div class="col-md-8 offset-md-2">
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                <label class="m-0">{{ 'lbl.Name'|trans|ucfirst }} *</label>
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-6 col-md-6">
+                    {{ form_widget(form.first_name) }}
+                    {{ form_errors(form.first_name) }}
+                  </div>
+                  <div class="col-6 col-md-6">
+                    {{ form_widget(form.last_name) }}
+                    {{ form_errors(form.last_name) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ form_label(form.company_name) }}
+              </div>
+              <div class="col-md-8">
+                {{ form_widget(form.company_name) }}
+                {{ form_errors(form.company_name) }}
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                <label class="m-0">{{ form_label(form.shipment_address.zip_code) }}</label>
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-6 col-md-4">
+                    {{ form_widget(form.shipment_address.zip_code) }}
+                    {{ form_errors(form.shipment_address.zip_code) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ form_label(form.shipment_address.house_number) }}
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-6 col-md-4">
+                    {{ form_widget(form.shipment_address.house_number) }}
+                    {{ form_errors(form.shipment_address.house_number) }}
+                  </div>
+                  <div class="col-6 col-md-4">
+                    {{ form_widget(form.shipment_address.house_number_addition) }}
+                    {{ form_errors(form.shipment_address.house_number_addition) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ 'lbl.Street'|trans|ucfirst }} + {{ 'lbl.City'|trans|ucfirst }}
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-6 col-md-6">
+                    {{ form_widget(form.shipment_address.street) }}
+                    {{ form_errors(form.shipment_address.street) }}
+                  </div>
+                  <div class="col-6 col-md-6">
+                    {{ form_widget(form.shipment_address.city) }}
+                    {{ form_errors(form.shipment_address.city) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
+                <label class="m-0">{{ form_label(form.shipment_address.country) }}</label>
+              </div>
+              <div class="col-md-8">
+                {{ form_widget(form.shipment_address.country) }}
+                {{ form_errors(form.shipment_address.country) }}
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ form_label(form.email_address) }}
+              </div>
+              <div class="col-md-8">
+                {{ form_widget(form.email_address) }}
+                {{ form_errors(form.email_address) }}
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ form_label(form.password.first) }}
+              </div>
+              <div class="col-md-8">
+                {{ form_widget(form.password.first) }}
+                {{ form_errors(form.password.first) }}
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ form_label(form.password.second) }}
+              </div>
+              <div class="col-md-8">
+                {{ form_widget(form.password.second) }}
+                {{ form_errors(form.password.second) }}
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                {{ form_label(form.phone) }}
+              </div>
+              <div class="col-md-8">
+                {{ form_widget(form.phone) }}
+                {{ form_errors(form.phone) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button type="submit" class="btn btn-default" id="register"
+                        data-checkout-step="address">{{ 'lbl.Register'|trans|ucfirst }}</button>
+              </div>
+            </div>
+            {{ form_end(form) }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+

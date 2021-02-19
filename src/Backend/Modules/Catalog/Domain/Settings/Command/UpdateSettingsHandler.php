@@ -3,6 +3,7 @@
 namespace Backend\Modules\Catalog\Domain\Settings\Command;
 
 use Common\ModulesSettings;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class UpdateSettingsHandler
 {
@@ -11,17 +12,43 @@ final class UpdateSettingsHandler
      */
     private $modulesSettings;
 
-    public function __construct(ModulesSettings $modulesSettings)
+    /**
+     * @var string
+     */
+    private $kernelRootDir;
+
+    public function __construct(ModulesSettings $modulesSettings, string $kernelRootDir)
     {
         $this->modulesSettings = $modulesSettings;
+        $this->kernelRootDir = $kernelRootDir;
     }
 
     public function handle(UpdateSettings $updateSettings): void
     {
-        $this->set('overview_num_items', (int) $updateSettings->overview_num_items);
-        $this->set('filters_show_more_num_items', (int) $updateSettings->filters_show_more_num_items);
-        $this->set('next_invoice_number', (int) $updateSettings->next_invoice_number);
+        $this->set('overview_num_items', (int)$updateSettings->overview_num_items);
+        $this->set('filters_show_more_num_items', (int)$updateSettings->filters_show_more_num_items);
+        $this->set('next_invoice_number', (int)$updateSettings->next_invoice_number);
         $this->set('automatic_invoice_statuses', $updateSettings->automatic_invoice_statuses);
+        $this->set('products_in_widget', $updateSettings->products_in_widget);
+
+        $this->loadGoogleMerchantCategories($updateSettings->google_product_categories);
+    }
+
+    private function loadGoogleMerchantCategories(?string $url)
+    {
+        $contents = file_get_contents($url);
+        if (!$contents) {
+            return;
+        }
+
+        preg_match('/([a-z]{2})-([A-Z]{2})/', $url, $matches);
+        if (!$matches) {
+            return;
+        }
+        $googleTaxonomyDir = $this->kernelRootDir . '/../src/Backend/Modules/Catalog/GoogleTaxonomy/' . $matches[1];
+
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile($googleTaxonomyDir . '/taxonomies.txt', $contents);
     }
 
     /**

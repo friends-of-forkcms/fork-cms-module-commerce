@@ -3,7 +3,6 @@
 namespace Backend\Modules\Catalog\Domain\OrderHistory;
 
 use Backend\Modules\Catalog\Domain\OrderHistory\Exception\OrderHistoryNotFound;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 
@@ -18,7 +17,7 @@ class OrderHistoryRepository extends EntityRepository
     public function findOneById(?int $id): ?OrderHistory
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw OrderHistoryNotFound::forEmptyId();
         }
 
         /** @var OrderHistory $orderHistory */

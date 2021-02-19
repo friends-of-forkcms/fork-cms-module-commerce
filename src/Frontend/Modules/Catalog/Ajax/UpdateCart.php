@@ -5,26 +5,25 @@ namespace Frontend\Modules\Catalog\Ajax;
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartRepository;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
-use Backend\Modules\Catalog\Domain\Cart\CartValueOptionRepository;
+use Backend\Modules\Catalog\Domain\Cart\CartValueOption;
 use Backend\Modules\Catalog\Domain\Cart\CartValueRepository;
 use Backend\Modules\Catalog\Domain\Product\AddToCartDataTransferObject;
-use Backend\Modules\Catalog\Domain\Product\AddToCartType;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Product\Product;
-use Backend\Modules\Catalog\Domain\Product\ProductRepository;
+use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
+use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
 use Common\Core\Cookie;
 use Doctrine\ORM\NonUniqueResultException;
-use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\SecurityBundle\Tests\Functional\Bundle\AclBundle\Entity\Car;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateCart extends FrontendBaseAJAXAction
+class UpdateCart extends DimensionCalculator
 {
     /**
      * @var Cookie
@@ -35,6 +34,11 @@ class UpdateCart extends FrontendBaseAJAXAction
      * @var Cart
      */
     private $cart;
+
+    /**
+     * @var int
+     */
+    private $cartValueId;
 
     /**
      * @var string
@@ -48,6 +52,7 @@ class UpdateCart extends FrontendBaseAJAXAction
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function execute(): void
     {
@@ -55,6 +60,7 @@ class UpdateCart extends FrontendBaseAJAXAction
 
         $this->cookie = $this->get('fork.cookie');
         $this->cart = $this->getActiveCart();
+        $this->cartValueId = $this->getRequest()->request->get('cartId');
 
         // Product must be set
         if (!$this->getRequest()->request->has('product')) {
@@ -84,7 +90,7 @@ class UpdateCart extends FrontendBaseAJAXAction
                 ],
                 'product' => [
                     'sku' => $cartValue->getProduct()->getSku(),
-                    'name' => $cartValue->getProduct()->getTitle(),
+                    'title' => $cartValue->getProduct()->getTitle(),
                     'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
                     'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
                     'quantity' => $cartValue->getQuantity(),
@@ -94,7 +100,7 @@ class UpdateCart extends FrontendBaseAJAXAction
                 'urls' => [
                     'cart' => Navigation::getUrlForBlock('Catalog', 'Cart'),
                     'request_quote' => Navigation::getUrlForBlock('Catalog', 'Cart') . '/' . Language::lbl('RequestQuoteUrl'),
-                ]
+                ],
             ]
         );
     }
@@ -103,6 +109,7 @@ class UpdateCart extends FrontendBaseAJAXAction
      * Get the active cart from the session
      *
      * @return Cart
+     * @throws \Exception
      */
     private function getActiveCart(): Cart
     {
@@ -110,7 +117,17 @@ class UpdateCart extends FrontendBaseAJAXAction
 
         if (!$cartHash = $this->cookie->get('cart_hash')) {
             $cartHash = Uuid::uuid4();
-            $this->cookie->set('cart_hash', $cartHash);
+            $this->cookie->set(
+                'cart_hash',
+                $cartHash,
+                2592000,
+                '/',
+                null,
+                null,
+                true,
+                false,
+                SymfonyCookie::SAMESITE_NONE
+            );
         }
 
         return $cartRepository->findBySessionId($cartHash, $this->getRequest()->getClientIp());
@@ -141,7 +158,7 @@ class UpdateCart extends FrontendBaseAJAXAction
 
         // Retrieve our product
         try {
-            $product = $this->getProductRepository()->findOneByIdAndLocale($productData['id'], Locale::frontendLanguage());
+            $product = $this->getProductRepository()->findOneActiveByIdAndLocale($productData['id'], Locale::frontendLanguage());
         } catch (ProductNotFound $e) {
             return false;
         }
@@ -164,20 +181,15 @@ class UpdateCart extends FrontendBaseAJAXAction
             return false;
         }
 
-        /**
-         * @var AddToCartDataTransferObject $formData
-         */
-        $formData = $this->form->getData();
-
-        $amount = (int)$formData->amount;
+        $this->data = $this->form->getData();
 
         // Disable amount below the minimal order quantity
-        if ($amount <= $product->getOrderQuantity()) {
-            $amount = $product->getOrderQuantity();
+        if ($this->data->amount <= $product->getOrderQuantity()) {
+            $this->data->amount = $product->getOrderQuantity();
         }
 
         // Validate request
-        if (!array_key_exists('quote', $productData) && $product->isFromStock() && $amount > $product->getStock()) {
+        if (!array_key_exists('quote', $productData) && $product->isFromStock() && $this->data->amount > $product->getStock()) {
             $this->errors = [
                 'fields' => [
                     'amount' => Language::err('GivenAmountNotInStock'),
@@ -188,22 +200,73 @@ class UpdateCart extends FrontendBaseAJAXAction
 
         // Get the cart value if exists or create a new one
         $cartValueRepository = $this->getCartValueRepository();
-        $cartValue = $cartValueRepository->getByCartAndProduct($this->cart, $product);
+        if ($this->cartValueId) {
+            $cartValue = $cartValueRepository->getByCartAndId($this->cart, $this->cartValueId);
+
+            if (!$cartValue) {
+                return false;
+            }
+        } elseif($product->usesDimensions()) {
+            $cartValue = new CartValue();
+            $cartValue->setCart($this->cart);
+            $cartValue->setProduct($product);
+        } else {
+            $cartValue = $cartValueRepository->getByCartAndProduct($this->cart, $product);
+        }
 
         // Set the values
         if ($overwrite) {
-            $cartValue->setQuantity($amount);
+            $cartValue->setQuantity($this->data->amount);
         } else {
-            $cartValue->setQuantity($cartValue->getQuantity() + $amount);
+            $cartValue->setQuantity($cartValue->getQuantity() + $this->data->amount);
         }
 
-        $cartValue->setTotal($cartValue->getQuantity() * $product->getActivePrice(false));
+        // Choose which product to use and set some default price
+        if ($product->usesDimensions()) {
+            // Set the given dimensions
+            $this->addWidth($this->data->width);
+            $this->addHeight($this->data->height);
 
-        // Add our product to the cart
-        $this->cart->addValue($cartValue);
+            // Add extra production dimensions
+            $this->addWidth($product->getExtraProductionWidth());
+            $this->addHeight($product->getExtraProductionHeight());
+
+            // Parse any given dimensions
+            $this->parseProductOptionsDimension($product->getProductOptions());
+
+            $dimension = $this->getProductDimensionRepository()
+                ->findByProductAndDimensions($product, $this->getWidth(), $this->getHeight());
+
+            if (!$dimension) {
+                $this->errors = [
+                    'fields' => [
+                        'width' => Language::err('CantFindProductWithGivenDimensions'),
+                    ],
+                ];
+                return false;
+            }
+
+            $this->setBasePrice($dimension->getPrice());
+
+            $cartValue->setProductDimension($dimension);
+            $cartValue->setWidth($this->data->width);
+            $cartValue->setHeight($this->data->height);
+            $cartValue->setOrderWidth($this->getWidth());
+            $cartValue->setOrderHeight($this->getHeight());
+        } else {
+            $this->setBasePrice($product->getActivePrice(false));
+        }
+
+        // Set the total price for later usage
+            $this->addTotalPrice($this->getBasePrice());
 
         // Add the product options to the cart
         $this->addProductOptionsToCart($product, $cartValue);
+
+        $cartValue->setTotal($cartValue->getQuantity() * $this->getTotalPrice());
+
+        // Add our product to the cart
+        $this->cart->addValue($cartValue);
 
         // Handle the product upsell
         if (array_key_exists('up_sell', $productData)) {
@@ -264,24 +327,6 @@ class UpdateCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product form
-     *
-     * @param Product $product
-     *
-     * @return Form
-     */
-    private function getForm(Product $product): Form
-    {
-        return $this->get('form.factory')->create(
-            AddToCartType::class,
-            new AddToCartDataTransferObject($product),
-            [
-                'product' => $product,
-            ]
-        );
-    }
-
-    /**
      * Add the product options to the cart
      *
      * @param Product $product
@@ -291,17 +336,85 @@ class UpdateCart extends FrontendBaseAJAXAction
      */
     private function addProductOptionsToCart(Product $product, CartValue $cartValue): void
     {
-        $repository = $this->getCartValueOptionRepository();
-        $formData = $this->form->getData();
+        $this->data = $this->form->getData();
 
-        foreach ($product->getProductOptions() as $productOption) {
+        foreach ($cartValue->getCartValueOptions() as $cartValueOption) {
+            $cartValue->removeCartValueOption($cartValueOption);
+        }
+
+        foreach ($product->getProductOptionsWithSubOptions() as $productOption) {
             $fieldName = 'option_' . $productOption->getId();
+            $customValueFieldName = $fieldName .'_custom_value';
 
-            if ($formData->$fieldName) {
+            if ($this->data->{$fieldName} || isset($this->data->{$customValueFieldName})) {
+                /**
+                 * @var ProductOptionValue|string $productOptionValue
+                 */
+                $productOptionValue = $this->data->{$fieldName};
+
                 try {
-                    $cartValue->addCartValueOption(
-                        $repository->getByCartValueAndProductOptionValue($cartValue, $formData->$fieldName)
-                    );
+                    $cartValueOption = new CartValueOption();
+                    $cartValueOption->setCartValue($cartValue);
+                    $cartValueOption->setProductOption($productOption);
+                    $cartValueOption->setName($productOption->getTitle());
+
+                    if ($productOptionValue instanceof ProductOptionValue) {
+                        $cartValueOption->setImpactType($productOptionValue->getImpactType());
+                    }
+
+                    if ($productOption->isCustomValueAllowed() && $this->data->{$customValueFieldName}) {
+                        $cartValueOption->setValue($this->data->{$customValueFieldName});
+                        $cartValueOption->setPrice($productOption->getCustomValuePrice());
+                        $cartValueOption->setVat($product->getVat());
+                        $cartValueOption->setVatPrice($productOption->getCustomValuePrice() * $product->getVat()->getAsPercentage());
+                    } else {
+                        switch ($productOption->getType()) {
+                            case ProductOption::DISPLAY_TYPE_TEXT:
+                                $value = $productOptionValue;
+                                break;
+                            case ProductOption::DISPLAY_TYPE_BETWEEN:
+                                $value = $this->data->{$customValueFieldName};
+                                break;
+                            default:
+                                $value = $productOptionValue->getTitle();
+                                break;
+                        }
+                        $cartValueOption->setValue($value);
+                        $cartValueOption->setVat($product->getVat());
+                        $cartValueOption->setPrice(0);
+                        $cartValueOption->setVatPrice(0);
+
+                        if ($productOptionValue instanceof ProductOptionValue) {
+                            $cartValueOption->setProductOptionValue($productOptionValue);
+                            $cartValueOption->setVat($productOptionValue->getVat());
+
+                            if ($productOptionValue->getPercentage() > 0) {
+                                $productOptionValuePrice = $this->getBasePrice() * ($productOptionValue->getPercentage() / 100);
+                                $cartValueOption->setPrice($productOptionValuePrice);
+                                $cartValueOption->setVatPrice($productOptionValuePrice * $productOptionValue->getVat()->getAsPercentage());
+                            } else {
+                                $cartValueOption->setPrice($productOptionValue->getPrice());
+                                $cartValueOption->setVatPrice($productOptionValue->getVatPrice());
+                            }
+                        }
+                    }
+
+                    // Only do extra calculations based on square unit type
+                    if ($productOption->isSquareUnitType() && $product->usesDimensions()) {
+                        // @TODO assumed unit is given in MM
+                        $square = ceil(($this->getWidth()/100) * ($this->getHeight()/100));
+
+                        $cartValueOption->setPrice($cartValueOption->getPrice() * $square);
+                        $cartValueOption->setVatPrice($cartValueOption->getVatPrice() * $square);
+                    }
+
+                    $cartValue->addCartValueOption($cartValueOption);
+
+                    if (!$productOptionValue instanceof ProductOptionValue || $productOptionValue->isImpactTypeAdd()) {
+                        $this->addTotalPrice($cartValueOption->getPrice());
+                    } else {
+                        $this->addTotalPrice($cartValueOption->getPrice() * -1);
+                    }
                 } catch (NonUniqueResultException $e) {
                     continue;
                 }
@@ -321,7 +434,7 @@ class UpdateCart extends FrontendBaseAJAXAction
         $totals = [];
 
         foreach ($cartValue->getCartValueOptions() as $cartValueOption) {
-            $totals[$cartValueOption->getProductOptionValue()->getId()] = TemplateModifiers::formatNumber($cartValueOption->getTotal(), 2);
+            $totals[$cartValueOption->getId()] = TemplateModifiers::formatNumber($cartValueOption->getTotal(), 2);
         }
 
         return $totals;
@@ -365,25 +478,5 @@ class UpdateCart extends FrontendBaseAJAXAction
     private function getCartValueRepository(): CartValueRepository
     {
         return $this->get('catalog.repository.cart_value');
-    }
-
-    /**
-     * Get the cart value option repository
-     *
-     * @return CartValueOptionRepository
-     */
-    private function getCartValueOptionRepository(): CartValueOptionRepository
-    {
-        return $this->get('catalog.repository.cart_value_option');
-    }
-
-    /**
-     * Get the product repository
-     *
-     * @return ProductRepository
-     */
-    private function getProductRepository(): ProductRepository
-    {
-        return $this->get('catalog.repository.product');
     }
 }

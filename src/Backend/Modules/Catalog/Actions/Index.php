@@ -7,7 +7,7 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Category\CategoryRepository;
 use Backend\Modules\Catalog\Domain\Category\Exception\CategoryNotFound;
-use Backend\Modules\Catalog\Domain\Category\FilterType;
+use Backend\Modules\Catalog\Domain\Product\FilterType;
 use Backend\Modules\Catalog\Domain\Product\DataGrid;
 use Common\Exception\RedirectException;
 

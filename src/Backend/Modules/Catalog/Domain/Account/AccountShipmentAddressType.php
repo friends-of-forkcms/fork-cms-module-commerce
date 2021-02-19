@@ -14,6 +14,13 @@ class AccountShipmentAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
+            'company_name',
+            TextType::class,
+            [
+                'required' => false,
+                'label' => 'lbl.CompanyName',
+            ]
+        )->add(
             'first_name',
             TextType::class,
             [

@@ -3,14 +3,14 @@
 namespace Backend\Modules\Catalog\Domain\OrderAddress\Command;
 
 use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
-use Backend\Modules\Catalog\Domain\OrderAddress\QuoteAddressRepository;
+use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddressRepository;
 
 final class UpdateOrderAddressHandler
 {
-    /** @var QuoteAddressRepository */
+    /** @var OrderAddressRepository */
     private $orderAddressRepository;
 
-    public function __construct(QuoteAddressRepository $orderAddressRepository)
+    public function __construct(OrderAddressRepository $orderAddressRepository)
     {
         $this->orderAddressRepository = $orderAddressRepository;
     }

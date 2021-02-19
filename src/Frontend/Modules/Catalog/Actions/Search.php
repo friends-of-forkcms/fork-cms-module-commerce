@@ -217,31 +217,9 @@ class Search extends FrontendBaseBlock
         $filters = [];
 
         foreach ($this->getRequest()->query->all() as $key => $value) {
-            if ($this->isExcludedFromFilter($key)) {
-                continue;
-            }
-
             $filters[$key] = explode(',', $value);
         }
 
         return $filters;
-    }
-
-    /**
-     * Check if query part is excluded from filters
-     *
-     * @param string $key
-     *
-     * @return boolean
-     */
-    private function isExcludedFromFilter(string $key): bool
-    {
-        $excludedKeys = [
-            Language::lbl('Page'),
-            'sort',
-            'query',
-        ];
-
-        return in_array($key, $excludedKeys);
     }
 }

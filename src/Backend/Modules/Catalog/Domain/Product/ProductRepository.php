@@ -5,7 +5,6 @@ namespace Backend\Modules\Catalog\Domain\Product;
 use Backend\Modules\Catalog\Domain\Category\Category;
 use Backend\Modules\Catalog\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
-use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
@@ -13,10 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Backend\Core\Engine\Model;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\Expr\Composite;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Doctrine\ORM\QueryBuilder;
 
 class ProductRepository extends EntityRepository
 {
@@ -48,6 +44,57 @@ class ProductRepository extends EntityRepository
         return $product;
     }
 
+    /**
+     * @param int|null $id
+     * @param Locale $locale
+     * @return Product|null
+     * @throws ProductNotFound
+     */
+    public function findOneActiveByIdAndLocale(?int $id, Locale $locale): ?Product
+    {
+        if ($id === null) {
+            throw ProductNotFound::forEmptyId();
+        }
+
+        /** @var Product $product */
+        $product = $this->findOneBy(['id' => $id, 'locale' => $locale, 'hidden' => false]);
+
+        if ($product === null) {
+            throw ProductNotFound::forId($id);
+        }
+
+        return $product;
+    }
+
+    /**
+     * @return Product[]
+     */
+    public function findActive()
+    {
+        /** @var Product $product */
+        return $this->findBy(['hidden' => false]);
+    }
+
+    /**
+     * @param Locale $locale
+     * @return Product[]
+     */
+    public function findActiveByLocaleAndWithGoogleTaxonomyId(Locale $locale)
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        return $queryBuilder->join('p.category', 'c')
+            ->where($queryBuilder->expr()->isNotNull('c.googleTaxonomyId'))
+            ->andWhere('p.locale = :locale')
+            ->andWhere('p.hidden = :hidden')
+            ->setParameters([
+                'locale' => $locale,
+                'hidden' => false,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
     public function removeByIdAndLocale($id, Locale $locale): void
     {
         // We don't flush here, see http://disq.us/p/okjc6b
@@ -66,9 +113,9 @@ class ProductRepository extends EntityRepository
      * @param string $category
      * @param string $url
      *
+     * @return Product|null
      * @throws NonUniqueResultException
      *
-     * @return Product|null
      */
     public function findByCategoryAndUrl(Locale $locale, string $category, $url): ?Product
     {
@@ -84,6 +131,7 @@ class ProductRepository extends EntityRepository
 
         return $queryBuilder->join(Meta::class, 'm', 'WITH', 'm.id = i.meta')
             ->where('i.locale = :locale')
+            ->andWhere('i.hidden = :hidden')
             ->andWhere('m.url = :url')
             ->andWhere(
                 $queryBuilder->expr()->in(
@@ -91,13 +139,12 @@ class ProductRepository extends EntityRepository
                     $categoryQuery->getDQL()
                 )
             )
-            ->setParameters(
-                [
-                    'locale' => $locale,
-                    'url' => $url,
-                    'category' => $category
-                ]
-            )
+            ->setParameters([
+                'locale' => $locale,
+                'hidden' => false,
+                'url' => $url,
+                'category' => $category,
+            ])
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -108,9 +155,9 @@ class ProductRepository extends EntityRepository
      * @param Locale $locale
      * @param Category $category
      *
+     * @return integer
      * @throws NonUniqueResultException
      *
-     * @return integer
      */
     public function getNextSequence(Locale $locale, ?Category $category): int
     {
@@ -135,9 +182,9 @@ class ProductRepository extends EntityRepository
      *
      * @param Locale $locale
      *
+     * @return integer
      * @throws NonUniqueResultException
      *
-     * @return integer
      */
     public function getCount(Locale $locale): int
     {
@@ -187,10 +234,10 @@ class ProductRepository extends EntityRepository
      * @param Locale $locale
      * @param string $url
      *
-     * @throws NoResultException
+     * @return Product
      * @throws NonUniqueResultException
      *
-     * @return Product
+     * @throws NoResultException
      */
     public function findByLocaleAndUrl(Locale $locale, string $url): Product
     {
@@ -255,15 +302,16 @@ class ProductRepository extends EntityRepository
      *
      * @return Product[]
      */
-    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, ?string $sorting)
+    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, string $sorting = Product::SORT_RANDOM)
     {
-        $sql = 'SELECT p.* FROM catalog_products p WHERE p.category_id = :category';
+        $sql = 'SELECT p.* FROM catalog_products p WHERE p.category_id = :category AND p.hidden = :hidden';
         $parameters = [
             'category' => $category,
+            'hidden' => false,
         ];
 
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '. $offset .', ' . $limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -287,14 +335,15 @@ class ProductRepository extends EntityRepository
      */
     public function filterProducts(array $filters, Category $category, int $limit, int $offset, string $sorting): array
     {
-        $sql = 'SELECT p.* FROM catalog_products p WHERE p.category_id = :category';
+        $sql = 'SELECT p.* FROM catalog_products p WHERE p.category_id = :category AND p.hidden = :hidden';
         $parameters = [
             'category' => $category,
+            'hidden' => false,
         ];
 
         $this->buildFilterQuery($sql, $parameters, $filters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '. $offset .', ' . $limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -315,9 +364,10 @@ class ProductRepository extends EntityRepository
      */
     public function filterProductsCount(array $filters, Category $category): int
     {
-        $sql = 'SELECT count(p.id) as total_products FROM catalog_products p WHERE p.category_id = :category';
+        $sql = 'SELECT count(p.id) as total_products FROM catalog_products p WHERE p.category_id = :category AND p.hidden = :hidden';
         $parameters = [
             'category' => $category->getId(),
+            'hidden' => false,
         ];
 
         $this->buildFilterQuery($sql, $parameters, $filters);
@@ -326,7 +376,7 @@ class ProductRepository extends EntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->execute($parameters);
 
-        return (int) $stmt->fetchColumn(0);
+        return (int)$stmt->fetchColumn(0);
     }
 
     /**
@@ -348,7 +398,7 @@ class ProductRepository extends EntityRepository
         $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
         $this->buildFilterQuery($sql, $parameters, $filters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '. $offset .', ' . $limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -379,7 +429,7 @@ class ProductRepository extends EntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->execute($parameters);
 
-        return (int) $stmt->fetchColumn(0);
+        return (int)$stmt->fetchColumn(0);
     }
 
     /**
@@ -399,7 +449,7 @@ class ProductRepository extends EntityRepository
 
         $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '. $offset .', ' . $limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -429,7 +479,7 @@ class ProductRepository extends EntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->execute($parameters);
 
-        return (int) $stmt->fetchColumn(0);
+        return (int)$stmt->fetchColumn(0);
     }
 
     /**
@@ -439,9 +489,46 @@ class ProductRepository extends EntityRepository
      */
     public function buildFilterQuery(string &$sql, array &$parameters, array $filters): void
     {
+        $queryBuilder = $this->_em->createQueryBuilder();
+
+        // Remove not available filters from list
+        $availableFilters = array_map(
+            function ($item) {
+                return $item['url'];
+            },
+            $queryBuilder->select('m.url')
+                ->from(Specification::class, 's')
+                ->join('s.meta', 'm')
+                ->where('s.filter = :filter')
+                ->andWhere(
+                    $queryBuilder->expr()->in('m.url', array_keys($filters))
+                )
+                ->setParameters([
+                    'filter' => true,
+                ])
+                ->getQuery()
+                ->getScalarResult()
+        );
+
         // Counter needed for the parameters
         $i = 0;
         foreach ($filters as $specification => $specificationValue) {
+            if (!in_array($specification, $availableFilters)) {
+                continue;
+            }
+
+            $parameters['specification' . $i] = $specification;
+
+            // Split the specification values
+            $specificationValuesPlaceholder = [];
+            $j = 0;
+            foreach ($specificationValue as $value) {
+                $key = 'specificationValue' . $i . '_' . $j;
+                $specificationValuesPlaceholder[] = ':' . $key;
+                $parameters[$key] = $value;
+                $j++;
+            }
+
             $sql .= ' AND p.id IN(
                 SELECT psv.product_id
                 FROM catalog_specification_values sv
@@ -450,12 +537,9 @@ class ProductRepository extends EntityRepository
                 INNER JOIN catalog_specifications s ON s.id = sv.`specification_id`
                 INNER JOIN meta smeta ON smeta.id = s.meta_id
                 WHERE s.filter = 1
-                AND smeta.url = :specification' . $i .'
-                AND svmeta.url IN (:specificationValue' .$i .')              
+                AND smeta.url = :specification' . $i . '
+                AND svmeta.url IN (' . implode(', ', $specificationValuesPlaceholder) . ')
             )';
-
-            $parameters['specification' . $i] = $specification;
-            $parameters['specificationValue' .$i] = implode(', ', $specificationValue);
 
             // Update the counter
             $i++;
@@ -502,6 +586,56 @@ class ProductRepository extends EntityRepository
         $sql .= $alias . '.sku LIKE :search_term';
         $sql .= ') ';
 
-        $parameters['search_term'] = '%' . $searchTerm .'%';
+        $parameters['search_term'] = '%' . $searchTerm . '%';
+    }
+
+    /**
+     * Get all active products limited per page
+     *
+     * @param Locale $locale
+     * @param int $page
+     * @param int $limit
+     * @return mixed
+     */
+    public function findProductsPerPage(Locale $locale, $page = 1, $limit = 100)
+    {
+        $queryBuilder = $this->createQueryBuilder('i');
+
+        return $queryBuilder->where('i.locale = :locale')
+            ->andWhere('i.hidden = :hidden')
+            ->setParameters([
+                'locale' => $locale,
+                'hidden' => false,
+            ])
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->setFirstResult(($page - 1) * $limit)
+            ->getResult();
+
+    }
+
+    /**
+     * Count the products
+     *
+     * @param Locale $locale
+     *
+     * @return integer
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     *
+     */
+    public function getActiveCount(Locale $locale): int
+    {
+        $query_builder = $this->createQueryBuilder('i');
+
+        return $query_builder->select('COUNT(i.id)')
+            ->where('i.locale = :locale')
+            ->andWhere('i.hidden = :hidden')
+            ->setParameters([
+                'locale' => $locale,
+                'hidden' => false,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

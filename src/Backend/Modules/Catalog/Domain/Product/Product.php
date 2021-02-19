@@ -5,6 +5,8 @@ namespace Backend\Modules\Catalog\Domain\Product;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
 use Backend\Modules\Catalog\Domain\Category\Category;
+use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension;
+use Backend\Modules\Catalog\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Catalog\Domain\SpecificationValue\SpecificationValue;
@@ -31,6 +33,10 @@ class Product
     const SORT_PRICE_DESC = 'price-desc';
     const SORT_CREATED_AT = 'create-at';
 
+    // Define product types
+    const TYPE_DEFAULT = 1;
+    const TYPE_DIMENSIONS = 2;
+
     /**
      * @var int
      *
@@ -38,7 +44,7 @@ class Product
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    public $id;
 
     /**
      * @var Meta
@@ -109,6 +115,22 @@ class Product
     private $specials;
 
     /**
+     * @var ProductDimension[]
+     *
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension", mappedBy="product", cascade={"remove", "persist"})
+     * @ORM\OrderBy({"width" = "ASC", "height" = "ASC"})
+     */
+    private $dimensions;
+
+    /**
+     * @var ProductDimensionNotification[]
+     *
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Catalog\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="product", cascade={"remove", "persist"})
+     * @ORM\OrderBy({"width" = "ASC", "height" = "ASC"})
+     */
+    private $dimension_notifications;
+
+    /**
      * Many Products may have many related products.
      * @var Product[]
      *
@@ -142,6 +164,62 @@ class Product
     private $locale;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $hidden;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 1})
+     */
+    private $type;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $min_width;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $min_height;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $max_width;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $max_height;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $extra_production_width;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $extra_production_height;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255)
@@ -154,6 +232,20 @@ class Product
      * @ORM\Column(type="string", length=255)
      */
     private $sku;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $ean13;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $isbn;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
@@ -201,6 +293,13 @@ class Product
      * @ORM\Column(type="text", nullable=true)
      */
     private $text;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $dimension_instructions;
 
     /**
      * @var MediaGroup
@@ -274,6 +373,14 @@ class Product
         Vat $vat,
         StockStatus $stock_status,
         Locale $locale,
+        bool $hidden,
+        int $type,
+        int $min_width,
+        int $min_height,
+        int $max_width,
+        int $max_height,
+        int $extra_production_width,
+        int $extra_production_height,
         string $title,
         float $weight,
         float $price,
@@ -281,15 +388,20 @@ class Product
         int $order_quantity,
         bool $from_stock,
         string $sku,
+        ?string $ean13,
+        ?string $isbn,
         string $summary,
         ?string $text,
+        ?string $dimension_instructions,
         int $sequence,
         MediaGroup $images,
         MediaGroup $downloads,
         $specification_values,
         $specials,
         $related_products,
-        $up_sell_products
+        $up_sell_products,
+        $dimensions,
+        $dimension_notifications
     )
     {
         $this->cart_values = new ArrayCollection();
@@ -299,6 +411,16 @@ class Product
         $this->vat = $vat;
         $this->stock_status = $stock_status;
         $this->locale = $locale;
+        $this->hidden = $hidden;
+        $this->type = $type;
+        $this->dimension_instructions = $dimension_instructions;
+        $this->min_width = $min_width;
+        $this->min_height = $min_height;
+        $this->max_width = $max_width;
+        $this->max_height = $max_height;
+        $this->extra_production_width = $extra_production_width;
+        $this->extra_production_height = $extra_production_height;
+        $this->type = $type;
         $this->title = $title;
         $this->weight = $weight;
         $this->price = $price;
@@ -306,6 +428,8 @@ class Product
         $this->order_quantity = $order_quantity;
         $this->from_stock = $from_stock;
         $this->sku = $sku;
+        $this->ean13 = $ean13;
+        $this->isbn = $isbn;
         $this->summary = $summary;
         $this->text = $text;
         $this->sequence = $sequence;
@@ -315,6 +439,8 @@ class Product
         $this->specials = $specials;
         $this->related_products = $related_products;
         $this->up_sell_products = $up_sell_products;
+        $this->dimensions = $dimensions;
+        $this->dimension_notifications = $dimension_notifications;
     }
 
     public static function fromDataTransferObject(ProductDataTransferObject $dataTransferObject)
@@ -335,6 +461,14 @@ class Product
             $dataTransferObject->vat,
             $dataTransferObject->stock_status,
             $dataTransferObject->locale,
+            $dataTransferObject->hidden,
+            $dataTransferObject->type,
+            $dataTransferObject->min_width,
+            $dataTransferObject->min_height,
+            $dataTransferObject->max_width,
+            $dataTransferObject->max_height,
+            $dataTransferObject->extra_production_width,
+            $dataTransferObject->extra_production_height,
             $dataTransferObject->title,
             $dataTransferObject->weight,
             $dataTransferObject->price,
@@ -342,15 +476,20 @@ class Product
             $dataTransferObject->order_quantity,
             $dataTransferObject->from_stock,
             $dataTransferObject->sku,
+            $dataTransferObject->ean13,
+            $dataTransferObject->isbn,
             $dataTransferObject->summary,
             $dataTransferObject->text,
+            $dataTransferObject->dimension_instructions,
             $dataTransferObject->sequence,
             $dataTransferObject->images,
             $dataTransferObject->downloads,
             $dataTransferObject->specification_values,
             $dataTransferObject->specials,
             $dataTransferObject->related_products,
-            $dataTransferObject->up_sell_products
+            $dataTransferObject->up_sell_products,
+            $dataTransferObject->dimensions,
+            $dataTransferObject->dimension_notifications
         );
     }
 
@@ -395,14 +534,95 @@ class Product
      */
     public function getProductOptions()
     {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->isNull('parent_product_option_value'));
+
+        return $this->product_options->matching($criteria);
+    }
+
+    /**
+     * @return ProductOption[]
+     */
+    public function getProductOptionsWithSubOptions()
+    {
         return $this->product_options;
     }
 
+    /**
+     * @return Locale
+     */
     public function getLocale(): Locale
     {
         return $this->locale;
     }
 
+    /**
+     * @return bool
+     */
+    public function isHidden(): bool
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinWidth(): int
+    {
+        return $this->min_width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinHeight(): int
+    {
+        return $this->min_height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxWidth(): int
+    {
+        return $this->max_width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxHeight(): int
+    {
+        return $this->max_height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExtraProductionWidth(): int
+    {
+        return $this->extra_production_width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExtraProductionHeight(): int
+    {
+        return $this->extra_production_height;
+    }
+
+    /**
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
@@ -469,14 +689,44 @@ class Product
         return $this->sku;
     }
 
+    /**
+     * @return string
+     */
+    public function getEan13(): ?string
+    {
+        return $this->ean13;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsbn(): ?string
+    {
+        return $this->isbn;
+    }
+
+    /**
+     * @return string
+     */
     public function getSummary(): ?string
     {
         return $this->summary;
     }
 
+    /**
+     * @return string
+     */
     public function getText(): ?string
     {
         return $this->text;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDimensionInstructions(): ?string
+    {
+        return $this->dimension_instructions;
     }
 
     /**
@@ -524,6 +774,25 @@ class Product
     public function getSpecials()
     {
         return $this->specials;
+    }
+
+    /**
+     * @return ProductDimension[]
+     */
+    public function getDimensions()
+    {
+        return $this->dimensions;
+    }
+
+    /**
+     * @return ProductDimensionNotification[]
+     */
+    public function getDimensionNotifications()
+    {
+        $expr = Criteria::expr();
+        $criteria = Criteria::create()->where($expr->isNull('product_option'));
+
+        return $this->dimension_notifications->matching($criteria);
     }
 
     /**
@@ -588,6 +857,14 @@ class Product
         $product->vat = $dataTransferObject->vat;
         $product->stock_status = $dataTransferObject->stock_status;
         $product->locale = $dataTransferObject->locale;
+        $product->hidden = $dataTransferObject->hidden;
+        $product->type = $dataTransferObject->type;
+        $product->min_width = $dataTransferObject->min_width;
+        $product->min_height = $dataTransferObject->min_height;
+        $product->max_width = $dataTransferObject->max_width;
+        $product->max_height = $dataTransferObject->max_height;
+        $product->extra_production_width = $dataTransferObject->extra_production_width;
+        $product->extra_production_height = $dataTransferObject->extra_production_height;
         $product->title = $dataTransferObject->title;
         $product->weight = $dataTransferObject->weight;
         $product->price = $dataTransferObject->price;
@@ -595,8 +872,11 @@ class Product
         $product->order_quantity = $dataTransferObject->order_quantity;
         $product->from_stock = $dataTransferObject->from_stock;
         $product->sku = $dataTransferObject->sku;
+        $product->ean13 = $dataTransferObject->ean13;
+        $product->isbn = $dataTransferObject->isbn;
         $product->summary = $dataTransferObject->summary;
         $product->text = $dataTransferObject->text;
+        $product->dimension_instructions = $dataTransferObject->dimension_instructions;
         $product->sequence = $dataTransferObject->sequence;
         $product->images = $dataTransferObject->images;
         $product->downloads = $dataTransferObject->downloads;
@@ -604,6 +884,8 @@ class Product
         $product->specials = $dataTransferObject->specials;
         $product->related_products = $dataTransferObject->related_products;
         $product->up_sell_products = $dataTransferObject->up_sell_products;
+        $product->dimensions = $dataTransferObject->dimensions;
+        $product->dimension_notifications = $dataTransferObject->dimension_notifications;
 
         return $product;
     }
@@ -718,10 +1000,25 @@ class Product
             return;
         }
 
-        $expr = Criteria::expr();
         $today = (new \DateTime('now'))->setTime(0, 0, 0);
         $price = $this->getPrice();
 
+        if ($this->type == self::TYPE_DIMENSIONS) {
+            $criteria = Criteria::create()->orderBy([
+                'price' => Criteria::ASC
+            ])->setMaxResults(1);
+
+            /**
+             * @var ProductDimension
+             */
+            $dimension = $this->dimensions->matching($criteria)->first();
+
+            if ($dimension) {
+                $price = $dimension->getPrice();
+            }
+        }
+
+        $expr = Criteria::expr();
         $criteria = Criteria::create()->where(
             $expr->andX(
                 $expr->lte('startDate', $today),
@@ -742,5 +1039,58 @@ class Product
         }
 
         $this->activePrice = $price;
+    }
+
+    /**
+     * @return bool
+     */
+    public function usesDimensions(): bool
+    {
+        return $this->type == self::TYPE_DIMENSIONS;
+    }
+
+    /**
+     * @param int $width
+     * @param int $height
+     * @return ProductDimensionNotification|null
+     */
+    public function getDimensionNotificationByDimension(int $width, int $height): ?ProductDimensionNotification
+    {
+        $expr = Criteria::expr();
+        $criteria = Criteria::create()->where($expr->lte('width', $width))
+            ->orWhere($expr->lte('height', $height))
+            ->orderBy(['width' => Criteria::DESC, 'height' => Criteria::DESC])
+            ->setMaxResults(1);
+
+        $dimensionNotifications = $this->dimension_notifications->matching($criteria)->first();
+
+        return $dimensionNotifications ? $dimensionNotifications : null;
+    }
+
+    /**
+     * @param int $width
+     * @param int $height
+     * @return ProductDimensionNotification[]
+     */
+    public function getAllDimensionNotificationsByDimension(int $width, int $height): array
+    {
+        $notifications = [];
+
+        if (!$this->usesDimensions()) {
+            return $notifications;
+        }
+
+        if ($notification = $this->getDimensionNotificationByDimension($width, $height)) {
+            $notifications[] = $notification;
+        }
+
+        foreach ($this->product_options as $productOption) {
+            $notifications = array_merge(
+                $notifications,
+                $productOption->getAllDimensionNotificationsByDimension($width, $height)
+            );
+        }
+
+        return $notifications;
     }
 }

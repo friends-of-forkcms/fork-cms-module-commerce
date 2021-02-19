@@ -17,7 +17,6 @@ class ConfirmOrder extends BaseConfirmOrder
         $createOrderHistory = new CreateOrderHistory();
         $createOrderHistory->order = $this->order;
         $createOrderHistory->orderStatus = $this->getOrderStatus($this->getSetting('orderInitId'));
-        $createOrderHistory->notify = true;
         $this->commandBus->handle($createOrderHistory);
 
         // Trigger an event to notify or not
@@ -26,7 +25,7 @@ class ConfirmOrder extends BaseConfirmOrder
             new OrderCreated($this->order, $createOrderHistory->getOrderHistoryEntity())
         );
 
-        $this->goToPostPaymentPage();
+        $this->redirect($this->redirectUrl);
     }
 
     /**
@@ -34,6 +33,6 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     public function postPayment(): void
     {
-        $this->goToSuccessPage();
+        $this->paid = true;
     }
 }

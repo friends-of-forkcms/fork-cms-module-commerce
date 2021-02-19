@@ -1,0 +1,12 @@
+services:
+    Backend\Modules\Catalog\Domain\Product\ProductSitemapProvider:
+        arguments:
+            - "@catalog.repository.product"
+        tags:
+            - { name: sitemap.provider }
+    Backend\Modules\Catalog\Domain\Category\CategorySitemapProvider:
+        arguments:
+            - "@catalog.repository.category"
+            - "@fork.settings"
+        tags:
+            - { name: sitemap.provider }

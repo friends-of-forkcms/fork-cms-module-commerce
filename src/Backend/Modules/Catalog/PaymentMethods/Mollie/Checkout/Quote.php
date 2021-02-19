@@ -15,18 +15,24 @@ class Quote extends BaseQuote
             return [];
         }
 
-        $name = $this->getSetting('name');
-
-        if ($this->getSetting('price')) {
-            $name .= ' (&euro; '. number_format($this->getSetting('price'), 2, ',', '.') .')';
+        $paymentMethods = $this->getSetting('paymentMethods');
+        if (!$paymentMethods || empty($paymentMethods)) {
+            return [];
         }
 
-        return [
-            $this->name => [
-                'label' =>  $name,
-                'name' => $this->getSetting('name'),
-                'price' => (float) $this->getSetting('price'),
-            ]
-        ];
+        $enabledPaymentMethods = [];
+
+        foreach ($paymentMethods as $key => $paymentMethod) {
+            if (!$paymentMethod['enabled']) {
+                continue;
+            }
+
+            $enabledPaymentMethods[$key] = [
+                'label' => $paymentMethod['label'],
+                'name' => $key,
+            ];
+        }
+
+        return $enabledPaymentMethods;
     }
 }

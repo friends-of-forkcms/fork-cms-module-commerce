@@ -4,7 +4,6 @@ namespace Backend\Modules\Catalog\Domain\Brand;
 
 use Backend\Modules\Catalog\Domain\Brand\Exception\BrandNotFound;
 use Common\Doctrine\Entity\Meta;
-use Backend\Modules\ContentBlocks\Domain\ContentBlock\Exception\ContentBlockNotFound;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
@@ -21,7 +20,7 @@ class BrandRepository extends EntityRepository
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Brand
     {
         if ($id === null) {
-            throw ContentBlockNotFound::forEmptyId();
+            throw BrandNotFound::forEmptyId();
         }
 
         /** @var Brand $brand */

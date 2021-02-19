@@ -11,6 +11,7 @@ use Backend\Modules\Catalog\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\Order\OrderRepository;
 use Common\Exception\RedirectException;
+use Dompdf\Dompdf;
 use Frontend\Core\Engine\TwigTemplate;
 use Knp\Snappy\Pdf;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +64,7 @@ class Invoice extends Action
 
         /** @var Pdf $pdf */
         $pdf = $this->get('knp_snappy.pdf');
-        $pdf->setOption('viewport-size', '1024x768');
+        $pdf->setOption('viewport-size', '1280x1024');
 
         return new Response(
             $pdf->getOutputFromHtml($this->generateHTML()),

@@ -1,4 +1,8 @@
 $(function () {
+  if (typeof ga === 'undefined') {
+    return;
+  }
+
   ga('require', 'ec');
 
   runEnhancedEcommerce();
@@ -6,6 +10,7 @@ $(function () {
   $(document).on('catalog.products.filtered', function () {
     runEnhancedEcommerce();
   });
+
 
   // Handle the click on a product item
   $(document).on('click', '.product-item', function (e) {
@@ -53,7 +58,7 @@ $(function () {
   });
 
   // Product detail view
-  $('[data-product-detail]').each(function(){
+  $('[data-product-detail]').each(function () {
     ga('ec:addProduct', getProductData($(this)));
     ga('ec:setAction', 'detail');
   });

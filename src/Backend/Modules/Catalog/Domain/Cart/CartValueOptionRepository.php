@@ -16,9 +16,9 @@ class CartValueOptionRepository extends EntityRepository
      *
      * @throws NonUniqueResultException
      *
-     * @return CartValueOption
+     * @return CartValueOption|null
      */
-    public function getByCartValueAndProductOptionValue(CartValue $cartValue, ProductOptionValue $productOptionValue): CartValueOption
+    public function getByCartValueAndProductOptionValue(CartValue $cartValue, ProductOptionValue $productOptionValue): ?CartValueOption
     {
         $query_builder = $this->createQueryBuilder('i');
         $entity = null;
@@ -30,12 +30,6 @@ class CartValueOptionRepository extends EntityRepository
                 ->setParameter('product_option_value', $productOptionValue)
                 ->getQuery()
                 ->getOneOrNullResult();
-        }
-
-        if (!$entity) {
-            $entity = new CartValueOption();
-            $entity->setCartValue($cartValue);
-            $entity->setProductOptionValue($productOptionValue);
         }
 
         return $entity;
