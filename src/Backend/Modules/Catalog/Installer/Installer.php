@@ -4,6 +4,7 @@ namespace Backend\Modules\Catalog\Installer;
 
 use Backend\Core\Engine\Model;
 use Backend\Core\Installer\ModuleInstaller;
+use Backend\Modules\Catalog\Domain\Account\Account;
 use Backend\Modules\Catalog\Domain\Brand\Brand;
 use Backend\Modules\Catalog\Domain\Cart\Cart;
 use Backend\Modules\Catalog\Domain\Cart\CartValue;
@@ -15,12 +16,15 @@ use Backend\Modules\Catalog\Domain\Order\Order;
 use Backend\Modules\Catalog\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Catalog\Domain\OrderHistory\OrderHistory;
 use Backend\Modules\Catalog\Domain\OrderProduct\OrderProduct;
+use Backend\Modules\Catalog\Domain\OrderProductNotification\OrderProductNotification;
 use Backend\Modules\Catalog\Domain\OrderProductOption\OrderProductOption;
+use Backend\Modules\Catalog\Domain\OrderRule\OrderRule;
 use Backend\Modules\Catalog\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Catalog\Domain\OrderVat\OrderVat;
 use Backend\Modules\Catalog\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Backend\Modules\Catalog\Domain\ProductDimension\ProductDimension;
+use Backend\Modules\Catalog\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Catalog\Domain\ProductOption\ProductOption;
 use Backend\Modules\Catalog\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Catalog\Domain\ProductSpecial\ProductSpecial;
@@ -313,6 +317,7 @@ class Installer extends ModuleInstaller
             ProductOptionValue::class,
             ProductSpecial::class,
             ProductDimension::class,
+            ProductDimensionNotification::class,
             UpSellProduct::class,
             Country::class,
             OrderAddress::class,
@@ -329,6 +334,9 @@ class Installer extends ModuleInstaller
             CartRule::class,
             ShipmentMethod::class,
             PaymentMethod::class,
+            Account::class,
+            OrderProductNotification::class,
+            OrderRule::class,
         ]);
     }
 }
