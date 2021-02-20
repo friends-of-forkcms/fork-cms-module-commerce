@@ -66,6 +66,10 @@
         <translation language="nl"><![CDATA[media]]></translation>
         <translation language="en"><![CDATA[media]]></translation>
       </item>
+      <item type="label" name="Category">
+        <translation language="nl"><![CDATA[categorie]]></translation>
+        <translation language="en"><![CDATA[category]]></translation>
+      </item>
       <item type="label" name="InCategory">
         <translation language="nl"><![CDATA[in categorie]]></translation>
         <translation language="en"><![CDATA[in category]]></translation>

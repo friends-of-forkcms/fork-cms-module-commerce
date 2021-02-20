@@ -3,6 +3,7 @@
 namespace Backend\Modules\Catalog\Domain\Category;
 
 use Backend\Core\Engine\Model;
+use Backend\Core\Language\Language;
 use Backend\Modules\Catalog\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
@@ -357,7 +358,7 @@ class Category
         if (isset($extra['data'])) {
             $data = $data + (array)$extra['data'];
         }
-        $data['extra_label'] = $this->title;
+        $data['extra_label'] = ucfirst(Language::lbl('Category')) . ' - ' . $this->title;
 
         Model::updateExtra($this->extraId, 'data', $data);
     }
