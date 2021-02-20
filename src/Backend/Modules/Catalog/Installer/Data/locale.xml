@@ -1039,6 +1039,10 @@
         <translation language="nl"><![CDATA[nieuw]]></translation>
         <translation language="en"><![CDATA[new]]></translation>
       </item>
+      <item type="label" name="ShopSettings">
+        <translation language="nl"><![CDATA[winkelinstellingen]]></translation>
+        <translation language="en"><![CDATA[shop settings]]></translation>
+      </item>
     </Catalog>
     <Core>
       <item type="label" name="Catalog">

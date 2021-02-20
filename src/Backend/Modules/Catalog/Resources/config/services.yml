@@ -4,6 +4,7 @@ imports:
   - { resource: cart_commands.yml }
   - { resource: cart_rule_commands.yml }
   - { resource: category_commands.yml }
+  - { resource: eventListener.yml }
   - { resource: product_commands.yml }
   - { resource: order_commands.yml }
   - { resource: order_events.yml }

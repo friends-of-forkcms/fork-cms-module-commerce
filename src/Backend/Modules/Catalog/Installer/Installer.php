@@ -47,261 +47,13 @@ class Installer extends ModuleInstaller
     public function install(): void
     {
         $this->configureEntities();
-
-        // add 'catalog' as a module
         $this->addModule('Catalog');
-
-        // import locale
         $this->importLocale(__DIR__ . '/Data/locale.xml');
-
-        // general settings
-        $this->setSetting('Catalog', 'overview_num_items', 10);
-        $this->setSetting('Catalog', 'filters_show_more_num_items', 5);
-        $this->setSetting('Catalog', 'next_invoice_number', (int) date('Y') . "0001");
-
-        $this->makeSearchable('Catalog');
-
-        // module rights
-        $this->setModuleRights(1, 'Catalog');
-
-        // products and index
-        $this->setActionRights(1, 'Catalog', 'Index');
-        $this->setActionRights(1, 'Catalog', 'Add');
-        $this->setActionRights(1, 'Catalog', 'Edit');
-        $this->setActionRights(1, 'Catalog', 'Delete');
-        $this->setActionRights(1, 'Catalog', 'Copy');
-        $this->setActionRights(1, 'Catalog', 'SequenceProducts');
-        $this->setActionRights(1, 'Catalog', 'AutoCompleteProducts');
-
-        // categories
-        $this->setActionRights(1, 'Catalog', 'Categories');
-        $this->setActionRights(1, 'Catalog', 'AddCategory');
-        $this->setActionRights(1, 'Catalog', 'EditCategory');
-        $this->setActionRights(1, 'Catalog', 'DeleteCategory');
-        $this->setActionRights(1, 'Catalog', 'SequenceCategories');
-
-        // specifications
-        $this->setActionRights(1, 'Catalog', 'Specifications');
-        $this->setActionRights(1, 'Catalog', 'EditSpecification');
-        $this->setActionRights(1, 'Catalog', 'AddSpecification');
-        $this->setActionRights(1, 'Catalog', 'DeleteSpecification');
-        $this->setActionRights(1, 'Catalog', 'SequenceSpecifications');
-
-        // specification values
-        $this->setActionRights(1, 'Catalog', 'EditSpecificationValue');
-        $this->setActionRights(1, 'Catalog', 'DeleteSpecificationValue');
-        $this->setActionRights(1, 'Catalog', 'SequenceSpecificationValues');
-        $this->setActionRights(1, 'Catalog', 'AutoCompleteSpecificationValue');
-
-        // orders
-        $this->setActionRights(1, 'Catalog', 'Orders');
-        $this->setActionRights(1, 'Catalog', 'EditOrder');
-        $this->setActionRights(1, 'Catalog', 'DeleteCompleted');
-        $this->setActionRights(1, 'Catalog', 'MassOrderAction');
-        $this->setActionRights(1, 'Catalog', 'GenerateInvoiceNumber');
-        $this->setActionRights(1, 'Catalog', 'PackingSlip');
-        $this->setActionRights(1, 'Catalog', 'Invoice');
-
-        // settings
-        $this->setActionRights(1, 'Catalog', 'Settings');
-
-        // brands
-        $this->setActionRights(1, 'Catalog', 'Brands');
-        $this->setActionRights(1, 'Catalog', 'AddBrand');
-        $this->setActionRights(1, 'Catalog', 'EditBrand');
-        $this->setActionRights(1, 'Catalog', 'DeleteBrand');
-        $this->setActionRights(1, 'Catalog', 'SequenceBrands');
-
-        // vats
-        $this->setActionRights(1, 'Catalog', 'Vats');
-        $this->setActionRights(1, 'Catalog', 'AddVat');
-        $this->setActionRights(1, 'Catalog', 'EditVat');
-        $this->setActionRights(1, 'Catalog', 'DeleteVat');
-        $this->setActionRights(1, 'Catalog', 'SequenceVats');
-
-        // stock statuses
-        $this->setActionRights(1, 'Catalog', 'StockStatuses');
-        $this->setActionRights(1, 'Catalog', 'AddStockStatus');
-        $this->setActionRights(1, 'Catalog', 'EditStockStatus');
-        $this->setActionRights(1, 'Catalog', 'DeleteStockStatus');
-
-        // order statuses
-        $this->setActionRights(1, 'Catalog', 'OrderStatuses');
-        $this->setActionRights(1, 'Catalog', 'AddOrderStatus');
-        $this->setActionRights(1, 'Catalog', 'EditOrderStatus');
-        $this->setActionRights(1, 'Catalog', 'DeleteOrderStatus');
-
-        // shipment methods
-        $this->setActionRights(1, 'Catalog', 'ShipmentMethods');
-        $this->setActionRights(1, 'Catalog', 'EditShipmentMethod');
-        $this->setActionRights(1, 'Catalog', 'DisableShipmentMethod');
-        $this->setActionRights(1, 'Catalog', 'EnableShipmentMethod');
-
-        // payment methods
-        $this->setActionRights(1, 'Catalog', 'PaymentMethods');
-        $this->setActionRights(1, 'Catalog', 'EditPaymentMethod');
-        $this->setActionRights(1, 'Catalog', 'DisablePaymentMethod');
-        $this->setActionRights(1, 'Catalog', 'EnablePaymentMethod');
-
-        // product options methods
-        $this->setActionRights(1, 'Catalog', 'AddProductOption');
-        $this->setActionRights(1, 'Catalog', 'EditProductOption');
-        $this->setActionRights(1, 'Catalog', 'DeleteProductOption');
-        $this->setActionRights(1, 'Catalog', 'SequenceProductOptions');
-
-        // product option values methods
-        $this->setActionRights(1, 'Catalog', 'AddProductOptionValue');
-        $this->setActionRights(1, 'Catalog', 'EditProductOptionValue');
-        $this->setActionRights(1, 'Catalog', 'DeleteProductOptionValue');
-        $this->setActionRights(1, 'Catalog', 'SequenceProductOptionValues');
-        $this->setActionRights(1, 'Catalog', 'AutoCompleteProductOptionValue');
-
-        // product option values methods
-        $this->setActionRights(1, 'Catalog', 'CartRules');
-        $this->setActionRights(1, 'Catalog', 'AddCartRule');
-        $this->setActionRights(1, 'Catalog', 'EditCartRule');
-        $this->setActionRights(1, 'Catalog', 'DeleteCartRule');
-
-        // countries
-        $this->setActionRights(1, 'Catalog', 'Countries');
-        $this->setActionRights(1, 'Catalog', 'AddCountry');
-        $this->setActionRights(1, 'Catalog', 'EditCountry');
-        $this->setActionRights(1, 'Catalog', 'DeleteCountry');
-
-        // add extra's
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Index');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Catalog', 'Cart');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Brand', 'Brand');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Cart', 'Cart');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Search', 'Search');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'Register', 'Register');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'CustomerOrders', 'CustomerOrders');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'CustomerAddresses', 'CustomerAddresses');
-        $this->insertExtra('Catalog', ModuleExtraType::block(), 'GuestOrderTracking', 'GuestOrderTracking');
-        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Search', 'Search');
-        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'GoogleSiteSearch', 'GoogleSiteSearch');
-        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Categories', 'Categories');
-        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'ShoppingCart', 'ShoppingCart');
-        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'RecentProducts', 'RecentProducts');
-        $this->insertExtra('Catalog', ModuleExtraType::widget(), 'Brands', 'Brands');
-
-        // set navigation
-        $navigationCatalogId = $this->setNavigation(0, 'Catalog');
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Products',
-            'catalog/index',
-            [
-                'catalog/add',
-                'catalog/edit',
-                'catalog/add_product_option',
-                'catalog/edit_product_option',
-                'catalog/add_product_option_value',
-                'catalog/edit_product_option_value',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Categories',
-            'catalog/categories',
-            [
-                'catalog/add_category',
-                'catalog/edit_category'
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Specifications',
-            'catalog/specifications',
-            [
-                'catalog/add_specification',
-                'catalog/edit_specification',
-                'catalog/edit_specification_value',
-            ]
-        );
-        $this->setNavigation(
-            0,
-            'Orders',
-            'catalog/orders',
-            [
-                'catalog/edit_order',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Brands',
-            'catalog/brands',
-            [
-                'catalog/add_brand',
-                'catalog/edit_brand',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Vats',
-            'catalog/vats',
-            [
-                'catalog/add_vat',
-                'catalog/edit_vat',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'StockStatuses',
-            'catalog/stock_statuses',
-            [
-                'catalog/add_stock_status',
-                'catalog/edit_stock_status',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'OrderStatuses',
-            'catalog/order_statuses',
-            [
-                'catalog/add_order_status',
-                'catalog/edit_order_status',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'ShipmentMethods',
-            'catalog/shipment_methods',
-            [
-                'catalog/edit_shipment_method',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'PaymentMethods',
-            'catalog/payment_methods',
-            [
-                'catalog/edit_payment_method',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Discounts',
-            'catalog/cart_rules',
-            [
-                'catalog/add_cart_rule',
-                'catalog/edit_cart_rule',
-            ]
-        );
-        $this->setNavigation(
-            $navigationCatalogId,
-            'Countries',
-            'catalog/countries',
-            [
-                'catalog/add_country',
-                'catalog/edit_country',
-            ]
-        );
-
-        // settings navigation
-        $navigationSettingsId = $this->setNavigation(null, 'Settings');
-        $navigationModulesId  = $this->setNavigation($navigationSettingsId, 'Modules');
-        $this->setNavigation($navigationModulesId, 'Catalog', 'catalog/settings');
+        $this->makeSearchable($this->getModule());
+        $this->addBackendNavigation();
+        $this->addModulePermissions();
+        $this->addModuleSettings();
+        $this->addFrontendExtras();
     }
 
     private function configureEntities(): void
@@ -338,5 +90,272 @@ class Installer extends ModuleInstaller
             OrderProductNotification::class,
             OrderRule::class,
         ]);
+    }
+
+    private function addBackendNavigation(): void
+    {
+        $parentNavigationId = $this->setNavigation(null, $this->getModule(), 'catalog/orders', null, 4);
+
+        // Orders
+        $this->setNavigation(
+            $parentNavigationId,
+            'Orders',
+            'catalog/orders',
+            [
+                'catalog/edit_order',
+            ]
+        );
+
+        // Products
+        $this->setNavigation(
+            $parentNavigationId,
+            'Products',
+            'catalog/index',
+            [
+                'catalog/add',
+                'catalog/edit',
+                'catalog/add_product_option',
+                'catalog/edit_product_option',
+                'catalog/add_product_option_value',
+                'catalog/edit_product_option_value',
+            ]
+        );
+        $this->setNavigation(
+            $parentNavigationId,
+            'Categories',
+            'catalog/categories',
+            [
+                'catalog/add_category',
+                'catalog/edit_category'
+            ]
+        );
+        $this->setNavigation(
+            $parentNavigationId,
+            'Specifications',
+            'catalog/specifications',
+            [
+                'catalog/add_specification',
+                'catalog/edit_specification',
+                'catalog/edit_specification_value',
+            ]
+        );
+        $this->setNavigation(
+            $parentNavigationId,
+            'Brands',
+            'catalog/brands',
+            [
+                'catalog/add_brand',
+                'catalog/edit_brand',
+            ]
+        );
+        $this->setNavigation(
+            $parentNavigationId,
+            'Discounts',
+            'catalog/cart_rules',
+            [
+                'catalog/add_cart_rule',
+                'catalog/edit_cart_rule',
+            ]
+        );
+        $this->setNavigation(
+            $parentNavigationId,
+            'Vats',
+            'catalog/vats',
+            [
+                'catalog/add_vat',
+                'catalog/edit_vat',
+            ]
+        );
+
+        // Shop settings
+        $shopSettingsNavigationId = $this->setNavigation(
+            $parentNavigationId,
+            'ShopSettings',
+            'catalog/stock_statuses'
+        );
+        $this->setNavigation(
+            $shopSettingsNavigationId,
+            'StockStatuses',
+            'catalog/stock_statuses',
+            [
+                'catalog/add_stock_status',
+                'catalog/edit_stock_status',
+            ]
+        );
+        $this->setNavigation(
+            $shopSettingsNavigationId,
+            'OrderStatuses',
+            'catalog/order_statuses',
+            [
+                'catalog/add_order_status',
+                'catalog/edit_order_status',
+            ]
+        );
+        $this->setNavigation(
+            $shopSettingsNavigationId,
+            'ShipmentMethods',
+            'catalog/shipment_methods',
+            [
+                'catalog/edit_shipment_method',
+            ]
+        );
+        $this->setNavigation(
+            $shopSettingsNavigationId,
+            'PaymentMethods',
+            'catalog/payment_methods',
+            [
+                'catalog/edit_payment_method',
+            ]
+        );
+        $this->setNavigation(
+            $shopSettingsNavigationId,
+            'Countries',
+            'catalog/countries',
+            [
+                'catalog/add_country',
+                'catalog/edit_country',
+            ]
+        );
+
+        // settings navigation
+        $navigationSettingsId = $this->setNavigation(null, 'Settings');
+        $navigationModulesId  = $this->setNavigation($navigationSettingsId, 'Modules');
+        $this->setNavigation($navigationModulesId, $this->getModule(), 'catalog/settings');
+    }
+
+    private function addModulePermissions(): void
+    {
+        // module rights
+        $this->setModuleRights(1, $this->getModule());
+
+        // products and index
+        $this->setActionRights(1, $this->getModule(), 'Index');
+        $this->setActionRights(1, $this->getModule(), 'Add');
+        $this->setActionRights(1, $this->getModule(), 'Edit');
+        $this->setActionRights(1, $this->getModule(), 'Delete');
+        $this->setActionRights(1, $this->getModule(), 'Copy');
+        $this->setActionRights(1, $this->getModule(), 'SequenceProducts');
+        $this->setActionRights(1, $this->getModule(), 'AutoCompleteProducts');
+
+        // categories
+        $this->setActionRights(1, $this->getModule(), 'Categories');
+        $this->setActionRights(1, $this->getModule(), 'AddCategory');
+        $this->setActionRights(1, $this->getModule(), 'EditCategory');
+        $this->setActionRights(1, $this->getModule(), 'DeleteCategory');
+        $this->setActionRights(1, $this->getModule(), 'SequenceCategories');
+
+        // specifications
+        $this->setActionRights(1, $this->getModule(), 'Specifications');
+        $this->setActionRights(1, $this->getModule(), 'EditSpecification');
+        $this->setActionRights(1, $this->getModule(), 'AddSpecification');
+        $this->setActionRights(1, $this->getModule(), 'DeleteSpecification');
+        $this->setActionRights(1, $this->getModule(), 'SequenceSpecifications');
+
+        // specification values
+        $this->setActionRights(1, $this->getModule(), 'EditSpecificationValue');
+        $this->setActionRights(1, $this->getModule(), 'DeleteSpecificationValue');
+        $this->setActionRights(1, $this->getModule(), 'SequenceSpecificationValues');
+        $this->setActionRights(1, $this->getModule(), 'AutoCompleteSpecificationValue');
+
+        // orders
+        $this->setActionRights(1, $this->getModule(), 'Orders');
+        $this->setActionRights(1, $this->getModule(), 'EditOrder');
+        $this->setActionRights(1, $this->getModule(), 'DeleteCompleted');
+        $this->setActionRights(1, $this->getModule(), 'MassOrderAction');
+        $this->setActionRights(1, $this->getModule(), 'GenerateInvoiceNumber');
+        $this->setActionRights(1, $this->getModule(), 'PackingSlip');
+        $this->setActionRights(1, $this->getModule(), 'Invoice');
+
+        // settings
+        $this->setActionRights(1, $this->getModule(), 'Settings');
+
+        // brands
+        $this->setActionRights(1, $this->getModule(), 'Brands');
+        $this->setActionRights(1, $this->getModule(), 'AddBrand');
+        $this->setActionRights(1, $this->getModule(), 'EditBrand');
+        $this->setActionRights(1, $this->getModule(), 'DeleteBrand');
+        $this->setActionRights(1, $this->getModule(), 'SequenceBrands');
+
+        // vats
+        $this->setActionRights(1, $this->getModule(), 'Vats');
+        $this->setActionRights(1, $this->getModule(), 'AddVat');
+        $this->setActionRights(1, $this->getModule(), 'EditVat');
+        $this->setActionRights(1, $this->getModule(), 'DeleteVat');
+        $this->setActionRights(1, $this->getModule(), 'SequenceVats');
+
+        // stock statuses
+        $this->setActionRights(1, $this->getModule(), 'StockStatuses');
+        $this->setActionRights(1, $this->getModule(), 'AddStockStatus');
+        $this->setActionRights(1, $this->getModule(), 'EditStockStatus');
+        $this->setActionRights(1, $this->getModule(), 'DeleteStockStatus');
+
+        // order statuses
+        $this->setActionRights(1, $this->getModule(), 'OrderStatuses');
+        $this->setActionRights(1, $this->getModule(), 'AddOrderStatus');
+        $this->setActionRights(1, $this->getModule(), 'EditOrderStatus');
+        $this->setActionRights(1, $this->getModule(), 'DeleteOrderStatus');
+
+        // shipment methods
+        $this->setActionRights(1, $this->getModule(), 'ShipmentMethods');
+        $this->setActionRights(1, $this->getModule(), 'EditShipmentMethod');
+        $this->setActionRights(1, $this->getModule(), 'DisableShipmentMethod');
+        $this->setActionRights(1, $this->getModule(), 'EnableShipmentMethod');
+
+        // payment methods
+        $this->setActionRights(1, $this->getModule(), 'PaymentMethods');
+        $this->setActionRights(1, $this->getModule(), 'EditPaymentMethod');
+        $this->setActionRights(1, $this->getModule(), 'DisablePaymentMethod');
+        $this->setActionRights(1, $this->getModule(), 'EnablePaymentMethod');
+
+        // product options methods
+        $this->setActionRights(1, $this->getModule(), 'AddProductOption');
+        $this->setActionRights(1, $this->getModule(), 'EditProductOption');
+        $this->setActionRights(1, $this->getModule(), 'DeleteProductOption');
+        $this->setActionRights(1, $this->getModule(), 'SequenceProductOptions');
+
+        // product option values methods
+        $this->setActionRights(1, $this->getModule(), 'AddProductOptionValue');
+        $this->setActionRights(1, $this->getModule(), 'EditProductOptionValue');
+        $this->setActionRights(1, $this->getModule(), 'DeleteProductOptionValue');
+        $this->setActionRights(1, $this->getModule(), 'SequenceProductOptionValues');
+        $this->setActionRights(1, $this->getModule(), 'AutoCompleteProductOptionValue');
+
+        // product option values methods
+        $this->setActionRights(1, $this->getModule(), 'CartRules');
+        $this->setActionRights(1, $this->getModule(), 'AddCartRule');
+        $this->setActionRights(1, $this->getModule(), 'EditCartRule');
+        $this->setActionRights(1, $this->getModule(), 'DeleteCartRule');
+
+        // countries
+        $this->setActionRights(1, $this->getModule(), 'Countries');
+        $this->setActionRights(1, $this->getModule(), 'AddCountry');
+        $this->setActionRights(1, $this->getModule(), 'EditCountry');
+        $this->setActionRights(1, $this->getModule(), 'DeleteCountry');
+    }
+
+    private function addFrontendExtras(): void
+    {
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Catalog', 'Index');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Catalog', 'Cart');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Brand', 'Brand');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Search', 'Search');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Register', 'Register');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerOrders', 'CustomerOrders');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerAddresses', 'CustomerAddresses');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'GuestOrderTracking', 'GuestOrderTracking');
+        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'Search', 'Search');
+        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'GoogleSiteSearch', 'GoogleSiteSearch');
+        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'Categories', 'Categories');
+        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'ShoppingCart', 'ShoppingCart');
+        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'RecentProducts', 'RecentProducts');
+        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'Brands', 'Brands');
+    }
+
+    private function addModuleSettings(): void
+    {
+        $this->setSetting($this->getModule(), 'overview_num_items', 10);
+        $this->setSetting($this->getModule(), 'filters_show_more_num_items', 5);
+        $this->setSetting($this->getModule(), 'next_invoice_number', (int) date('Y') . "0001");
     }
 }
