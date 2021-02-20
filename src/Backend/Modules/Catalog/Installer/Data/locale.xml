@@ -1170,6 +1170,12 @@
         <translation language="en"><![CDATA[guest order tracking]]></translation>
       </item>
     </Core>
+    <Pages>
+      <item type="label" name="Brands">
+        <translation language="nl"><![CDATA[merken]]></translation>
+        <translation language="en"><![CDATA[brands]]></translation>
+      </item>
+    </Pages>
   </Backend>
 
   <Frontend>
