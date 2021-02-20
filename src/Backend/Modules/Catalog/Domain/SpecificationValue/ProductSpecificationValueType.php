@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Catalog\Domain\SpecificationValue;
 
+use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Catalog\Domain\Specification\Specification;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -37,7 +38,7 @@ class ProductSpecificationValueType extends AbstractType
                 'allow_clear'          => false,
                 'allow_add'            => [
                     'enabled'        => true,
-                    'new_tag_text'   => ' (Nieuw)',
+                    'new_tag_text'   => ' (' . Language::lbl('New') .')',
                     'tag_separators' => '[","]',
                 ],
                 'delay'                => 250,

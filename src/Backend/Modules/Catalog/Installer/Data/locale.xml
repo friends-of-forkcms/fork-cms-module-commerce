@@ -1031,6 +1031,10 @@
         <translation language="nl"><![CDATA[Google taxonomie id]]></translation>
         <translation language="en"><![CDATA[Google taxonomy id]]></translation>
       </item>
+      <item type="label" name="New">
+        <translation language="nl"><![CDATA[nieuw]]></translation>
+        <translation language="en"><![CDATA[new]]></translation>
+      </item>
     </Catalog>
     <Core>
       <item type="label" name="Catalog">
