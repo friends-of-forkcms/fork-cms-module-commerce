@@ -138,7 +138,7 @@ class AddProductOption extends BackendBaseActionAdd
         }
     }
 
-    private function getProduct(): Product
+    private function getProduct(): ?Product
     {
         /** @var ProductRepository $productRepository */
         $productRepository = $this->get('catalog.repository.product');
@@ -155,7 +155,7 @@ class AddProductOption extends BackendBaseActionAdd
         return null;
     }
 
-    private function getProductOptionValue(): ProductOptionValue
+    private function getProductOptionValue(): ?ProductOptionValue
     {
         /** @var ProductOptionValueRepository $productOptionValueRepository */
         $productOptionValueRepository = $this->get('catalog.repository.product_option_value');
