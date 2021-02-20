@@ -3,36 +3,37 @@
 
 {% block actionbar %}
     {% if showCatalogAddCategory %}
-		<div class="btn-toolbar pull-right">
-			<div class="btn-group" role="group">
+        <div class="btn-toolbar pull-right">
+            <div class="btn-group" role="group">
                 {{ macro.buttonIcon( geturl('AddCategory'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
-			</div>
-		</div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="content-block content-block-p">
+    <div class="content-block">
         {{ form_start(filterCategory) }}
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="category" class="control-label">{{ 'lbl.ShowOnlyCategoriesUnderCategory'|trans|ucfirst }}</label>
-                    {{ form_widget(filterCategory.category) }}
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="category" class="control-label">{{ 'lbl.ShowOnlyCategoriesUnderCategory'|trans|ucfirst }}</label>
+                            {{ form_widget(filterCategory.category) }}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="panel-footer">
                 <div class="btn-toolbar">
                     <div class="btn-group pull-right">
-                        <button id="search" type="submit" class="btn btn-primary" name="search">
-                            <span class="fa fa-refresh"></span>&nbsp;
-                            {{ 'lbl.UpdateFilter'|trans|ucfirst }}
-                        </button>
+                        {{ macro.buttonIcon('', 'refresh', 'lbl.UpdateFilter'|trans|ucfirst, 'btn-primary', { "type":"submit", "id":"search", "name":"search" }) }}
                     </div>
                 </div>
             </div>
         </div>
-
 
         {{ form_end(filterCategory) }}
     </div>
