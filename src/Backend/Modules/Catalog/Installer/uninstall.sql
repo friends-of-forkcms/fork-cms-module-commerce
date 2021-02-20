@@ -2,6 +2,7 @@
 
 -- Drop module tables
 SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS catalog_account;
 DROP TABLE IF EXISTS catalog_brands;
 DROP TABLE IF EXISTS catalog_cart_cart_rules;
 DROP TABLE IF EXISTS catalog_cart_rules;
@@ -12,18 +13,20 @@ DROP TABLE IF EXISTS catalog_categories;
 DROP TABLE IF EXISTS catalog_countries;
 DROP TABLE IF EXISTS catalog_order_addresses;
 DROP TABLE IF EXISTS catalog_order_histories;
+DROP TABLE IF EXISTS catalog_order_product_notifications;
 DROP TABLE IF EXISTS catalog_order_product_options;
 DROP TABLE IF EXISTS catalog_order_products;
+DROP TABLE IF EXISTS catalog_order_rules;
 DROP TABLE IF EXISTS catalog_order_statuses;
 DROP TABLE IF EXISTS catalog_order_vats;
 DROP TABLE IF EXISTS catalog_orders;
 DROP TABLE IF EXISTS catalog_payment_methods;
+DROP TABLE IF EXISTS catalog_product_dimension_notification;
 DROP TABLE IF EXISTS catalog_product_dimensions;
 DROP TABLE IF EXISTS catalog_product_option_values;
 DROP TABLE IF EXISTS catalog_product_option_values_dependencies;
 DROP TABLE IF EXISTS catalog_product_options;
 DROP TABLE IF EXISTS catalog_product_specials;
-DROP TABLE IF EXISTS catalog_specials;
 DROP TABLE IF EXISTS catalog_products;
 DROP TABLE IF EXISTS catalog_products_specification_values;
 DROP TABLE IF EXISTS catalog_related_products;
@@ -51,3 +54,5 @@ DELETE FROM locale WHERE module = 'core' AND name LIKE 'Catalog%';
 DELETE FROM modules WHERE name = 'Catalog';
 DELETE FROM modules_extras WHERE module = 'Catalog';
 DELETE FROM modules_settings WHERE module = 'Catalog';
+
+-- Don't forget to clear cache: bin/console c:c
