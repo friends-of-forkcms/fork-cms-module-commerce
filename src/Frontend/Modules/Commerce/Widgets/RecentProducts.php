@@ -3,8 +3,6 @@
 namespace Frontend\Modules\Commerce\Widgets;
 
 use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
-use Frontend\Core\Engine\Navigation as FrontendNavigation;
-use Frontend\Core\Engine\Model as FrontendModel;
 use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
 
 /**
@@ -17,7 +15,7 @@ class RecentProducts extends FrontendBaseWidget
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
         $this->loadTemplate();
