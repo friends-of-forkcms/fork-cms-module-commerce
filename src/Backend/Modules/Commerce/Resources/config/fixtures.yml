@@ -1,0 +1,6 @@
+services:
+  demostore.fixtures:
+    class: Backend\Modules\Commerce\DataFixtures\DemoStoreFixtures
+    arguments:
+      - "@command_bus"
+    tags: [ 'doctrine.fixture.orm' ]
