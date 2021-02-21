@@ -2,13 +2,6 @@
 
 namespace Frontend\Modules\Commerce\Widgets;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Common\Core\Cookie;
