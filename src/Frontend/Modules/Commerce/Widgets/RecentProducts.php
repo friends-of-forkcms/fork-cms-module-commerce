@@ -28,7 +28,7 @@ class RecentProducts extends FrontendBaseWidget
     private function parse()
     {
         // get list of recent products
-        $numItems = FrontendModel::getModuleSetting('Commerce', 'recent_products_full_num_items', 3);
+        $numItems = $this->get('fork.settings')->get('Commerce', 'recent_products_full_num_items', 3);
         $recentProducts = FrontendCommerceModel::getAll($numItems);
 
         $this->tpl->assign('widgetCommerceRecentProducts', $recentProducts);

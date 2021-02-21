@@ -94,8 +94,7 @@ class Brand extends FrontendBaseBlock
 
         // set URL and limit
         $this->pagination['url'] = FrontendNavigation::getURLForBlock('commerce', 'category') . '/' . $this->record['url'];
-
-        $this->pagination['limit'] = FrontendModel::getModuleSetting('commerce', 'overview_num_items', 10);
+        $this->pagination['limit'] = $this->get('fork.settings')->get('commerce', 'overview_num_items', 10);
 
         // populate count fields in pagination
         $this->pagination['num_items'] = FrontendCommerceModel::getCategoryCount($this->record['id']);
