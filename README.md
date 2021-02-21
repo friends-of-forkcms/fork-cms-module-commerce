@@ -1,6 +1,6 @@
-# Fork CMS Catalog module
+# Fork CMS Commerce
 
-This catalog module is insipred by the created by Webleads. We upgraded this module from Fork version 3 to version 5. By this we are able to use more of the Fork features.
+This commerce module is inspired by the catalog module created by Webleads. [Jacob Van Dam](https://www.jvdict.nl) upgraded and improved this module massively.
 
 ## Capabilities
 
@@ -22,19 +22,24 @@ We also removed some components:
 
 ### 1. Upload the module
 
-Upload this module as usual, copy the `Catalog` folder from the `Backend` and `Frontend`.
+Upload this module as usual, by copying the `Commerce` folder from the `Backend` and `Frontend` folders.
 
-### 2. Run composer
+### 2. Install dependencies
 
 This module requires extra dependencies, you can install these by running:
 
-```
-composer require tetranz/select2entity-bundle
-composer require knplabs/knp-snappy-bundle
-composer require h4cc/wkhtmltopdf-amd64
+```bash
+composer require tetranz/select2entity-bundle "v2.10.1"
+composer require knplabs/knp-snappy-bundle "v1.6.0"
+composer require h4cc/wkhtmltopdf-amd64 "^0.12.4"
+composer require gedmo/doctrine-extensions "^3.0"
+composer require jeroendesloovere/sitemap-bundle "^2.0"
+
+# In case you want to load the demo fixtures
+composer require --dev doctrine/doctrine-fixtures-bundle
 ```
 
-Enable KnpSnappyBundle and new TetranzSelect2EntityBundle in your kernel:
+Enable bundles in your kernel:
 
 ```php
 // app/AppKernel.php
@@ -44,6 +49,8 @@ public function registerBundles()
         //...
         new \Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
         new \Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+        new \Backend\Modules\Sitemaps\Sitemaps(),
+        new \JeroenDesloovere\SitemapBundle\SitemapBundle(),
         //...
     ];
 }
@@ -86,14 +93,9 @@ And than build the files:
 gulp build
 ```
 
-Now you should be able to run this module.
-
-At the moment we are working on the backend, frontend is slowly to be finished.
-
 ### 4. Configure LiipImagineBundle filters
 
-````
-Configure the following filters to your config file:
+Configure the following filters to your config file, to use properly resized images in the frontend.
 
 ```yaml
 # app/config/config.yml
