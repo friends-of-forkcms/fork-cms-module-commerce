@@ -58,29 +58,11 @@ class Add extends BackendBaseActionAdd
     {
         parent::parse();
 
-        $this->header->addJS(
-            '/js/vendors/select2.full.min.js',
-            null,
-            true,
-            true
-        );
-
-        $this->header->addJS(
-            '/js/vendors/' . Locale::workingLocale() . '.js',
-            null,
-            true,
-            true
-        );
-
+        $this->header->addJS('/js/vendors/select2.full.min.js', null, true, true);
+        $this->header->addJS('/js/vendors/' . Locale::workingLocale() . '.js', null, true, true);
         $this->header->addJS('Select2Entity.js');
         $this->header->addJS('ProductDimensions.js');
-
-        $this->header->addCSS(
-            '/css/vendors/select2.min.css',
-            null,
-            true,
-            false
-        );
+        $this->header->addCSS('/css/vendors/select2.min.css', null, true, false);
         $this->header->addCSS('ProductDimensions.css');
 
         $this->header->addJsData($this->getModule(), 'types', [

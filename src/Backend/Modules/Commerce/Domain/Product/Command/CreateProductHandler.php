@@ -9,8 +9,7 @@ use Common\ModuleExtraType;
 
 final class CreateProductHandler
 {
-    /** @var ProductRepository */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
     public function __construct(ProductRepository $productRepository)
     {
