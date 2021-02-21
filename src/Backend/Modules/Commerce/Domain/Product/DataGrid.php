@@ -17,18 +17,40 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(Locale $locale, ?Category $category, ?string $sku, int $offset = 0)
     {
-        $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence, i.hidden, i.sequence as `sort_order`
-		          FROM commerce_products AS i
-		          WHERE i.language = :language';
+        $query = 'SELECT
+                    i.id,
+                    i.title AS title,
+                    i.sku,
+                    i.category_id,
+                    b.title AS brand,
+                    i.price,
+                    i.stock,
+                    i.sequence,
+                    i.hidden,
+                    i.sequence as `sort_order`
+                FROM commerce_products AS i
+                LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
+                WHERE i.language = :language';
 
         $parameters = [
             'language' => $locale
         ];
 
         if ($category) {
-            $query = 'SELECT i.id, i.title AS title, i.sku, i.category_id, i.stock, i.sequence, i.hidden, i.sequence as `sort_order`
-		              FROM commerce_products AS i
-		              WHERE i.language = :language AND i.category_id = :category';
+            $query = 'SELECT
+                        i.id,
+                        i.title AS title,
+                        i.sku,
+                        i.category_id,
+                        b.title AS brand,
+                        i.price,
+                        i.stock,
+                        i.sequence,
+                        i.hidden,
+                        i.sequence as `sort_order`
+                    FROM commerce_products AS i
+                    LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
+                    WHERE i.language = :language AND i.category_id = :category';
 
             $parameters['category'] = $category->getId();
         }

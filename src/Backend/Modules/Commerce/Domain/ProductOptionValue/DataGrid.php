@@ -16,12 +16,19 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(ProductOption $productOption)
     {
-        parent::__construct(
-            'SELECT c.id, IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title, c.impact_type, c.percentage, c.price, c.default_value, c.sequence,
-                            (SELECT(count(*)) FROM commerce_product_options i WHERE i.product_option_value_id = c.id) as sub_options
-					 FROM commerce_product_option_values AS c
-                     INNER JOIN commerce_product_options AS po ON po.id = c.product_option_id
-					 WHERE c.product_option_id = :product_option',
+        parent::__construct('
+            SELECT
+                c.id,
+                IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title,
+                c.impact_type,
+                c.percentage,
+                c.price,
+                c.default_value,
+                c.sequence,
+                (SELECT(count(*)) FROM commerce_product_options i WHERE i.product_option_value_id = c.id) as sub_options
+            FROM commerce_product_option_values AS c
+            INNER JOIN commerce_product_options AS po ON po.id = c.product_option_id
+            WHERE c.product_option_id = :product_option',
             [
                 'titleSeparator' => ' - ',
                 'typeBetween' => ProductOption::DISPLAY_TYPE_BETWEEN,
