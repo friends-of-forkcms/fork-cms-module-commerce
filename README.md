@@ -74,26 +74,7 @@ wkhtmltopdf.binary: %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtm
 
 You may edit this value match your needs.
 
-### 3. Install extra JavaScript and CSS
-
-Run:
-
-```npm
-yarn add select2
-```
-
-Add some lines to `gulpfile.js`:
-
-- Search for `gulp.task("build:backend:assets:copy-css-vendors", function() {` and add `"node_modules/select2/dist/css/select2.min.css",` to the `.src` array.
-- Search for `gulp.task("build:backend:assets:copy-js-vendors", function() {` and add ` "node_modules/select2/dist/js/i18n/nl.js", "node_modules/select2/dist/js/i18n/en.js", "node_modules/select2/dist/js/select2.full.min.js",` to the `.src` array.
-
-And than build the files:
-
-```
-gulp build
-```
-
-### 4. Configure LiipImagineBundle filters
+### 3. Configure LiipImagineBundle filters
 
 Configure the following filters to your config file, to use properly resized images in the frontend.
 

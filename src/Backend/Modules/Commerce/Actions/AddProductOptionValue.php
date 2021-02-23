@@ -83,29 +83,11 @@ class AddProductOptionValue extends BackendBaseActionAdd
     {
         parent::parse();
 
-        $this->header->addJS(
-            '/js/vendors/select2.full.min.js',
-            null,
-            true,
-            true
-        );
-
-        $this->header->addJS(
-            '/js/vendors/' . Locale::workingLocale() . '.js',
-            null,
-            true,
-            true
-        );
-
+        $this->header->addJS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', null, false, true);
+        $this->header->addJS(sprintf("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js", Locale::workingLocale()), null, false, true);
         $this->header->addJS('Select2Entity.js');
 
-        $this->header->addCSS(
-            '/css/vendors/select2.min.css',
-            null,
-            true,
-            false
-        );
-
+        $this->header->addCSS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', null, true, false);
 
         // Needs to be here to disable any ckeditor load after adding a collection field
         $this->header->addJsData('Core', 'preferred_editor', '');
