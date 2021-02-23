@@ -48,8 +48,6 @@ class AddStockStatus extends BackendBaseActionAdd
                 ]
             )
         );
-
-        return;
     }
 
     private function createStockStatus(Form $form): CreateStockStatus

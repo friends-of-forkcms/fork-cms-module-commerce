@@ -20,10 +20,7 @@ use Symfony\Component\Form\Form;
  */
 class AddProductOptionValue extends BackendBaseActionAdd
 {
-    /**
-     * @var ProductOption
-     */
-    private $productOption;
+    private ProductOption $productOption;
 
     /**
      * Execute the action
@@ -62,7 +59,6 @@ class AddProductOptionValue extends BackendBaseActionAdd
                 'var' => $createProductOptionValue->title,
             ])
         );
-        return;
     }
 
     private function getProductOption(): ProductOption

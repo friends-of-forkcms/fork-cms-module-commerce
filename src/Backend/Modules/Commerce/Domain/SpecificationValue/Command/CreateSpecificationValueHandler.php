@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueReposit
 
 final class CreateSpecificationValueHandler
 {
-    /** @var SpecificationValueRepository */
-    private $specificationValueRepository;
+    private SpecificationValueRepository $specificationValueRepository;
 
     public function __construct(SpecificationValueRepository $specificationValueRepository)
     {

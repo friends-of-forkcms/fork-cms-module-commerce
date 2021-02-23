@@ -3,12 +3,10 @@
 namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
 use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\Options;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class PaymentMethodSubscriber implements EventSubscriberInterface
 {

@@ -2,15 +2,12 @@
 
 namespace Backend\Modules\Commerce\Domain\Specification\Command;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Specification\Specification;
 use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
-use Common\ModuleExtraType;
 
 final class CreateSpecificationHandler
 {
-    /** @var SpecificationRepository */
-    private $specificationRepository;
+    private SpecificationRepository $specificationRepository;
 
     public function __construct(SpecificationRepository $specificationRepository)
     {

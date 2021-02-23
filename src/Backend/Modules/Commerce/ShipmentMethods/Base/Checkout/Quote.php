@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\ShipmentMethods\Base\Checkout;
 
-use Backend\Modules\Commerce\Domain\Account\AddressDataTransferObject;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Vat\VatRepository;

@@ -6,7 +6,6 @@ use Backend\Modules\Commerce\Domain\Order\Event\OrderCreated;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory;
 use Backend\Modules\Commerce\Domain\OrderStatus\Exception\OrderStatusNotFound;
-use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder as BaseConfirmOrder;
 use Backend\Modules\Commerce\PaymentMethods\Exception\PaymentException;
 use Doctrine\DBAL\DBALException;

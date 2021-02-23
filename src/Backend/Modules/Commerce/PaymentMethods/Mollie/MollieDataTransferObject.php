@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\PaymentMethods\Mollie;
 
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
 use Symfony\Component\Validator\Constraints as Assert;
 

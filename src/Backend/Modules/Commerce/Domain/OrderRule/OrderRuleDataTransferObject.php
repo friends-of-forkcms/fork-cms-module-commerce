@@ -4,7 +4,6 @@ namespace Backend\Modules\Commerce\Domain\OrderRule;
 
 use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 use Backend\Modules\Commerce\Domain\Order\Order;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderRuleDataTransferObject
 {

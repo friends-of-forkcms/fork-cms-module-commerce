@@ -4,7 +4,6 @@ namespace Backend\Modules\Commerce\Domain\StockStatus;
 
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\StockStatusValue\StockStatusValue;
-use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class StockStatusDataTransferObject

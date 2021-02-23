@@ -6,7 +6,6 @@ use Backend\Modules\Commerce\Domain\Account\AccountCustomerDataTransferObject;
 use Backend\Modules\Commerce\Domain\Account\AccountCustomerType;
 use Backend\Modules\Commerce\Domain\Account\Command\CreateAccount;
 use Backend\Modules\Commerce\Domain\Account\Event\Created;
-use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddress;
 use Common\Core\Model;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;

@@ -48,8 +48,6 @@ class AddCountry extends BackendBaseActionAdd
                 ]
             )
         );
-
-        return;
     }
 
     private function createCountry(Form $form): CreateCountry

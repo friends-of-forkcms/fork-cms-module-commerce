@@ -9,7 +9,6 @@ use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 use Backend\Modules\Commerce\Domain\OrderRule\OrderRule;
 use Backend\Modules\Commerce\Domain\OrderVat\OrderVat;
-use Backend\Modules\Commerce\Domain\Product\Product;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;

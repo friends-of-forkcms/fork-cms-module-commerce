@@ -48,8 +48,6 @@ class AddVat extends BackendBaseActionAdd
                 ]
             )
         );
-
-        return;
     }
 
     private function createVat(Form $form): CreateVat

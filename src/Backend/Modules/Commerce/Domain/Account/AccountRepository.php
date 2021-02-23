@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\Domain\Account;
 
 use Backend\Modules\Commerce\Domain\Account\Exception\AccountNotFound;
-use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

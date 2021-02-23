@@ -6,7 +6,6 @@ use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\Account\AccountRepository;
 use Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddress;
 use Backend\Modules\Commerce\Domain\OrderAddress\Command\UpdateOrderAddress;
-use Backend\Modules\Commerce\Domain\OrderAddress\Event\Created;
 use Backend\Modules\Commerce\Domain\OrderAddress\Event\Updated;
 use Backend\Modules\Commerce\Domain\OrderAddress\Exception\OrderAddressNotFound;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;

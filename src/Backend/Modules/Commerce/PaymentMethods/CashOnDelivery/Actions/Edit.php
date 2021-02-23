@@ -6,7 +6,6 @@ use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\PaymentMethods\Base\Edit as BaseEdit;
 use Backend\Modules\Commerce\PaymentMethods\CashOnDelivery\CashOnDeliveryDataTransferObject;
 use Backend\Modules\Commerce\PaymentMethods\CashOnDelivery\CashOnDeliveryType;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\Form\Form;
 
 class Edit extends BaseEdit

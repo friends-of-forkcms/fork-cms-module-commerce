@@ -2,10 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\Brand\Command;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Brand\Brand;
 use Backend\Modules\Commerce\Domain\Brand\BrandRepository;
-use Common\ModuleExtraType;
 
 final class CreateBrandHandler
 {

@@ -2,14 +2,11 @@
 
 namespace Backend\Modules\Commerce\Domain\Category;
 
-use Backend\Core\Language\Locale;
 use Backend\Form\Type\EditorType;
 use Backend\Form\Type\MetaType;
-use Backend\Modules\Commerce\Domain\Product\Product;
 use Common\Form\ImageType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,7 +14,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class CategoryType extends AbstractType
 {

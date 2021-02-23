@@ -100,7 +100,7 @@ class AddCategory extends BackendBaseActionAdd
         return $form;
     }
 
-    private function getGoogleTaxonomies()
+    private function getGoogleTaxonomies(): array
     {
         $filesystem = new Filesystem();
         $kernelRootDir = $this->getKernel()->getRootDir();
@@ -117,7 +117,7 @@ class AddCategory extends BackendBaseActionAdd
                     continue;
                 }
 
-                if (strpos(strtolower($line), strtolower($query)) !== false) {
+                if (stripos($line, $query) !== false) {
                     $categories[] = [
                         'id' => $matches[1],
                         'value' => $line,

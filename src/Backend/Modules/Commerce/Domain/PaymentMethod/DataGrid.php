@@ -8,7 +8,6 @@ use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\Category\Category;
 use Symfony\Component\Finder\Finder;
 
 /**

@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\Domain\OrderHistory;
 
 use Backend\Modules\Commerce\Domain\OrderHistory\Exception\OrderHistoryNotFound;
-use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 
 class OrderHistoryRepository extends EntityRepository

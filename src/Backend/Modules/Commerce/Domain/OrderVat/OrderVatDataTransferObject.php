@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\Domain\OrderVat;
 
 use Backend\Modules\Commerce\Domain\Order\Order;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderVatDataTransferObject
 {

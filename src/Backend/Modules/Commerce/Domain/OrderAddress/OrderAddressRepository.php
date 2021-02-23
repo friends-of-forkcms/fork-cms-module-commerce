@@ -4,8 +4,6 @@ namespace Backend\Modules\Commerce\Domain\OrderAddress;
 
 use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\OrderAddress\Exception\OrderAddressNotFound;
-use Backend\Modules\Commerce\Domain\Product\Product;
-use Common\Locale;
 use Doctrine\ORM\EntityRepository;
 
 class OrderAddressRepository extends EntityRepository

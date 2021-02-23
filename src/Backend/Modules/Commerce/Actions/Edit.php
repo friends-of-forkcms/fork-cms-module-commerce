@@ -12,7 +12,6 @@ use Backend\Modules\Commerce\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Backend\Modules\Commerce\Domain\Product\ProductType;
-use Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension;
 use Backend\Modules\Commerce\Domain\ProductOption\DataGrid as ProductOptionDataGrid;
 use Symfony\Component\Form\Form;
 

@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\Domain\Category;
 
 use Backend\Core\Engine\DataGridDatabase;
-use Backend\Core\Engine\TemplateModifiers;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;

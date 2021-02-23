@@ -15,9 +15,9 @@ class CartRules extends BackendBaseActionIndex
     {
         parent::execute();
 
-	    $this->template->assign('dataGrid', DataGrid::getHtml(Locale::workingLocale()));
+        $this->template->assign('dataGrid', DataGrid::getHtml(Locale::workingLocale()));
 
-	    $this->parse();
-	    $this->display();
+        $this->parse();
+        $this->display();
     }
 }

@@ -48,8 +48,6 @@ class AddOrderStatus extends BackendBaseActionAdd
                 ]
             )
         );
-
-        return;
     }
 
     private function createOrderStatus(Form $form): CreateOrderStatus

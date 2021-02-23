@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\DataMapper\RadioListMapper;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ChoicesToValuesTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ChoiceToValueTransformer;
 use Symfony\Component\Form\Extension\Core\EventListener\MergeCollectionListener;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

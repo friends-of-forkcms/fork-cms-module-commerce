@@ -5,7 +5,6 @@ namespace Frontend\Modules\Commerce\Widgets;
 use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
-use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Locale;
 
 /**

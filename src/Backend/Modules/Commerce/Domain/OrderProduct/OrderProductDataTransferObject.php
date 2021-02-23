@@ -7,7 +7,6 @@ use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotific
 use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderProductDataTransferObject
 {

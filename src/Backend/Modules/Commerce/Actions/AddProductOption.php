@@ -23,14 +23,8 @@ use Symfony\Component\Form\Form;
  */
 class AddProductOption extends BackendBaseActionAdd
 {
-    /**
-     * @var Product
-     */
-    private $product;
-    /**
-     * @var ProductOptionValue
-     */
-    private $productOptionValue;
+    private Product $product;
+    private ProductOptionValue $productOptionValue;
 
     /**
      * Execute the action
@@ -67,7 +61,6 @@ class AddProductOption extends BackendBaseActionAdd
                 ]
             )
         );
-        return;
     }
 
     private function createProductOption(Form $form): CreateProductOption
@@ -88,24 +81,14 @@ class AddProductOption extends BackendBaseActionAdd
                 'id' => $this->productOptionValue->getId(),
             ]);
 
-            return BackendModel::createUrlForAction(
-                    'EditProductOptionValue',
-                    null,
-                    null,
-                    $parameters
-                ) . '#tabSubOptions';
+            return BackendModel::createUrlForAction('EditProductOptionValue', null, null, $parameters) . '#tabSubOptions';
         }
 
         $parameters = array_merge($parameters, [
             'id' => $this->product->getId(),
         ]);
 
-        return BackendModel::createUrlForAction(
-            'Edit',
-            null,
-            null,
-            $parameters
-        ) . '#tabOptions';
+        return BackendModel::createUrlForAction('Edit', null, null, $parameters) . '#tabOptions';
     }
 
     private function getForm(): Form
@@ -126,7 +109,7 @@ class AddProductOption extends BackendBaseActionAdd
         return $form;
     }
 
-    private function loadData()
+    private function loadData(): void
     {
         if ($this->getRequest()->query->has('product')) {
             $this->product = $this->getProduct();
@@ -138,7 +121,7 @@ class AddProductOption extends BackendBaseActionAdd
         }
     }
 
-    private function getProduct(): ?Product
+    private function getProduct(): Product
     {
         /** @var ProductRepository $productRepository */
         $productRepository = $this->get('commerce.repository.product');
@@ -151,11 +134,9 @@ class AddProductOption extends BackendBaseActionAdd
         } catch (ProductNotFound $e) {
             $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
-
-        return null;
     }
 
-    private function getProductOptionValue(): ?ProductOptionValue
+    private function getProductOptionValue(): ProductOptionValue
     {
         /** @var ProductOptionValueRepository $productOptionValueRepository */
         $productOptionValueRepository = $this->get('commerce.repository.product_option_value');
@@ -167,7 +148,5 @@ class AddProductOption extends BackendBaseActionAdd
         } catch (ProductOptionValueNotFound $e) {
             $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
-
-        return null;
     }
 }

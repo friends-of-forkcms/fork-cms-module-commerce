@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\SpecificationValue;
 
-use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;

@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\Product\Command;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 
 final class DeleteProductHandler

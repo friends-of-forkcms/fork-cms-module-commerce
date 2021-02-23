@@ -46,8 +46,6 @@ class AddCartRule extends BackendBaseActionAdd
                 'var' => $createCartRule->title,
             ])
         );
-
-        return;
     }
 
     private function createCartRule(Form $form): CreateCartRule

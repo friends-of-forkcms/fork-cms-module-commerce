@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\Order\Mailer;
 
-use Backend\Core\Engine\TwigTemplate as BackendTemplate;
 use Common\Uri;
 use Frontend\Core\Engine\Model;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;

@@ -19,19 +19,7 @@ use Backend\Modules\Commerce\Domain\Category\FilterType;
  */
 class Categories extends BackendBaseActionIndex
 {
-    /**
-     * The category where is filtered on
-     *
-     * @var Category
-     */
-    private $category;
-
-    /**
-     * The id of the category where is filtered on
-     *
-     * @var int
-     */
-    private $categoryId;
+    private ?Category $category;
 
     /**
      * Execute the action
@@ -41,13 +29,13 @@ class Categories extends BackendBaseActionIndex
         parent::execute();
 
         // set category id
-        $this->categoryId = (int) $this->getRequest()->query->get('category', null);
+        $categoryId = (int) $this->getRequest()->query->get('category', null);
 
         $categoryRepository = $this->getCategoryRepository();
 
-        if ($this->categoryId) {
+        if ($categoryId) {
             try {
-                $this->category = $categoryRepository->findOneByIdAndLocale($this->categoryId, Locale::workingLocale());
+                $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
                 return;
@@ -86,9 +74,7 @@ class Categories extends BackendBaseActionIndex
             }
 
             // redirect to a filtered page
-            $this->redirect(
-                $this->getBackLink($parameters)
-            );
+            $this->redirect($this->getBackLink($parameters));
         }
 
         // assign the form to our template

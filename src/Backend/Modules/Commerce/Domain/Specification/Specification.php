@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\Specification;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;

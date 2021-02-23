@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\ShipmentMethods\Base;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class DataTransferObject
 {

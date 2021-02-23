@@ -4,7 +4,6 @@ namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Brand\BrandType;
 use Backend\Modules\Commerce\Domain\Brand\Command\CreateBrand;
 use Backend\Modules\Commerce\Domain\Brand\Event\Created;

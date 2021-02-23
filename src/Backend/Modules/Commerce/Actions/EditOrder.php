@@ -12,8 +12,6 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\Order\OrderRepository;
 use Backend\Modules\Commerce\Domain\Order\OrderType;
 use Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory;
-use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistoryDataTransferObject;
-use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistoryType;
 use Common\Exception\RedirectException;
 use Symfony\Component\Form\Form;
 

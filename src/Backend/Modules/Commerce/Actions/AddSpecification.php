@@ -49,7 +49,6 @@ class AddSpecification extends BackendBaseActionAdd
                 ]
             )
         );
-        return;
     }
 
     private function createSpecification(Form $form): CreateSpecification

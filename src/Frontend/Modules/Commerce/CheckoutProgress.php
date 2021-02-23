@@ -2,7 +2,6 @@
 
 namespace Frontend\Modules\Commerce;
 
-use Common\Exception\RedirectException;
 use Frontend\Modules\Commerce\CheckoutStep\Step;
 
 class CheckoutProgress

@@ -7,7 +7,6 @@ use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\Cart\CartValue;
 use Backend\Modules\Commerce\Domain\Cart\CartValueOption;
 use Backend\Modules\Commerce\Domain\Cart\CartValueRepository;
-use Backend\Modules\Commerce\Domain\Product\AddToCartDataTransferObject;
 use Backend\Modules\Commerce\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;

@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Actions;
 use Backend\Core\Engine\Base\Action;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Language;
-use Backend\Modules\Commerce\Ajax\GenerateInvoiceNumber;
 use Backend\Modules\Commerce\Domain\Order\Event\OrderGenerateInvoiceNumber;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Commerce\Domain\Order\Order;

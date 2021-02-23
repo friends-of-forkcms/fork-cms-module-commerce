@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\Brand\Command;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Brand\BrandRepository;
 
 final class DeleteBrandHandler

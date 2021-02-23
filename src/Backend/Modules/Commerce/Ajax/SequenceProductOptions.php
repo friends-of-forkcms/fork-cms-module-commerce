@@ -3,10 +3,6 @@
 namespace Backend\Modules\Commerce\Ajax;
 
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
-use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
-use Backend\Modules\Commerce\Domain\Category\Command\UpdateCategory;
-use Backend\Modules\Commerce\Domain\Product\Command\UpdateProduct;
 use Backend\Modules\Commerce\Domain\ProductOption\Command\UpdateProductOption;
 use Symfony\Component\HttpFoundation\Response;
 

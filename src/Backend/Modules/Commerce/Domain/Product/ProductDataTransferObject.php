@@ -15,7 +15,6 @@ use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
-use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupDataTransferObject;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type;
 use Common\Doctrine\Entity\Meta;
@@ -379,7 +378,7 @@ class ProductDataTransferObject
         $this->productEntity = null;
     }
 
-    public function addSpecificationValu(SpecificationValue $value)
+    public function addSpecificationValue(SpecificationValue $value)
     {
         // If the specification value has no entity save a new one
         if (!$value->getId()) {
@@ -394,7 +393,7 @@ class ProductDataTransferObject
         $this->specification_values->add($value);
     }
 
-    public function removeSpecificationValu($value)
+    public function removeSpecificationValue($value)
     {
         $this->specification_values->remove($value->getId());
         $this->remove_specification_values->add($value);

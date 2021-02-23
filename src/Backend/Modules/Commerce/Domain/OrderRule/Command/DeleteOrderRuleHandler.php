@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\OrderRule\Command;
 
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\OrderRule\OrderRuleRepository;
 
 final class DeleteOrderRuleHandler

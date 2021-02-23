@@ -8,7 +8,6 @@ use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\Product\Product;
-use Backend\Modules\Commerce\Domain\Product\ProductType;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 
 /**

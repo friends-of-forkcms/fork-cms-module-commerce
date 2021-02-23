@@ -2,8 +2,6 @@
 
 namespace Frontend\Modules\Commerce\Ajax;
 
-use Backend\Modules\Commerce\Domain\Product\AddToCartDataTransferObject;
-use Backend\Modules\Commerce\Domain\Product\AddToCartType;
 use Backend\Modules\Commerce\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
@@ -11,7 +9,6 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Locale;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\HttpFoundation\Response;
