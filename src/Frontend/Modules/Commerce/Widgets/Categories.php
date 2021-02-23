@@ -41,8 +41,11 @@ class Categories extends FrontendBaseWidget
                 $activeCategory = $product->getCategory();
             }
         } elseif ($parameterCount == 2) {
-            if ($product = $productRepository->findByCategoryAndUrl(Locale::frontendLanguage(), $parameters[0],
-                $parameters[1])) {
+            if ($product = $productRepository->findByCategoryAndUrl(
+                Locale::frontendLanguage(),
+                $parameters[0],
+                $parameters[1]
+            )) {
                 $activeProduct = $product;
                 $activeCategory = $product->getCategory();
             } elseif ($category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[1])) {
@@ -50,7 +53,7 @@ class Categories extends FrontendBaseWidget
             }
         } elseif (
             $parameterCount == 1 && (
-            $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
+                $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
             )
         ) {
             $activeCategory = $category;

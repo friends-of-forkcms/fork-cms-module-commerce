@@ -110,8 +110,7 @@ class CartRule
         ?float $reduction_percentage,
         ?float $reduction_amount,
         bool $hidden
-    )
-    {
+    ) {
         $this->locale = $locale;
         $this->title = $title;
         $this->from = $from;

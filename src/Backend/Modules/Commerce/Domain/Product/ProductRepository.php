@@ -203,8 +203,7 @@ class ProductRepository extends EntityRepository
         ?int $excluded_id,
         ?int $page_limit = 10,
         ?int $page = 1
-    )
-    {
+    ) {
         $queryBuilder = $this->createQueryBuilder('i');
 
         $queryBuilder->where('i.locale = :locale')
@@ -611,7 +610,6 @@ class ProductRepository extends EntityRepository
             ->setMaxResults($limit)
             ->setFirstResult(($page - 1) * $limit)
             ->getResult();
-
     }
 
     /**

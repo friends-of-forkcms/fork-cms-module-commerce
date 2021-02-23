@@ -61,7 +61,7 @@ final class Image extends AbstractImage
     public function getWebPath(string $subDirectory = null): string
     {
         // Generate thumbnails when required
-        if (!file_exists($this->getAbsolutePath($subDirectory) ) && preg_match('/^([0-9]+)x([0-9]+)$/', $subDirectory)) {
+        if (!file_exists($this->getAbsolutePath($subDirectory)) && preg_match('/^([0-9]+)x([0-9]+)$/', $subDirectory)) {
             if (!is_dir($this->getUploadRootDir($subDirectory))) {
                 mkdir($this->getUploadRootDir($subDirectory));
             }

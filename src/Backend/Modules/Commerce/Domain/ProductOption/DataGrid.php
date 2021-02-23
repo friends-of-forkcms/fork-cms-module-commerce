@@ -44,8 +44,13 @@ class DataGrid extends DataGridDatabase
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditProductOption')) {
-            $editUrl = Model::createUrlForAction('EditProductOption', null, null,
-                ['id' => '[id]', 'product' => $product->getId()], false);
+            $editUrl = Model::createUrlForAction(
+                'EditProductOption',
+                null,
+                null,
+                ['id' => '[id]', 'product' => $product->getId()],
+                false
+            );
             $this->setColumnURL('title', $editUrl);
             $this->addColumn('edit', null, Language::lbl('Edit'), $editUrl, Language::lbl('Edit'));
         }

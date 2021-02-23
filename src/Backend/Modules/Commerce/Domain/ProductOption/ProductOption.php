@@ -172,8 +172,7 @@ class ProductOption
         ?string $prefix,
         ?string $suffix,
         $dimension_notifications
-    )
-    {
+    ) {
         $this->product = $product;
         $this->parent_product_option_value = $parent_product_option_value;
         $this->title = $title;
@@ -477,11 +476,12 @@ class ProductOption
         }
 
         foreach ($this->product_option_values as $productOptionValue) {
-            foreach ($productOptionValue->getProductOptions() as $productOption)
-            $notifications = array_merge(
-                $notifications,
-                $productOption->getAllDimensionNotificationsByDimension($width, $height)
-            );
+            foreach ($productOptionValue->getProductOptions() as $productOption) {
+                $notifications = array_merge(
+                    $notifications,
+                    $productOption->getAllDimensionNotificationsByDimension($width, $height)
+                );
+            }
         }
 
         return $notifications;

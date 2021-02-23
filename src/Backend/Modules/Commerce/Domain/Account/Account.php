@@ -108,8 +108,7 @@ class Account
         ?string $company_name,
         string $first_name,
         string $last_name
-    )
-    {
+    ) {
         $this->profile_id = $profile_id;
         $this->email = $email;
         $this->phone = $phone;

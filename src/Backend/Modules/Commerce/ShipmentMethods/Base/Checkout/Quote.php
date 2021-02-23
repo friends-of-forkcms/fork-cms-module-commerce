@@ -10,7 +10,8 @@ use Common\ModulesSettings;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 
-abstract class Quote {
+abstract class Quote
+{
     /**
      * @var string
      */
@@ -77,7 +78,7 @@ abstract class Quote {
      *
      * @return array
      */
-    public abstract function getQuote(): array;
+    abstract public function getQuote(): array;
 
     /**
      * Calculate the vat price based on the given price
@@ -86,7 +87,7 @@ abstract class Quote {
      *
      * @return array
      */
-    protected abstract function getVatPrice(float $price): array;
+    abstract protected function getVatPrice(float $price): array;
 
     /**
      * Get the vat repository

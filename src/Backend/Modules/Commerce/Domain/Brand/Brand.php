@@ -234,5 +234,4 @@ class Brand
     {
         return $this->products->count();
     }
-
 }

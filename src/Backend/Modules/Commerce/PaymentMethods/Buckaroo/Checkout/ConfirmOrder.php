@@ -293,7 +293,7 @@ class ConfirmOrder extends BaseConfirmOrder
         ]);
         $hmac = $this->getHmac($action, $requestData);
 
-        $response = $client->request($method, $action,  [
+        $response = $client->request($method, $action, [
             'json' => $requestData,
             'headers' => [
                 'Authorization' => $hmac,

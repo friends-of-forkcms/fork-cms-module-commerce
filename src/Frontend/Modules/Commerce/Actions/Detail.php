@@ -114,8 +114,10 @@ class Detail extends FrontendBaseBlock
          */
         $productRepository = $this->get('commerce.repository.product');
 
-        if (!$this->product = $productRepository->findByLocaleAndUrl(Locale::frontendLanguage(),
-            $this->url->getParameter(1))) {
+        if (!$this->product = $productRepository->findByLocaleAndUrl(
+            Locale::frontendLanguage(),
+            $this->url->getParameter(1)
+        )) {
             $this->redirect(FrontendNavigation::getURL(404));
         }
     }

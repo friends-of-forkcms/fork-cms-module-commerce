@@ -39,7 +39,7 @@ class StockStatusDataTransferObject
     {
         $this->stockStatusEntity = $stockStatus;
 
-        if ( ! $this->hasExistingStockStatus()) {
+        if (! $this->hasExistingStockStatus()) {
             return;
         }
 

@@ -44,13 +44,13 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
 
         // Product must be set
         if (!$this->getRequest()->request->has('cart')) {
-            $this->output( Response::HTTP_UNPROCESSABLE_ENTITY);
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
             return;
         }
 
         // Failed to update product, does not exists?
         if (!$cartValue = $this->removeCartValue()) {
-            $this->output( Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
             return;
         }
 

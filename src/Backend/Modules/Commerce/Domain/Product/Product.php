@@ -402,8 +402,7 @@ class Product
         $up_sell_products,
         $dimensions,
         $dimension_notifications
-    )
-    {
+    ) {
         $this->cart_values = new ArrayCollection();
         $this->meta = $meta;
         $this->category = $category;

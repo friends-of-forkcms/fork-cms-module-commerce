@@ -16,7 +16,8 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(ProductOption $productOption)
     {
-        parent::__construct('
+        parent::__construct(
+            '
             SELECT
                 c.id,
                 IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title,

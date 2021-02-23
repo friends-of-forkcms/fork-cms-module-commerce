@@ -143,8 +143,7 @@ class OrderStatus
         bool $send_company_email,
         ?string $template,
         ?string $company_template
-    )
-    {
+    ) {
         $this->locale = $locale;
         $this->title = $title;
         $this->mail_subject = $mail_subject;

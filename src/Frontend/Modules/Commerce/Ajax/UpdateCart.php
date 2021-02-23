@@ -205,7 +205,7 @@ class UpdateCart extends DimensionCalculator
             if (!$cartValue) {
                 return false;
             }
-        } elseif($product->usesDimensions()) {
+        } elseif ($product->usesDimensions()) {
             $cartValue = new CartValue();
             $cartValue->setCart($this->cart);
             $cartValue->setProduct($product);
@@ -257,7 +257,7 @@ class UpdateCart extends DimensionCalculator
         }
 
         // Set the total price for later usage
-            $this->addTotalPrice($this->getBasePrice());
+        $this->addTotalPrice($this->getBasePrice());
 
         // Add the product options to the cart
         $this->addProductOptionsToCart($product, $cartValue);

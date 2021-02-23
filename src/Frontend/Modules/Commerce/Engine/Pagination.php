@@ -88,7 +88,7 @@ class Pagination
      */
     public function getPageCount()
     {
-        if ( ! $this->page_count) {
+        if (! $this->page_count) {
             $this->page_count = ceil($this->item_count / $this->items_per_page);
 
             // At least page 1 should be available
@@ -145,7 +145,7 @@ class Pagination
         $pages = [];
 
         // Do nothing when there are no left pages
-        if ( ! $this->hasLeftPages()) {
+        if (! $this->hasLeftPages()) {
             return $pages;
         }
 
@@ -171,12 +171,11 @@ class Pagination
         $right_numbers = $this->getPageCount() - $this->page_numbers_to_display;
 
         // Do nothing when there are no left pages
-        if ( ! $this->hasRightPages()) {
+        if (! $this->hasRightPages()) {
             return $pages;
         }
 
         if ($right_numbers > 0) {
-
             for ($i = ($right_numbers + 1); $i <= $this->getPageCount(); $i++) {
                 $pages[] = array(
                     'selected' => ($i == $this->current_page),
@@ -218,7 +217,7 @@ class Pagination
     {
         $pages = [];
 
-        if ( ! $this->hasRightPages() && ! $this->hasLeftPages()) {
+        if (! $this->hasRightPages() && ! $this->hasLeftPages()) {
             for ($i = 1; $i <= $this->getPageCount(); $i++) {
                 $pages[] = array(
                     'selected' => ($i == $this->current_page),
@@ -263,8 +262,6 @@ class Pagination
         $show = false;
 
         if ($this->hasLeftPages()) {
-
-
             $show = $this->current_page > (($this->page_numbers_to_display * 2) - 1);
         }
 
@@ -366,7 +363,7 @@ class Pagination
     private function buildUrl($number)
     {
         // Only return the number when there is no base url
-        if ( ! $this->base_url) {
+        if (! $this->base_url) {
             return false;
         }
 

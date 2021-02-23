@@ -176,7 +176,7 @@ class AddToCartType extends AbstractType
     private function preSubmitEvent(array $data, $productOptions)
     {
         foreach ($productOptions as $productOption) {
-            if($productOption->isTextType() || $productOption->isColorType()) {
+            if ($productOption->isTextType() || $productOption->isColorType()) {
                 continue;
             }
 
@@ -311,8 +311,9 @@ class AddToCartType extends AbstractType
                         $builder->create(
                             $name,
                             HiddenType::class
-                        )->addModelTransformer(new CallbackTransformer(
-                                function (?ProductOptionValue $input) {
+                        )->addModelTransformer(
+                            new CallbackTransformer(
+                            function (?ProductOptionValue $input) {
                                     $value = null;
 
                                     if ($input) {
@@ -321,14 +322,15 @@ class AddToCartType extends AbstractType
 
                                     return $value;
                                 },
-                                function ($reverseTransform) use ($productOption) {
+                            function ($reverseTransform) use ($productOption) {
                                     /**
                                      * @var ProductOptionValueRepository $productOptionValueRepository
                                      */
                                     $productOptionValueRepository = Model::get('commerce.repository.product_option_value');
 
                                     return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
-                                })
+                                }
+                        )
                         )
                     );
 

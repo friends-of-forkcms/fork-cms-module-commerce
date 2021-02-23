@@ -114,7 +114,7 @@ class ProductOptionType extends AbstractType
                 'label' => 'lbl.ParentProductOptionValue',
                 'placeholder' => 'lbl.None',
                 'class' => ProductOptionValue::class,
-                'query_builder' => function(EntityRepository $entityRepository) use($options) {
+                'query_builder' => function (EntityRepository $entityRepository) use ($options) {
                     if (!$options['data']->hasExistingProductOption() || !$options['product']) {
                         return;
                     }
@@ -133,7 +133,7 @@ class ProductOptionType extends AbstractType
 
                     return $queryBuilder;
                 },
-                'choice_label' => function(ProductOptionValue $productOptionValue) {
+                'choice_label' => function (ProductOptionValue $productOptionValue) {
                     return $productOptionValue->getProductOption()->getTitle() .' - '. $productOptionValue->getTitle();
                 }
             ]

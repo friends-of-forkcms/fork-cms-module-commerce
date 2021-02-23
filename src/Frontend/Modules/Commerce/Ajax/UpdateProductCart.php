@@ -44,19 +44,19 @@ class UpdateProductCart extends FrontendBaseAJAXAction
 
         // Cart id must be set
         if (!$this->getRequest()->request->has('cartValueId')) {
-            $this->output( Response::HTTP_UNPROCESSABLE_ENTITY);
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
             return;
         }
 
         // Amount must be set and valid
         if (!$this->getRequest()->request->has('amount')) {
-            $this->output( Response::HTTP_UNPROCESSABLE_ENTITY);
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
             return;
         }
 
         // Failed to update product, does not exists?
         if (!$cartValue = $this->updateProductCart()) {
-            $this->output( Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
             return;
         }
 

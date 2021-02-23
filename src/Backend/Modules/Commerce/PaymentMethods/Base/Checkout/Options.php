@@ -86,5 +86,5 @@ abstract class Options
      *
      * @return void
      */
-    public abstract function addFields(FormInterface $form): void;
+    abstract public function addFields(FormInterface $form): void;
 }

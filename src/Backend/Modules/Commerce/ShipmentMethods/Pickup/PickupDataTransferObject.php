@@ -31,6 +31,5 @@ class PickupDataTransferObject extends DataTransferObject
 
     public function __construct()
     {
-
     }
 }

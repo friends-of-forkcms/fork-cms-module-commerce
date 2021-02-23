@@ -1,6 +1,7 @@
 <?php
 
 namespace Frontend\Modules\Commerce\Ajax;
+
 use Backend\Modules\Commerce\Domain\Product\AddToCartDataTransferObject;
 use Backend\Modules\Commerce\Domain\Product\AddToCartType;
 use Backend\Modules\Commerce\Domain\Product\Product;

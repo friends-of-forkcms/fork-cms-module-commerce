@@ -151,8 +151,7 @@ class Category
         int $sequence,
         Meta $meta,
         ?Category $parent
-    )
-    {
+    ) {
         $this->extraId = $extraId;
         $this->googleTaxonomyId = $googleTaxonomyId;
         $this->locale = $locale;

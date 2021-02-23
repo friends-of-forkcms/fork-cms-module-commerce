@@ -136,7 +136,6 @@ class Copy extends BackendBaseAction
         $newMediaGroup = MediaGroup::create($mediaGroup->getType());
         $sequence = 0;
         foreach ($mediaGroup->getConnectedMediaItems() as $connectedMediaItem) {
-
             $mediaGroup->addConnectedItem(MediaGroupMediaItem::create(
                 $newMediaGroup,
                 $connectedMediaItem,

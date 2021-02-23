@@ -20,7 +20,7 @@ class FilterType extends AbstractType
                 'placeholder'  => 'lbl.None',
                 'class'        => Order::class,
                 'choices'      => $options['categories'],
-                'choice_label' => function($order) {
+                'choice_label' => function ($order) {
                     $prefix = null;
                     if ($order->path > 0) {
                         $prefix = str_repeat('-', $order->path) .' ';

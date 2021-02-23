@@ -160,5 +160,4 @@ class DataGrid extends DataGridArray
 
         return $information;
     }
-
 }

@@ -72,7 +72,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
         $form = $this->getForm();
 
         // Check if there are any errors in our submit
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             if (!$form->isValid()) {
                 $this->hasErrors = true;
             } else {

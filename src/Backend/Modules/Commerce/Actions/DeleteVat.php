@@ -24,10 +24,9 @@ class DeleteVat extends BackendBaseActionDelete
      */
     public function execute(): void
     {
-
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if ( ! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;

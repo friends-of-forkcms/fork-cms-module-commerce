@@ -147,8 +147,7 @@ class AddToCartDataTransferObject
         ExecutionContextInterface $context,
         string $fieldName,
         string $customValueFieldName
-    ): bool
-    {
+    ): bool {
         $valid = true;
 
         if ($productOption->isCustomValueAllowed()) {

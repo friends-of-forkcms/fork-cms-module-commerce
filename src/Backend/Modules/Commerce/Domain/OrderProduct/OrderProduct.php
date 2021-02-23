@@ -139,8 +139,7 @@ class OrderProduct
         float $total,
         $product_options,
         $product_notifications
-    )
-    {
+    ) {
         $this->order = $order;
         $this->product = $product;
         $this->type = $type;

@@ -15,7 +15,7 @@ class CheckoutPaymentMethodType extends AbstractType
 
         // Parse the payment methods
         $paymentMethods = [];
-        foreach($options['payment_methods'] as $key => $paymentMethod) {
+        foreach ($options['payment_methods'] as $key => $paymentMethod) {
             $paymentMethods[$paymentMethod['label']] = $key;
         }
 

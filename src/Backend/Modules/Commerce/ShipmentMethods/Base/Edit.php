@@ -129,7 +129,6 @@ abstract class Edit
      */
     public function execute(): void
     {
-
     }
 
     /**

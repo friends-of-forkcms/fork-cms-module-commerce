@@ -49,8 +49,7 @@ class OrderHistory
         Order $order,
         OrderStatus $order_status,
         \DateTime $created_at
-    )
-    {
+    ) {
         $this->order = $order;
         $this->order_status = $order_status;
         $this->created_at = $created_at;

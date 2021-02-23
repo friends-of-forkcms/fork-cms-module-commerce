@@ -52,7 +52,6 @@ class AccountRepository extends EntityRepository
             ->setMaxResults($limit)
             ->setFirstResult(($page - 1) * $limit)
             ->getResult();
-
     }
 
     /**

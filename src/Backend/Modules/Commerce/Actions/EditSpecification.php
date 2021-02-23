@@ -45,7 +45,7 @@ class EditSpecification extends BackendBaseActionEdit
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('specification', $specification);
             $this->template->assign('dataGridValues', DataGrid::getHtml($specification));

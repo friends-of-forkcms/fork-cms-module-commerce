@@ -45,8 +45,7 @@ class GenerateMerchantFeed extends Command
         LoggerInterface $logger,
         ModulesSettings $settings,
         string $kernelRootDir
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->logger = $logger;
         $this->settings = $settings;

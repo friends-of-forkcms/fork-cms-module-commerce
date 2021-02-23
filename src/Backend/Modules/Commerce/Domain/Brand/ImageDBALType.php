@@ -7,21 +7,21 @@ use Common\Doctrine\ValueObject\AbstractImage;
 
 final class ImageDBALType extends AbstractImageType
 {
-	/**
-	 * @param string $imageFileName
-	 *
-	 * @return Image
-	 */
-	protected function createFromString(string $imageFileName): AbstractImage
-	{
-		return Image::fromString($imageFileName);
-	}
+    /**
+     * @param string $imageFileName
+     *
+     * @return Image
+     */
+    protected function createFromString(string $imageFileName): AbstractImage
+    {
+        return Image::fromString($imageFileName);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return 'commerce_brand_image_type';
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'commerce_brand_image_type';
+    }
 }

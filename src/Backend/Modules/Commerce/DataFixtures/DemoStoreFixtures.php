@@ -80,7 +80,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         $this->createProducts($manager->find(MediaFolder::class, 1));
     }
 
-    private function createCategories(): void {
+    private function createCategories(): void
+    {
         $categories = $this->readCsv(__DIR__ . '/data/categories.csv');
         foreach ($categories as ['title' => $title, 'image' => $imageSrc]) {
             $createCategory = new CreateCategory();
@@ -95,7 +96,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createBrands(): void {
+    private function createBrands(): void
+    {
         $brands = $this->readCsv(__DIR__ . '/data/brands.csv');
         foreach ($brands as ['title' => $title, 'image' => $imageSrc]) {
             $createBrand = new CreateBrand();
@@ -110,7 +112,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createVats(): void {
+    private function createVats(): void
+    {
         $vats = $this->readCsv(__DIR__ . '/data/vats.csv');
         foreach ($vats as ['title' => $title, 'percentage' => $percentage]) {
             $createVat = new CreateVat();
@@ -124,7 +127,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createStockStatuses(): void {
+    private function createStockStatuses(): void
+    {
         $createStockStatus = new CreateStockStatus();
         $createStockStatus->title = "Available";
         $this->commandBus->handle($createStockStatus);
@@ -134,7 +138,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         $this->addReference(md5($referenceKey), $createStockStatus->getStockStatusEntity());
     }
 
-    private function createOrderStatuses(): void {
+    private function createOrderStatuses(): void
+    {
         $orderStatuses = ['processing', 'picked', 'shipped', 'delivered', 'cancelled', 'expired', 'refunded'];
         foreach ($orderStatuses as $status) {
             $createOrderStatus = new CreateOrderStatus();
@@ -147,11 +152,13 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createPaymentMethods(): void {
+    private function createPaymentMethods(): void
+    {
         // $paymentMethod = new PaymentMethod("Mollie", Locale::workingLocale());
     }
 
-    private function createCountries(): void {
+    private function createCountries(): void
+    {
         $countries = ['BE' => 'Belgium'];
         foreach ($countries as $isoCode => $countryName) {
             $createCountry = new CreateCountry();
@@ -161,7 +168,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createSpecifications(): void {
+    private function createSpecifications(): void
+    {
         $specifications = ['Color' => ['blue', 'orange', 'green', 'white', 'gray', 'brown', 'black', 'beige']];
 
         foreach ($specifications as $title => $values) {
@@ -187,7 +195,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createProducts(MediaFolder $defaultFolder): void {
+    private function createProducts(MediaFolder $defaultFolder): void
+    {
         $products = $this->readCsv(__DIR__ . '/data/products.csv');
 
         foreach ($products as $product) {
@@ -237,7 +246,8 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         }
     }
 
-    private function createProductOptionsAndSpecs(Product $product, string $optionsString): void {
+    private function createProductOptionsAndSpecs(Product $product, string $optionsString): void
+    {
         if (empty($optionsString)) {
             return;
         }

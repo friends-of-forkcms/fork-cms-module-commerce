@@ -53,8 +53,11 @@ class Index extends FrontendBaseBlock
                 $this->redirect(FrontendNavigation::getUrl(404));
             }
         } elseif ($parameterCount == 2) {
-            if ($product = $productRepository->findByCategoryAndUrl(Locale::frontendLanguage(), $parameters[0],
-                $parameters[1])) {
+            if ($product = $productRepository->findByCategoryAndUrl(
+                Locale::frontendLanguage(),
+                $parameters[0],
+                $parameters[1]
+            )) {
                 $this->parseProduct($product);
             } elseif ($category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[1])) {
                 $this->parseCategory($category);
@@ -63,7 +66,7 @@ class Index extends FrontendBaseBlock
             }
         } elseif (
             $parameterCount == 1 && (
-            $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
+                $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
             )
         ) { // Category
             $this->parseCategory($category);
@@ -108,8 +111,10 @@ class Index extends FrontendBaseBlock
         $productRepository = $this->getProductRepository();
         $specificationRepository = $this->getSpecificationRepository();
         $productOffset = ($currentPage - 1) * $itemsPerPage;
-        $baseUrl = '/' . implode('/',
-                array_merge($this->url->getPages(), $this->url->getParameters(false)));
+        $baseUrl = '/' . implode(
+            '/',
+            array_merge($this->url->getPages(), $this->url->getParameters(false))
+        );
 
         // Set page defaults
         $this->loadTemplate('Commerce/Layout/Templates/Category.html.twig');
@@ -168,12 +173,21 @@ class Index extends FrontendBaseBlock
 
         // Fetch the products
         if ($productFilters = $this->getProductFilters()) {
-            $products = $productRepository->filterProducts($productFilters, $category, $itemsPerPage, $productOffset,
-                $currentSortOrder);
+            $products = $productRepository->filterProducts(
+                $productFilters,
+                $category,
+                $itemsPerPage,
+                $productOffset,
+                $currentSortOrder
+            );
             $pagination->setItemCount($productRepository->filterProductsCount($productFilters, $category));
         } else {
-            $products = $productRepository->findLimitedByCategory($category, $itemsPerPage, $productOffset,
-                $currentSortOrder);
+            $products = $productRepository->findLimitedByCategory(
+                $category,
+                $itemsPerPage,
+                $productOffset,
+                $currentSortOrder
+            );
             $pagination->setItemCount($category->getActiveProducts()->count());
         }
 

@@ -27,7 +27,7 @@ class Add extends BackendBaseActionAdd
         parent::execute();
 
         $form = $this->getForm();
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
 
             $this->parse();

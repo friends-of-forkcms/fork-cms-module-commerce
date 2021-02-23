@@ -109,7 +109,8 @@ class BuckarooDataTransferObject extends DataTransferObject
 
     public $paymentMethods = [];
 
-    public function __set($key, $value) {
+    public function __set($key, $value)
+    {
         $this->paymentMethods[$key] = $value;
     }
 

@@ -366,7 +366,7 @@ abstract class ConfirmOrder
      *
      * @return void
      */
-    public abstract function prePayment(): void;
+    abstract public function prePayment(): void;
 
     /**
      * Pre payment action
@@ -375,7 +375,7 @@ abstract class ConfirmOrder
      *
      * @return void
      */
-    public abstract function postPayment(): void;
+    abstract public function postPayment(): void;
 
     /**
      * Handle a optional webhook call from the payment provider

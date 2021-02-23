@@ -56,7 +56,7 @@ class SpecificationDataTransferObject
         $this->specificationEntity = $specification;
         $this->filter              = false;
 
-        if ( ! $this->hasExistingSpecification()) {
+        if (! $this->hasExistingSpecification()) {
             return;
         }
 

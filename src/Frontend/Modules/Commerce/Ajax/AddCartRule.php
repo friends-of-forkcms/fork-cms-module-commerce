@@ -59,7 +59,7 @@ class AddCartRule extends FrontendBaseAJAXAction
         }
 
         // Only add the cart rule when it doesn't exists
-        $cartRuleExists = $this->cart->getCartRules()->exists(function($key, $value){
+        $cartRuleExists = $this->cart->getCartRules()->exists(function ($key, $value) {
             return $value->getId() == $this->cartRule->getId();
         });
 
@@ -83,7 +83,7 @@ class AddCartRule extends FrontendBaseAJAXAction
         $vats = [];
         $cartRules = [];
 
-        foreach($this->cart->getVats() as $vat) {
+        foreach ($this->cart->getVats() as $vat) {
             $vats[] = [
                 'title' => $vat['title'],
                 'total' => TemplateModifiers::formatNumber($vat['total'], 2),

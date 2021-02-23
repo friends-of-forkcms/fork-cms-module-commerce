@@ -109,7 +109,6 @@ abstract class Step
 
     public function init()
     {
-
     }
 
     /**
@@ -349,5 +348,5 @@ abstract class Step
     /**
      * @throws ChangeStepException
      */
-    public abstract function execute(): void;
+    abstract public function execute(): void;
 }

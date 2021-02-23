@@ -157,7 +157,7 @@ class CategoryRepository extends EntityRepository
             $category->path                    = $path;
             $treeResult[$category->getTitle()] = $category;
 
-            if ( ! $category->getChildren()->isEmpty()) {
+            if (! $category->getChildren()->isEmpty()) {
                 $this->parseTreeChildren($treeResult, $category->getChildren(), $path + 1);
             }
         }

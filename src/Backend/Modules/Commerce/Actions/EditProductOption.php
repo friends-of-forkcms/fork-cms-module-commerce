@@ -47,7 +47,7 @@ class EditProductOption extends BackendBaseActionEdit
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('productOption', $this->productOption);
             $this->template->assign('productOptionValuesDataGrid', DataGrid::getHtml($this->productOption));
@@ -100,11 +100,11 @@ class EditProductOption extends BackendBaseActionEdit
             ]);
 
             return BackendModel::createUrlForAction(
-                    'EditProductOptionValue',
-                    null,
-                    null,
-                    $parameters
-                ) . '#tabSubOptions';
+                'EditProductOptionValue',
+                null,
+                null,
+                $parameters
+            ) . '#tabSubOptions';
         }
 
         $parameters = array_merge($parameters, [

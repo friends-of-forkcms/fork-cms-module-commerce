@@ -22,7 +22,8 @@ abstract class BaseFixture extends Fixture
         $this->csvReader = new CsvReader();
     }
 
-    protected function cleanup(ObjectManager $manager): void {
+    protected function cleanup(ObjectManager $manager): void
+    {
         // Cleanup tables
         $connection = $manager->getConnection();
         $platform = $connection->getDatabasePlatform();

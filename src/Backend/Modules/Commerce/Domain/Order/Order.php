@@ -168,8 +168,7 @@ class Order
         ArrayCollection $vats,
         ?string $invoiceNumber,
         ?\DateTime $invoiceDate
-    )
-    {
+    ) {
         $this->account = $account;
         $this->cart = $cart;
         $this->date = $date;

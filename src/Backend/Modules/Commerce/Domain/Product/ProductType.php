@@ -230,9 +230,9 @@ class ProductType extends AbstractType
                 'action' => 'AutoCompleteProducts',
             ]
         )->add(
-                'up_sell_products',
-                CollectionType::class,
-                [
+            'up_sell_products',
+            CollectionType::class,
+            [
                     'required' => false,
                     'label' => 'lbl.UpSellProducts',
                     'entry_type' => UpSellProductType::class,

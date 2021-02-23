@@ -42,7 +42,7 @@ class EditOrder extends BackendBaseActionEdit
 
         $form = $this->getForm();
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('order', $this->order);
             $this->template->assign('dataGridOrderProducts', DataGridProducts::getHtml($this->order));

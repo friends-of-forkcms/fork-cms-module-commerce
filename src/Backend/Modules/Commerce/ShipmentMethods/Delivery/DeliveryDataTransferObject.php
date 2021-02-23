@@ -31,6 +31,5 @@ class DeliveryDataTransferObject extends DataTransferObject
 
     public function __construct()
     {
-
     }
 }

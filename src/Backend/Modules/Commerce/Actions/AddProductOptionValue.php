@@ -103,11 +103,11 @@ class AddProductOptionValue extends BackendBaseActionAdd
     private function getBackLink(array $parameters = []): string
     {
         return BackendModel::createUrlForAction(
-                'EditProductOption',
-                null,
-                null,
-                $parameters
-            ) . '#tabValues';
+            'EditProductOption',
+            null,
+            null,
+            $parameters
+        ) . '#tabValues';
     }
 
     private function getForm(): Form

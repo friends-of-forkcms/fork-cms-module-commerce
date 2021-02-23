@@ -13,7 +13,7 @@ class CheckoutShipmentMethodType extends AbstractType
     {
         // Parse the shipment methods
         $shipmentMethods = [];
-        foreach($options['shipment_methods'] as $key => $shipmentMethod) {
+        foreach ($options['shipment_methods'] as $key => $shipmentMethod) {
             $shipmentMethods[$shipmentMethod['label']] = $key;
         }
 

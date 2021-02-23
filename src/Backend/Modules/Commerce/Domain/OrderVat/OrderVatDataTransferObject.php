@@ -35,7 +35,7 @@ class OrderVatDataTransferObject
     {
         $this->orderVatEntity = $orderVat;
 
-        if ( ! $this->hasExistingOrderVat()) {
+        if (! $this->hasExistingOrderVat()) {
             return;
         }
 

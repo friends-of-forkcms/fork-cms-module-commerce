@@ -23,7 +23,8 @@ final class GenerateInvoiceNumber
      * @param MessageBusSupportingMiddleware $commandBus
      * @param ModulesSettings $modulesSettings
      */
-    public function __construct(MessageBusSupportingMiddleware $commandBus, ModulesSettings $modulesSettings) {
+    public function __construct(MessageBusSupportingMiddleware $commandBus, ModulesSettings $modulesSettings)
+    {
         $this->commandBus = $commandBus;
         $this->modulesSettings = $modulesSettings;
     }

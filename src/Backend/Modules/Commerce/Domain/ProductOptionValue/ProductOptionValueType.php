@@ -105,10 +105,10 @@ class ProductOptionValueType extends AbstractType
                 ]
             )
                 ->addModelTransformer(new CallbackTransformer(
-                function ($entities) {
+                    function ($entities) {
                     return $entities;
                 },
-                function ($dataTransferObjects) {
+                    function ($dataTransferObjects) {
                     $entities = [];
 
                     /**
@@ -120,7 +120,7 @@ class ProductOptionValueType extends AbstractType
 
                     return $entities;
                 }
-            ))
+                ))
         );
 
         if ($productOption->isBetweenType()) {

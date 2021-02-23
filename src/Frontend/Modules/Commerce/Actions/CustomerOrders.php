@@ -88,7 +88,7 @@ class CustomerOrders extends FrontendBaseBlock
     {
         // no template given, so we should build the path
         if ($path === null) {
-             $path = $this->getAction();
+            $path = $this->getAction();
         }
         $path = $this->getModule() . '/Layout/Templates/Customer/' . $path  . '.html.twig';
 

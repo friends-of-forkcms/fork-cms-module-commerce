@@ -20,7 +20,7 @@ class FilterType extends AbstractType
                 'placeholder'  => 'lbl.None',
                 'class'        => Specification::class,
                 'choices'      => $options['specifications'],
-                'choice_label' => function($specification) {
+                'choice_label' => function ($specification) {
                     $prefix = null;
                     if ($specification->path > 0) {
                         $prefix = str_repeat('-', $specification->path) .' ';

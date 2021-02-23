@@ -51,7 +51,7 @@ class VatDataTransferObject
     {
         $this->vatEntity = $vat;
 
-        if ( ! $this->hasExistingVat()) {
+        if (! $this->hasExistingVat()) {
             return;
         }
 

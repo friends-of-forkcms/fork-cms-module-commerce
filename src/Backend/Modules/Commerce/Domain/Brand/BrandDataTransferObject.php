@@ -54,7 +54,7 @@ class BrandDataTransferObject
     {
         $this->brandEntity = $brand;
 
-        if ( ! $this->hasExistingBrand()) {
+        if (! $this->hasExistingBrand()) {
             return;
         }
 

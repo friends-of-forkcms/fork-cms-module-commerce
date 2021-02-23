@@ -73,8 +73,7 @@ class OrderRule
         string $title,
         string $code,
         string $value
-    )
-    {
+    ) {
         $this->order = $order;
         $this->cart_rule = $cartRule;
         $this->total = $total;

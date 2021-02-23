@@ -42,7 +42,7 @@ class EditSpecificationValue extends BackendBaseActionEdit
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (! $form->isSubmitted() || ! $form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('specificationValue', $specificationValue);
 

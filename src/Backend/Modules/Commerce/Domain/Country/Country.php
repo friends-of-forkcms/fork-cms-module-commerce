@@ -46,8 +46,7 @@ class Country
         Locale $locale,
         string $name,
         string $iso
-    )
-    {
+    ) {
         $this->locale = $locale;
         $this->name = $name;
         $this->iso = $iso;

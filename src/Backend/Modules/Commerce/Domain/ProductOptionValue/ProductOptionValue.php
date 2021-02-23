@@ -204,8 +204,7 @@ class ProductOptionValue
         bool $default_value,
         ?string $hex_value,
         int $sequence
-    )
-    {
+    ) {
         $this->product_option = $product_option;
         $this->image = $image;
         $this->vat = $vat;
