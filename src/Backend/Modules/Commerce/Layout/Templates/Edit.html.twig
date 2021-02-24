@@ -103,8 +103,16 @@
             </div>
           </div>
           <div role="tabpanel" class="tab-pane" id="tabRelations">
-            {{ form_row(form.related_products) }}
-            {{ form_row(form.up_sell_products) }}
+            <div class="row">
+              <div class="col-md-5">
+                {{ form_row(form.related_products) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ form_row(form.up_sell_products) }}
+              </div>
+            </div>
           </div>
           <div role="tabpanel" class="tab-pane" id="tabDimensions">
             <div class="row">
