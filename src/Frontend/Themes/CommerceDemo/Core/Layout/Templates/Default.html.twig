@@ -1,0 +1,16 @@
+{% extends 'Core/Layout/Templates/Base.html.twig' %}
+
+{% block main %}
+    {# Main positions #}
+    <div class="main">
+        {% for content in positions.main %}
+            {% if content.blockIsEditor and content.html %}
+                <div class="container px-3 py-4 mx-auto editor">
+                    {{ content.html|raw }}
+                </div>
+            {% elseif content.html %}
+                {{ content.html|raw }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

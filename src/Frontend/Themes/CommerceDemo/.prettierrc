@@ -1,0 +1,9 @@
+{
+    "semi": true,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "tabWidth": 4,
+    "printWidth": 120,
+    "twigPrintWidth": 140,
+    "plugins": ["./node_modules/prettier-plugin-twig-melody"]
+}

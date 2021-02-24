@@ -1,0 +1,46 @@
+{
+    "presets": [
+        // Preset that allows for Typescript compilation
+        "@babel/typescript",
+
+        [
+            // Presets for ES2015/ES2016/ES2017/ES2018/... transpilation and polyfills.
+            "@babel/env",
+            {
+                // Specify the latest corejs version that will be used for polyfilling
+                "corejs": 3,
+
+                // Webpack supports ES Modules out of the box and therefore doesn’t require you to transpile import/export
+                // statements resulting in smaller builds, and better 🌳 shaking.
+                // Ensure that import statements are left as is (opposed to transpiling them to require)
+                "modules": false,
+
+                // Adds specific imports for polyfills when they are used in each file
+                "useBuiltIns": "usage",
+
+                // Identify which browsers you want to support
+                "targets": {
+                    "browsers": ["last 2 versions", "> 5% in BE"]
+                }
+            }
+        ]
+    ],
+    "plugins": [
+        // Enable Dynamic Imports which allows us to dynamically load heavier components, so they don't need to be included on every page.
+        "@babel/syntax-dynamic-import",
+
+        // Allow usage of class properties
+        "@babel/proposal-class-properties",
+
+        // When transpiling code, Babel injects helpers to emulate features. Those helpers are not shared by default between the units
+        // We can save a lot of bundle size by adding them only onces. The transform-runtime plugin walks the AST and replaces the helpers
+        // injections by the appropriate requires of the babel-runtime module. This makes helpers shared across the codebase and avoids duplication.
+        "@babel/plugin-transform-runtime"
+    ],
+    "env": {
+        // Needed for succesful Jest test runs.
+        "test": {
+            "plugins": ["@babel/plugin-transform-modules-commonjs", "dynamic-import-node"]
+        }
+    }
+}

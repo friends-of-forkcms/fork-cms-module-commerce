@@ -1,0 +1,23 @@
+{#
+NOTE: To add more levels
+
+variables that are available:
+- {{ widgetCommerceCategoriesFlat }}: Flat array of all categories
+- {{ widgetCommerceCategoriesTree }}: Tree array of all categories
+#}
+
+{# FLAT VIEW #}
+{% if widgetCommerceCategoriesFlat %}
+    <section class="container px-3 py-8 mx-auto">
+        <ul class="flex flex-row gap-4">
+            {% for category in widgetCommerceCategoriesFlat %}
+                <li>
+                    <a class="text-lg text-gray-500 transition-colors duration-300 hover:text-yellow-500" href="{{ category.url }}">
+                        {{ category.title }}&nbsp;({{ category.total }})
+                    </a>
+                    {% if not loop.last %}/{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}

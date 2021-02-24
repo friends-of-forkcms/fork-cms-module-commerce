@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme>
+    <name>CommerceDemo</name>
+    <version>0.1.0</version>
+    <requirements>
+        <minimum_version>5.0.0</minimum_version>
+    </requirements>
+    <thumbnail>thumbnail.png</thumbnail>
+    <description>
+        <![CDATA[
+            Store example theme for Fork CMS
+        ]]>
+    </description>
+    <authors>
+        <author>
+            <name>Jesse Dobbelaere</name>
+            <url>http://www.jessedobbelae.re</url>
+        </author>
+    </authors>
+    <metanavigation supported="false" />
+    <templates>
+        <template label="Default" path="Core/Layout/Templates/Default.html.twig" image="true">
+            <positions>
+                <position name="main" />
+            </positions>
+            <format>
+                [main,main,main]
+            </format>
+        </template>
+        <template label="Home" path="Core/Layout/Templates/Home.html.twig" image="true">
+            <positions>
+                <position name="main" />
+            </positions>
+            <format>
+                [/,/,/],
+                [main,main,main]
+            </format>
+        </template>
+    </templates>
+</theme>

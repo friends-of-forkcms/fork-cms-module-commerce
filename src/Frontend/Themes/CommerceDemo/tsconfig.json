@@ -1,0 +1,40 @@
+{
+    // Based on the tsconfig defaults in create-react-app.
+    "compilerOptions": {
+        // Target latest version of ECMAScript.
+        "target": "esnext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+
+        // Prevent Typescript from type-checking the entire imported library as not every library provides perfect types.
+        "skipLibCheck": true,
+
+        // Allow to import CommonJS modules like ES6 modules spec
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+
+        // Enable strict type checking options
+        "strict": true,
+
+        // Disallow inconsistently-cased references to the same file.
+        "forceConsistentCasingInFileNames": true,
+
+        // Use ESNext module code generation
+        "module": "esnext",
+
+        // Modules should get resolved in a Node.js way.
+        "moduleResolution": "node",
+
+        // Include modules imported with .json extension.
+        "resolveJsonModule": true,
+
+        // Perform additional checks to ensure that separate compilation (@babel/plugin-transform-typescript) is safe.
+        "isolatedModules": true,
+
+        // Do not emit outputs because Webpack is compiling the code.
+        "noEmit": true,
+
+        // Support JSX language in .tsx files.
+        "jsx": "react"
+    },
+    "include": ["Core/Js"]
+}

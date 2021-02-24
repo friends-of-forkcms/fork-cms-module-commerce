@@ -555,4 +555,20 @@ class ProductRepository extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @param int $limit
+     * @param Locale $locale
+     * @return Product[]
+     */
+    public function getMostRecent(int $limit, Locale $locale): array {
+        return $this->createQueryBuilder('i')
+            ->where('i.locale = :locale')
+            ->orderBy('i.createdOn', 'DESC')
+            ->setMaxResults($limit)
+            ->setParameters(['locale' => $locale])
+            ->getQuery()
+            ->getResult();
+    }
+
 }

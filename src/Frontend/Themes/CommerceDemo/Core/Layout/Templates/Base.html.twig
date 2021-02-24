@@ -1,0 +1,66 @@
+{% include 'Core/Layout/Templates/Head.html.twig' %}
+
+<body class="{{ LANGUAGE }} font-sans leading-normal antialiased bg-white text-gray-600" itemscope itemtype="http://schema.org/WebPage">
+    {{ siteHTMLStartOfBody|raw }}
+
+    {% block navigation %}
+        <nav id="header" class="top-0 z-30 w-full py-1">
+            <div class="container flex flex-wrap items-center justify-between w-full px-6 py-3 mx-auto mt-0">
+                {# Main navigation #}
+                <div class="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
+                    <nav>
+                        {{ getnavigation('page', 0, 1) }}
+                    </nav>
+                </div>
+
+                {# Logo #}
+                <div class="order-1 md:order-2">
+                    <a class="flex items-center text-xl font-bold tracking-widest text-gray-800 no-underline hover:no-underline" href="/">
+                        COMMERCE
+                    </a>
+                </div>
+
+                {# Icon navigation right #}
+                <div class="flex items-center order-2 gap-8 md:order-3" id="nav-content">
+                    <a class="no-underline hover:text-black" href="#">
+                        <svg class="hover:text-black"
+                            width="18"
+                            height="18"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </a>
+                    <a class="no-underline hover:text-black" href="#">Sign In</a>
+                    <a class="no-underline hover:text-black" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}"">Cart</a>
+                </div>
+            </div>
+        </nav>
+    {% endblock %}
+
+    {# Main content #}
+    {% block main %}
+
+    {% endblock %}
+
+    {% block footer %}
+        {% include 'Core/Layout/Templates/Footer.html.twig' %}
+    {% endblock %}
+
+    {# Scripts #}
+    {% if not isWebpackDevServer %}
+        <script src="{{ asset('vendor.js') }}"></script>
+    {% endif %}
+    <script src="{{ asset('app.js') }}"></script>
+
+    {{ siteHTMLEndOfBody|raw }}
+</body>
+
+{# Hack around the "Unexpected closing html tag" error of Prettier Twig #}
+{% set htmlTag = '</html>' %}
+{{ htmlTag|raw }}

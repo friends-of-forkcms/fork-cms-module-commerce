@@ -1,0 +1,16 @@
+{% if recentProducts %}
+<section id="commerceRecentProductsWidget">
+    <div>
+        <header>
+            <h3>{{ 'lbl.RecentProducts'|trans|ucfirst }}</h3>
+        </header>
+        <div>
+            <ul>
+                {% for product in recentProducts %}
+                <li><a href="{{ product.full_url }}" title="{{ product.title }}">{{ product.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endif %}

@@ -1,0 +1,15 @@
+<h1>{{ 'lbl.Brand'|trans|ucfirst }}: {{ title }}</h1>
+
+{% if products %}
+    <div class="productsContainer">
+        {% for product in products %}
+            <div class="title"><p><a href="{{ product.full_url }}" title="{{ product.title }}">{{ product.title|ucfirst }}</a></p></div>
+            <div class="price"><p>{{ 'lbl.Price'|trans|ucfirst }}: {{ product.price|formatcurrency }}</p></div>
+            <div class="summary"><p>{{ product.summary }}</p></div>
+            <div class="addProductToShoppingCart">
+                <p><a href="#" id="{{ product.id }}">{{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}</a></p>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+{% endif %}

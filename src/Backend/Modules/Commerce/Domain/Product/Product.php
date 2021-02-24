@@ -869,14 +869,15 @@ class Product
      */
     private function calculateActivePrice(): void
     {
-        if ($this->activePrice) {
+        // Do not recalculate if price is set already
+        if (isset($this->activePrice)) {
             return;
         }
 
         $today = (new DateTime('now'))->setTime(0, 0, 0);
         $price = $this->getPrice();
 
-        if ($this->type == self::TYPE_DIMENSIONS) {
+        if ($this->type === self::TYPE_DIMENSIONS) {
             $criteria = Criteria::create()->orderBy([
                 'price' => Criteria::ASC,
             ])->setMaxResults(1);

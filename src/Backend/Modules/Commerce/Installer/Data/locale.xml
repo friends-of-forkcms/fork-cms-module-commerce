@@ -1175,6 +1175,10 @@
       </item>
     </Core>
     <Pages>
+      <item type="label" name="Brand">
+        <translation language="nl"><![CDATA[merk]]></translation>
+        <translation language="en"><![CDATA[brand]]></translation>
+      </item>
       <item type="label" name="Brands">
         <translation language="nl"><![CDATA[merken]]></translation>
         <translation language="en"><![CDATA[brands]]></translation>

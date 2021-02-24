@@ -1,31 +1,31 @@
 {*
   NOTE: To add more levels
 
-	variables that are available:
-	- {$widgetCommerceCategoriesFlat}: Flat array of all categories
-	- {$widgetCommerceCategoriesTree}: Tree array of all categories
+    variables that are available:
+    - {$widgetCommerceCategoriesFlat}: Flat array of all categories
+    - {$widgetCommerceCategoriesTree}: Tree array of all categories
 *}
 
 {* FLAT VIEW
 {option:widgetCommerceCategoriesFlat}
-	<section id="CommerceCategoriesWidget" class="mod">
-		<div class="inner">
-			<header class="hd">
-				<h3>{$lblCategories|ucfirst}</h3>
-			</header>
-			<div class="bd content">
-				<ul>
-					{iteration:widgetCommerceCategoriesFlat}
-						<li>
-							<a href="{$widgetCommerceCategoriesFlat.url}">
-								{$widgetCommerceCategoriesFlat.title}&nbsp;({$widgetCommerceCategoriesFlat.total})
-							</a>
-						</li>
-					{/iteration:widgetCommerceCategoriesFlat}
-				</ul>
-			</div>
-		</div>
-	</section>
+    <section id="CommerceCategoriesWidget" class="mod">
+        <div class="inner">
+            <header class="hd">
+                <h3>{$lblCategories|ucfirst}</h3>
+            </header>
+            <div class="bd content">
+                <ul>
+                    {iteration:widgetCommerceCategoriesFlat}
+                        <li>
+                            <a href="{$widgetCommerceCategoriesFlat.url}">
+                                {$widgetCommerceCategoriesFlat.title}&nbsp;({$widgetCommerceCategoriesFlat.total})
+                            </a>
+                        </li>
+                    {/iteration:widgetCommerceCategoriesFlat}
+                </ul>
+            </div>
+        </div>
+    </section>
 {/option:widgetCommerceCategoriesFlat}
 *}
 

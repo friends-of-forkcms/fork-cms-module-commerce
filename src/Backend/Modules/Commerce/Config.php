@@ -14,10 +14,10 @@ class Config extends BackendBaseConfig
     /**
      * The default action.
      */
-    protected string $defaultAction = 'Index';
+    protected $defaultAction = 'Index';
 
     /**
      * The disabled actions.
      */
-    protected array $disabledActions = [];
+    protected $disabledActions = [];
 }
