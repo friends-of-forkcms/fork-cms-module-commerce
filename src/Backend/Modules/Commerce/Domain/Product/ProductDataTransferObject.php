@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductDataTransferObject
 {
-    protected ?Product $productEntity;
-    public ?int $id;
+    protected ?Product $productEntity = null;
+    public ?int $id = null;
     public bool $hidden = false;
 
     /**
@@ -65,14 +65,14 @@ class ProductDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $summary;
+    public ?string $summary = null;
 
     public float $weight;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $price;
+    public ?string $price = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -88,10 +88,10 @@ class ProductDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public string $sku;
-    public ?string $ean13;
-    public ?string $isbn;
-    public ?string $text;
-    public ?string $dimension_instructions;
+    public ?string $ean13 = null;
+    public ?string $isbn = null;
+    public ?string $text = null;
+    public ?string $dimension_instructions = null;
     public Locale $locale;
 
     /**

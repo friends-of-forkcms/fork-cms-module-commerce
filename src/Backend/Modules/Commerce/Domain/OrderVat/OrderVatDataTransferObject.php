@@ -6,7 +6,7 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 
 class OrderVatDataTransferObject
 {
-    protected ?OrderVat $orderVatEntity;
+    protected ?OrderVat $orderVatEntity = null;
     public int $id;
     public Order $order;
     public string $title;

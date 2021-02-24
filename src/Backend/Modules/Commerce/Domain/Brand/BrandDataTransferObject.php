@@ -8,16 +8,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class BrandDataTransferObject
 {
-    protected ?Brand $brandEntity;
+    protected ?Brand $brandEntity = null;
     public int $id;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public string $title;
-    public ?string $text;
+    public ?string $text = null;
     public Locale $locale;
-    public ?Meta $meta;
+    public ?Meta $meta = null;
     public Image $image;
     public int $sequence;
 

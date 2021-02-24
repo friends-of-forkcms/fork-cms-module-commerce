@@ -12,18 +12,18 @@ use Doctrine\Common\Collections\Collection;
 
 class OrderProductDataTransferObject
 {
-    protected ?OrderProduct $orderProductEntity;
+    protected ?OrderProduct $orderProductEntity = null;
     public int $id;
-    public ?Product $product;
+    public ?Product $product = null;
     public int $type;
     public Order $order;
     public string $sku;
     public string $title;
     public int $amount;
-    public ?int $width;
-    public ?int $height;
-    public ?int $order_width;
-    public ?int $order_height;
+    public ?int $width = null;
+    public ?int $height = null;
+    public ?int $order_width = null;
+    public ?int $order_height = null;
     public float $price;
     public float $total;
 

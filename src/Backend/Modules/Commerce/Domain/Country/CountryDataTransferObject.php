@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CountryDataTransferObject
 {
-    protected ?Country $countryEntity;
+    protected ?Country $countryEntity = null;
     public int $id;
 
     /**

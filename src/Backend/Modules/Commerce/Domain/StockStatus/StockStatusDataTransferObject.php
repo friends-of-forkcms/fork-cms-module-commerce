@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class StockStatusDataTransferObject
 {
-    protected ?StockStatus $stockStatusEntity;
+    protected ?StockStatus $stockStatusEntity = null;
     public int $id;
 
     /**

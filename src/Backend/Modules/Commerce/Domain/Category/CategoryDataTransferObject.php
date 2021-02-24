@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryDataTransferObject
 {
-    protected ?Category $categoryEntity;
+    protected ?Category $categoryEntity = null;
     public int $id;
     public int $extraId;
 
@@ -16,13 +16,13 @@ class CategoryDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public string $title;
-    public ?string $intro;
-    public ?string $text;
+    public ?string $intro = null;
+    public ?string $text = null;
     public Locale $locale;
-    public ?Category $parent;
-    public ?Meta $meta;
+    public ?Category $parent = null;
+    public ?Meta $meta = null;
     public Image $image;
-    public ?int $googleTaxonomyId;
+    public ?int $googleTaxonomyId = null;
     public int $sequence;
 
     public function __construct(Category $category = null)

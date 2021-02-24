@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CartRuleDataTransferObject
 {
-    protected ?CartRule $cartRuleEntity;
+    protected ?CartRule $cartRuleEntity = null;
     public int $id;
 
     /**
@@ -22,25 +22,25 @@ class CartRuleDataTransferObject
      */
     public DateTimeInterface $from;
 
-    public ?DateTimeInterface $till;
+    public ?DateTimeInterface $till = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public int $quantity;
 
-    public ?int $quantity_per_user;
+    public ?int $quantity_per_user = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"Edit"})
      */
     public string $code;
 
-    public ?float $minimum_amount;
+    public ?float $minimum_amount = null;
 
-    public ?float $reduction_percentage;
+    public ?float $reduction_percentage = null;
 
-    public ?float $reduction_amount;
+    public ?float $reduction_amount = null;
 
     public bool $hidden;
 

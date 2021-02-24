@@ -6,7 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 
 class OrderProductNotificationDataTransferObject
 {
-    protected ?OrderProductNotification $orderProductNotificationEntity;
+    protected ?OrderProductNotification $orderProductNotificationEntity = null;
     public int $id;
     public int $type;
     public OrderProduct $order_product;

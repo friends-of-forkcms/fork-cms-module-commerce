@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SpecificationDataTransferObject
 {
-    protected ?Specification $specificationEntity;
+    protected ?Specification $specificationEntity = null;
 
     public int $id;
 
@@ -19,7 +19,7 @@ class SpecificationDataTransferObject
      */
     public string $title;
     public Locale $locale;
-    public ?Meta $meta;
+    public ?Meta $meta = null;
     public int $sequence;
 
     /**

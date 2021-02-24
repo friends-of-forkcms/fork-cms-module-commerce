@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductOptionValueDataTransferObject
 {
     protected ?ProductOptionValue $productOptionValueEntity;
-    public ?int $id;
+    public ?int $id = null;
     public ProductOption $productOption;
 
     /**
@@ -26,19 +26,19 @@ class ProductOptionValueDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"DefaultTypes"})
      */
-    public ?string $title;
+    public ?string $title = null;
 
     /**
      * @ProductOptionValueAssert\OneOrMoreFilled(fields={"end"}, groups={"BetweenType"})
      */
-    public ?int $start;
+    public ?int $start = null;
 
     /**
      * @ProductOptionValueAssert\OneOrMoreFilled(fields={"start"}, groups={"BetweenType"})
      */
-    public ?int $end;
-    public ?string $sub_title;
-    public ?string $sku;
+    public ?int $end = null;
+    public ?string $sub_title = null;
+    public ?string $sku = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -49,15 +49,15 @@ class ProductOptionValueDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public float $percentage = 0.00;
-    public ?int $width;
-    public ?int $height;
+    public ?int $width = null;
+    public ?int $height = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public int $impact_type = ProductOptionValue::IMPACT_TYPE_ADD;
     public bool $default_value;
-    public ?string $hex_value;
+    public ?string $hex_value = null;
     public MediaGroup $image;
     public int $sequence;
     public Meta $meta;

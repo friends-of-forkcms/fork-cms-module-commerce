@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderHistoryDataTransferObject
 {
-    protected ?OrderHistory $orderHistoryEntity;
+    protected ?OrderHistory $orderHistoryEntity = null;
     public int $id;
     public Order $order;
 

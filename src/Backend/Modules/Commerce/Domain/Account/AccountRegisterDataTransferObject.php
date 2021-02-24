@@ -11,16 +11,13 @@ class AccountRegisterDataTransferObject extends AddressDataTransferObject
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     * @Assert\Email(
-     *     message="err.EmailIsRequired",
-     *     checkMX=true
-     * )
+     * @Assert\Email(message="err.EmailIsRequired", checkMX=true)
      */
     public string $email_address;
 
     public bool $same_shipping_address = true;
 
-    public $password;
+    public string $password;
 
     public function set(AccountGuest $accountGuest): void
     {

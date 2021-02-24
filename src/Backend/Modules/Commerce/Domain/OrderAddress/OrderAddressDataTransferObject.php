@@ -8,11 +8,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderAddressDataTransferObject
 {
-    protected ?OrderAddress $orderAddressEntity;
+    protected ?OrderAddress $orderAddressEntity = null;
     public int $id;
-    public ?Account $account;
-    public ?Country $country;
-    public ?string $company_name;
+    public ?Account $account = null;
+    public ?Country $country = null;
+    public ?string $company_name = null;
 
     /**
      * @ Assert\NotBlank(message="err.FieldIsRequired")
@@ -22,31 +22,31 @@ class OrderAddressDataTransferObject
     /**
      * @ Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $last_name;
-    public ?string $email_address;
-    public ?string $phone;
+    public ?string $last_name = null;
+    public ?string $email_address = null;
+    public ?string $phone = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $street;
+    public ?string $street = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $house_number;
+    public ?string $house_number = null;
 
-    public ?string $house_number_addition;
-
-    /**
-     * @Assert\NotBlank(message="err.FieldIsRequired")
-     */
-    public ?string $city;
+    public ?string $house_number_addition = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $zip_code;
+    public ?string $city = null;
+
+    /**
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public ?string $zip_code = null;
 
     public function __construct(OrderAddress $orderAddress = null)
     {

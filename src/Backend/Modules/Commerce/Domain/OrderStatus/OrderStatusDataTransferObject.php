@@ -7,13 +7,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderStatusDataTransferObject
 {
-    protected ?OrderStatus $orderStatusEntity;
+    protected ?OrderStatus $orderStatusEntity = null;
     public int $id;
     /** @Assert\NotBlank(message="err.FieldIsRequired") */
     public string $title;
-    public ?string $mail_subject;
-    public ?string $company_mail_subject;
-    public ?string $color;
+    public ?string $mail_subject = null;
+    public ?string $company_mail_subject = null;
+    public ?string $color = null;
     public bool $pdf_invoice = false;
     public bool $pdf_packing_slip = false;
     public bool $paid = false;
@@ -21,8 +21,8 @@ class OrderStatusDataTransferObject
     public bool $download_invoice = false;
     public bool $send_email = false;
     public bool $send_company_email = false;
-    public ?string $template;
-    public ?string $company_template;
+    public ?string $template = null;
+    public ?string $company_template = null;
     public Locale $locale;
     public int $type;
 

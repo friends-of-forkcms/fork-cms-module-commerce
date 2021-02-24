@@ -6,11 +6,11 @@ use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 
 class OrderProductOptionDataTransferObject
 {
-    protected ?OrderProductOption $orderProductOptionEntity;
+    protected ?OrderProductOption $orderProductOptionEntity = null;
     public int $id;
     public int $type;
     public OrderProduct $order_product;
-    public ?string $sku;
+    public ?string $sku = null;
     public string $title;
     public string $value;
     public float $price;

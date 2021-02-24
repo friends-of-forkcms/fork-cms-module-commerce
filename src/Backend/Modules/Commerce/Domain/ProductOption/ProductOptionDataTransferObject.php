@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductOptionDataTransferObject
 {
     protected ?ProductOption $productOptionEntity;
-    public ?int $id;
+    public ?int $id = null;
     public Product $product;
     public ?ProductOptionValue $parent_product_option_value;
 
@@ -27,7 +27,7 @@ class ProductOptionDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public string $title;
-    public ?string $text;
+    public ?string $text = null;
     public bool $required;
     public bool $custom_value_allowed;
     public float $custom_value_price = 0.00;
@@ -36,9 +36,9 @@ class ProductOptionDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public int $type;
-    public ?string $placeholder;
-    public ?string $prefix;
-    public ?string $suffix;
+    public ?string $placeholder = null;
+    public ?string $prefix = null;
+    public ?string $suffix = null;
     public int $sequence;
 
     public function __construct(ProductOption $productOption = null)

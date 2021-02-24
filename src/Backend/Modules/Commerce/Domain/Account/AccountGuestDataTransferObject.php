@@ -11,10 +11,7 @@ class AccountGuestDataTransferObject extends AddressDataTransferObject
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     * @Assert\Email(
-     *     message="err.EmailIsRequired",
-     *     checkMX=true
-     * )
+     * @Assert\Email(message="err.EmailIsRequired", checkMX=true)
      */
     public string $email_address;
 

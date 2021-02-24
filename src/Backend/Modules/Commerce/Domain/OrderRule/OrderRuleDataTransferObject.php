@@ -7,10 +7,10 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 
 class OrderRuleDataTransferObject
 {
-    protected ?OrderRule $orderRuleEntity;
+    protected ?OrderRule $orderRuleEntity = null;
     public int $id;
     public Order $order;
-    public ?CartRule $cartRule;
+    public ?CartRule $cartRule = null;
     public float $total;
     public string $title;
     public string $code;

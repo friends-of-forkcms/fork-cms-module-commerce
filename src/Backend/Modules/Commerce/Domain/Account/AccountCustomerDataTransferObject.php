@@ -6,20 +6,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AccountCustomerDataTransferObject
 {
-    public Account $accountEntity;
+    public ?Account $accountEntity = null;
     public int $id;
-    public ?int $profile_id;
-    public ?string $company_name;
+    public ?int $profile_id = null;
+    public ?string $company_name = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $first_name;
+    public ?string $first_name = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $last_name;
+    public ?string $last_name = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -33,7 +33,7 @@ class AccountCustomerDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $phone;
+    public ?string $phone = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"register"})
@@ -60,13 +60,13 @@ class AccountCustomerDataTransferObject
             return;
         }
 
-        $this->id = $account->getId();
-        $this->profile_id = $account->getProfileId();
-        $this->company_name = $account->getCompanyName();
-        $this->first_name = $account->getFirstName();
-        $this->last_name = $account->getLastName();
-        $this->email_address = $account->getEmail();
-        $this->phone = $account->getPhone();
+        $this->id = $this->accountEntity->getId();
+        $this->profile_id = $this->accountEntity->getProfileId();
+        $this->company_name = $this->accountEntity->getCompanyName();
+        $this->first_name = $this->accountEntity->getFirstName();
+        $this->last_name = $this->accountEntity->getLastName();
+        $this->email_address = $this->accountEntity->getEmail();
+        $this->phone = $this->accountEntity->getPhone();
     }
 
     public function hasExistingAccount(): bool

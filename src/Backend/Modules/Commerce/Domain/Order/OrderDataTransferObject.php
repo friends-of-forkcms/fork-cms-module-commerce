@@ -16,19 +16,19 @@ use Doctrine\Common\Collections\Collection;
 
 class OrderDataTransferObject
 {
-    protected ?Order $orderEntity;
+    protected ?Order $orderEntity = null;
     public int $id;
     public Account $account;
-    public ?Cart $cart;
-    public ?string $paymentMethod;
+    public ?Cart $cart = null;
+    public ?string $paymentMethod = null;
     public string $shipment_method;
-    public ?string $shipment_price;
+    public ?string $shipment_price = null;
     public DateTimeInterface $date;
-    public ?string $comment;
+    public ?string $comment = null;
     public float $sub_total;
     public float $total;
-    public ?string $invoiceNumber;
-    public ?DateTimeInterface $invoiceDate;
+    public ?string $invoiceNumber = null;
+    public ?DateTimeInterface $invoiceDate = null;
     public OrderAddress $invoiceAddress;
     public OrderAddress $shipmentAddress;
 

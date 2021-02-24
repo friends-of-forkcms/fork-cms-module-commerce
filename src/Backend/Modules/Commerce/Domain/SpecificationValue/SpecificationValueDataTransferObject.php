@@ -10,13 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SpecificationValueDataTransferObject
 {
     protected ?SpecificationValue $specificationValueEntity;
-    public ?int $id;
+    public ?int $id = null;
     public ?Specification $specification;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $value;
+    public ?string $value = null;
     public Product $product;
     public int $sequence;
     public ?Meta $meta;
