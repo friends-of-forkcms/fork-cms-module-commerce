@@ -329,7 +329,9 @@ class Category
         if (isset($extra['data'])) {
             $data = $data + (array) $extra['data'];
         }
-        $data['extra_label'] = ucfirst(Language::lbl('Category')).' - '.$this->title;
+
+        Language::setLocale(Language::getWorkingLanguage());
+        $data['extra_label'] = ucfirst(Language::lbl('Category', 'Commerce')).' - '.$this->title;
 
         Model::updateExtra($this->extraId, 'data', $data);
     }
@@ -344,7 +346,7 @@ class Category
      */
     public function getUrl(): string
     {
-        if (!$this->urlPrefix) {
+        if (!isset($this->urlPrefix)) {
             if ($this->parent) {
                 $this->urlPrefix = $this->parent->getUrl();
             } else {
