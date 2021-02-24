@@ -10,6 +10,7 @@ use Backend\Modules\Commerce\Domain\Quote\QuoteType;
 use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder;
 use Common\Exception\ExitException;
 use Common\Exception\RedirectException;
+use Exception;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
@@ -32,19 +33,8 @@ use Frontend\Modules\Profiles\Engine\Authentication;
  */
 class Cart extends FrontendBaseBlock
 {
-    /**
-     * Our current cart.
-     *
-     * @var \Backend\Modules\Commerce\Domain\Cart\Cart
-     */
-    private $cart;
+    private ?Cart $cart;
 
-    /**
-     * Execute the action.
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -53,14 +43,13 @@ class Cart extends FrontendBaseBlock
         $parameters = $this->url->getParameters(false);
         $parameterCount = count($parameters);
 
-        if ($parameterCount == 0) {
+        if ($parameterCount === 0) {
             $this->overview();
-        } elseif ($parameterCount == 1) {
+        } elseif ($parameterCount === 1) {
             if ($this->cart && $this->cart->getValues()->count() > 0) {
                 switch ($this->url->getParameter(0)) {
                     case Language::lbl('Checkout'):
                         $this->isAllowedToCheckout();
-
                         $this->checkout();
                         break;
                     case Language::lbl('RequestQuoteUrl'):
@@ -70,12 +59,12 @@ class Cart extends FrontendBaseBlock
                         $this->redirect(Navigation::getUrl(404));
                         break;
                 }
-            } elseif ($parameters[0] == 'webhook') {
+            } elseif ($parameters[0] === 'webhook') {
                 throw new ExitException('', $this->runWebhook());
             } else {
                 $this->redirect(Navigation::getUrl(404));
             }
-        } elseif ($parameterCount == 2) {
+        } elseif ($parameterCount === 2) {
             switch ($this->url->getParameter(0)) {
                 case Language::lbl('Checkout'):
                     $this->isAllowedToCheckout();
@@ -138,7 +127,7 @@ class Cart extends FrontendBaseBlock
         $requestedUrl = $baseUrl.'/'.implode('/', $urlParameters);
 
         // Load the first step
-        if (count($urlParameters) == 1) {
+        if (count($urlParameters) === 1) {
             $requestedUrl = $checkoutProgress->getFirstStep()->getUrl();
         }
 
@@ -253,19 +242,17 @@ class Cart extends FrontendBaseBlock
     {
         $method = explode('.', $paymentMethod);
 
-        if (count($method) != 2) {
-            throw new \Exception('Invalid payment method');
+        if (count($method) !== 2) {
+            throw new Exception('Invalid payment method');
         }
 
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
 
         if (!class_exists($className)) {
-            throw new \Exception('Class '.$className.' not found');
+            throw new Exception('Class '.$className.' not found');
         }
 
-        /**
-         * @var ConfirmOrder $class
-         */
+        /** @var ConfirmOrder $class */
         $class = new $className($method[0], $method[1]);
 
         return $class;

@@ -28,7 +28,7 @@ final class UpdateSettingsHandler
         $this->loadGoogleMerchantCategories($updateSettings->google_product_categories);
     }
 
-    private function loadGoogleMerchantCategories(?string $url)
+    private function loadGoogleMerchantCategories(?string $url): void
     {
         $contents = file_get_contents($url);
         if (!$contents) {

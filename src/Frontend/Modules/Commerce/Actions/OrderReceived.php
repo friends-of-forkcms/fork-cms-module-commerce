@@ -2,8 +2,9 @@
 
 namespace Frontend\Modules\Commerce\Actions;
 
-use Common\Cookie;
+use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
+use Frontend\Core\Engine\Model as FrontendModel;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 
 /**
@@ -13,23 +14,13 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
  */
 class OrderReceived extends FrontendBaseBlock
 {
-    /**
-     * The url for commerce index.
-     *
-     * @var array
-     */
-    private $commerceUrl;
+    private string $commerceUrl;
 
     /**
      * First name of the person that submitted the order.
-     *
-     * @var string
      */
-    private $firstName;
+    private string $firstName;
 
-    /**
-     * Execute the action.
-     */
     public function execute(): void
     {
         parent::execute();
@@ -40,23 +31,18 @@ class OrderReceived extends FrontendBaseBlock
         $this->parse();
     }
 
-    /**
-     * Load the data, don't forget to validate the incoming data.
-     */
-    private function getData()
+    private function getData(): void
     {
-        // requested page
-        $requestedPage = $this->URL->getParameter('page', 'int', 1);
-        $this->firstName = Cookie::get('fname');
+        /** @var Cookie $cookie */
+        $cookie = FrontendModel::getContainer()->get('fork.cookie');
+
+        $this->firstName = $cookie->get('fname', '');
         $this->commerceUrl = FrontendNavigation::getURLForBlock('Commerce');
     }
 
-    /**
-     * Parse the page.
-     */
-    protected function parse()
+    protected function parse(): void
     {
-        $this->tpl->assign('commerceUrl', $this->commerceUrl);
-        $this->tpl->assign('firstName', $this->firstName);
+        $this->template->assign('commerceUrl', $this->commerceUrl);
+        $this->template->assign('firstName', $this->firstName);
     }
 }

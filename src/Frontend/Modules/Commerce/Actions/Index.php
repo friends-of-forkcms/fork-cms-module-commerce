@@ -27,11 +27,6 @@ use Frontend\Modules\Commerce\Engine\Pagination;
  */
 class Index extends FrontendBaseBlock
 {
-    /**
-     * Execute the action.
-     *
-     * @throws RedirectException
-     */
     public function execute(): void
     {
         parent::execute();
@@ -52,7 +47,7 @@ class Index extends FrontendBaseBlock
             } else {
                 $this->redirect(FrontendNavigation::getUrl(404));
             }
-        } elseif ($parameterCount == 2) {
+        } elseif ($parameterCount === 2) {
             if ($product = $productRepository->findByCategoryAndUrl(
                 Locale::frontendLanguage(),
                 $parameters[0],
@@ -65,22 +60,19 @@ class Index extends FrontendBaseBlock
                 $this->redirect(FrontendNavigation::getUrl(404));
             }
         } elseif (
-            $parameterCount == 1 && (
+            $parameterCount === 1 && (
                 $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
             )
         ) { // Category
             $this->parseCategory($category);
-        } elseif ($parameterCount == 0) { // Overview
+        } elseif ($parameterCount === 0) { // Overview
             $this->parseOverview();
         } else {
             $this->redirect(FrontendNavigation::getUrl(404));
         }
     }
 
-    /**
-     * Parse overview of categories.
-     */
-    private function parseOverview()
+    private function parseOverview(): void
     {
         $this->loadTemplate();
 
@@ -97,10 +89,8 @@ class Index extends FrontendBaseBlock
 
     /**
      * Parse products overview in a category.
-     *
-     * @throws RedirectException
      */
-    private function parseCategory(Category $category)
+    private function parseCategory(Category $category): void
     {
         // Set some default variables
         $currentPage = $this->url->getParameter(Language::lbl('Page'), 'int', 1);

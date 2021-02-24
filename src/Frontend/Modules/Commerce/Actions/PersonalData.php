@@ -2,7 +2,7 @@
 
 namespace Frontend\Modules\Commerce\Actions;
 
-use Common\Cookie;
+use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Form as FrontendForm;
 use Frontend\Core\Engine\Language as FL;
@@ -19,17 +19,13 @@ class PersonalData extends FrontendBaseBlock
 {
     /**
      * The url to checkout page.
-     *
-     * @var array
      */
-    private $checkoutUrl;
+    private string $checkoutUrl;
 
     /**
      * The order id in cookie.
-     *
-     * @var int
      */
-    private $cookieOrderId;
+    private int $cookieOrderId;
 
     /**
      * Execute the action.
@@ -50,13 +46,10 @@ class PersonalData extends FrontendBaseBlock
     /**
      * Load the data, don't forget to validate the incoming data.
      */
-    private function getData()
+    private function getData(): void
     {
-        // requested page
-        $requestedPage = $this->URL->getParameter('page', 'int', 1);
-
         // get order
-        $this->cookieOrderId = Cookie::get('order_id');
+        $this->cookieOrderId = $this->get('fork.cookie')->get('order_id');
 
         // set checkout url
         $this->checkoutUrl = FrontendNavigation::getURLForBlock('Commerce', 'Checkout');
@@ -71,13 +64,15 @@ class PersonalData extends FrontendBaseBlock
         $this->frm = new FrontendForm('personalDataForm');
 
         // init vars
-        $email = (Cookie::exists('email')) ? Cookie::get('email') : null;
-        $fname = (Cookie::exists('fname')) ? Cookie::get('fname') : null;
-        $lname = (Cookie::exists('lname')) ? Cookie::get('lname') : null;
-        $address = (Cookie::exists('address')) ? Cookie::get('address') : null;
-        $hnumber = (Cookie::exists('hnumber')) ? Cookie::get('hnumber') : null;
-        $postal = (Cookie::exists('postal')) ? Cookie::get('postal') : null;
-        $hometown = (Cookie::exists('hometown')) ? Cookie::get('hometown') : null;
+        /** @var Cookie $cookie */
+        $cookie = $this->get('fork.cookie');
+        $email = $cookie->get('email');
+        $fname = $cookie->get('fname');
+        $lname = $cookie->get('lname');
+        $address = $cookie->get('address');
+        $hnumber = $cookie->get('hnumber');
+        $postal = $cookie->get('postal');
+        $hometown = $cookie->get('hometown');
 
         // create elements
         $this->frm->addText('email', $email)->setAttributes(['required' => null, 'type' => 'email']);
@@ -155,7 +150,7 @@ class PersonalData extends FrontendBaseBlock
     protected function parse()
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
 
         // url to checkout page
         $this->tpl->assign('checkoutUrl', $this->checkoutUrl);

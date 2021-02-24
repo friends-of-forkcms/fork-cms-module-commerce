@@ -32,7 +32,7 @@ class SettingsDataTransferObject
      */
     public string $next_invoice_number;
 
-    public string $automatic_invoice_statuses;
+    public array $automatic_invoice_statuses;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")

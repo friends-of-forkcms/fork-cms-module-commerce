@@ -17,22 +17,8 @@ use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationExceptio
 
 class CustomerOrders extends FrontendBaseBlock
 {
-    /**
-     * @var Profile
-     */
-    private $profile;
+    private Account $account;
 
-    /**
-     * @var Account
-     */
-    private $account;
-
-    /**
-     * Execute the action.
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         if (!FrontendProfilesAuthentication::isLoggedIn()) {
@@ -41,8 +27,8 @@ class CustomerOrders extends FrontendBaseBlock
 
         parent::execute();
 
-        $this->profile = FrontendProfilesAuthentication::getProfile();
-        $this->account = $this->getAccountRepository()->findOneByProfile($this->profile);
+        $profile = FrontendProfilesAuthentication::getProfile();
+        $this->account = $this->getAccountRepository()->findOneByProfile($profile);
 
         if ($this->getRequest()->query->has('order_id')) {
             try {
@@ -81,8 +67,8 @@ class CustomerOrders extends FrontendBaseBlock
     }
 
     /**
-     * @param string $path      the path for the template to use
-     * @param bool   $overwrite Should the template overwrite the default?
+     * @param string $path the path for the template to use
+     * @param bool $overwrite Should the template overwrite the default?
      */
     protected function loadTemplate(string $path = null, bool $overwrite = false): void
     {

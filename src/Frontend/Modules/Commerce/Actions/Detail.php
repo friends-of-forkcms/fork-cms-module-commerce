@@ -16,75 +16,16 @@ use Frontend\Core\Language\Locale;
  */
 class Detail extends FrontendBaseBlock
 {
-    /**
-     * The information about a product.
-     *
-     * @var Product
-     */
-    private $product;
-
-    /**
-     * The specifications of a product.
-     *
-     * @var array
-     */
-    private $specifications;
-
-    /**
-     * The tags of a product.
-     *
-     * @var array
-     */
-    private $tags;
-
-    /**
-     * The comments of a product.
-     *
-     * @var array
-     */
-    private $comments;
-
-    /**
-     * Module settings.
-     *
-     * @var array
-     */
-    private $settings;
-
-    /**
-     * The related products.
-     *
-     * @var array
-     */
-    private $relatedProducts;
-
-    /**
-     * Videos from a product.
-     *
-     * @var array
-     */
-    private $videos;
-
-    /**
-     * Files from a product.
-     *
-     * @var array
-     */
-    private $files;
-
-    /**
-     * Images from a product.
-     *
-     * @var array
-     */
-    private $images;
-
-    /**
-     * Brand from a product.
-     *
-     * @var array
-     */
-    private $brand;
+    private Product $product;
+    private array $specifications;
+    private array $tags;
+    private array $comments;
+    private array $settings;
+    private array $relatedProducts;
+    private array $videos;
+    private array $files;
+    private array $images;
+    private array $brand;
 
     /**
      * Execute the action.
@@ -99,36 +40,26 @@ class Detail extends FrontendBaseBlock
         $this->parse();
     }
 
-    /**
-     * Get the data.
-     */
-    private function getData()
+    private function getData(): void
     {
         // validate incoming parameters
         if ($this->url->getParameter(1) === null) {
             $this->redirect(FrontendNavigation::getURL(404));
+            return;
         }
 
-        /**
-         * @var ProductRepository
-         */
+        /** @var ProductRepository $productRepository */
         $productRepository = $this->get('commerce.repository.product');
 
-        if (!$this->product = $productRepository->findByLocaleAndUrl(
-            Locale::frontendLanguage(),
-            $this->url->getParameter(1)
-        )) {
+        if (!$this->product = $productRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $this->url->getParameter(1))) {
             $this->redirect(FrontendNavigation::getURL(404));
         }
     }
 
-    /**
-     * Parse the page.
-     */
-    protected function parse()
+    protected function parse(): void
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
 
         // add noty js
         $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');

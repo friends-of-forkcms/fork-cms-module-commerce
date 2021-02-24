@@ -23,27 +23,9 @@ use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationExceptio
 
 class CustomerAddresses extends FrontendBaseBlock
 {
-    /**
-     * @var Profile
-     */
-    private $profile;
+    private Account $account;
+    private OrderAddress $address;
 
-    /**
-     * @var Account
-     */
-    private $account;
-
-    /**
-     * @var OrderAddress
-     */
-    private $address;
-
-    /**
-     * Execute the action.
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         if (!FrontendProfilesAuthentication::isLoggedIn()) {
@@ -52,8 +34,8 @@ class CustomerAddresses extends FrontendBaseBlock
 
         parent::execute();
 
-        $this->profile = FrontendProfilesAuthentication::getProfile();
-        $this->account = $this->getAccountRepository()->findOneByProfile($this->profile);
+        $profile = FrontendProfilesAuthentication::getProfile();
+        $this->account = $this->getAccountRepository()->findOneByProfile($profile);
 
         if ($this->getRequest()->query->has('add')) {
             $this->add();
@@ -98,9 +80,7 @@ class CustomerAddresses extends FrontendBaseBlock
         $form = $this->getForm(new CreateOrderAddress());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var CreateOrderAddress $data
-             */
+            /** @var CreateOrderAddress $data */
             $data = $form->getData();
             $data->account = $this->account;
 
@@ -171,8 +151,8 @@ class CustomerAddresses extends FrontendBaseBlock
     }
 
     /**
-     * @param string $path      the path for the template to use
-     * @param bool   $overwrite Should the template overwrite the default?
+     * @param string $path the path for the template to use
+     * @param bool $overwrite Should the template overwrite the default?
      */
     protected function loadTemplate(string $path = null, bool $overwrite = false): void
     {

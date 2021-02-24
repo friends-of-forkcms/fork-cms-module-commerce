@@ -22,22 +22,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class GuestOrderTracking extends FrontendBaseBlock
 {
-    /**
-     * @var Profile
-     */
-    private $profile;
-
-    /**
-     * @var Account
-     */
-    private $account;
-
-    /**
-     * Execute the action.
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
+    private Profile $profile;
+    private Account $account;
     public function execute(): void
     {
         parent::execute();
@@ -79,11 +65,7 @@ class GuestOrderTracking extends FrontendBaseBlock
         // Current customer has a profile redirect to profiles page
         if ($order->getAccount()->getProfileId()) {
             $this->redirect(
-                Navigation::getUrlForBlock(
-                    $this->getModule(),
-                    'CustomerOrders'
-                )
-                .'?order_id='.$order->getId()
+                Navigation::getUrlForBlock($this->getModule(), 'CustomerOrders') .'?order_id='.$order->getId()
             );
 
             return;
@@ -91,11 +73,7 @@ class GuestOrderTracking extends FrontendBaseBlock
 
         // Redirect to detail page
         $this->redirect(
-            Navigation::getUrlForBlock(
-                $this->getModule(),
-                $this->getAction()
-            )
-            .'?order_id='.$order->getId().'&email='.$formData['email']
+            Navigation::getUrlForBlock($this->getModule(), $this->getAction()) .'?order_id='.$order->getId().'&email='.$formData['email']
         );
     }
 
@@ -129,9 +107,7 @@ class GuestOrderTracking extends FrontendBaseBlock
             }
         };
 
-        /**
-         * @var Form $form
-         */
+        /** @var Form $form */
         $form = $this->get('form.factory')->createNamed('guest_tracking')
             ->add(
                 'order_id',
@@ -172,8 +148,8 @@ class GuestOrderTracking extends FrontendBaseBlock
     }
 
     /**
-     * @param string $path      the path for the template to use
-     * @param bool   $overwrite Should the template overwrite the default?
+     * @param string $path the path for the template to use
+     * @param bool $overwrite Should the template overwrite the default?
      */
     protected function loadTemplate(string $path = null, bool $overwrite = false): void
     {
@@ -184,11 +160,6 @@ class GuestOrderTracking extends FrontendBaseBlock
         $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
 
         parent::loadTemplate($path, $overwrite);
-    }
-
-    private function getAccountRepository(): AccountRepository
-    {
-        return $this->get('commerce.repository.account');
     }
 
     private function getOrderRepository(): OrderRepository

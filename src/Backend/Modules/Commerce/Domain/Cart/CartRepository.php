@@ -80,15 +80,13 @@ class CartRepository extends EntityRepository
 
     /**
      * Get the active cart from the session.
-     *
-     * @return Cart
      */
     public function getActiveCart(bool $createNew = true): ?Cart
     {
         $cookie = FrontendModel::get('fork.cookie');
         $request = FrontendModel::getRequest();
 
-        if (!$cartHash = $cookie->get('cart_hash')) {
+        if ($cookie === null || !$cookie->get('cart_hash')) {
             if ($createNew) {
                 return new Cart();
             }
@@ -96,6 +94,6 @@ class CartRepository extends EntityRepository
             return null;
         }
 
-        return $this->findBySessionId($cartHash, $request->getClientIp());
+        return $this->findBySessionId($cookie->get('cart_hash'), $request->getClientIp());
     }
 }

@@ -13,52 +13,15 @@ use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
  */
 class Brand extends FrontendBaseBlock
 {
-    /**
-     * The items.
-     *
-     * @var array
-     */
-    private $record;
-
-    /**
-     * All products within the category.
-     *
-     * @var array
-     */
-    private $products;
-
-    /**
-     * All subcategories in flat view.
-     *
-     * @var array
-     */
-    private $subcategories;
-
-    /**
-     * All subcategories in tree view.
-     *
-     * @var array
-     */
-    private $subcategoriesTree;
-
-    /**
-     * URL parameters.
-     *
-     * @var array
-     */
-    private $parameters;
+    private array $record;
+    private array $products;
 
     /**
      * The pagination array
      * It will hold all needed parameters, some of them need initialization.
-     *
-     * @var array
      */
-    protected $pagination = ['limit' => 10, 'offset' => 0, 'requested_page' => 1, 'num_items' => null, 'num_pages' => null];
+    protected array $pagination = ['limit' => 10, 'offset' => 0, 'requested_page' => 1, 'num_items' => null, 'num_pages' => null];
 
-    /**
-     * Execute the action.
-     */
     public function execute(): void
     {
         parent::execute();
@@ -67,13 +30,10 @@ class Brand extends FrontendBaseBlock
         $this->parse();
     }
 
-    /**
-     * Load the data, don't forget to validate the incoming data.
-     */
-    private function getData()
+    private function getData(): void
     {
-        $this->parameters = $this->URL->getParameters();
-        $url = end($this->parameters);
+        $parameters = $this->url->getParameters();
+        $url = end($parameters);
 
         if ($url === null) {
             $this->redirect(FrontendNavigation::getURL(404));
@@ -90,7 +50,7 @@ class Brand extends FrontendBaseBlock
         $this->products = FrontendCommerceModel::getAllByBrand($this->record['id']);
 
         // requested page
-        $requestedPage = $this->URL->getParameter('page', 'int', 1);
+        $requestedPage = $this->url->getParameter('page', 'int', 1);
 
         // set URL and limit
         $this->pagination['url'] = FrontendNavigation::getURLForBlock('commerce', 'category').'/'.$this->record['url'];
@@ -101,7 +61,7 @@ class Brand extends FrontendBaseBlock
         $this->pagination['num_pages'] = (int) ceil($this->pagination['num_items'] / $this->pagination['limit']);
 
         // num pages is always equal to at least 1
-        if ($this->pagination['num_pages'] == 0) {
+        if ($this->pagination['num_pages'] === 0) {
             $this->pagination['num_pages'] = 1;
         }
 
@@ -115,13 +75,10 @@ class Brand extends FrontendBaseBlock
         $this->pagination['offset'] = ($this->pagination['requested_page'] * $this->pagination['limit']) - $this->pagination['limit'];
     }
 
-    /**
-     * Parse the page.
-     */
-    protected function parse()
+    protected function parse(): void
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
 
         // add noty js
         $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
@@ -130,15 +87,15 @@ class Brand extends FrontendBaseBlock
         $this->breadcrumb->addElement($this->record['title'], $this->record['full_url']);
 
         // hide action title
-        $this->tpl->assign('hideContentTitle', true);
+        $this->template->assign('hideContentTitle', true);
 
         // show the title
-        $this->tpl->assign('title', $this->record['title']);
+        $this->template->assign('title', $this->record['title']);
 
         // set meta
-        $this->header->setPageTitle($this->record['meta_title'], ($this->record['meta_title_overwrite'] == 'Y'));
-        $this->header->addMetaDescription($this->record['meta_description'], ($this->record['meta_description_overwrite'] == 'Y'));
-        $this->header->addMetaKeywords($this->record['meta_keywords'], ($this->record['meta_keywords_overwrite'] == 'Y'));
+        $this->header->setPageTitle($this->record['meta_title'], ($this->record['meta_title_overwrite'] === 'Y'));
+        $this->header->addMetaDescription($this->record['meta_description'], ($this->record['meta_description_overwrite'] === 'Y'));
+        $this->header->addMetaKeywords($this->record['meta_keywords'], ($this->record['meta_keywords_overwrite'] === 'Y'));
 
         // advanced SEO-attributes
         if (isset($this->record['meta_data']['seo_index'])) {
@@ -149,8 +106,8 @@ class Brand extends FrontendBaseBlock
         }
 
         // assign items
-        $this->tpl->assign('products', $this->products);
-        $this->tpl->assign('record', $this->record);
+        $this->template->assign('products', $this->products);
+        $this->template->assign('record', $this->record);
 
         // parse the pagination
         $this->parsePagination();
