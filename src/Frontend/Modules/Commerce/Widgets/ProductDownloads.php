@@ -5,7 +5,7 @@ namespace Frontend\Modules\Commerce\Widgets;
 use Frontend\Modules\MediaLibrary\Widgets\Base\FrontendMediaWidget;
 
 /**
- * This will show the product downloads
+ * This will show the product downloads.
  */
 class ProductDownloads extends FrontendMediaWidget
 {

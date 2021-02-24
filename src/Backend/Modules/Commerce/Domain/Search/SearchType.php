@@ -19,7 +19,7 @@ class SearchType extends AbstractType
                 'label' => 'lbl.SearchTerm',
                 'attr' => [
                     'placeholder' => 'lbl.WhatDoYouWantToSearch',
-                ]
+                ],
             ]
         );
     }

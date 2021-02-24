@@ -13,6 +13,6 @@ class OrderHistoryNotFound extends Exception
 
     public static function forId(string $id): self
     {
-        return new self('Can\'t find a OrderHistory with id = "' . $id . '".');
+        return new self('Can\'t find a OrderHistory with id = "'.$id.'".');
     }
 }

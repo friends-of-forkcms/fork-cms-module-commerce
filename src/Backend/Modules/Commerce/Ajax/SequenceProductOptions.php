@@ -7,7 +7,7 @@ use Backend\Modules\Commerce\Domain\ProductOption\Command\UpdateProductOption;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce product options
+ * Alters the sequence of Commerce product options.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -21,7 +21,7 @@ class SequenceProductOptions extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the category repository
+         * get the category repository.
          */
         $productOptionRepository = $this->get('commerce.repository.product_option');
 
@@ -30,7 +30,6 @@ class SequenceProductOptions extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($productOption = $productOptionRepository->findOneById($id)) {
                 $updateProductOption = new UpdateProductOption($productOption);

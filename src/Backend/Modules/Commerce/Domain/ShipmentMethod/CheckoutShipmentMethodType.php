@@ -22,7 +22,7 @@ class CheckoutShipmentMethodType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => $shipmentMethods,
-                'expanded' => true
+                'expanded' => true,
             ]
         );
     }
@@ -32,7 +32,7 @@ class CheckoutShipmentMethodType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => CheckoutShipmentMethodDataTransferObject::class,
-                'shipment_methods' => []
+                'shipment_methods' => [],
             ]
         );
     }

@@ -31,6 +31,7 @@ class FilterProducts extends FrontendBaseAJAXAction
         // Category or search term must be set
         if (!$this->getRequest()->request->has('category') && !$this->getRequest()->request->has('searchTerm')) {
             $this->output(Response::HTTP_NOT_FOUND);
+
             return;
         }
 
@@ -68,6 +69,7 @@ class FilterProducts extends FrontendBaseAJAXAction
                 }
             } catch (CategoryNotFound $e) {
                 $this->output(Response::HTTP_NOT_FOUND);
+
                 return;
             }
         } else { // Search on search term
@@ -114,11 +116,7 @@ class FilterProducts extends FrontendBaseAJAXAction
     }
 
     /**
-     * Return an array of products in HTML
-     *
-     * @param array $products
-     *
-     * @return array
+     * Return an array of products in HTML.
      */
     private function getProductsHTML(array $products): array
     {
@@ -134,9 +132,7 @@ class FilterProducts extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product repository
-     *
-     * @return ProductRepository
+     * Get the product repository.
      */
     private function getProductRepository(): ProductRepository
     {
@@ -144,9 +140,7 @@ class FilterProducts extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the commerce repository
-     *
-     * @return CategoryRepository
+     * Get the commerce repository.
      */
     private function getCommerceRepository(): CategoryRepository
     {

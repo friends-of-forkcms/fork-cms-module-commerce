@@ -3,28 +3,20 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
-use Backend\Core\Language\Locale;
 use Backend\Core\Engine\DataGrid as BackendDataGridDB;
+use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Specification\DataGrid;
 
 /**
- * This is the specifications action, it will display the overview of specifications
+ * This is the specifications action, it will display the overview of specifications.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Willem van Dam <w.vandam@jvdict.nl>
  */
 class Specifications extends BackendBaseActionIndex
 {
-    /**
-     * DataGrid
-     *
-     * @var	BackendDataGridDB
-     */
-    protected $dataGrid;
+    protected BackendDataGridDB $dataGrid;
 
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();

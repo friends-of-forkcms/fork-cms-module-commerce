@@ -13,19 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class ShipmentMethod
 {
     /**
-     * @var string
-     *
      * @ORM\Id
      * @ORM\Column(type="string", name="name", length=191)
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     public function __construct(
         string $name,
@@ -35,17 +31,11 @@ class ShipmentMethod
         $this->locale = $locale;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return Locale
-     */
     public function getLocale(): Locale
     {
         return $this->locale;

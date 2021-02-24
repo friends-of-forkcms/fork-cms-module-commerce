@@ -4,27 +4,24 @@ namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusType;
 use Backend\Modules\Commerce\Domain\OrderStatus\Command\CreateOrderStatus;
 use Backend\Modules\Commerce\Domain\OrderStatus\Event\Created;
+use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the add order-status-action, it will display a form to create a new order status
+ * This is the add order-status-action, it will display a form to create a new order status.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddOrderStatus extends BackendBaseActionAdd
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
 
         $form = $this->getForm();
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
 
             $this->parse();
@@ -44,7 +41,7 @@ class AddOrderStatus extends BackendBaseActionAdd
             $this->getBackLink(
                 [
                     'report' => 'added',
-                    'var'    => $createOrderStatus->title,
+                    'var' => $createOrderStatus->title,
                 ]
             )
         );

@@ -4,36 +4,35 @@ namespace Frontend\Modules\Commerce\Actions;
 
 use Common\Cookie;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
-use Frontend\Core\Engine\Model as FrontendModel;
 use Frontend\Core\Engine\Form as FrontendForm;
 use Frontend\Core\Engine\Language as FL;
+use Frontend\Core\Engine\Model as FrontendModel;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
 
 /**
- * This is the personal-data-action (default), it will display a personal data form
+ * This is the personal-data-action (default), it will display a personal data form.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class PersonalData extends FrontendBaseBlock
 {
     /**
-     * The url to checkout page
+     * The url to checkout page.
      *
-     * @var    array
+     * @var array
      */
     private $checkoutUrl;
 
     /**
-     * The order id in cookie
+     * The order id in cookie.
      *
-     * @var    int
+     * @var int
      */
     private $cookieOrderId;
 
-
     /**
-     * Execute the action
+     * Execute the action.
      */
     public function execute(): void
     {
@@ -49,7 +48,7 @@ class PersonalData extends FrontendBaseBlock
     }
 
     /**
-     * Load the data, don't forget to validate the incoming data
+     * Load the data, don't forget to validate the incoming data.
      */
     private function getData()
     {
@@ -64,7 +63,7 @@ class PersonalData extends FrontendBaseBlock
     }
 
     /**
-     * Load the form
+     * Load the form.
      */
     private function loadForm()
     {
@@ -81,19 +80,19 @@ class PersonalData extends FrontendBaseBlock
         $hometown = (Cookie::exists('hometown')) ? Cookie::get('hometown') : null;
 
         // create elements
-        $this->frm->addText('email', $email)->setAttributes(array('required' => null, 'type' => 'email'));
-        $this->frm->addText('fname', $fname, null)->setAttributes(array('required' => null));
-        $this->frm->addText('lname', $lname, null)->setAttributes(array('required' => null));
-        $this->frm->addText('address', $address, null)->setAttributes(array('required' => null));
-        $this->frm->addText('hnumber', $hnumber, null)->setAttributes(array('required' => null));
-        $this->frm->addText('postal', $postal, null)->setAttributes(array('required' => null));
-        $this->frm->addText('hometown', $hometown, null)->setAttributes(array('required' => null));
+        $this->frm->addText('email', $email)->setAttributes(['required' => null, 'type' => 'email']);
+        $this->frm->addText('fname', $fname, null)->setAttributes(['required' => null]);
+        $this->frm->addText('lname', $lname, null)->setAttributes(['required' => null]);
+        $this->frm->addText('address', $address, null)->setAttributes(['required' => null]);
+        $this->frm->addText('hnumber', $hnumber, null)->setAttributes(['required' => null]);
+        $this->frm->addText('postal', $postal, null)->setAttributes(['required' => null]);
+        $this->frm->addText('hometown', $hometown, null)->setAttributes(['required' => null]);
 
         $this->frm->addTextarea('message');
     }
 
     /**
-     * Validate the form
+     * Validate the form.
      */
     private function validateForm()
     {
@@ -128,8 +127,8 @@ class PersonalData extends FrontendBaseBlock
 
                 // delete cookie
                 $argument = 'order_id';
-                unset($_COOKIE[(string)$argument]);
-                setcookie((string)$argument, null, 1, '/');
+                unset($_COOKIE[(string) $argument]);
+                setcookie((string) $argument, null, 1, '/');
 
                 // set cookies person --> optional
                 Cookie::set('email', $order['email']);
@@ -142,7 +141,7 @@ class PersonalData extends FrontendBaseBlock
                 Cookie::set('status', $order['status']);
 
                 // trigger event
-                FrontendModel::triggerEvent('Commerce', 'after_add_order', array('order' => $order));
+                FrontendModel::triggerEvent('Commerce', 'after_add_order', ['order' => $order]);
 
                 $url = FrontendNavigation::getURLForBlock('Commerce', 'OrderReceived');
                 $this->redirect($url);
@@ -151,12 +150,12 @@ class PersonalData extends FrontendBaseBlock
     }
 
     /**
-     * Parse the page
+     * Parse the page.
      */
     protected function parse()
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/commerce.css');
 
         // url to checkout page
         $this->tpl->assign('checkoutUrl', $this->checkoutUrl);

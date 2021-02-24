@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Category */
-    private $category;
+    private Category $category;
 
     public function __construct(Category $category)
     {

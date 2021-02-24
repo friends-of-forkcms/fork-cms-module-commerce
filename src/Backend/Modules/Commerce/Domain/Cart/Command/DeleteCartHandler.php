@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 
 final class DeleteCartHandler
 {
-    /** @var CartRepository */
-    private $cartRepository;
+    private CartRepository $cartRepository;
 
     public function __construct(CartRepository $cartRepository)
     {

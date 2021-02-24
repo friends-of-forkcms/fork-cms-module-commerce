@@ -14,9 +14,6 @@ class OrderRuleRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     *
-     * @return OrderRule|null
      * @throws OrderRuleNotFound
      */
     public function findOneById(?int $id): ?OrderRule

@@ -6,24 +6,21 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Commerce\Domain\Country\Exception\CountryNotFound;
-use Backend\Modules\Commerce\Domain\Country\Country;
-use Backend\Modules\Commerce\Domain\Country\CountryType;
-use Backend\Modules\Commerce\Domain\Country\CountryRepository;
 use Backend\Modules\Commerce\Domain\Country\Command\UpdateCountry;
+use Backend\Modules\Commerce\Domain\Country\Country;
+use Backend\Modules\Commerce\Domain\Country\CountryRepository;
+use Backend\Modules\Commerce\Domain\Country\CountryType;
 use Backend\Modules\Commerce\Domain\Country\Event\Updated;
+use Backend\Modules\Commerce\Domain\Country\Exception\CountryNotFound;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit country-action, it will display a form to edit a country
+ * This is the edit country-action, it will display a form to edit a country.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditCountry extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -37,12 +34,12 @@ class EditCountry extends BackendBaseActionEdit
             ['id' => $country->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteCountry'
+                'action' => 'DeleteCountry',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('country', $country);
 
@@ -63,9 +60,9 @@ class EditCountry extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateCountry->title,
-                    'highlight' => 'row-' . $updateCountry->getCountryEntity()->getId(),
+                    'report' => 'edited',
+                    'var' => $updateCountry->title,
+                    'highlight' => 'row-'.$updateCountry->getCountryEntity()->getId(),
                 ]
             )
         );

@@ -16,8 +16,9 @@ class Edit extends BaseEdit
 
         $form = $this->getForm();
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
+
             return;
         }
 
@@ -30,8 +31,8 @@ class Edit extends BaseEdit
                 null,
                 null,
                 [
-                    'report'    => 'edited',
-                    'var'       => '',
+                    'report' => 'edited',
+                    'var' => '',
                     'highlight' => $this->getDataGridRowKey(),
                 ]
             )

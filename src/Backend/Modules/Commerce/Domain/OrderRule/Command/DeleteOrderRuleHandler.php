@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderRule\OrderRuleRepository;
 
 final class DeleteOrderRuleHandler
 {
-    /** @var OrderRuleRepository */
-    private $orderRuleRepository;
+    private OrderRuleRepository $orderRuleRepository;
 
     public function __construct(OrderRuleRepository $orderRuleRepository)
     {

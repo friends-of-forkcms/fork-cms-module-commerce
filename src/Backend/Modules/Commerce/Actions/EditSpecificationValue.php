@@ -6,24 +6,21 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Commerce\Domain\SpecificationValue\Exception\SpecificationValueNotFound;
-use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
-use Backend\Modules\Commerce\Domain\SpecificationValue\ProductOptionValueRepository;
 use Backend\Modules\Commerce\Domain\SpecificationValue\Command\UpdateSpecificationValue;
 use Backend\Modules\Commerce\Domain\SpecificationValue\Event\UpdatedSpecificationValue;
+use Backend\Modules\Commerce\Domain\SpecificationValue\Exception\SpecificationValueNotFound;
+use Backend\Modules\Commerce\Domain\SpecificationValue\ProductOptionValueRepository;
+use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit specification-action, it will display a form to edit a specification
+ * This is the edit specification-action, it will display a form to edit a specification.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditSpecificationValue extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -37,12 +34,12 @@ class EditSpecificationValue extends BackendBaseActionEdit
             ['id' => $specificationValue->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteSpecificationValue'
+                'action' => 'DeleteSpecificationValue',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('specificationValue', $specificationValue);
 
@@ -63,12 +60,12 @@ class EditSpecificationValue extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'id'        => $updateSpecificationValue->getSpecificationValueEntity()->getSpecification()->getId(),
-                    'report'    => 'edited',
-                    'var'       => $updateSpecificationValue->value,
-                    'highlight' => 'row-' . $updateSpecificationValue->getSpecificationValueEntity()->getId(),
+                    'id' => $updateSpecificationValue->getSpecificationValueEntity()->getSpecification()->getId(),
+                    'report' => 'edited',
+                    'var' => $updateSpecificationValue->value,
+                    'highlight' => 'row-'.$updateSpecificationValue->getSpecificationValueEntity()->getId(),
                 ]
-            ) .'#tabValues'
+            ).'#tabValues'
         );
     }
 

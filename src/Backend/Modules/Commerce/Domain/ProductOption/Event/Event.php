@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var ProductOption */
-    private $productOption;
+    private ProductOption $productOption;
 
     public function __construct(ProductOption $productOption)
     {

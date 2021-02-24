@@ -5,19 +5,17 @@ namespace Backend\Modules\Commerce\Domain\Category;
 use Backend\Core\Engine\Model;
 use Common\Doctrine\ValueObject\AbstractImage;
 use ForkCMS\Utility\Thumbnails;
+use SpoonThumbnailException;
 
 final class Image extends AbstractImage
 {
-    /**
-     * @return string
-     */
     protected function getUploadDir(): string
     {
         return 'Commerce/categories';
     }
 
     /**
-     * This function should be called for the life cycle events PostPersist() and PostUpdate()
+     * This function should be called for the life cycle events PostPersist() and PostUpdate().
      */
     public function upload(): void
     {
@@ -46,7 +44,7 @@ final class Image extends AbstractImage
     {
         if ($this->getFile()) {
             $this->namePrefix = str_replace(
-                '.' . $this->getFile()->getClientOriginalExtension(),
+                '.'.$this->getFile()->getClientOriginalExtension(),
                 '',
                 $this->getFile()->getClientOriginalName()
             );
@@ -72,10 +70,10 @@ final class Image extends AbstractImage
 
             try {
                 Model::get(Thumbnails::class)->generate(
-                    FRONTEND_FILES_PATH . '/' . $this->getTrimmedUploadDir(),
+                    FRONTEND_FILES_PATH.'/'.$this->getTrimmedUploadDir(),
                     $this->getAbsolutePath('source')
                 );
-            } catch (\SpoonThumbnailException $e) {
+            } catch (SpoonThumbnailException $e) {
                 return parent::getWebPath($subDirectory);
             }
         }

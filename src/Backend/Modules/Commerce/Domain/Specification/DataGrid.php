@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\Specification;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
@@ -26,7 +26,7 @@ class DataGrid extends DataGridDatabase
 
         // sequence
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceSpecifications'));
+        $this->setAttributes(['data-action' => 'SequenceSpecifications']);
 
         // Add some columns
         $this->setColumnFunction(
@@ -39,7 +39,7 @@ class DataGrid extends DataGridDatabase
         // Overwrite header labels
         $this->setHeaderLabels(
             [
-                'filter' => ucfirst(Language::lbl('UseAsFilter'))
+                'filter' => ucfirst(Language::lbl('UseAsFilter')),
             ]
         );
 

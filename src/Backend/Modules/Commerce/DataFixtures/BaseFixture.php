@@ -41,9 +41,10 @@ abstract class BaseFixture extends Fixture
     public function fakeUploadImage(string $sourcePath, string $targetDir = null): UploadedFile
     {
         $fs = new Filesystem();
-        $targetDir = $targetDir ?? sys_get_temp_dir();
-        $targetPath = $targetDir . '/' . pathinfo($sourcePath, PATHINFO_FILENAME) . uniqid() . "." . pathinfo($sourcePath, PATHINFO_EXTENSION);
+        $targetDir ??= sys_get_temp_dir();
+        $targetPath = $targetDir.'/'.pathinfo($sourcePath, PATHINFO_FILENAME).uniqid().'.'.pathinfo($sourcePath, PATHINFO_EXTENSION);
         $fs->copy($sourcePath, $targetPath, true);
+
         return new UploadedFile($targetPath, basename($targetPath), null, null, null, true);
     }
 
@@ -57,6 +58,7 @@ abstract class BaseFixture extends Fixture
         foreach ($rows as $row) {
             $csv[] = array_combine($header, $row);
         }
+
         return $csv;
     }
 }

@@ -81,7 +81,7 @@ class AccountAddressType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => OrderAddressDataTransferObject::class
+                'data_class' => OrderAddressDataTransferObject::class,
             ]
         );
     }

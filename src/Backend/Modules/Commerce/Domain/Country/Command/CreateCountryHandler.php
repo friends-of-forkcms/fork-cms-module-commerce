@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\Country\CountryRepository;
 
 final class CreateCountryHandler
 {
-    /** @var CountryRepository */
-    private $countryRepository;
+    private CountryRepository $countryRepository;
 
     public function __construct(CountryRepository $countryRepository)
     {

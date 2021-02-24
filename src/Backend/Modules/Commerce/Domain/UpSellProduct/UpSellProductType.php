@@ -21,7 +21,7 @@ class UpSellProductType extends AbstractType
                 'multiple' => false,
                 'remote_route' => 'backend_ajax',
                 'remote_params' => [
-                    'excluded_id' => ($options['product'] ? $options['product']->getId() : null)
+                    'excluded_id' => ($options['product'] ? $options['product']->getId() : null),
                 ],
                 'class' => Product::class,
                 'primary_key' => 'id',
@@ -31,7 +31,7 @@ class UpSellProductType extends AbstractType
                 'allow_clear' => true,
                 'delay' => 250,
                 'cache' => false,
-                'cache_timeout' => 60000, // if 'cache' is true
+                'cache_timeout' => 60_000, // if 'cache' is true
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.Product',
                 'action' => 'AutoCompleteProducts',

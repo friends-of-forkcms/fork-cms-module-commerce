@@ -16,7 +16,7 @@ class StockStatusType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         );
     }
@@ -25,7 +25,7 @@ class StockStatusType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => StockStatusDataTransferObject::class
+                'data_class' => StockStatusDataTransferObject::class,
             ]
         );
     }

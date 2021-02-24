@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\SpecificationValue;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Specification\Specification;
 use Common\Doctrine\Entity\Meta;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,32 +16,26 @@ use Doctrine\ORM\Mapping as ORM;
 class SpecificationValue
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Specification
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Specification\Specification", inversedBy="specification_values")
      * @ORM\JoinColumn(name="specification_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $specification;
+    private ?Specification $specification;
 
     /**
-     * @var Meta
-     *
-     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta",cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
      */
-    private $meta;
+    private ?Meta $meta;
 
     /**
-     * @var Product[]
+     * @var Collection|Product[]
      *
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", mappedBy="specification_values")
      * @ORM\JoinTable(
@@ -49,104 +44,72 @@ class SpecificationValue
      *     joinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id")}
      * )
      */
-    private $products;
+    private Collection $products;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    public $value;
+    public string $value;
 
     /**
      * @ORM\Column(type="integer", length=11)
      */
-    private $sequence;
+    private int $sequence;
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return Product[]
+     * @return Collection|Product[]
      */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }
 
-    /**
-     * @param Product $product
-     */
-    public function setProduct(Product $product)
+    public function setProduct(Product $product): void
     {
         $this->product = $product;
     }
 
-    /**
-     * @return Specification
-     */
     public function getSpecification(): ?Specification
     {
         return $this->specification;
     }
 
-    /**
-     * @param Specification $specification
-     */
-    public function setSpecification(Specification $specification)
+    public function setSpecification(Specification $specification): void
     {
         $this->specification = $specification;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSequence()
+    public function getSequence(): int
     {
         return $this->sequence;
     }
 
-    /**
-     * @param mixed $sequence
-     */
-    public function setSequence($sequence): void
+    public function setSequence(int $sequence): void
     {
         $this->sequence = $sequence;
     }
 
-    /**
-     * @return Meta
-     */
     public function getMeta(): ?Meta
     {
         return $this->meta;
     }
 
-    /**
-     * @param Meta $meta
-     */
-    public function setMeta(Meta $meta)
+    public function setMeta(Meta $meta): void
     {
         $this->meta = $meta;
     }
@@ -156,7 +119,7 @@ class SpecificationValue
         return new SpecificationValueDataTransferObject($this);
     }
 
-    public static function fromDataTransferObject(SpecificationValueDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(SpecificationValueDataTransferObject $dataTransferObject): SpecificationValue
     {
         if ($dataTransferObject->hasExistingSpecificationValue()) {
             $specificationValue = $dataTransferObject->getSpecificationValueEntity();

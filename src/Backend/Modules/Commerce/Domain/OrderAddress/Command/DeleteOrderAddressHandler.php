@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderAddress\QuoteAddressRepository;
 
 final class DeleteOrderAddressHandler
 {
-    /** @var QuoteAddressRepository */
-    private $orderAddressRepository;
+    private QuoteAddressRepository $orderAddressRepository;
 
     public function __construct(QuoteAddressRepository $orderAddressRepository)
     {

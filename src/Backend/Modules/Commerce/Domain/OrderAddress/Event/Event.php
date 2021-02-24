@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var OrderAddress */
-    private $order_address;
+    private OrderAddress $order_address;
 
     public function __construct(OrderAddress $order_address)
     {

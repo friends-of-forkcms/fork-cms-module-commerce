@@ -13,8 +13,6 @@ class DataGridProducts extends DataGridDatabase
     /**
      * DataGrid constructor.
      *
-     * @param Order $order
-     *
      * @throws \Exception
      */
     public function __construct(Order $order)
@@ -26,9 +24,9 @@ class DataGridProducts extends DataGridDatabase
 
         // assign column functions
         $this->setColumnHidden('id');
-        $this->setColumnFunction(array(self::class, 'getProductOptions'), ['[product]', '[id]'], 'product', true);
-        $this->setColumnFunction(array(self::class, 'getFormatPrice'), '[total]', 'total', true);
-        $this->setColumnFunction(array(self::class, 'getFormatPrice'), '[price]', 'price', true);
+        $this->setColumnFunction([self::class, 'getProductOptions'], ['[product]', '[id]'], 'product', true);
+        $this->setColumnFunction([self::class, 'getFormatPrice'], '[total]', 'total', true);
+        $this->setColumnFunction([self::class, 'getFormatPrice'], '[price]', 'price', true);
     }
 
     public static function getHtml(Order $order): string
@@ -38,7 +36,7 @@ class DataGridProducts extends DataGridDatabase
 
     public static function getFormatPrice($price)
     {
-        return '&euro; ' .number_format($price, 2, ',', '.');
+        return '&euro; '.number_format($price, 2, ',', '.');
     }
 
     public static function getProductOptions($title, $id)
@@ -53,18 +51,18 @@ class DataGridProducts extends DataGridDatabase
 
         // Check if the dimensions should be displayed
         if ($orderProduct->getType() == Product::TYPE_DIMENSIONS) {
-            $titleString[] = '<h5 class="mt-0" style="margin-top:0;">' . $title . ' - ' . $orderProduct->getWidth() .'mm x ' . $orderProduct->getHeight() .'mm</h5>';
-            $titleString[] = '<i><strong>' . ucfirst(Language::lbl('ProductionDimensions')) .'</strong> ' . $orderProduct->getOrderWidth().'mm x '. $orderProduct->getOrderHeight() .'mm</i>';
+            $titleString[] = '<h5 class="mt-0" style="margin-top:0;">'.$title.' - '.$orderProduct->getWidth().'mm x '.$orderProduct->getHeight().'mm</h5>';
+            $titleString[] = '<i><strong>'.ucfirst(Language::lbl('ProductionDimensions')).'</strong> '.$orderProduct->getOrderWidth().'mm x '.$orderProduct->getOrderHeight().'mm</i>';
         } else {
-            $titleString[] = '<h5 class="mt-0" style="margin-top:0;">' . $title .'</h5>';
+            $titleString[] = '<h5 class="mt-0" style="margin-top:0;">'.$title.'</h5>';
         }
 
         // Add extra product options
         foreach ($orderProduct->getProductOptions() as $productOption) {
-            $productOptionTitle = '<strong>'.$productOption->getTitle() .'</strong> - '. $productOption->getValue();
+            $productOptionTitle = '<strong>'.$productOption->getTitle().'</strong> - '.$productOption->getValue();
 
             if ($productOption->getSku()) {
-                $productOptionTitle .= ' <strong>(' . $productOption->getSku().')</strong>';
+                $productOptionTitle .= ' <strong>('.$productOption->getSku().')</strong>';
             }
 
             $titleString[] = $productOptionTitle;
@@ -72,10 +70,10 @@ class DataGridProducts extends DataGridDatabase
 
         $notifications = [];
         foreach ($orderProduct->getProductNotifications() as $notification) {
-            $notifications[] .= '<p class="m-0 text-warning" style="margin:0;">'. $notification->getMessage() .'</p>';
+            $notifications[] .= '<p class="m-0 text-warning" style="margin:0;">'.$notification->getMessage().'</p>';
         }
 
-        return implode('<br />', $titleString) . implode('', $notifications);
+        return implode('<br />', $titleString).implode('', $notifications);
     }
 
     private static function getOrderProduct($id): ?OrderProduct

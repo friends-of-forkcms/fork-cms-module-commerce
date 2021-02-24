@@ -16,14 +16,14 @@ class CountryType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Name',
+                'label' => 'lbl.Name',
             ]
         )->add(
             'iso',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.IsoCode'
+                'label' => 'lbl.IsoCode',
             ]
         );
     }

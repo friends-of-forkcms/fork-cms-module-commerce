@@ -9,14 +9,14 @@ use Frontend\Core\Engine\Navigation;
 use Symfony\Component\Form\Form;
 
 /**
- * This is a widget with the Commerce-search form
+ * This is a widget with the Commerce-search form.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Search extends FrontendBaseWidget
 {
     /**
-     * Execute the extra
+     * Execute the extra.
      */
     public function execute(): void
     {
@@ -36,9 +36,7 @@ class Search extends FrontendBaseWidget
     }
 
     /**
-     * Load the search form
-     *
-     * @return Form
+     * Load the search form.
      */
     private function getSearchForm(): Form
     {

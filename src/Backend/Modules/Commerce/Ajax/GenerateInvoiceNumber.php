@@ -23,6 +23,7 @@ class GenerateInvoiceNumber extends BackendBaseAJAXAction
             $order = $orderRepository->findOneById($this->getRequest()->request->getInt('order'));
         } catch (OrderNotFound $e) {
             $this->output(Response::HTTP_NOT_FOUND, null, $e->getMessage());
+
             return;
         }
 

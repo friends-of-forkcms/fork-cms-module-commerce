@@ -10,11 +10,8 @@ use Common\ModulesSettings;
 
 final class CreateOrderHistoryHandler
 {
-    /** @var OrderHistoryRepository */
-    private $orderHistoryRepository;
-
-    /** @var ModulesSettings */
-    private $modulesSettings;
+    private OrderHistoryRepository $orderHistoryRepository;
+    private ModulesSettings $modulesSettings;
 
     public function __construct(OrderHistoryRepository $orderHistoryRepository, ModulesSettings $modulesSettings)
     {
@@ -28,7 +25,7 @@ final class CreateOrderHistoryHandler
         $this->orderHistoryRepository->add($orderHistory);
 
         $generateInvoiceStatuses = $this->modulesSettings->get('Commerce', 'automatic_invoice_statuses', []);
-        if (in_array($orderHistory->getOrderStatus()->getId(), $generateInvoiceStatuses)) {
+        if (in_array($orderHistory->getOrderStatus()->getId(), $generateInvoiceStatuses, true)) {
             Model::get('event_dispatcher')->dispatch(
                 OrderGenerateInvoiceNumber::EVENT_NAME,
                 new OrderGenerateInvoiceNumber($createOrderHistory->order)

@@ -8,29 +8,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ValueDataTransferObject extends DataTransferObject
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $name;
+    public string $name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $price;
-
-    /**
-     * @var double
-     */
-    public $fromWeight;
-
-    /**
-     * @var double
-     */
-    public $tillWeight;
-
+    public string $price;
+    public float $fromWeight;
+    public float $tillWeight;
 
     public function __construct()
     {

@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\Vat;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
@@ -25,7 +25,7 @@ class DataGrid extends DataGridDatabase
 
         // sequence
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceVats'));
+        $this->setAttributes(['data-action' => 'SequenceVats']);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditVat')) {

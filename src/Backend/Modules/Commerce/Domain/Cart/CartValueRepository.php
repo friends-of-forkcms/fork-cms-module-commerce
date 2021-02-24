@@ -9,12 +9,7 @@ use Doctrine\ORM\NonUniqueResultException;
 class CartValueRepository extends EntityRepository
 {
     /**
-     * Get a cart value by cart and product
-     *
-     * @param Cart $cart
-     * @param Product $product
-     *
-     * @return CartValue
+     * Get a cart value by cart and product.
      */
     public function getByCartAndProduct(Cart $cart, Product $product): CartValue
     {
@@ -39,13 +34,9 @@ class CartValueRepository extends EntityRepository
 
         return $entity;
     }
+
     /**
-     * Get a cart value by cart and cart value id
-     *
-     * @param Cart $cart
-     * @param int $cartValueId
-     *
-     * @return CartValue|null
+     * Get a cart value by cart and cart value id.
      */
     public function getByCartAndId(Cart $cart, int $cartValueId): ?CartValue
     {
@@ -72,7 +63,7 @@ class CartValueRepository extends EntityRepository
             function (CartValue $cartValue) {
                 $this->getEntityManager()->remove($cartValue);
             },
-            (array)$this->findBy(['id' => $id, 'cart' => $cart])
+            (array) $this->findBy(['id' => $id, 'cart' => $cart])
         );
     }
 }

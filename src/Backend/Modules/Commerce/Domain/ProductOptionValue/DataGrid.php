@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\ProductOptionValue;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
@@ -40,9 +40,9 @@ class DataGrid extends DataGridDatabase
         // Data grid options
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[default_value]'], 'default_value');
         $this->setColumnFunction([self::class, 'getImpactTypeText'], ['[impact_type]'], 'impact_type');
-        $this->setColumnsHidden(array('sequence'));
+        $this->setColumnsHidden(['sequence']);
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceProductOptionValues'));
+        $this->setAttributes(['data-action' => 'SequenceProductOptionValues']);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditProductOptionValue')) {

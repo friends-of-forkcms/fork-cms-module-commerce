@@ -4,8 +4,8 @@ namespace Backend\Modules\Commerce\Domain\OrderAddress;
 
 use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\Country\Country;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
@@ -19,99 +19,73 @@ class OrderAddress
     use SoftDeleteableEntity;
 
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Account
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Account\Account", inversedBy="addresses")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $account;
+    private ?Account $account;
 
     /**
-     * @var Country
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Country\Country", inversedBy="addresses")
      * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $country;
+    private ?Country $country;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $company_name;
+    private ?string $company_name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $first_name;
+    private ?string $first_name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $last_name;
+    private ?string $last_name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $email_address;
+    private ?string $email_address;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $phone;
+    private ?string $phone;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $street;
+    private ?string $street;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $house_number;
+    private ?string $house_number;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $house_number_addition;
+    private ?string $house_number_addition;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $city;
+    private ?string $city;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $zip_code;
+    private ?string $zip_code;
 
     private function __construct(
         ?Account $account,
@@ -141,127 +115,77 @@ class OrderAddress
         $this->zip_code = $zip_code;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Account
-     */
     public function getAccount(): ?Account
     {
         return $this->account;
     }
 
-    /**
-     * @return Country
-     */
-    public function getCountry(): Country
+    public function getCountry(): ?Country
     {
         return $this->country;
     }
 
-    /**
-     * @param Account $account
-     */
-    public function setAccount(Account $account): void
+    public function setAccount(?Account $account): void
     {
         $this->account = $account;
     }
 
-    /**
-     * @return string
-     */
     public function getCompanyName(): ?string
     {
         return $this->company_name;
     }
 
-    /**
-     * @param string $company_name
-     */
-    public function setCompanyName(string $company_name): void
-    {
-        $this->company_name = $company_name;
-    }
-
-    /**
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->first_name;
     }
 
-    /**
-     * @return string
-     */
     public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
-    /**
-     * @return string
-     */
     public function getEmailAddress(): ?string
     {
         return $this->email_address;
     }
 
-    /**
-     * @return string
-     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    /**
-     * @return string
-     */
     public function getStreet(): ?string
     {
         return $this->street;
     }
 
-    /**
-     * @return string
-     */
     public function getHouseNumber(): ?string
     {
         return $this->house_number;
     }
 
-    /**
-     * @return string
-     */
     public function getHouseNumberAddition(): ?string
     {
         return $this->house_number_addition;
     }
 
-    /**
-     * @return string
-     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @return string
-     */
     public function getZipCode(): ?string
     {
         return $this->zip_code;
     }
 
-    public static function fromDataTransferObject(OrderAddressDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderAddressDataTransferObject $dataTransferObject): OrderAddress
     {
         if ($dataTransferObject->hasExistingOrderAddress()) {
             return self::update($dataTransferObject);
@@ -288,7 +212,7 @@ class OrderAddress
         );
     }
 
-    private static function update(OrderAddressDataTransferObject $dataTransferObject)
+    private static function update(OrderAddressDataTransferObject $dataTransferObject): OrderAddress
     {
         $orderAddress = $dataTransferObject->getOrderAddressEntity();
         $orderAddress->country = $dataTransferObject->country;
@@ -306,12 +230,9 @@ class OrderAddress
         return $orderAddress;
     }
 
-    /**
-     * @return string
-     */
     public function getFullName(): string
     {
-        return $this->getFirstName() .' '. $this->getLastName();
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     public function getDataTransferObject(): OrderAddressDataTransferObject

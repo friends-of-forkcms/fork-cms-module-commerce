@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOptionReposit
 
 final class DeleteOrderProductOptionHandler
 {
-    /** @var OrderProductOptionRepository */
-    private $orderProductOptionRepository;
+    private OrderProductOptionRepository $orderProductOptionRepository;
 
     public function __construct(OrderProductOptionRepository $orderProductOptionRepository)
     {

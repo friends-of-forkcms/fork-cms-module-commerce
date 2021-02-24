@@ -6,25 +6,21 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Commerce\Domain\OrderStatus\Exception\OrderStatusNotFound;
-use Backend\Modules\Commerce\Domain\OrderStatus\Exception\OrderStatusValueNotFound;
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusType;
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusRepository;
 use Backend\Modules\Commerce\Domain\OrderStatus\Command\UpdateOrderStatus;
 use Backend\Modules\Commerce\Domain\OrderStatus\Event\Updated;
+use Backend\Modules\Commerce\Domain\OrderStatus\Exception\OrderStatusNotFound;
+use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
+use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusRepository;
+use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit order-status-action, it will display a form to edit a order status
+ * This is the edit order-status-action, it will display a form to edit a order status.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditOrderStatus extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -38,12 +34,12 @@ class EditOrderStatus extends BackendBaseActionEdit
             ['id' => $orderStatus->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteOrderStatus'
+                'action' => 'DeleteOrderStatus',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('orderStatus', $orderStatus);
 
@@ -64,9 +60,9 @@ class EditOrderStatus extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateOrderStatus->title,
-                    'highlight' => 'row-' . $updateOrderStatus->getOrderStatusEntity()->getId(),
+                    'report' => 'edited',
+                    'var' => $updateOrderStatus->title,
+                    'highlight' => 'row-'.$updateOrderStatus->getOrderStatusEntity()->getId(),
                 ]
             )
         );

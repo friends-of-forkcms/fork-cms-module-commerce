@@ -37,7 +37,7 @@ class ShipmentMethodRepository extends EntityRepository
                 $this->getEntityManager()->remove($shipmentMethod);
                 $this->getEntityManager()->flush();
             },
-            (array)$this->findBy(['name' => $name, 'locale' => $locale])
+            (array) $this->findBy(['name' => $name, 'locale' => $locale])
         );
     }
 

@@ -2,9 +2,9 @@
 
 namespace Backend\Modules\Commerce\Domain\Order;
 
+use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\DataGridFunctions;
-use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
@@ -16,9 +16,6 @@ class DataGrid extends DataGridDatabase
 {
     /**
      * DataGrid constructor.
-     *
-     * @param Locale $locale
-     * @param int|null $status
      *
      * @throws \Exception
      * @throws \SpoonDatagridException
@@ -34,12 +31,12 @@ class DataGrid extends DataGridDatabase
 
         // assign column functions
         $this->setColumnHidden('company_name');
-        $this->setColumnFunction(array(new DataGridFunctions(), 'getTimeAgo'), '[order_date]', 'order_date', true);
-        $this->setColumnFunction(array(self::class, 'getFormatPrice'), '[total]', 'total', true);
-        $this->setColumnFunction(array(self::class, 'getName'), ['[company_name]', '[name]'], 'name');
+        $this->setColumnFunction([new DataGridFunctions(), 'getTimeAgo'], '[order_date]', 'order_date', true);
+        $this->setColumnFunction([self::class, 'getFormatPrice'], '[total]', 'total', true);
+        $this->setColumnFunction([self::class, 'getName'], ['[company_name]', '[name]'], 'name');
 
         // sorting
-        $this->setSortingColumns(array('order_date', 'order_number', 'invoice_number'), 'order_date');
+        $this->setSortingColumns(['order_date', 'order_number', 'invoice_number'], 'order_date');
         $this->setSortParameter('desc');
 
         // check if this action is allowed
@@ -58,7 +55,7 @@ class DataGrid extends DataGridDatabase
 
     public function getFormatPrice($price)
     {
-        return '&euro;&nbsp;' .number_format($price, 2, ',', '.');
+        return '&euro;&nbsp;'.number_format($price, 2, ',', '.');
     }
 
     public function getName($companyName, $name)
@@ -67,6 +64,6 @@ class DataGrid extends DataGridDatabase
             return $name;
         }
 
-        return $companyName .' (' . $name .')';
+        return $companyName.' ('.$name.')';
     }
 }

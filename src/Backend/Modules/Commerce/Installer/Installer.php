@@ -37,7 +37,7 @@ use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Common\ModuleExtraType;
 
 /**
- * Installer for the Commerce module
+ * Installer for the Commerce module.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam (Jacob van Dam ICT) <j.vandam@jvdict.nl>
@@ -48,7 +48,7 @@ class Installer extends ModuleInstaller
     {
         $this->configureEntities();
         $this->addModule('Commerce');
-        $this->importLocale(__DIR__ . '/Data/locale.xml');
+        $this->importLocale(__DIR__.'/Data/locale.xml');
         $this->makeSearchable($this->getModule());
         $this->addBackendNavigation();
         $this->addModulePermissions();
@@ -126,7 +126,7 @@ class Installer extends ModuleInstaller
             'commerce/categories',
             [
                 'commerce/add_category',
-                'commerce/edit_category'
+                'commerce/edit_category',
             ]
         );
         $this->setNavigation(
@@ -219,7 +219,7 @@ class Installer extends ModuleInstaller
 
         // settings navigation
         $navigationSettingsId = $this->setNavigation(null, 'Settings');
-        $navigationModulesId  = $this->setNavigation($navigationSettingsId, 'Modules');
+        $navigationModulesId = $this->setNavigation($navigationSettingsId, 'Modules');
         $this->setNavigation($navigationModulesId, $this->getModule(), 'commerce/settings');
     }
 
@@ -356,6 +356,6 @@ class Installer extends ModuleInstaller
     {
         $this->setSetting($this->getModule(), 'overview_num_items', 10);
         $this->setSetting($this->getModule(), 'filters_show_more_num_items', 5);
-        $this->setSetting($this->getModule(), 'next_invoice_number', (int) date('Y') . "0001");
+        $this->setSetting($this->getModule(), 'next_invoice_number', (int) date('Y').'0001');
     }
 }

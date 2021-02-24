@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\Product;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
@@ -33,7 +33,7 @@ class DataGrid extends DataGridDatabase
                 WHERE i.language = :language';
 
         $parameters = [
-            'language' => $locale
+            'language' => $locale,
         ];
 
         if ($category) {
@@ -57,7 +57,7 @@ class DataGrid extends DataGridDatabase
 
         if ($sku) {
             $query .= ' AND i.`sku` LIKE :sku';
-            $parameters['sku'] = '%' . $sku .'%';
+            $parameters['sku'] = '%'.$sku.'%';
         }
 
         parent::__construct($query, $parameters);
@@ -67,13 +67,13 @@ class DataGrid extends DataGridDatabase
         $this->setAttributes(
             [
                 'data-action' => 'SequenceProducts',
-                'data-extra-params' => '{\'currentOffset\' : '. $offset .'}',
+                'data-extra-params' => '{\'currentOffset\' : '.$offset.'}',
             ]
         );
 
         // our JS needs to know an id, so we can highlight it
-        $this->setRowAttributes(array('id' => 'row-[id]'));
-        $this->setColumnsHidden(array('sequence'));
+        $this->setRowAttributes(['id' => 'row-[id]']);
+        $this->setColumnsHidden(['sequence']);
         $this->setColumnFunction([self::class, 'categoryName'], ['[category_id]'], 'category_id');
         $this->setHeaderLabels(
             [
@@ -118,11 +118,11 @@ class DataGrid extends DataGridDatabase
     {
         $name = null;
         if ($category->getParent()) {
-            $name = self::generateCategoryName($category->getParent(), $separator, false) . $separator;
+            $name = self::generateCategoryName($category->getParent(), $separator, false).$separator;
         }
 
         if ($first) {
-            $name .= '<strong>' . $category->getTitle() . '</strong>';
+            $name .= '<strong>'.$category->getTitle().'</strong>';
         } else {
             $name .= $category->getTitle();
         }

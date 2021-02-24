@@ -22,9 +22,6 @@ use Symfony\Component\Form\Form;
  */
 class EditBrand extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -38,12 +35,12 @@ class EditBrand extends BackendBaseActionEdit
             ['id' => $brand->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteBrand'
+                'action' => 'DeleteBrand',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('brand', $brand);
 
@@ -64,9 +61,9 @@ class EditBrand extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateBrand->title,
-                    'highlight' => 'row-' . $updateBrand->getBrandEntity()->getId(),
+                    'report' => 'edited',
+                    'var' => $updateBrand->title,
+                    'highlight' => 'row-'.$updateBrand->getBrandEntity()->getId(),
                 ]
             )
         );

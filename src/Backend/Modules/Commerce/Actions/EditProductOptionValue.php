@@ -7,24 +7,21 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Commerce\Domain\ProductOption\DataGrid as ProductOptionDataGrid;
+use Backend\Modules\Commerce\Domain\ProductOptionValue\Command\UpdateProductOptionValue;
+use Backend\Modules\Commerce\Domain\ProductOptionValue\Event\UpdatedProductOptionValue;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\Exception\ProductOptionValueNotFound;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueRepository;
-use Backend\Modules\Commerce\Domain\ProductOptionValue\Command\UpdateProductOptionValue;
-use Backend\Modules\Commerce\Domain\ProductOptionValue\Event\UpdatedProductOptionValue;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit productoption-action, it will display a form to edit a product option
+ * This is the edit productoption-action, it will display a form to edit a product option.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditProductOptionValue extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -53,7 +50,7 @@ class EditProductOptionValue extends BackendBaseActionEdit
             );
             $this->template->assign('backLink', $this->getBackLink([
                     'id' => $productOptionValue->getProductOption()->getId(),
-                ]) . '#tabValues');
+                ]).'#tabValues');
 
             $this->parse();
             $this->display();
@@ -74,9 +71,9 @@ class EditProductOptionValue extends BackendBaseActionEdit
                 [
                     'id' => $updateProductOptionValue->getProductOptionValueEntity()->getProductOption()->getId(),
                     'report' => 'edited',
-                    'highlight' => 'row-' . $updateProductOptionValue->getProductOptionValueEntity()->getId(),
+                    'highlight' => 'row-'.$updateProductOptionValue->getProductOptionValueEntity()->getId(),
                 ]
-            ) . '#tabValues'
+            ).'#tabValues'
         );
     }
 
@@ -85,7 +82,7 @@ class EditProductOptionValue extends BackendBaseActionEdit
         parent::parse();
 
         $this->header->addJS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', null, false, true);
-        $this->header->addJS(sprintf("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js", Locale::workingLocale()), null, false, true);
+        $this->header->addJS(sprintf('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js', Locale::workingLocale()), null, false, true);
         $this->header->addJS('Select2Entity.js');
 
         $this->header->addCSS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', null, true, false);

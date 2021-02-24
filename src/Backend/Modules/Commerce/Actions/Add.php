@@ -12,22 +12,19 @@ use Backend\Modules\Commerce\Domain\Product\ProductType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the add-action, it will display a form to create a new product
+ * This is the add-action, it will display a form to create a new product.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Add extends BackendBaseActionAdd
 {
-    /**
-     * Execute the actions
-     */
     public function execute(): void
     {
         parent::execute();
 
         $form = $this->getForm();
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
 
             $this->parse();
@@ -46,9 +43,9 @@ class Add extends BackendBaseActionAdd
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'added',
-                    'var'       => $createProduct->title,
-                    'highlight' => 'row-' . $createProduct->getProductEntity()->getId(),
+                    'report' => 'added',
+                    'var' => $createProduct->title,
+                    'highlight' => 'row-'.$createProduct->getProductEntity()->getId(),
                 ]
             )
         );
@@ -59,7 +56,7 @@ class Add extends BackendBaseActionAdd
         parent::parse();
 
         $this->header->addJS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', null, false, true);
-        $this->header->addJS(sprintf("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js", Locale::workingLocale()), null, true, true);
+        $this->header->addJS(sprintf('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js', Locale::workingLocale()), null, true, true);
         $this->header->addJS('Select2Entity.js');
         $this->header->addJS('ProductDimensions.js');
 
@@ -98,7 +95,7 @@ class Add extends BackendBaseActionAdd
             ProductType::class,
             new CreateProduct(),
             [
-                'categories' => $this->get('commerce.repository.category')->getTree(Locale::workingLocale())
+                'categories' => $this->get('commerce.repository.category')->getTree(Locale::workingLocale()),
             ]
         );
 

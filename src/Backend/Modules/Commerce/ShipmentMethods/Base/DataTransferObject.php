@@ -2,17 +2,10 @@
 
 namespace Backend\Modules\Commerce\ShipmentMethods\Base;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 abstract class DataTransferObject
 {
-    /**
-     * @var bool
-     */
-    public $installed = false;
-
-    /**
-     * @var ArrayCollection
-     */
-    public $available_payment_methods;
+    public bool $installed = false;
+    public Collection $available_payment_methods;
 }

@@ -12,7 +12,7 @@ use Backend\Modules\Commerce\Domain\Category\Exception\CategoryNotFound;
 use Backend\Modules\Commerce\Domain\Category\FilterType;
 
 /**
- * This is the categories-action, it will display the overview of categories
+ * This is the categories-action, it will display the overview of categories.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -21,9 +21,6 @@ class Categories extends BackendBaseActionIndex
 {
     private ?Category $category;
 
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -38,6 +35,7 @@ class Categories extends BackendBaseActionIndex
                 $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
+
                 return;
             }
         }
@@ -54,10 +52,10 @@ class Categories extends BackendBaseActionIndex
         $filterForm = $this->createForm(
             FilterType::class,
             [
-                'category' => $this->category
+                'category' => $this->category,
             ],
             [
-                'categories' => $this->getCategoryRepository()->getTree(Locale::workingLocale())
+                'categories' => $this->getCategoryRepository()->getTree(Locale::workingLocale()),
             ]
         );
 
@@ -91,9 +89,6 @@ class Categories extends BackendBaseActionIndex
         );
     }
 
-    /**
-     * @return CategoryRepository
-     */
     private function getCategoryRepository(): CategoryRepository
     {
         return $this->get('commerce.repository.category');

@@ -18,15 +18,15 @@ class Quote extends BaseQuote
         $name = $this->getSetting('name');
 
         if ($this->getSetting('price')) {
-            $name .= ' (&euro; '. number_format($this->getSetting('price'), 2, ',', '.') .')';
+            $name .= ' (&euro; '.number_format($this->getSetting('price'), 2, ',', '.').')';
         }
 
         return [
             $this->name => [
-                'label' =>  $this->getSetting('name'),
+                'label' => $this->getSetting('name'),
                 'name' => $name,
                 'price' => (float) $this->getSetting('price'),
-            ]
+            ],
         ];
     }
 }

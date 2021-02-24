@@ -17,8 +17,6 @@ class AccountRepository extends EntityRepository
     }
 
     /**
-     * @param Profile $profile
-     * @return Account|null
      * @throws AccountNotFound
      */
     public function findOneByProfile(Profile $profile): ?Account
@@ -38,10 +36,11 @@ class AccountRepository extends EntityRepository
     }
 
     /**
-     * Get all accounts limited per page
+     * Get all accounts limited per page.
      *
      * @param int $page
      * @param int $limit
+     *
      * @return mixed
      */
     public function findAccountsPerPage($page = 1, $limit = 100)
@@ -55,12 +54,10 @@ class AccountRepository extends EntityRepository
     }
 
     /**
-     * Count the accounts
+     * Count the accounts.
      *
-     * @return integer
      * @throws NonUniqueResultException
      * @throws NoResultException
-     *
      */
     public function getCount(): int
     {

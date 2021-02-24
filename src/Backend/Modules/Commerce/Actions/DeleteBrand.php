@@ -7,34 +7,31 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Commerce\Domain\Brand\Brand;
-use Backend\Modules\Commerce\Domain\Brand\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Brand\Command\DeleteBrand as DeleteCommand;
+use Backend\Modules\Commerce\Domain\Brand\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Brand\Exception\BrandNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
- * This action will delete a brand
+ * This action will delete a brand.
  *
  * @author Waldo Cosman <waldo@comsa.be>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class DeleteBrand extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $brand = $this->getBrand((int)$deleteFormData['id']);
+        $brand = $this->getBrand((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.

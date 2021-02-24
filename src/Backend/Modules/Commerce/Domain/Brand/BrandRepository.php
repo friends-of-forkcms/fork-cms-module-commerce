@@ -2,12 +2,12 @@
 
 namespace Backend\Modules\Commerce\Domain\Brand;
 
+use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Brand\Exception\BrandNotFound;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Backend\Core\Engine\Model;
 
 class BrandRepository extends EntityRepository
 {
@@ -34,8 +34,6 @@ class BrandRepository extends EntityRepository
     }
 
     /**
-     * @param Locale $locale
-     *
      * @return Brand[]
      */
     public function findByLocale(Locale $locale)
@@ -58,16 +56,12 @@ class BrandRepository extends EntityRepository
             function (Brand $brand) {
                 $this->getEntityManager()->remove($brand);
             },
-            (array)$this->findBy(['id' => $id, 'locale' => $locale])
+            (array) $this->findBy(['id' => $id, 'locale' => $locale])
         );
     }
 
     /**
-     * Get the next sequence in line
-     *
-     * @param Locale $locale
-     *
-     * @return integer
+     * Get the next sequence in line.
      */
     public function getNextSequence(Locale $locale): int
     {
@@ -82,22 +76,21 @@ class BrandRepository extends EntityRepository
 
     /**
      * @param string $url
-     * @param Locale $locale
-     * @param integer $id
+     * @param int    $id
      *
      * @return string
      */
     public function getUrl($url, Locale $locale, $id)
     {
-        $url           = Uri::getUrl((string)$url);
+        $url = Uri::getUrl((string) $url);
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
                       ->where($query_builder->expr()->eq('m.url', ':url'))
                       ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
                       ->setParameters(
                           [
-                              'url'    => $url,
-                              'locale' => $locale
+                              'url' => $url,
+                              'locale' => $locale,
                           ]
                       );
 

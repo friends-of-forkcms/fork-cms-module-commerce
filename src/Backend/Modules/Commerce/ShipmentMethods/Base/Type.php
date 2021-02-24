@@ -4,9 +4,9 @@ namespace Backend\Modules\Commerce\ShipmentMethods\Base;
 
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
 
 abstract class Type extends AbstractType
 {
@@ -17,11 +17,11 @@ abstract class Type extends AbstractType
             ChoiceType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.Installed',
+                'label' => 'lbl.Installed',
                 'choices' => [
                     'lbl.Yes' => true,
-                    'lbl.No' => false
-                ]
+                    'lbl.No' => false,
+                ],
             ]
         )->add(
             'available_payment_methods',

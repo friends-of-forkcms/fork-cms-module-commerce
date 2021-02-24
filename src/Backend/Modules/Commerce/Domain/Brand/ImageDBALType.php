@@ -8,8 +8,6 @@ use Common\Doctrine\ValueObject\AbstractImage;
 final class ImageDBALType extends AbstractImageType
 {
     /**
-     * @param string $imageFileName
-     *
      * @return Image
      */
     protected function createFromString(string $imageFileName): AbstractImage

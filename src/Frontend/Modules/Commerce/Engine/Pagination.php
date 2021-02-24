@@ -32,7 +32,7 @@ class Pagination
     private $base_url;
 
     /**
-     * @var integer $page_numbers_to_display
+     * @var int
      */
     private $page_numbers_to_display = 3;
 
@@ -42,37 +42,37 @@ class Pagination
     private $parameters = [];
 
     /**
-     * Set the item count
+     * Set the item count.
      *
-     * @param integer $item_count
+     * @param int $item_count
      */
     public function setItemCount($item_count)
     {
-        $this->item_count = (int)$item_count;
+        $this->item_count = (int) $item_count;
     }
 
     /**
-     * Set the items per page
+     * Set the items per page.
      *
-     * @param integer $items_per_page
+     * @param int $items_per_page
      */
     public function setItemsPerPage($items_per_page)
     {
-        $this->items_per_page = (int)$items_per_page;
+        $this->items_per_page = (int) $items_per_page;
     }
 
     /**
-     * Set the current page
+     * Set the current page.
      *
-     * @param integer $current_page
+     * @param int $current_page
      */
     public function setCurrentPage($current_page)
     {
-        $this->current_page = (int)$current_page;
+        $this->current_page = (int) $current_page;
     }
 
     /**
-     * Set the base url
+     * Set the base url.
      *
      * @param string $base_url
      */
@@ -82,13 +82,13 @@ class Pagination
     }
 
     /**
-     * Get the page count
+     * Get the page count.
      *
-     * @return integer
+     * @return int
      */
     public function getPageCount()
     {
-        if (! $this->page_count) {
+        if (!$this->page_count) {
             $this->page_count = ceil($this->item_count / $this->items_per_page);
 
             // At least page 1 should be available
@@ -101,9 +101,9 @@ class Pagination
     }
 
     /**
-     * Get the current page
+     * Get the current page.
      *
-     * @return integer
+     * @return int
      */
     public function getCurrentPage()
     {
@@ -111,32 +111,32 @@ class Pagination
     }
 
     /**
-     * Render the pagination in an array
+     * Render the pagination in an array.
      *
      * @return array
      */
     public function render()
     {
         return [
-            'currentPage'    => $this->getCurrentPage(),
-            'pageCount'      => $this->getPageCount(),
-            'pagesLeft'      => $this->getPagesLeft(),
-            'pagesMiddle'    => $this->getPagesMiddle(),
-            'pagesRight'     => $this->getPagesRight(),
-            'leftEllipses'   => $this->useLeftEllipses(),
-            'rightEllipses'  => $this->useRightEllipses(),
-            'showPrevious'   => $this->showPrevious(),
-            'showNext'       => $this->showNext(),
+            'currentPage' => $this->getCurrentPage(),
+            'pageCount' => $this->getPageCount(),
+            'pagesLeft' => $this->getPagesLeft(),
+            'pagesMiddle' => $this->getPagesMiddle(),
+            'pagesRight' => $this->getPagesRight(),
+            'leftEllipses' => $this->useLeftEllipses(),
+            'rightEllipses' => $this->useRightEllipses(),
+            'showPrevious' => $this->showPrevious(),
+            'showNext' => $this->showNext(),
             'previousNumber' => $this->getPreviousNumber(),
-            'nextNumber'     => $this->getNextNumber(),
-            'urlPrevious'    => $this->getUrlPrevious(),
-            'urlNext'        => $this->getUrlNext(),
-            'baseUrl'        => $this->base_url
+            'nextNumber' => $this->getNextNumber(),
+            'urlPrevious' => $this->getUrlPrevious(),
+            'urlNext' => $this->getUrlNext(),
+            'baseUrl' => $this->base_url,
         ];
     }
 
     /**
-     * Get the pages on the left side
+     * Get the pages on the left side.
      *
      * @return array
      */
@@ -145,43 +145,43 @@ class Pagination
         $pages = [];
 
         // Do nothing when there are no left pages
-        if (! $this->hasLeftPages()) {
+        if (!$this->hasLeftPages()) {
             return $pages;
         }
 
-        for ($i = 1; $i <= $this->page_numbers_to_display; $i++) {
-            $pages[] = array(
+        for ($i = 1; $i <= $this->page_numbers_to_display; ++$i) {
+            $pages[] = [
                 'selected' => ($i == $this->current_page),
-                'number'   => (int)$i,
-                'url'      => $this->buildUrl($i)
-            );
+                'number' => (int) $i,
+                'url' => $this->buildUrl($i),
+            ];
         }
 
         return $pages;
     }
 
     /**
-     * Get the right pages
+     * Get the right pages.
      *
      * @return array
      */
     private function getPagesRight()
     {
-        $pages         = [];
+        $pages = [];
         $right_numbers = $this->getPageCount() - $this->page_numbers_to_display;
 
         // Do nothing when there are no left pages
-        if (! $this->hasRightPages()) {
+        if (!$this->hasRightPages()) {
             return $pages;
         }
 
         if ($right_numbers > 0) {
-            for ($i = ($right_numbers + 1); $i <= $this->getPageCount(); $i++) {
-                $pages[] = array(
+            for ($i = ($right_numbers + 1); $i <= $this->getPageCount(); ++$i) {
+                $pages[] = [
                     'selected' => ($i == $this->current_page),
-                    'number'   => (int)$i,
-                    'url'      => $this->buildUrl($i)
-                );
+                    'number' => (int) $i,
+                    'url' => $this->buildUrl($i),
+                ];
             }
         }
 
@@ -189,27 +189,27 @@ class Pagination
     }
 
     /**
-     * Check if there are left pages
+     * Check if there are left pages.
      *
-     * @return boolean
+     * @return bool
      */
     private function hasLeftPages()
     {
-        return ($this->getPageCount() > ($this->page_numbers_to_display * 3));
+        return $this->getPageCount() > ($this->page_numbers_to_display * 3);
     }
 
     /**
-     * Check if there are right pages
+     * Check if there are right pages.
      *
-     * @return boolean
+     * @return bool
      */
     private function hasRightPages()
     {
-        return ($this->getPageCount() > ($this->page_numbers_to_display * 3));
+        return $this->getPageCount() > ($this->page_numbers_to_display * 3);
     }
 
     /**
-     * Get the pages in the middle
+     * Get the pages in the middle.
      *
      * @return array
      */
@@ -217,35 +217,35 @@ class Pagination
     {
         $pages = [];
 
-        if (! $this->hasRightPages() && ! $this->hasLeftPages()) {
-            for ($i = 1; $i <= $this->getPageCount(); $i++) {
-                $pages[] = array(
+        if (!$this->hasRightPages() && !$this->hasLeftPages()) {
+            for ($i = 1; $i <= $this->getPageCount(); ++$i) {
+                $pages[] = [
                     'selected' => ($i == $this->current_page),
-                    'number'   => $i,
-                    'url'      => $this->buildUrl($i)
-                );
+                    'number' => $i,
+                    'url' => $this->buildUrl($i),
+                ];
             }
         } else {
             $numbers_to_add = floor($this->page_numbers_to_display / 2);
-            $start          = (int)$this->current_page - $numbers_to_add;
+            $start = (int) $this->current_page - $numbers_to_add;
 
             // When the start page is smaller then the left pages show the three next
             if ($start < ($this->page_numbers_to_display * 2) && $this->current_page != ($this->page_numbers_to_display * 2)) {
-                $start = (int)$this->page_numbers_to_display + 1;
+                $start = (int) $this->page_numbers_to_display + 1;
             }
 
             $end = $start + ($this->page_numbers_to_display - 1);
             if ($end > ($this->getPageCount() - $this->page_numbers_to_display)) {
-                $end   = $this->getPageCount() - $this->page_numbers_to_display;
+                $end = $this->getPageCount() - $this->page_numbers_to_display;
                 $start = $this->getPageCount() - ($this->page_numbers_to_display * 2) + 1;
             }
 
-            for ($i = $start; $i <= $end; $i++) {
-                $pages[] = array(
+            for ($i = $start; $i <= $end; ++$i) {
+                $pages[] = [
                     'selected' => ($i == $this->current_page),
-                    'number'   => $i,
-                    'url'      => $this->buildUrl($i)
-                );
+                    'number' => $i,
+                    'url' => $this->buildUrl($i),
+                ];
             }
         }
 
@@ -253,9 +253,9 @@ class Pagination
     }
 
     /**
-     * Use the left ellipses
+     * Use the left ellipses.
      *
-     * @return boolean
+     * @return bool
      */
     private function useLeftEllipses()
     {
@@ -269,9 +269,9 @@ class Pagination
     }
 
     /**
-     * Use the left ellipses
+     * Use the left ellipses.
      *
-     * @return boolean
+     * @return bool
      */
     private function useRightEllipses()
     {
@@ -290,29 +290,27 @@ class Pagination
     }
 
     /**
-     * Get show the previous page button
+     * Get show the previous page button.
      *
-     * @return boolean
+     * @return bool
      */
     public function showPrevious()
     {
-        return ($this->current_page > 1);
+        return $this->current_page > 1;
     }
 
     /**
-     * Get show the next page button
+     * Get show the next page button.
      *
-     * @return boolean
+     * @return bool
      */
     public function showNext()
     {
-        return ($this->current_page < $this->getPageCount());
+        return $this->current_page < $this->getPageCount();
     }
 
     /**
-     * Get the previous number
-     *
-     * @return integer
+     * Get the previous number.
      */
     public function getPreviousNumber(): int
     {
@@ -320,9 +318,7 @@ class Pagination
     }
 
     /**
-     * Get the previous url
-     *
-     * @return string
+     * Get the previous url.
      */
     public function getUrlPrevious(): string
     {
@@ -332,9 +328,7 @@ class Pagination
     }
 
     /**
-     * Get the next number
-     *
-     * @return integer
+     * Get the next number.
      */
     public function getNextNumber(): int
     {
@@ -342,9 +336,7 @@ class Pagination
     }
 
     /**
-     * Get show the next page button
-     *
-     * @return string
+     * Get show the next page button.
      */
     public function getUrlNext(): string
     {
@@ -354,36 +346,34 @@ class Pagination
     }
 
     /**
-     * Build the url based on the base url
+     * Build the url based on the base url.
      *
-     * @param integer $number
+     * @param int $number
      *
      * @return string
      */
     private function buildUrl($number)
     {
         // Only return the number when there is no base url
-        if (! $this->base_url) {
+        if (!$this->base_url) {
             return false;
         }
 
-        $parameters = array_merge($this->parameters, array(Language::lbl('Page') => $number));
+        $parameters = array_merge($this->parameters, [Language::lbl('Page') => $number]);
 
         $parameterString = implode('&', array_map(
             function ($v, $k) {
-                return sprintf("%s=%s", $k, $v);
+                return sprintf('%s=%s', $k, $v);
             },
             $parameters,
             array_keys($parameters)
         ));
 
-        return $this->base_url . '?' . $parameterString;
+        return $this->base_url.'?'.$parameterString;
     }
 
     /**
-     * Overwrite the page count
-     *
-     * @param integer $page_count
+     * Overwrite the page count.
      */
     public function setPageCount(int $page_count)
     {
@@ -391,10 +381,10 @@ class Pagination
     }
 
     /**
-     * Add parameter
+     * Add parameter.
      *
-     * @var string $key
-     * @var mixed $value
+     * @var string
+     * @var mixed
      */
     public function setParameter($key, $value)
     {
@@ -402,9 +392,9 @@ class Pagination
     }
 
     /**
-     * Add parameters
+     * Add parameters.
      *
-     * @var array $parameters
+     * @var array
      */
     public function setParameters(array $parameters)
     {

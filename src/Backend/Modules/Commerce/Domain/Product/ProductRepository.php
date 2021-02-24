@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Commerce\Domain\Product;
 
+use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Commerce\Domain\Specification\Specification;
@@ -9,7 +10,6 @@ use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Backend\Core\Engine\Model;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
@@ -23,9 +23,6 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return Product|null
      * @throws ProductNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Product
@@ -45,9 +42,6 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return Product|null
      * @throws ProductNotFound
      */
     public function findOneActiveByIdAndLocale(?int $id, Locale $locale): ?Product
@@ -71,12 +65,11 @@ class ProductRepository extends EntityRepository
      */
     public function findActive()
     {
-        /** @var Product $product */
+        /* @var Product $product */
         return $this->findBy(['hidden' => false]);
     }
 
     /**
-     * @param Locale $locale
      * @return Product[]
      */
     public function findActiveByLocaleAndWithGoogleTaxonomyId(Locale $locale)
@@ -102,20 +95,16 @@ class ProductRepository extends EntityRepository
             function (Product $product) {
                 $this->getEntityManager()->remove($product);
             },
-            (array)$this->findBy(['id' => $id, 'locale' => $locale])
+            (array) $this->findBy(['id' => $id, 'locale' => $locale])
         );
     }
 
     /**
-     * Find a product by category and product url
+     * Find a product by category and product url.
      *
-     * @param Locale $locale
-     * @param string $category
      * @param string $url
      *
-     * @return Product|null
      * @throws NonUniqueResultException
-     *
      */
     public function findByCategoryAndUrl(Locale $locale, string $category, $url): ?Product
     {
@@ -150,14 +139,11 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line
+     * Get the next sequence in line.
      *
-     * @param Locale $locale
      * @param Category $category
      *
-     * @return integer
      * @throws NonUniqueResultException
-     *
      */
     public function getNextSequence(Locale $locale, ?Category $category): int
     {
@@ -178,13 +164,9 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Count the products
+     * Count the products.
      *
-     * @param Locale $locale
-     *
-     * @return integer
      * @throws NonUniqueResultException
-     *
      */
     public function getCount(Locale $locale): int
     {
@@ -214,7 +196,7 @@ class ProductRepository extends EntityRepository
                 )
             )
             ->setParameter('locale', $locale)
-            ->setParameter('query', '%' . $query . '%');
+            ->setParameter('query', '%'.$query.'%');
 
         if ($excluded_id) {
             $queryBuilder->andWhere('i.id != :excluded_id')
@@ -228,14 +210,9 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Find a product based on the url part
+     * Find a product based on the url part.
      *
-     * @param Locale $locale
-     * @param string $url
-     *
-     * @return Product
      * @throws NonUniqueResultException
-     *
      * @throws NoResultException
      */
     public function findByLocaleAndUrl(Locale $locale, string $url): Product
@@ -249,7 +226,7 @@ class ProductRepository extends EntityRepository
             ->setParameters(
                 [
                     'locale' => $locale,
-                    'url' => $url
+                    'url' => $url,
                 ]
             )
             ->getQuery()
@@ -258,14 +235,13 @@ class ProductRepository extends EntityRepository
 
     /**
      * @param string $url
-     * @param Locale $locale
-     * @param integer $id
+     * @param int    $id
      *
      * @return string
      */
     public function getUrl($url, Locale $locale, $id)
     {
-        $url = Uri::getUrl((string)$url);
+        $url = Uri::getUrl((string) $url);
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
             ->where($query_builder->expr()->eq('m.url', ':url'))
@@ -273,7 +249,7 @@ class ProductRepository extends EntityRepository
             ->setParameters(
                 [
                     'url' => $url,
-                    'locale' => $locale
+                    'locale' => $locale,
                 ]
             );
 
@@ -292,12 +268,7 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Find the products limited by category
-     *
-     * @param Category $category
-     * @param integer $limit
-     * @param integer $offset
-     * @param string $sorting
+     * Find the products limited by category.
      *
      * @return Product[]
      */
@@ -310,7 +281,7 @@ class ProductRepository extends EntityRepository
         ];
 
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
+        $sql .= ' LIMIT '.$offset.', '.$limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -322,15 +293,7 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Filter the products based on specification values
-     *
-     * @param array $filters
-     * @param Category $category
-     * @param integer $limit
-     * @param integer $offset
-     * @param string $sorting
-     *
-     * @return array
+     * Filter the products based on specification values.
      */
     public function filterProducts(array $filters, Category $category, int $limit, int $offset, string $sorting): array
     {
@@ -342,7 +305,7 @@ class ProductRepository extends EntityRepository
 
         $this->buildFilterQuery($sql, $parameters, $filters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
+        $sql .= ' LIMIT '.$offset.', '.$limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -354,12 +317,7 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Filter the products and count the result
-     *
-     * @param array $filters
-     * @param Category $category
-     *
-     * @return integer
+     * Filter the products and count the result.
      */
     public function filterProductsCount(array $filters, Category $category): int
     {
@@ -375,19 +333,11 @@ class ProductRepository extends EntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->execute($parameters);
 
-        return (int)$stmt->fetchColumn(0);
+        return (int) $stmt->fetchColumn(0);
     }
 
     /**
-     * Filter the products based on specification values and search string
-     *
-     * @param string $searchTerm
-     * @param array $filters
-     * @param integer $limit
-     * @param integer $offset
-     * @param string $sorting
-     *
-     * @return array
+     * Filter the products based on specification values and search string.
      */
     public function filterSearchedProducts(string $searchTerm, array $filters, int $limit, int $offset, string $sorting): array
     {
@@ -397,7 +347,7 @@ class ProductRepository extends EntityRepository
         $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
         $this->buildFilterQuery($sql, $parameters, $filters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
+        $sql .= ' LIMIT '.$offset.', '.$limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -409,12 +359,7 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Filter and search the products and count the result
-     *
-     * @param string $searchTerm
-     * @param array $filters
-     *
-     * @return integer
+     * Filter and search the products and count the result.
      */
     public function filterSearchedProductsCount(string $searchTerm, array $filters): int
     {
@@ -428,15 +373,12 @@ class ProductRepository extends EntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->execute($parameters);
 
-        return (int)$stmt->fetchColumn(0);
+        return (int) $stmt->fetchColumn(0);
     }
 
     /**
-     * Search the products by the given search string
+     * Search the products by the given search string.
      *
-     * @param string $searchTerm
-     * @param integer $limit
-     * @param integer $offset
      * @param string $sorting
      *
      * @return Product[]
@@ -448,7 +390,7 @@ class ProductRepository extends EntityRepository
 
         $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
+        $sql .= ' LIMIT '.$offset.', '.$limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -460,12 +402,7 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Count the products
-     *
-     * @param string $searchTerm
-     * @param Locale $locale
-     *
-     * @return integer
+     * Count the products.
      */
     public function getSearchProductCount(string $searchTerm, Locale $locale): int
     {
@@ -478,14 +415,9 @@ class ProductRepository extends EntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->execute($parameters);
 
-        return (int)$stmt->fetchColumn(0);
+        return (int) $stmt->fetchColumn(0);
     }
 
-    /**
-     * @param string $sql
-     * @param array $parameters
-     * @param array $filters
-     */
     public function buildFilterQuery(string &$sql, array &$parameters, array $filters): void
     {
         $queryBuilder = $this->_em->createQueryBuilder();
@@ -516,16 +448,16 @@ class ProductRepository extends EntityRepository
                 continue;
             }
 
-            $parameters['specification' . $i] = $specification;
+            $parameters['specification'.$i] = $specification;
 
             // Split the specification values
             $specificationValuesPlaceholder = [];
             $j = 0;
             foreach ($specificationValue as $value) {
-                $key = 'specificationValue' . $i . '_' . $j;
-                $specificationValuesPlaceholder[] = ':' . $key;
+                $key = 'specificationValue'.$i.'_'.$j;
+                $specificationValuesPlaceholder[] = ':'.$key;
                 $parameters[$key] = $value;
-                $j++;
+                ++$j;
             }
 
             $sql .= ' AND p.id IN(
@@ -536,19 +468,15 @@ class ProductRepository extends EntityRepository
                 INNER JOIN commerce_specifications s ON s.id = sv.`specification_id`
                 INNER JOIN meta smeta ON smeta.id = s.meta_id
                 WHERE s.filter = 1
-                AND smeta.url = :specification' . $i . '
-                AND svmeta.url IN (' . implode(', ', $specificationValuesPlaceholder) . ')
+                AND smeta.url = :specification'.$i.'
+                AND svmeta.url IN ('.implode(', ', $specificationValuesPlaceholder).')
             )';
 
             // Update the counter
-            $i++;
+            ++$i;
         }
     }
 
-    /**
-     * @param string $query
-     * @param string $sorting
-     */
     private function setProductSorting(string &$query, string $sorting): void
     {
         switch ($sorting) {
@@ -569,31 +497,26 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Build the search query
-     *
-     * @param string $alias
-     * @param string $sql
-     * @param string $searchTerm
-     * @param array $parameters
+     * Build the search query.
      */
     private function buildSearchQuery(string $alias, string &$sql, string $searchTerm, array &$parameters): void
     {
         $sql .= ' (';
-        $sql .= $alias . '.title LIKE :search_term OR ';
-        $sql .= $alias . '.summary LIKE :search_term OR ';
-        $sql .= $alias . '.text LIKE :search_term OR ';
-        $sql .= $alias . '.sku LIKE :search_term';
+        $sql .= $alias.'.title LIKE :search_term OR ';
+        $sql .= $alias.'.summary LIKE :search_term OR ';
+        $sql .= $alias.'.text LIKE :search_term OR ';
+        $sql .= $alias.'.sku LIKE :search_term';
         $sql .= ') ';
 
-        $parameters['search_term'] = '%' . $searchTerm . '%';
+        $parameters['search_term'] = '%'.$searchTerm.'%';
     }
 
     /**
-     * Get all active products limited per page
+     * Get all active products limited per page.
      *
-     * @param Locale $locale
      * @param int $page
      * @param int $limit
+     *
      * @return mixed
      */
     public function findProductsPerPage(Locale $locale, $page = 1, $limit = 100)
@@ -613,14 +536,10 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Count the products
+     * Count the products.
      *
-     * @param Locale $locale
-     *
-     * @return integer
      * @throws NonUniqueResultException
      * @throws NoResultException
-     *
      */
     public function getActiveCount(Locale $locale): int
     {

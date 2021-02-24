@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueReposit
 
 final class DeleteProductOptionValueHandler
 {
-    /** @var ProductOptionValueRepository */
-    private $specificationValueRepository;
+    private ProductOptionValueRepository $specificationValueRepository;
 
     public function __construct(ProductOptionValueRepository $specificationValueRepository)
     {

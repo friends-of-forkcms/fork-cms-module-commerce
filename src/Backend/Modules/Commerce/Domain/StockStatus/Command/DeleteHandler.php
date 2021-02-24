@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\StockStatus\StockStatusRepository;
 
 final class DeleteHandler
 {
-    /** @var StockStatusRepository */
-    private $stockStatusRepository;
+    private StockStatusRepository $stockStatusRepository;
 
     public function __construct(StockStatusRepository $stockStatusRepository)
     {

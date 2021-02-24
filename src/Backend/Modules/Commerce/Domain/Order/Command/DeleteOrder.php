@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 
 final class DeleteOrder
 {
-    /** @var Order */
-    public $order;
+    public Order $order;
 
     public function __construct(Order $order)
     {

@@ -3,19 +3,15 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Exception;
 
 /**
- * This edit action allows you to edit a specific shipment method
+ * This edit action allows you to edit a specific shipment method.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditShipmentMethod extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     *
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -27,7 +23,7 @@ class EditShipmentMethod extends BackendBaseActionEdit
 
         // First check if our class exists
         if (!class_exists($className)) {
-            throw new \Exception("Class {$name} is not found!");
+            throw new Exception("Class {$name} is not found!");
         }
 
         // Load our class
@@ -48,11 +44,7 @@ class EditShipmentMethod extends BackendBaseActionEdit
         $this->template = $shipmentMethod->getTemplate();
         $this->display($shipmentMethod->getTemplateName());
     }
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
+
     private function getShipmentMethodAction(string $name): string
     {
         return "\\Backend\\Modules\\Commerce\\ShipmentMethods\\{$name}\\Actions\\Edit";

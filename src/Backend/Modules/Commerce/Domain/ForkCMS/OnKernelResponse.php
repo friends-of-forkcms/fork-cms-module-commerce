@@ -2,12 +2,12 @@
 
 namespace Backend\Modules\Commerce\Domain\ForkCMS;
 
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 final class OnKernelResponse
 {
-    protected $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -32,8 +32,8 @@ final class OnKernelResponse
         $event->getResponse()->setContent(
             preg_replace(
                 '|<head>|',
-                '<head>' . PHP_EOL
-                . '<style media="screen" type="text/css">.nav-item-commerce a:before {content: "\f07a";}</style>',
+                '<head>'.PHP_EOL
+                .'<style media="screen" type="text/css">.nav-item-commerce a:before {content: "\f07a";}</style>',
                 $content,
                 1
             )

@@ -6,14 +6,14 @@ use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
 use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
 
 /**
- * This is a widget with recent products
+ * This is a widget with recent products.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class RecentProducts extends FrontendBaseWidget
 {
     /**
-     * Execute the extra
+     * Execute the extra.
      */
     public function execute(): void
     {
@@ -23,7 +23,7 @@ class RecentProducts extends FrontendBaseWidget
     }
 
     /**
-     * Parse
+     * Parse.
      */
     private function parse()
     {

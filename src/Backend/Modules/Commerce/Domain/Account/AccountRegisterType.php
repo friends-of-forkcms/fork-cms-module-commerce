@@ -90,7 +90,7 @@ class AccountRegisterType extends AbstractType
             CheckboxType::class,
             [
                 'required' => false,
-                'label' => 'lbl.InvoiceAndShipmentAddressAreTheSame'
+                'label' => 'lbl.InvoiceAndShipmentAddressAreTheSame',
             ]
         )->add(
             'password',
@@ -99,7 +99,7 @@ class AccountRegisterType extends AbstractType
                 'type' => PasswordType::class,
                 'required' => true,
                 'label' => 'lbl.Password',
-                'first_options'  => ['label' => 'lbl.Password'],
+                'first_options' => ['label' => 'lbl.Password'],
                 'second_options' => ['label' => 'lbl.RepeatPassword'],
             ]
         );
@@ -109,7 +109,7 @@ class AccountRegisterType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => AccountRegisterDataTransferObject::class
+                'data_class' => AccountRegisterDataTransferObject::class,
             ]
         );
     }

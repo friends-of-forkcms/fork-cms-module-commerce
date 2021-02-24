@@ -8,87 +8,45 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderAddressDataTransferObject
 {
-    /**
-     * @var OrderAddress
-     */
-    protected $orderAddressEntity;
+    protected ?OrderAddress $orderAddressEntity;
+    public int $id;
+    public ?Account $account;
+    public ?Country $country;
+    public ?string $company_name;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var Account
-     */
-    public $account;
-
-    /**
-     * @var Country
-     */
-    public $country;
-
-    /**
-     * @var string
-     */
-    public $company_name;
-
-    /**
-     * @var string
-     *
      * @ Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $first_name;
+    public string $first_name;
 
     /**
-     * @var string
-     *
      * @ Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $last_name;
+    public ?string $last_name;
+    public ?string $email_address;
+    public ?string $phone;
 
     /**
-     * @var string
-     */
-    public $email_address;
-
-    /**
-     * @var string
-     */
-    public $phone;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $street;
+    public ?string $street;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $house_number;
+    public ?string $house_number;
+
+    public ?string $house_number_addition;
 
     /**
-     * @var string
-     */
-    public $house_number_addition;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $city;
+    public ?string $city;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $zip_code;
+    public ?string $zip_code;
 
     public function __construct(OrderAddress $orderAddress = null)
     {
@@ -98,19 +56,19 @@ class OrderAddressDataTransferObject
             return;
         }
 
-        $this->id = $orderAddress->getId();
-        $this->account = $orderAddress->getAccount();
-        $this->country = $orderAddress->getCountry();
-        $this->company_name = $orderAddress->getCompanyName();
-        $this->first_name = $orderAddress->getFirstName();
-        $this->last_name = $orderAddress->getLastName();
-        $this->email_address = $orderAddress->getEmailAddress();
-        $this->phone = $orderAddress->getPhone();
-        $this->street = $orderAddress->getStreet();
-        $this->house_number = $orderAddress->getHouseNumber();
-        $this->house_number_addition = $orderAddress->getHouseNumberAddition();
-        $this->city = $orderAddress->getCity();
-        $this->zip_code = $orderAddress->getZipCode();
+        $this->id = $this->orderAddressEntity->getId();
+        $this->account = $this->orderAddressEntity->getAccount();
+        $this->country = $this->orderAddressEntity->getCountry();
+        $this->company_name = $this->orderAddressEntity->getCompanyName();
+        $this->first_name = $this->orderAddressEntity->getFirstName();
+        $this->last_name = $this->orderAddressEntity->getLastName();
+        $this->email_address = $this->orderAddressEntity->getEmailAddress();
+        $this->phone = $this->orderAddressEntity->getPhone();
+        $this->street = $this->orderAddressEntity->getStreet();
+        $this->house_number = $this->orderAddressEntity->getHouseNumber();
+        $this->house_number_addition = $this->orderAddressEntity->getHouseNumberAddition();
+        $this->city = $this->orderAddressEntity->getCity();
+        $this->zip_code = $this->orderAddressEntity->getZipCode();
     }
 
     public function setOrderAddressEntity(OrderAddress $orderAddressEntity): void

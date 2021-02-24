@@ -13,6 +13,6 @@ class CountryNotFound extends Exception
 
     public static function forId(string $id): self
     {
-        return new self('Can\'t find a Country with id = "' . $id . '".');
+        return new self('Can\'t find a Country with id = "'.$id.'".');
     }
 }

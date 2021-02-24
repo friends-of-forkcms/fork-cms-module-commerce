@@ -30,6 +30,7 @@ class ProductPrice extends DimensionCalculator
         // Product must be set
         if (!$this->getRequest()->request->has('product')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
@@ -37,11 +38,13 @@ class ProductPrice extends DimensionCalculator
 
         if (!is_array($productData)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
         if (!array_key_exists('id', $productData) || !array_key_exists('amount', $productData)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
@@ -50,6 +53,7 @@ class ProductPrice extends DimensionCalculator
             $product = $this->getProductRepository()->findOneActiveByIdAndLocale($productData['id'], Locale::frontendLanguage());
         } catch (ProductNotFound $e) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
@@ -127,17 +131,13 @@ class ProductPrice extends DimensionCalculator
         $this->output(Response::HTTP_OK, $returnData);
     }
 
-    /**
-     * @param ProductOption $option
-     * @param Product $product
-     */
     private function parseProductOption(ProductOption $option, Product $product): void
     {
-        $propertyName = 'option_' . $option->getId();
-        $propertyNameCustomValue = $propertyName . '_custom_value';
+        $propertyName = 'option_'.$option->getId();
+        $propertyNameCustomValue = $propertyName.'_custom_value';
 
         if (!property_exists($this->data, $propertyName)) { //  || $this->data->{$propertyName} === null
-            return ;
+            return;
         }
 
         $price = 0;
@@ -148,7 +148,7 @@ class ProductPrice extends DimensionCalculator
         if ($option->isCustomValueAllowed() && isset($this->data->{$propertyNameCustomValue})) {
             $price = $option->getCustomValuePrice();
             $vatPrice = $option->getCustomValuePrice() * $product->getVat()->getAsPercentage();
-            $value = $option->getPrefix() . $this->data->{$propertyNameCustomValue} . $option->getSuffix();
+            $value = $option->getPrefix().$this->data->{$propertyNameCustomValue}.$option->getSuffix();
         } else {
             /**
              * @var ProductOptionValue $optionValue
@@ -239,11 +239,7 @@ class ProductPrice extends DimensionCalculator
     }
 
     /**
-     * Convert the errors to an array which can be used in the frontend
-     *
-     * @param FormErrorIterator $errors
-     *
-     * @return array
+     * Convert the errors to an array which can be used in the frontend.
      */
     private function buildErrors(FormErrorIterator $errors): array
     {
@@ -259,17 +255,11 @@ class ProductPrice extends DimensionCalculator
         return $errorMessages;
     }
 
-    /**
-     * @param array $productOption
-     */
     protected function addProductOption(array $productOption): void
     {
         $this->productOptions[] = $productOption;
     }
 
-    /**
-     * @return array
-     */
     protected function getProductOptions(): array
     {
         return $this->productOptions;

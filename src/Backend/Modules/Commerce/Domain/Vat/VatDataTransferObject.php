@@ -2,64 +2,40 @@
 
 namespace Backend\Modules\Commerce\Domain\Vat;
 
-use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\VatValue\VatValue;
+use Common\Locale;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class VatDataTransferObject
 {
-    /**
-     * @var Vat
-     */
-    protected $vatEntity;
+    protected ?Vat $vatEntity;
+    public int $id;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
+    public string $title;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $percentage;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var int
-     */
-    public $sequence;
-
-    /**
-     * @var int
-     */
-    public $type;
+    public int $percentage;
+    public Locale $locale;
+    public int $sequence;
+    public int $type;
 
     public function __construct(Vat $vat = null)
     {
         $this->vatEntity = $vat;
 
-        if (! $this->hasExistingVat()) {
+        if (!$this->hasExistingVat()) {
             return;
         }
 
-        $this->id         = $vat->getId();
-        $this->title      = $vat->getTitle();
-        $this->percentage = $vat->getPercentage();
-        $this->locale     = $vat->getLocale();
-        $this->sequence   = $vat->getSequence();
+        $this->id = $this->vatEntity->getId();
+        $this->title = $this->vatEntity->getTitle();
+        $this->percentage = $this->vatEntity->getPercentage();
+        $this->locale = $this->vatEntity->getLocale();
+        $this->sequence = $this->vatEntity->getSequence();
     }
 
     public function getVatEntity(): Vat

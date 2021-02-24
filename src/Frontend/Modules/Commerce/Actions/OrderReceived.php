@@ -7,28 +7,28 @@ use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 
 /**
- * This is the personal-data-action (default), it will display a personal data form
+ * This is the personal-data-action (default), it will display a personal data form.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class OrderReceived extends FrontendBaseBlock
 {
     /**
-     * The url for commerce index
+     * The url for commerce index.
      *
-     * @var    array
+     * @var array
      */
     private $commerceUrl;
 
     /**
-     * First name of the person that submitted the order
+     * First name of the person that submitted the order.
      *
      * @var string
      */
     private $firstName;
 
     /**
-     * Execute the action
+     * Execute the action.
      */
     public function execute(): void
     {
@@ -41,7 +41,7 @@ class OrderReceived extends FrontendBaseBlock
     }
 
     /**
-     * Load the data, don't forget to validate the incoming data
+     * Load the data, don't forget to validate the incoming data.
      */
     private function getData()
     {
@@ -52,7 +52,7 @@ class OrderReceived extends FrontendBaseBlock
     }
 
     /**
-     * Parse the page
+     * Parse the page.
      */
     protected function parse()
     {

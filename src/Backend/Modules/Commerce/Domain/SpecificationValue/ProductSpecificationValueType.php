@@ -19,34 +19,34 @@ class ProductSpecificationValueType extends AbstractType
             'specification',
             EntityType::class,
             [
-                'required'     => true,
-                'label'        => 'lbl.Specification',
-                'class'        => Specification::class,
-                'choice_label' => 'title'
+                'required' => true,
+                'label' => 'lbl.Specification',
+                'class' => Specification::class,
+                'choice_label' => 'title',
             ]
         )->add(
             'value',
             Select2EntityType::class,
             [
-                'multiple'             => false,
-                'remote_route'         => 'backend_ajax',
-                'class'                => SpecificationValue::class,
-                'primary_key'          => 'id',
-                'text_property'        => 'value',
+                'multiple' => false,
+                'remote_route' => 'backend_ajax',
+                'class' => SpecificationValue::class,
+                'primary_key' => 'id',
+                'text_property' => 'value',
                 'minimum_input_length' => 1,
-                'page_limit'           => 10,
-                'allow_clear'          => false,
-                'allow_add'            => [
-                    'enabled'        => true,
-                    'new_tag_text'   => ' (' . Language::lbl('New') .')',
+                'page_limit' => 10,
+                'allow_clear' => false,
+                'allow_add' => [
+                    'enabled' => true,
+                    'new_tag_text' => ' ('.Language::lbl('New').')',
                     'tag_separators' => '[","]',
                 ],
-                'delay'                => 250,
-                'cache'                => false,
-                'cache_timeout'        => 60000, // if 'cache' is true
-                'language'             => Locale::workingLocale(),
-                'label'                => 'lbl.Value',
-                'action'               => 'AutoCompleteSpecificationValue',
+                'delay' => 250,
+                'cache' => false,
+                'cache_timeout' => 60_000, // if 'cache' is true
+                'language' => Locale::workingLocale(),
+                'label' => 'lbl.Value',
+                'action' => 'AutoCompleteSpecificationValue',
             ]
         );
     }

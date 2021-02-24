@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderVat\OrderVatRepository;
 
 final class CreateOrderVatHandler
 {
-    /** @var OrderVatRepository */
-    private $orderVatRepository;
+    private OrderVatRepository $orderVatRepository;
 
     public function __construct(OrderVatRepository $orderVatRepository)
     {

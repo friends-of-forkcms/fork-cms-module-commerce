@@ -6,50 +6,15 @@ use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 
 class OrderProductOptionDataTransferObject
 {
-    /**
-     * @var OrderProductOption
-     */
-    protected $orderProductOptionEntity;
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var int
-     */
-    public $type;
-
-    /**
-     * @var OrderProduct
-     */
-    public $order_product;
-
-    /**
-     * @var string
-     */
-    public $sku;
-
-    /**
-     * @var string
-     */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $value;
-
-    /**
-     * @var float
-     */
-    public $price;
-
-    /**
-     * @var float
-     */
-    public $total;
+    protected ?OrderProductOption $orderProductOptionEntity;
+    public int $id;
+    public int $type;
+    public OrderProduct $order_product;
+    public ?string $sku;
+    public string $title;
+    public string $value;
+    public float $price;
+    public float $total;
 
     public function __construct(OrderProductOption $orderProductOption = null)
     {
@@ -59,13 +24,13 @@ class OrderProductOptionDataTransferObject
             return;
         }
 
-        $this->id = $orderProductOption->getId();
-        $this->order_product = $orderProductOption->getOrderProduct();
-        $this->sku = $orderProductOption->getSku();
-        $this->title = $orderProductOption->getTitle();
-        $this->value = $orderProductOption->getValue();
-        $this->price = $orderProductOption->getPrice();
-        $this->total = $orderProductOption->getTotal();
+        $this->id = $this->orderProductOptionEntity->getId();
+        $this->order_product = $this->orderProductOptionEntity->getOrderProduct();
+        $this->sku = $this->orderProductOptionEntity->getSku();
+        $this->title = $this->orderProductOptionEntity->getTitle();
+        $this->value = $this->orderProductOptionEntity->getValue();
+        $this->price = $this->orderProductOptionEntity->getPrice();
+        $this->total = $this->orderProductOptionEntity->getTotal();
     }
 
     public function getOrderProductOptionEntity(): OrderProductOption

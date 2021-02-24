@@ -3,17 +3,15 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Exception;
 
 /**
- * This edit action allows you to edit a specific payment method
+ * This edit action allows you to edit a specific payment method.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditPaymentMethod extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -25,7 +23,7 @@ class EditPaymentMethod extends BackendBaseActionEdit
 
         // First check if our class exists
         if (!class_exists($className)) {
-            throw new \Exception("Class {$name} is not found!");
+            throw new Exception("Class {$name} is not found!");
         }
 
         // Load our class
@@ -46,11 +44,7 @@ class EditPaymentMethod extends BackendBaseActionEdit
         $this->template = $paymentMethod->getTemplate();
         $this->display($paymentMethod->getTemplateName());
     }
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
+
     private function getPaymentMethodAction(string $name): string
     {
         return "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$name}\\Actions\\Edit";

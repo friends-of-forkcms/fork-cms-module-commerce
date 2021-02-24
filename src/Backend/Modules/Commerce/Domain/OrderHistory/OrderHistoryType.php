@@ -16,7 +16,7 @@ class OrderHistoryType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         );
     }
@@ -25,7 +25,7 @@ class OrderHistoryType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => OrderHistoryDataTransferObject::class
+                'data_class' => OrderHistoryDataTransferObject::class,
             ]
         );
     }

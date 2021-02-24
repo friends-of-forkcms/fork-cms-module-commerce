@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Vat\Vat;
 
 final class DeleteVat
 {
-    /** @var Vat */
-    public $vat;
+    public Vat $vat;
 
     public function __construct(Vat $vat)
     {

@@ -4,50 +4,35 @@ namespace Backend\Modules\Commerce\Domain\OrderHistory;
 
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
+use DateTime;
+use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderHistoryDataTransferObject
 {
-    /**
-     * @var OrderHistory
-     */
-    protected $orderHistoryEntity;
+    protected ?OrderHistory $orderHistoryEntity;
+    public int $id;
+    public Order $order;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var Order
-     */
-    public $order;
-
-    /**
-     * @var OrderStatus
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderStatus;
-
-    /**
-     * @var \DateTime
-     */
-    public $created_at;
+    public OrderStatus $orderStatus;
+    public DateTimeInterface $created_at;
 
     public function __construct(OrderHistory $orderHistory = null)
     {
         $this->orderHistoryEntity = $orderHistory;
-        $this->created_at = new \DateTime();
+        $this->created_at = new DateTime();
 
         if (!$this->hasExistingOrderHistory()) {
             return;
         }
 
-        $this->id = $orderHistory->getId();
-        $this->order = $orderHistory->getOrder();
-        $this->orderStatus = $orderHistory->getOrderStatus();
-        $this->created_at = $orderHistory->getCreatedAt();
+        $this->id = $this->orderHistoryEntity->getId();
+        $this->order = $this->orderHistoryEntity->getOrder();
+        $this->orderStatus = $this->orderHistoryEntity->getOrderStatus();
+        $this->created_at = $this->orderHistoryEntity->getCreatedAt();
     }
 
     public function getOrderHistoryEntity(): OrderHistory

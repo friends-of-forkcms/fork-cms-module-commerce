@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 
 final class DeleteOrderProductOption
 {
-    /** @var OrderProductOption */
-    public $orderProductOption;
+    public OrderProductOption $orderProductOption;
 
     public function __construct(OrderProductOption $orderProductOption)
     {

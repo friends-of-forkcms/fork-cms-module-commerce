@@ -63,17 +63,11 @@ class DimensionCalculator extends FrontendBaseAJAXAction
         $this->total += $total;
     }
 
-    /**
-     * @return float
-     */
     protected function getTotalPrice(): float
     {
         return $this->total;
     }
 
-    /**
-     * @return int
-     */
     protected function getWidth(): int
     {
         return $this->width;
@@ -87,9 +81,6 @@ class DimensionCalculator extends FrontendBaseAJAXAction
         $this->width += $width;
     }
 
-    /**
-     * @return int
-     */
     protected function getHeight(): int
     {
         return $this->height;
@@ -104,11 +95,7 @@ class DimensionCalculator extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product form
-     *
-     * @param Product $product
-     *
-     * @return Form
+     * Get the product form.
      */
     protected function getForm(Product $product): Form
     {
@@ -127,8 +114,8 @@ class DimensionCalculator extends FrontendBaseAJAXAction
     protected function parseProductOptionsDimension($productOptions): void
     {
         foreach ($productOptions as $option) {
-            $propertyName = 'option_' . $option->getId();
-            $propertyNameCustomValue = $propertyName . '_custom_value';
+            $propertyName = 'option_'.$option->getId();
+            $propertyNameCustomValue = $propertyName.'_custom_value';
 
             if (!property_exists($this->data, $propertyName) || $option->isTextType() || $option->isColorType()) {
                 continue;
@@ -157,9 +144,7 @@ class DimensionCalculator extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product dimension repository
-     *
-     * @return ProductDimensionRepository
+     * Get the product dimension repository.
      */
     protected function getProductDimensionRepository(): ProductDimensionRepository
     {
@@ -167,9 +152,7 @@ class DimensionCalculator extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product repository
-     *
-     * @return ProductRepository
+     * Get the product repository.
      */
     protected function getProductRepository(): ProductRepository
     {

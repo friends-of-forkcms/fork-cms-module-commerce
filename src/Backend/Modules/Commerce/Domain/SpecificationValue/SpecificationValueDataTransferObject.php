@@ -3,44 +3,23 @@
 namespace Backend\Modules\Commerce\Domain\SpecificationValue;
 
 use Backend\Modules\Commerce\Domain\Product\Product;
+use Backend\Modules\Commerce\Domain\Specification\Specification;
 use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SpecificationValueDataTransferObject
 {
-    /**
-     * @var SpecificationValue
-     */
-    protected $specificationValueEntity;
+    protected ?SpecificationValue $specificationValueEntity;
+    public ?int $id;
+    public ?Specification $specification;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    public $specification;
-
-    /**
-     * @param SpecificationValue
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $value;
-
-    /**
-     * @var Product
-     */
-    public $product;
-
-    /**
-     * @var integer
-     */
-    public $sequence;
-
-    /**
-     * @var Meta
-     */
-    public $meta;
+    public ?string $value;
+    public Product $product;
+    public int $sequence;
+    public ?Meta $meta;
 
     public function __construct(SpecificationValue $specificationValue = null)
     {
@@ -50,11 +29,11 @@ class SpecificationValueDataTransferObject
             return;
         }
 
-        $this->id = $specificationValue->getId();
-        $this->specification = $specificationValue->getSpecification();
-        $this->value = $specificationValue->getValue();
-        $this->meta = $specificationValue->getMeta();
-        $this->sequence = $specificationValue->getSequence();
+        $this->id = $this->specificationValueEntity->getId();
+        $this->specification = $this->specificationValueEntity->getSpecification();
+        $this->value = $this->specificationValueEntity->getValue();
+        $this->meta = $this->specificationValueEntity->getMeta();
+        $this->sequence = $this->specificationValueEntity->getSequence();
     }
 
     public function getSpecificationValueEntity(): SpecificationValue

@@ -25,121 +25,60 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class ConfirmOrder
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var string
-     */
-    protected $option;
+    protected string $option;
 
-    /**
-     * @var Order
-     */
-    protected $order;
+    protected Order $order;
 
-    /**
-     * @var CheckoutPaymentMethodDataTransferObject
-     */
-    protected $data;
+    protected CheckoutPaymentMethodDataTransferObject $data;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected Request $request;
 
-    /**
-     * @var Locale
-     */
-    protected $language;
+    protected ?Locale $language;
 
-    /**
-     * @var ModulesSettings
-     */
-    protected $settings;
+    protected ModulesSettings $settings;
 
-    /**
-     * @var MessageBusSupportingMiddleware
-     */
-    protected $commandBus;
+    protected MessageBusSupportingMiddleware $commandBus;
 
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
+    protected EventDispatcher $eventDispatcher;
 
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
+    protected EntityManager $entityManager;
 
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
-    /**
-     * @var string
-     */
-    protected $redirectUrl;
+    protected string $redirectUrl;
 
-    /**
-     * @var bool
-     */
-    protected $paid = false;
+    protected bool $paid = false;
 
-    /**
-     * @var bool
-     */
-    protected $open = false;
+    protected bool $open = false;
 
-    /**
-     * @var bool
-     */
-    protected $expired = false;
+    protected bool $expired = false;
 
-    /**
-     * @var bool
-     */
-    protected $canceled = false;
+    protected bool $canceled = false;
 
-    /**
-     * @var bool
-     */
-    protected $failed = false;
+    protected bool $failed = false;
 
     /**
      * Confirm order constructor.
-     *
-     * @param string $name
-     * @param string $option
      */
     public function __construct(string $name, string $option)
     {
-        $this->name                  = $name;
-        $this->option                = $option;
-        $this->language              = Locale::frontendLanguage();
-        $this->settings              = Model::get('fork.settings');
-        $this->commandBus            = Model::get('command_bus');
-        $this->eventDispatcher       = Model::get('event_dispatcher');
-        $this->entityManager         = Model::get('doctrine.orm.entity_manager');
-        $this->orderRepository       = Model::get('commerce.repository.order');
+        $this->name = $name;
+        $this->option = $option;
+        $this->language = Locale::frontendLanguage();
+        $this->settings = Model::get('fork.settings');
+        $this->commandBus = Model::get('command_bus');
+        $this->eventDispatcher = Model::get('event_dispatcher');
+        $this->entityManager = Model::get('doctrine.orm.entity_manager');
+        $this->orderRepository = Model::get('commerce.repository.order');
         $this->orderStatusRepository = Model::get('commerce.repository.order_status');
     }
 
     /**
-     * Set the order
-     *
-     * @param Order $order
-     *
-     * @return void
+     * Set the order.
      */
     public function setOrder(Order $order): void
     {
@@ -147,11 +86,7 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Set the payment data
-     *
-     * @param CheckoutPaymentMethodDataTransferObject $data
-     *
-     * @return void
+     * Set the payment data.
      */
     public function setData(CheckoutPaymentMethodDataTransferObject $data): void
     {
@@ -159,11 +94,7 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Set the request
-     *
-     * @param Request $request
-     *
-     * @return void
+     * Set the request.
      */
     public function setRequest(Request $request): void
     {
@@ -171,11 +102,10 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Get a setting
+     * Get a setting.
      *
-     * @param string $key
      * @param mixed $defaultValue
-     * @param boolean $includeLanguage
+     * @param bool  $includeLanguage
      *
      * @return mixed
      */
@@ -184,47 +114,32 @@ abstract class ConfirmOrder
         $baseKey = $this->name;
 
         if ($includeLanguage) {
-            $baseKey .= '_' . $this->language->getLocale();
+            $baseKey .= '_'.$this->language->getLocale();
         }
 
-        return $this->settings->get('Commerce', $baseKey . '_' . $key, $defaultValue);
+        return $this->settings->get('Commerce', $baseKey.'_'.$key, $defaultValue);
     }
 
-    /**
-     * @return bool
-     */
     public function isPaid(): bool
     {
         return $this->paid;
     }
 
-    /**
-     * @return bool
-     */
     public function isOpen(): bool
     {
         return $this->open;
     }
 
-    /**
-     * @return bool
-     */
     public function isExpired(): bool
     {
         return $this->expired;
     }
 
-    /**
-     * @return bool
-     */
     public function isCanceled(): bool
     {
         return $this->canceled;
     }
 
-    /**
-     * @return bool
-     */
     public function isFailed(): bool
     {
         return $this->failed;
@@ -236,14 +151,9 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Redirect
-     *
-     * @param string $url
-     * @param int $code
+     * Redirect.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     protected function redirect(string $url, int $code = RedirectResponse::HTTP_FOUND): void
     {
@@ -251,11 +161,9 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Go to the 404 page
+     * Go to the 404 page.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     protected function goToErrorPage(): void
     {
@@ -263,11 +171,9 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Go to the store order page
+     * Go to the store order page.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     protected function goToPostPaymentPage(): void
     {
@@ -275,11 +181,9 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Go to the success page
+     * Go to the success page.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     protected function goToSuccessPage(): void
     {
@@ -287,11 +191,9 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Go to the cancelled page
+     * Go to the cancelled page.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     protected function goToCancelledPage(): void
     {
@@ -299,35 +201,30 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Go to an given cart page
-     *
-     * @param string $page
-     * @param array $parameters
+     * Go to an given cart page.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     private function goToPage(string $page, array $parameters = []): void
     {
-        $url = Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . $page;
+        $url = Navigation::getUrlForBlock('Commerce', 'Cart').'/'.$page;
 
         // Add extra parameters
         if ($parameters) {
             $query = [];
 
             foreach ($parameters as $key => $value) {
-                $query[] = $key .'='. $value;
+                $query[] = $key.'='.$value;
             }
 
-            $url .= '?'. implode('&', $query);
+            $url .= '?'.implode('&', $query);
         }
 
         throw new RedirectException('Redirect', new RedirectResponse($url, RedirectResponse::HTTP_FOUND));
     }
 
     /**
-     * Get the order status based on an id
+     * Get the order status based on an id.
      *
      * @param mixed $orderStatusId
      *
@@ -344,7 +241,7 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Get the order based on an id
+     * Get the order based on an id.
      *
      * @param mixed $orderId
      *
@@ -360,25 +257,21 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Pre payment action
+     * Pre payment action.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     abstract public function prePayment(): void;
 
     /**
-     * Pre payment action
+     * Pre payment action.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     abstract public function postPayment(): void;
 
     /**
-     * Handle a optional webhook call from the payment provider
+     * Handle a optional webhook call from the payment provider.
      *
      * @return mixed
      */
@@ -388,16 +281,11 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Create a update order status
-     *
-     * @param Order $order
-     * @param integer $statusId
+     * Create a update order status.
      *
      * @throws OrderStatusNotFound
-     *
-     * @return void
      */
-    protected function updateOrderStatus(Order $order, int $statusId):void
+    protected function updateOrderStatus(Order $order, int $statusId): void
     {
         $createOrderHistory = new CreateOrderHistory();
         $createOrderHistory->order = $order;

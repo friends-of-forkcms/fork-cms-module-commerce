@@ -8,7 +8,6 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
-use Common\Exception\RedirectException;
 use Common\ModulesSettings;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\Form;
@@ -17,49 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class Edit
 {
-    /**
-     * @var Request $request
-     */
-    protected $request;
+    protected Request $request;
+    protected string $name;
+    protected TwigTemplate $template;
+    protected Locale $locale;
+    protected ModulesSettings $settings;
+    protected PaymentMethodRepository $paymentMethodRepository;
+    protected bool $installed = false;
+    protected EntityManager $entityManager;
 
-    /**
-     * @var string $name
-     */
-    protected $name;
-
-    /**
-     * @var TwigTemplate $template
-     */
-    protected $template;
-
-    /**
-     * @var Locale $locale
-     */
-    protected $locale;
-
-    /**
-     * @var ModulesSettings $settings
-     */
-    protected $settings;
-
-    /**
-     * @var PaymentMethodRepository $paymentMethodRepository
-     */
-    protected $paymentMethodRepository;
-
-    /**
-     * @var boolean $installed
-     */
-    protected $installed = false;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * Initiate required data
-     */
     public function __construct()
     {
         $this->locale = Locale::workingLocale();
@@ -68,24 +33,13 @@ abstract class Edit
         $this->entityManager = Model::get('doctrine.orm.entity_manager');
     }
 
-    /**
-     * Set the request object
-     *
-     * @param Request $request
-     *
-     * @return void
-     */
     public function setRequest(Request $request): void
     {
         $this->request = $request;
     }
 
     /**
-     * Set the payment method name
-     *
-     * @param string $name
-     *
-     * @return void
+     * Set the payment method name.
      */
     public function setName(string $name): void
     {
@@ -93,11 +47,7 @@ abstract class Edit
     }
 
     /**
-     * Set the twig template which is used to handle our template
-     *
-     * @param TwigTemplate $template
-     *
-     * @return void
+     * Set the twig template which is used to handle our template.
      */
     public function setTemplate(TwigTemplate $template): void
     {
@@ -105,9 +55,7 @@ abstract class Edit
     }
 
     /**
-     * Get the current request
-     *
-     * @return Request
+     * Get the current request.
      */
     public function getRequest(): Request
     {
@@ -115,9 +63,7 @@ abstract class Edit
     }
 
     /**
-     * Get template with all the required assigments
-     *
-     * @return TwigTemplate
+     * Get template with all the required assigments.
      */
     public function getTemplate(): TwigTemplate
     {
@@ -125,19 +71,15 @@ abstract class Edit
     }
 
     /**
-     * Get the template name based on the current payment method
-     *
-     * @return string
+     * Get the template name based on the current payment method.
      */
     public function getTemplateName(): string
     {
-        return '/Commerce/PaymentMethods/' . $this->name . '/Layout/Edit.html.twig';
+        return '/Commerce/PaymentMethods/'.$this->name.'/Layout/Edit.html.twig';
     }
 
     /**
-     * Execute this controller
-     *
-     * @return void
+     * Execute this controller.
      */
     public function execute(): void
     {
@@ -145,11 +87,9 @@ abstract class Edit
     }
 
     /**
-     * Check if is installed
-     *
-     * @return void
+     * Check if is installed.
      */
-    private function checkInstallation()
+    private function checkInstallation(): void
     {
         try {
             $this->paymentMethodRepository->findOneByNameAndLocale($this->name, $this->locale);
@@ -160,9 +100,7 @@ abstract class Edit
     }
 
     /**
-     * Install the payment method
-     *
-     * @return void
+     * Install the payment method.
      */
     protected function install(): void
     {
@@ -179,7 +117,7 @@ abstract class Edit
     }
 
     /**
-     * Uninstall the payment method
+     * Uninstall the payment method.
      */
     protected function uninstall(): void
     {
@@ -189,11 +127,9 @@ abstract class Edit
     /**
      * Creates and returns a Form instance from the type of the form.
      *
-     * @param string $type FQCN of the form type class i.e: MyClass::class
-     * @param mixed $data The initial data for the form
-     * @param array $options Options for the form
-     *
-     * @return Form
+     * @param string $type    FQCN of the form type class i.e: MyClass::class
+     * @param mixed  $data    The initial data for the form
+     * @param array  $options Options for the form
      */
     public function createForm(string $type, $data = null, array $options = []): Form
     {
@@ -201,28 +137,17 @@ abstract class Edit
     }
 
     /**
-     * Save settings for our current payment method
-     *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $includeLanguage
-     *
-     * @return void
+     * Save settings for our current payment method.
      */
     protected function saveSetting(string $name, $value, bool $includeLanguage = true): void
     {
         $baseKey = $this->getBaseKey($includeLanguage);
 
-        $this->settings->set('Commerce', $baseKey . '_' . $name, $value);
+        $this->settings->set('Commerce', $baseKey.'_'.$name, $value);
     }
 
     /**
-     * Populate data transfer object with data from the database
-     *
-     * @param DataTransferObject $dataTransferObject
-     * @param bool $includeLanguage
-     *
-     * @return DataTransferObject
+     * Populate data transfer object with data from the database.
      */
     protected function getData(DataTransferObject $dataTransferObject, bool $includeLanguage = true): DataTransferObject
     {
@@ -232,11 +157,11 @@ abstract class Edit
         // Assign the properties to object transfer object
         foreach ($properties as $property => $defaultValue) {
             // Skip the installed var
-            if ($property == 'installed') {
+            if ($property === 'installed') {
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
+            $key = $this->getBaseKey($includeLanguage).'_'.$property;
             $value = $this->settings->get('Commerce', $key, $defaultValue);
             $dataTransferObject->{$property} = $value;
         }
@@ -253,12 +178,7 @@ abstract class Edit
     }
 
     /**
-     * Store data transfer object with the form data
-     *
-     * @param DataTransferObject $dataTransferObject
-     * @param bool $includeLanguage
-     *
-     * @return void
+     * Store data transfer object with the form data.
      */
     protected function setData(DataTransferObject $dataTransferObject, bool $includeLanguage): void
     {
@@ -268,11 +188,11 @@ abstract class Edit
         // Assign the properties to object transfer object
         foreach ($properties as $property => $value) {
             // Skip the installed var
-            if ($property == 'installed') {
+            if ($property === 'installed') {
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
+            $key = $this->getBaseKey($includeLanguage).'_'.$property;
             $value = $dataTransferObject->{$property};
 
             $this->settings->set('Commerce', $key, $value);
@@ -281,13 +201,7 @@ abstract class Edit
 
     /**
      * Redirect to a given URL
-     *
-     * This is a helper method as the actual implementation is located in the url class
-     *
-     * @param string $url The URL to redirect to.
-     * @param int $code The redirect code, default is 302 which means this is a temporary redirect.
-     *
-     * @throws RedirectException
+     * This is a helper method as the actual implementation is located in the url class.
      */
     public function redirect(string $url, int $code = Response::HTTP_FOUND): void
     {
@@ -295,21 +209,15 @@ abstract class Edit
     }
 
     /**
-     * Generate the data grid row key to highlight this payment method
-     *
-     * @return string
+     * Generate the data grid row key to highlight this payment method.
      */
     public function getDataGridRowKey(): string
     {
-        return 'row-payment_method_' . $this->name;
+        return 'row-payment_method_'.$this->name;
     }
 
     /**
-     * Install the current payment method
-     *
-     * @param bool $install
-     *
-     * @return void
+     * Install the current payment method.
      */
     protected function installPaymentMethod(bool $install): void
     {
@@ -323,18 +231,14 @@ abstract class Edit
     }
 
     /**
-     * Get the settings base key
-     *
-     * @param bool $includeLanguage
-     *
-     * @return string
+     * Get the settings base key.
      */
     private function getBaseKey(bool $includeLanguage): string
     {
         $key = $this->name;
 
         if ($includeLanguage) {
-            $key .= '_' . $this->locale;
+            $key .= '_'.$this->locale;
         }
 
         return $key;

@@ -49,14 +49,14 @@ class ProductType extends AbstractType
             TextareaType::class,
             [
                 'required' => true,
-                'label' => 'lbl.Summary'
+                'label' => 'lbl.Summary',
             ]
         )->add(
             'text',
             EditorType::class,
             [
                 'required' => false,
-                'label' => 'lbl.Content'
+                'label' => 'lbl.Content',
             ]
         )->add(
             'weight',
@@ -95,7 +95,7 @@ class ProductType extends AbstractType
                 'choices' => [
                     'lbl.Yes' => true,
                     'lbl.No' => false,
-                ]
+                ],
             ]
         )->add(
             'sku',
@@ -201,11 +201,11 @@ class ProductType extends AbstractType
                 'choice_label' => function ($category) {
                     $prefix = null;
                     if ($category->path > 0) {
-                        $prefix = str_repeat('-', $category->path) . ' ';
+                        $prefix = str_repeat('-', $category->path).' ';
                     }
 
-                    return $prefix . $category->getTitle();
-                }
+                    return $prefix.$category->getTitle();
+                },
             ]
         )->add(
             'related_products',
@@ -214,7 +214,7 @@ class ProductType extends AbstractType
                 'multiple' => true,
                 'remote_route' => 'backend_ajax',
                 'remote_params' => [
-                    'excluded_id' => ($options['product'] ? $options['product']->getId() : null)
+                    'excluded_id' => ($options['product'] ? $options['product']->getId() : null),
                 ],
                 'class' => Product::class,
                 'primary_key' => 'id',
@@ -325,7 +325,7 @@ class ProductType extends AbstractType
             EditorType::class,
             [
                 'required' => false,
-                'label' => 'lbl.DimensionInstructions'
+                'label' => 'lbl.DimensionInstructions',
             ]
         )->add(
             'brand',
@@ -347,7 +347,7 @@ class ProductType extends AbstractType
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.sequence', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'stock_status',
@@ -359,7 +359,7 @@ class ProductType extends AbstractType
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'images',

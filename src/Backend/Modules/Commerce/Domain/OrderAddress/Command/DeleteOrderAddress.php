@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 
 final class DeleteOrderAddress
 {
-    /** @var OrderAddress */
-    public $orderAddress;
+    public OrderAddress $orderAddress;
 
     public function __construct(OrderAddress $orderAddress)
     {

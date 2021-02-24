@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
 
 final class DeleteSpecificationHandler
 {
-    /** @var SpecificationRepository */
-    private $specificationRepository;
+    private SpecificationRepository $specificationRepository;
 
     public function __construct(SpecificationRepository $specificationRepository)
     {

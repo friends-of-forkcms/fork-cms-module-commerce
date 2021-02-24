@@ -15,8 +15,6 @@ class ProductOptionValueRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @return ProductOptionValue|null
      * @throws ProductOptionValueNotFound
      */
     public function findOneById(?int $id): ?ProductOptionValue
@@ -36,9 +34,8 @@ class ProductOptionValueRepository extends EntityRepository
     }
 
     /**
-     * @param int $id
-     * @param ProductOption $productOption
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findOneByIdAndProductOption(int $id, ProductOption $productOption): ?ProductOptionValue
@@ -63,18 +60,14 @@ class ProductOptionValueRepository extends EntityRepository
             function (ProductOptionValue $entity) {
                 $this->getEntityManager()->remove($entity);
             },
-            (array)$this->findBy(['id' => $id])
+            (array) $this->findBy(['id' => $id])
         );
     }
 
     /**
-     * Get the next sequence in line
-     *
-     * @param ProductOption $productOption
+     * Get the next sequence in line.
      *
      * @throws
-     *
-     * @return integer
      */
     public function getNextSequence(ProductOption $productOption): int
     {
@@ -98,7 +91,7 @@ class ProductOptionValueRepository extends EntityRepository
         $queryBuilder->join('i.product_option', 'po')
             ->where('po.id = :product_option_id')
             ->andWhere('i.title LIKE :query')
-            ->setParameter('query', '%' . $query . '%')
+            ->setParameter('query', '%'.$query.'%')
             ->setParameter('product_option_id', $productOptionId);
 
         return $queryBuilder->getQuery()

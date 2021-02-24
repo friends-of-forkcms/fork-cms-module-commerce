@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\Product\Command\UpdateProduct;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce products
+ * Alters the sequence of Commerce products.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -22,7 +22,7 @@ class SequenceProducts extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the product repository
+         * get the product repository.
          */
         $productRepository = $this->get('commerce.repository.product');
 
@@ -32,7 +32,6 @@ class SequenceProducts extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($product = $productRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
                 $updateProduct = new UpdateProduct($product);

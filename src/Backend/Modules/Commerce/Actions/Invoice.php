@@ -9,25 +9,14 @@ use Backend\Modules\Commerce\Domain\Order\Event\OrderGenerateInvoiceNumber;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\Order\OrderRepository;
-use Common\Exception\RedirectException;
-use Dompdf\Dompdf;
 use Frontend\Core\Engine\TwigTemplate;
 use Knp\Snappy\Pdf;
 use Symfony\Component\HttpFoundation\Response;
 
 class Invoice extends Action
 {
-    /**
-     * @var Order
-     */
-    private $order;
+    private Order $order;
 
-    /**
-     * Execute the action
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -54,12 +43,12 @@ class Invoice extends Action
         $template = $this->get('templating');
         $template->assign('order', $this->order);
 
-        return $template->getContent($this->getModule() . '/Layout/Templates/' . $this->getAction() . '.html.twig');
+        return $template->getContent($this->getModule().'/Layout/Templates/'.$this->getAction().'.html.twig');
     }
 
     public function getContent(): Response
     {
-        $filename = Language::lbl('Invoice') . '-' . $this->order->getInvoiceNumber() .'.pdf';
+        $filename = Language::lbl('Invoice').'-'.$this->order->getInvoiceNumber().'.pdf';
 
         /** @var Pdf $pdf */
         $pdf = $this->get('knp_snappy.pdf');
@@ -77,6 +66,7 @@ class Invoice extends Action
 
     /**
      * @return Order
+     *
      * @throws \Common\Exception\RedirectException
      * @throws \Exception
      */
@@ -95,9 +85,6 @@ class Invoice extends Action
     }
 
     /**
-     * @param array $parameters
-     *
-     * @return string
      * @throws \Exception
      */
     private function getBackLink(array $parameters = []): string

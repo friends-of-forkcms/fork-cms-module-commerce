@@ -33,7 +33,7 @@ class GuestOrderTracking extends FrontendBaseBlock
     private $account;
 
     /**
-     * Execute the action
+     * Execute the action.
      *
      * @throws RedirectException
      * @throws \Exception
@@ -69,6 +69,7 @@ class GuestOrderTracking extends FrontendBaseBlock
         $form = $this->getGuestOrderForm();
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
+
             return;
         }
 
@@ -82,7 +83,7 @@ class GuestOrderTracking extends FrontendBaseBlock
                     $this->getModule(),
                     'CustomerOrders'
                 )
-                . '?order_id=' . $order->getId()
+                .'?order_id='.$order->getId()
             );
 
             return;
@@ -94,7 +95,7 @@ class GuestOrderTracking extends FrontendBaseBlock
                 $this->getModule(),
                 $this->getAction()
             )
-            . '?order_id=' . $order->getId() .'&email='. $formData['email']
+            .'?order_id='.$order->getId().'&email='.$formData['email']
         );
     }
 
@@ -104,7 +105,7 @@ class GuestOrderTracking extends FrontendBaseBlock
 
         $this->template->assign('order', $order);
 
-        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')) . ' - ' . $order->getId());
+        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')).' - '.$order->getId());
     }
 
     private function getGuestOrderForm(): Form
@@ -145,7 +146,7 @@ class GuestOrderTracking extends FrontendBaseBlock
                         ]),
                         new Callback($callback),
                     ],
-                    'invalid_message' => 'err.ThisValueIsInvalid'
+                    'invalid_message' => 'err.ThisValueIsInvalid',
                 ]
             )
             ->add(
@@ -161,7 +162,7 @@ class GuestOrderTracking extends FrontendBaseBlock
                         new Email([
                             'message' => 'err.EmailIsInvalid',
                         ]),
-                    ]
+                    ],
                 ]
             );
 
@@ -171,8 +172,8 @@ class GuestOrderTracking extends FrontendBaseBlock
     }
 
     /**
-     * @param string $path The path for the template to use.
-     * @param bool $overwrite Should the template overwrite the default?
+     * @param string $path      the path for the template to use
+     * @param bool   $overwrite Should the template overwrite the default?
      */
     protected function loadTemplate(string $path = null, bool $overwrite = false): void
     {
@@ -180,7 +181,7 @@ class GuestOrderTracking extends FrontendBaseBlock
         if ($path === null) {
             $path = $this->getAction();
         }
-        $path = $this->getModule() . '/Layout/Templates/Customer/' . $path . '.html.twig';
+        $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
 
         parent::loadTemplate($path, $overwrite);
     }

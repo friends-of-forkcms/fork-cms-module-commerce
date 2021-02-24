@@ -13,35 +13,27 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderVat
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Order
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", inversedBy="vats")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $order;
+    private Order $order;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $total;
+    private float $total;
 
     private function __construct(
         Order $order,
@@ -53,7 +45,7 @@ class OrderVat
         $this->total = $total;
     }
 
-    public static function fromDataTransferObject(OrderVatDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderVatDataTransferObject $dataTransferObject): OrderVat
     {
         if ($dataTransferObject->hasExistingOrderVat()) {
             return self::update($dataTransferObject);
@@ -71,43 +63,29 @@ class OrderVat
         );
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Order
-     */
     public function getOrder(): Order
     {
         return $this->order;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return float
-     */
     public function getTotal(): float
     {
         return $this->total;
     }
 
-    private static function update(OrderVatDataTransferObject $dataTransferObject)
+    private static function update(OrderVatDataTransferObject $dataTransferObject): OrderVat
     {
-        $order = $dataTransferObject->getOrderVatEntity();
-
-        return $order;
+        return $dataTransferObject->getOrderVatEntity();
     }
 
     public function getDataTransferObject(): OrderVatDataTransferObject

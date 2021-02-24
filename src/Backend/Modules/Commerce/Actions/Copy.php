@@ -2,10 +2,10 @@
 
 namespace Backend\Modules\Commerce\Actions;
 
+use Backend\Core\Engine\Base\Action as BackendBaseAction;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
-use Backend\Core\Engine\Base\Action as BackendBaseAction;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Commerce\Domain\Product\Command\CreateProduct;
 use Backend\Modules\Commerce\Domain\Product\Event\Created;
@@ -25,24 +25,10 @@ use Doctrine\ORM\PersistentCollection;
 
 class Copy extends BackendBaseAction
 {
-    /**
-     * @var array
-     */
-    private $productOptionIds = [];
+    private array $productOptionIds = [];
+    private array $productOptionValueIds = [];
+    private array $dependenciesCache = [];
 
-    /**
-     * @var array
-     */
-    private $productOptionValueIds = [];
-
-    /**
-     * @var array
-     */
-    private $dependenciesCache = [];
-
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -63,10 +49,10 @@ class Copy extends BackendBaseAction
 
         $copyFormData = $copyForm->getData();
 
-        $product = $this->getProduct((int)$copyFormData['id']);
+        $product = $this->getProduct((int) $copyFormData['id']);
         $createProduct = new CreateProduct(clone $product);
         $createProduct->copy();
-        $createProduct->title = $createProduct->title . ' (' . ucfirst(Language::lbl('Copy')) . ')';
+        $createProduct->title = $createProduct->title.' ('.ucfirst(Language::lbl('Copy')).')';
         $createProduct->meta = $this->copyMeta($product->getMeta());
         $createProduct->images = $this->copyMediaGroup($product->getImages());
         $createProduct->downloads = $this->copyMediaGroup($product->getDownloads());
@@ -159,8 +145,7 @@ class Copy extends BackendBaseAction
     }
 
     /**
-     * @param ProductOption[] $productOptions
-     * @param Product $product
+     * @param ProductOption[]    $productOptions
      * @param ProductOptionValue $parentProductOptionValue
      */
     private function copyProductOptions($productOptions, Product $product, ProductOptionValue $parentProductOptionValue = null)
@@ -192,8 +177,8 @@ class Copy extends BackendBaseAction
 
     /**
      * @param ProductOptionValue[] $productOptionValues
-     * @param ProductOption $productOption
-     * @param Product $product
+     * @param ProductOption        $productOption
+     * @param Product              $product
      */
     private function copyProductOptionValues($productOptionValues, $productOption, $product)
     {
@@ -215,9 +200,7 @@ class Copy extends BackendBaseAction
     }
 
     /**
-     * The dependencies are cached for later usage
-     *
-     * @param PersistentCollection $dependencies
+     * The dependencies are cached for later usage.
      */
     private function cacheDependencies(PersistentCollection $dependencies)
     {
@@ -245,8 +228,6 @@ class Copy extends BackendBaseAction
     }
 
     /**
-     * @param int $id
-     * @return Product
      * @throws \Common\Exception\RedirectException
      */
     private function getProduct(int $id): Product

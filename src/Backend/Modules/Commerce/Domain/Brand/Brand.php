@@ -6,6 +6,8 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,76 +18,60 @@ use Doctrine\ORM\Mapping as ORM;
 class Brand
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Meta
-     *
-     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta",cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
      */
-    private $meta;
+    private ?Meta $meta;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $text;
+    private ?string $text;
 
     /**
-     * @var Image
-     *
      * @ORM\Column(type="commerce_brand_image_type")
      */
-    private $image;
+    private Image $image;
 
     /**
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
-    private $sequence;
+    private ?int $sequence;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     /**
-     * @var Product[]
+     * @var Collection|Product[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", mappedBy="brand")
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $products;
+    private Collection $products;
 
     private function __construct(
         Locale $locale,
@@ -95,15 +81,15 @@ class Brand
         int $sequence,
         Meta $meta
     ) {
-        $this->locale   = $locale;
-        $this->title    = $title;
-        $this->text     = $text;
-        $this->image    = $image;
+        $this->locale = $locale;
+        $this->title = $title;
+        $this->text = $text;
+        $this->image = $image;
         $this->sequence = $sequence;
-        $this->meta     = $meta;
+        $this->meta = $meta;
     }
 
-    public static function fromDataTransferObject(BrandDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(BrandDataTransferObject $dataTransferObject): Brand
     {
         if ($dataTransferObject->hasExistingBrand()) {
             return self::update($dataTransferObject);
@@ -150,19 +136,19 @@ class Brand
     }
 
     /**
-     * @ORM\PreUpdate()
-     * @ORM\PrePersist()
+     * @ORM\PreUpdate
+     * @ORM\PrePersist
      */
-    public function prepareToUploadImage()
+    public function prepareToUploadImage(): void
     {
         $this->image->prepareToUpload();
     }
 
     /**
-     * @ORM\PostUpdate()
-     * @ORM\PostPersist()
+     * @ORM\PostUpdate
+     * @ORM\PostPersist
      */
-    public function uploadImage()
+    public function uploadImage(): void
     {
         $this->image->upload();
     }
@@ -177,12 +163,12 @@ class Brand
         return $this->meta;
     }
 
-    public function getCreatedOn(): DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    public function getEditedOn(): DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
@@ -190,29 +176,29 @@ class Brand
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         $this->createdOn = $this->editedOn = new DateTime();
     }
 
     /**
-     * @ORM\PostRemove()
+     * @ORM\PostRemove
      */
-    public function postRemove()
+    public function postRemove(): void
     {
         $this->image->remove();
     }
 
-    private static function update(BrandDataTransferObject $dataTransferObject)
+    private static function update(BrandDataTransferObject $dataTransferObject): Brand
     {
         $brand = $dataTransferObject->getBrandEntity();
 
-        $brand->locale   = $dataTransferObject->locale;
-        $brand->title    = $dataTransferObject->title;
-        $brand->text     = $dataTransferObject->text;
-        $brand->image    = $dataTransferObject->image;
+        $brand->locale = $dataTransferObject->locale;
+        $brand->title = $dataTransferObject->title;
+        $brand->text = $dataTransferObject->text;
+        $brand->image = $dataTransferObject->image;
         $brand->sequence = $dataTransferObject->sequence;
-        $brand->meta     = $dataTransferObject->meta;
+        $brand->meta = $dataTransferObject->meta;
 
         return $brand;
     }
@@ -223,9 +209,9 @@ class Brand
     }
 
     /**
-     * @return Product[]
+     * @return Collection|Product[]
      */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }

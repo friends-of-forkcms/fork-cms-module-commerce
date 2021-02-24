@@ -8,8 +8,7 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 
 final class UpdateProductHandler
 {
-    /** @var ProductRepository */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
     public function __construct(ProductRepository $productRepository)
     {

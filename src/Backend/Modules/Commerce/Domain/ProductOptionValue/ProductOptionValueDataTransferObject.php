@@ -3,129 +3,69 @@
 namespace Backend\Modules\Commerce\Domain\ProductOptionValue;
 
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
+use Backend\Modules\Commerce\Domain\ProductOptionValue\Constraints as ProductOptionValueAssert;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Common\Doctrine\Entity\Meta;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Backend\Modules\Commerce\Domain\ProductOptionValue\Constraints as ProductOptionValueAssert;
 
 class ProductOptionValueDataTransferObject
 {
-    /**
-     * @var ProductOptionValue
-     */
-    protected $productOptionValueEntity;
+    protected ?ProductOptionValue $productOptionValueEntity;
+    public ?int $id;
+    public ProductOption $productOption;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var ProductOption
-     */
-    public $productOption;
-
-    /**
-     * @param Vat
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $vat;
+    public Vat $vat;
 
     /**
-     * @param string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"DefaultTypes"})
      */
-    public $title;
+    public ?string $title;
 
     /**
-     * @param int
-     *
      * @ProductOptionValueAssert\OneOrMoreFilled(fields={"end"}, groups={"BetweenType"})
      */
-    public $start;
+    public ?int $start;
 
     /**
-     * @param int
-     *
      * @ProductOptionValueAssert\OneOrMoreFilled(fields={"start"}, groups={"BetweenType"})
      */
-    public $end;
+    public ?int $end;
+    public ?string $sub_title;
+    public ?string $sku;
 
     /**
-     * @param string
-     */
-    public $sub_title;
-
-    /**
-     * @param string
-     */
-    public $sku;
-
-    /**
-     * @var float
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $price = 0.00;
+    public float $price = 0.00;
 
     /**
-     * @var float
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $percentage = 0.00;
+    public float $percentage = 0.00;
+    public ?int $width;
+    public ?int $height;
 
     /**
-     * @var int
-     */
-    public $width;
-
-    /**
-     * @var int
-     */
-    public $height;
-
-    /**
-     * @var float
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $impact_type = ProductOptionValue::IMPACT_TYPE_ADD;
+    public int $impact_type = ProductOptionValue::IMPACT_TYPE_ADD;
+    public bool $default_value;
+    public ?string $hex_value;
+    public MediaGroup $image;
+    public int $sequence;
+    public Meta $meta;
 
     /**
-     * @var boolean
+     * @var Collection|ProductOptionValue[]
      */
-    public $default_value;
-
-    /**
-     * @var string
-     */
-    public $hex_value;
-
-    /**
-     * @var MediaGroup
-     */
-    public $image;
-
-    /**
-     * @var integer
-     */
-    public $sequence;
-
-    /**
-     * @var Meta
-     */
-    public $meta;
-
-    /**
-     * @var ProductOptionValue[]
-     */
-    public $dependencies;
+    public Collection $dependencies;
 
     public function __construct(ProductOptionValue $productOptionValue = null)
     {
@@ -138,25 +78,25 @@ class ProductOptionValueDataTransferObject
             return;
         }
 
-        $this->id = $productOptionValue->getId();
-        $this->productOption = $productOptionValue->getProductOption();
-        $this->vat = $productOptionValue->getVat();
-        $this->image = $productOptionValue->getImage();
-        $this->title = $productOptionValue->getTitle();
-        $this->start = $productOptionValue->getStart();
-        $this->end = $productOptionValue->getEnd();
-        $this->sub_title = $productOptionValue->getSubTitle();
-        $this->sku = $productOptionValue->getSku();
-        $this->price = $productOptionValue->getPrice();
-        $this->percentage = $productOptionValue->getPercentage();
-        $this->width = $productOptionValue->getWidth();
-        $this->height = $productOptionValue->getHeight();
-        $this->impact_type = $productOptionValue->getImpactType();
-        $this->default_value = $productOptionValue->isDefaultValue();
-        $this->hex_value = $productOptionValue->getHexValue();
-        $this->sequence = $productOptionValue->getSequence();
+        $this->id = $this->productOptionValueEntity->getId();
+        $this->productOption = $this->productOptionValueEntity->getProductOption();
+        $this->vat = $this->productOptionValueEntity->getVat();
+        $this->image = $this->productOptionValueEntity->getImage();
+        $this->title = $this->productOptionValueEntity->getTitle();
+        $this->start = $this->productOptionValueEntity->getStart();
+        $this->end = $this->productOptionValueEntity->getEnd();
+        $this->sub_title = $this->productOptionValueEntity->getSubTitle();
+        $this->sku = $this->productOptionValueEntity->getSku();
+        $this->price = $this->productOptionValueEntity->getPrice();
+        $this->percentage = $this->productOptionValueEntity->getPercentage();
+        $this->width = $this->productOptionValueEntity->getWidth();
+        $this->height = $this->productOptionValueEntity->getHeight();
+        $this->impact_type = $this->productOptionValueEntity->getImpactType();
+        $this->default_value = $this->productOptionValueEntity->isDefaultValue();
+        $this->hex_value = $this->productOptionValueEntity->getHexValue();
+        $this->sequence = $this->productOptionValueEntity->getSequence();
 
-        foreach ($productOptionValue->getDependencies() as $dependency) {
+        foreach ($this->productOptionValueEntity->getDependencies() as $dependency) {
             if (!$this->dependencies->containsKey($dependency->getProductOption()->getId())) {
                 $this->dependencies->set(
                     $dependency->getProductOption()->getId(),
@@ -185,7 +125,7 @@ class ProductOptionValueDataTransferObject
         return $this->productOptionValueEntity instanceof ProductOptionValue;
     }
 
-    public function copy()
+    public function copy(): void
     {
         $this->id = null;
         $this->productOptionValueEntity = null;

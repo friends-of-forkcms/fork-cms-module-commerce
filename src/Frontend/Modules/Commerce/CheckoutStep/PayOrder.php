@@ -57,7 +57,7 @@ class PayOrder extends Step
     }
 
     /**
-     * Before going to the payment provider
+     * Before going to the payment provider.
      *
      * @throws RedirectException
      */
@@ -75,11 +75,9 @@ class PayOrder extends Step
     }
 
     /**
-     * Return from payment provider
+     * Return from payment provider.
      *
-     * @return void
      * @throws \Exception
-     *
      * @throws RedirectException
      */
     private function postPayment(): void
@@ -225,9 +223,9 @@ class PayOrder extends Step
             $createOrderRule->title = $cartRule->getTitle();
             $createOrderRule->code = $cartRule->getCode();
             if ($cartRule->getReductionPercentage()) {
-                $createOrderRule->value = $cartRule->getReductionPercentage() .'% ' . Language::lbl('Discount');
+                $createOrderRule->value = $cartRule->getReductionPercentage().'% '.Language::lbl('Discount');
             } else {
-                $createOrderRule->value = '&euro; -' . number_format($cartRule->getReductionAmount(), 2, ',', '.');
+                $createOrderRule->value = '&euro; -'.number_format($cartRule->getReductionAmount(), 2, ',', '.');
             }
             $createOrderRule->total = $this->cart->getCartRuleTotal($cartRule);
 
@@ -240,7 +238,7 @@ class PayOrder extends Step
     }
 
     /**
-     * Extract quantity from cart rules because the order is paid
+     * Extract quantity from cart rules because the order is paid.
      */
     private function updateCartRules()
     {
@@ -259,7 +257,7 @@ class PayOrder extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl() .'/'.  Uri::getUrl(Language::lbl('PayOrder'));
+        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('PayOrder'));
     }
 
     private function getPaymentMethodDataTransferObject(): CheckoutPaymentMethodDataTransferObject
@@ -273,11 +271,8 @@ class PayOrder extends Step
     }
 
     /**
-     * Get the payment method handler
+     * Get the payment method handler.
      *
-     * @param string $paymentMethod
-     *
-     * @return ConfirmOrder
      * @throws \Exception
      */
     private function getPaymentMethod(string $paymentMethod): ConfirmOrder
@@ -291,7 +286,7 @@ class PayOrder extends Step
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
 
         if (!class_exists($className)) {
-            throw new \Exception('Class ' . $className . ' not found');
+            throw new \Exception('Class '.$className.' not found');
         }
 
         /**
@@ -303,11 +298,7 @@ class PayOrder extends Step
     }
 
     /**
-     * Get a vat by its id
-     *
-     * @param int $id
-     *
-     * @return Vat
+     * Get a vat by its id.
      */
     private function getVat(int $id): Vat
     {

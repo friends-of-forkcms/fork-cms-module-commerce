@@ -79,7 +79,7 @@ class ProductOptionValueType extends AbstractType
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.sequence', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'default_value',
@@ -106,20 +106,20 @@ class ProductOptionValueType extends AbstractType
             )
                 ->addModelTransformer(new CallbackTransformer(
                     function ($entities) {
-                    return $entities;
-                },
+                        return $entities;
+                    },
                     function ($dataTransferObjects) {
-                    $entities = [];
+                        $entities = [];
 
-                    /**
-                     * @var ProductOptionValueDependencyDataTransferObject $dataTransferObject
-                     */
-                    foreach ($dataTransferObjects as $dataTransferObject) {
-                        $entities = array_merge($entities, $dataTransferObject->values);
+                        /**
+                         * @var ProductOptionValueDependencyDataTransferObject $dataTransferObject
+                         */
+                        foreach ($dataTransferObjects as $dataTransferObject) {
+                            $entities = [...$entities, ...$dataTransferObject->values];
+                        }
+
+                        return $entities;
                     }
-
-                    return $entities;
-                }
                 ))
         );
 
@@ -205,7 +205,6 @@ class ProductOptionValueType extends AbstractType
                     $data = $form->getData();
                     $validationGroups = ['Default'];
 
-
                     if ($data->productOption->isBetweenType()) {
                         $validationGroups[] = 'BetweenType';
                     } else {
@@ -213,7 +212,7 @@ class ProductOptionValueType extends AbstractType
                     }
 
                     return $validationGroups;
-                }
+                },
             ]
         );
     }

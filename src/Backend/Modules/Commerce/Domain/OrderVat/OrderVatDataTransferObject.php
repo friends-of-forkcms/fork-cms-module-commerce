@@ -6,43 +6,24 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 
 class OrderVatDataTransferObject
 {
-    /**
-     * @var OrderVat
-     */
-    protected $orderVatEntity;
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var Order
-     */
-    public $order;
-
-    /**
-     * @var string
-     */
-    public $title;
-
-    /**
-     * @var float
-     */
-    public $total;
+    protected ?OrderVat $orderVatEntity;
+    public int $id;
+    public Order $order;
+    public string $title;
+    public float $total;
 
     public function __construct(OrderVat $orderVat = null)
     {
         $this->orderVatEntity = $orderVat;
 
-        if (! $this->hasExistingOrderVat()) {
+        if (!$this->hasExistingOrderVat()) {
             return;
         }
 
-        $this->id    = $orderVat->getId();
-        $this->order = $orderVat->getOrder();
-        $this->title = $orderVat->getTitle();
-        $this->total = $orderVat->getTotal();
+        $this->id = $this->orderVatEntity->getId();
+        $this->order = $this->orderVatEntity->getOrder();
+        $this->title = $this->orderVatEntity->getTitle();
+        $this->total = $this->orderVatEntity->getTotal();
     }
 
     public function getOrderVatEntity(): OrderVat

@@ -8,6 +8,8 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Engine\Navigation;
@@ -20,125 +22,98 @@ use Frontend\Core\Engine\Navigation;
 class Category
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Meta
-     *
-     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta",cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
      */
-    private $meta;
+    private ?Meta $meta;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", name="extra_id")
      */
-    private $extraId;
+    private int $extraId;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", name="google_taxonomy_id", nullable=true)
      */
-    private $googleTaxonomyId;
+    private ?int $googleTaxonomyId;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $intro;
+    private ?string $intro;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $text;
+    private ?string $text;
 
     /**
-     * @var Image
-     *
      * @ORM\Column(type="commerce_category_image_type")
      */
-    private $image;
+    private Image $image;
 
     /**
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
-    private $sequence;
+    private ?int $sequence;
 
     /**
-     * @var Category[]
-     *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
-    private $parent;
+    private ?Category $parent;
 
     /**
+     * @var Collection|Category[]
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $children;
+    private Collection $children;
 
     /**
-     * @var Product[]
+     * @var Collection|Product[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", mappedBy="category")
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $products;
+    private Collection $products;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     /**
-     * This is used to determine the path of our children for a display
-     *
-     * @var int
+     * This is used to determine the path of our children for a display.
      */
-    public $path;
+    public int $path;
 
     /**
-     * This is used to store the url path
-     *
-     * @var string
+     * This is used to store the url path.
      */
-    private $urlPrefix;
+    private string $urlPrefix;
 
     private function __construct(
         int $extraId,
@@ -164,7 +139,7 @@ class Category
         $this->parent = $parent;
     }
 
-    public static function fromDataTransferObject(CategoryDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(CategoryDataTransferObject $dataTransferObject): Category
     {
         if ($dataTransferObject->hasExistingCategory()) {
             return self::update($dataTransferObject);
@@ -189,7 +164,7 @@ class Category
         );
     }
 
-    private static function update(CategoryDataTransferObject $dataTransferObject)
+    private static function update(CategoryDataTransferObject $dataTransferObject): Category
     {
         $category = $dataTransferObject->getCategoryEntity();
 
@@ -232,9 +207,6 @@ class Category
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getIntro(): ?string
     {
         return $this->intro;
@@ -251,19 +223,19 @@ class Category
     }
 
     /**
-     * @ORM\PreUpdate()
-     * @ORM\PrePersist()
+     * @ORM\PreUpdate
+     * @ORM\PrePersist
      */
-    public function prepareToUploadImage()
+    public function prepareToUploadImage(): void
     {
         $this->image->prepareToUpload();
     }
 
     /**
-     * @ORM\PostUpdate()
-     * @ORM\PostPersist()
+     * @ORM\PostUpdate
+     * @ORM\PostPersist
      */
-    public function uploadImage()
+    public function uploadImage(): void
     {
         $this->image->upload();
     }
@@ -284,17 +256,17 @@ class Category
     }
 
     /**
-     * @return Category[]
+     * @return Collection|Category[]
      */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
 
     /**
-     * @return Product[]
+     * @return Collection|Product[]
      */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }
@@ -304,12 +276,12 @@ class Category
         return $this->meta;
     }
 
-    public function getCreatedOn(): DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    public function getEditedOn(): DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
@@ -317,7 +289,7 @@ class Category
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         $this->createdOn = $this->editedOn = new DateTime();
     }
@@ -325,25 +297,25 @@ class Category
     /**
      * @ORM\PostPersist
      */
-    public function postPersist()
+    public function postPersist(): void
     {
         $this->updateWidget();
     }
 
     /**
-     * @ORM\PostRemove()
+     * @ORM\PostRemove
      */
-    public function postRemove()
+    public function postRemove(): void
     {
         $this->image->remove();
     }
 
     /**
-     * Update the widget so it shows the correct title and has the correct template
+     * Update the widget so it shows the correct title and has the correct template.
      */
-    private function updateWidget()
+    private function updateWidget(): void
     {
-        $editUrl = Model::createUrlForAction('EditCategory', 'Commerce', (string)$this->locale) . '&id=' . $this->id;
+        $editUrl = Model::createUrlForAction('EditCategory', 'Commerce', (string) $this->locale).'&id='.$this->id;
 
         // update data for the extra
         // @TODO replace this with an implementation with doctrine
@@ -351,13 +323,13 @@ class Category
         $extra = reset($extras);
         $data = [
             'id' => $this->id,
-            'language' => (string)$this->locale,
+            'language' => (string) $this->locale,
             'edit_url' => $editUrl,
         ];
         if (isset($extra['data'])) {
-            $data = $data + (array)$extra['data'];
+            $data = $data + (array) $extra['data'];
         }
-        $data['extra_label'] = ucfirst(Language::lbl('Category')) . ' - ' . $this->title;
+        $data['extra_label'] = ucfirst(Language::lbl('Category')).' - '.$this->title;
 
         Model::updateExtra($this->extraId, 'data', $data);
     }
@@ -368,7 +340,7 @@ class Category
     }
 
     /**
-     * Get the frontend url based on module, meta and parent category
+     * Get the frontend url based on module, meta and parent category.
      */
     public function getUrl(): string
     {
@@ -380,10 +352,10 @@ class Category
             }
         }
 
-        return $this->urlPrefix . '/' . $this->meta->getUrl();
+        return $this->urlPrefix.'/'.$this->meta->getUrl();
     }
 
-    public function getActiveProducts()
+    public function getActiveProducts(): Collection
     {
         $expr = Criteria::expr();
         $criteria = Criteria::create()->where($expr->eq('hidden', false));

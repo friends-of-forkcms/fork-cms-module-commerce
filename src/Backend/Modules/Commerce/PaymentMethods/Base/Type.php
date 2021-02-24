@@ -2,9 +2,9 @@
 
 namespace Backend\Modules\Commerce\PaymentMethods\Base;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class Type extends AbstractType
@@ -16,12 +16,12 @@ abstract class Type extends AbstractType
             ChoiceType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.Installed',
+                'label' => 'lbl.Installed',
                 'placeholder' => false,
-                'choices'  => [
+                'choices' => [
                     'lbl.Yes' => true,
-                    'lbl.No'  => false
-                ]
+                    'lbl.No' => false,
+                ],
             ]
         );
     }

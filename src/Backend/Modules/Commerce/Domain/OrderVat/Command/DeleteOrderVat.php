@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderVat\OrderVat;
 
 final class DeleteOrderVat
 {
-    /** @var OrderVat */
-    public $orderVat;
+    public OrderVat $orderVat;
 
     public function __construct(OrderVat $orderVat)
     {

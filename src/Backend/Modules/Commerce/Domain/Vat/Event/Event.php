@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Vat */
-    private $vat;
+    private Vat $vat;
 
     public function __construct(Vat $vat)
     {

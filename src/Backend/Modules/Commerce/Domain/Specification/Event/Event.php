@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Specification */
-    private $specification;
+    private Specification $specification;
 
     public function __construct(Specification $specification)
     {

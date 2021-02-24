@@ -5,30 +5,24 @@ namespace Backend\Modules\Commerce\Actions;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Commerce\Domain\ProductOption\Command\UpdateProductOption;
+use Backend\Modules\Commerce\Domain\ProductOption\Event\UpdatedProductOption;
 use Backend\Modules\Commerce\Domain\ProductOption\Exception\ProductOptionNotFound;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOptionRepository;
-use Backend\Modules\Commerce\Domain\ProductOption\Command\UpdateProductOption;
-use Backend\Modules\Commerce\Domain\ProductOption\Event\UpdatedProductOption;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOptionType;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\DataGrid;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit productoption-action, it will display a form to edit a product option
+ * This is the edit productoption-action, it will display a form to edit a product option.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditProductOption extends BackendBaseActionEdit
 {
-    /**
-     * @var ProductOption
-     */
-    private $productOption;
+    private ProductOption $productOption;
 
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -47,7 +41,7 @@ class EditProductOption extends BackendBaseActionEdit
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('productOption', $this->productOption);
             $this->template->assign('productOptionValuesDataGrid', DataGrid::getHtml($this->productOption));
@@ -70,9 +64,9 @@ class EditProductOption extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'id'        => $updateProductOption->getProductOptionEntity()->getProduct()->getId(),
-                    'report'    => 'edited',
-                    'highlight' => 'row-' . $updateProductOption->getProductOptionEntity()->getId(),
+                    'id' => $updateProductOption->getProductOptionEntity()->getProduct()->getId(),
+                    'report' => 'edited',
+                    'highlight' => 'row-'.$updateProductOption->getProductOptionEntity()->getId(),
                 ]
             )
         );
@@ -104,7 +98,7 @@ class EditProductOption extends BackendBaseActionEdit
                 null,
                 null,
                 $parameters
-            ) . '#tabSubOptions';
+            ).'#tabSubOptions';
         }
 
         $parameters = array_merge($parameters, [
@@ -116,7 +110,7 @@ class EditProductOption extends BackendBaseActionEdit
             null,
             null,
             $parameters
-        ) . '#tabOptions';
+        ).'#tabOptions';
     }
 
     private function getForm(ProductOption $productOption): Form

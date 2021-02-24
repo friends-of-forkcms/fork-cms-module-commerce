@@ -7,7 +7,7 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Modules\Commerce\Engine\Model as BackendCommerceModel;
 
 /**
- * This action will delete a comment
+ * This action will delete a comment.
  *
  * @author Tijs Verkoyen <tijs@verkoyen.eu>
  * @author Tim van Wolfswinkel <tim@webleads.nl>
@@ -15,15 +15,12 @@ use Backend\Modules\Commerce\Engine\Model as BackendCommerceModel;
  */
 class DeleteCompleted extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
         BackendCommerceModel::deleteCompletedOrders();
 
         // item was deleted, so redirect
-        $this->redirect(BackendModel::createURLForAction('orders') . '&report=deleted-completed#tabCompleted');
+        $this->redirect(BackendModel::createURLForAction('orders').'&report=deleted-completed#tabCompleted');
     }
 }

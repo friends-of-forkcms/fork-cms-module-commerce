@@ -21,9 +21,6 @@ class OrderAddressRepository extends EntityRepository
     }
 
     /**
-     * @param int $id
-     * @param Account $account
-     * @return OrderAddress
      * @throws OrderAddressNotFound
      */
     public function findByIdAndAccount(int $id, Account $account): OrderAddress

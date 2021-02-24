@@ -51,6 +51,7 @@ class UpdateCart extends DimensionCalculator
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Exception
      */
     public function execute(): void
@@ -64,12 +65,14 @@ class UpdateCart extends DimensionCalculator
         // Product must be set
         if (!$this->getRequest()->request->has('product')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
         // Failed to update product, does not exists?
         if (!$cartValue = $this->updateProduct()) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['errors' => $this->errors]);
+
             return;
         }
 
@@ -98,16 +101,15 @@ class UpdateCart extends DimensionCalculator
                 ],
                 'urls' => [
                     'cart' => Navigation::getUrlForBlock('Commerce', 'Cart'),
-                    'request_quote' => Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . Language::lbl('RequestQuoteUrl'),
+                    'request_quote' => Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('RequestQuoteUrl'),
                 ],
             ]
         );
     }
 
     /**
-     * Get the active cart from the session
+     * Get the active cart from the session.
      *
-     * @return Cart
      * @throws \Exception
      */
     private function getActiveCart(): Cart
@@ -133,7 +135,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Add or update the product in our cart
+     * Add or update the product in our cart.
      *
      * @return CartValue|false
      */
@@ -194,6 +196,7 @@ class UpdateCart extends DimensionCalculator
                     'amount' => Language::err('GivenAmountNotInStock'),
                 ],
             ];
+
             return false;
         }
 
@@ -242,6 +245,7 @@ class UpdateCart extends DimensionCalculator
                         'width' => Language::err('CantFindProductWithGivenDimensions'),
                     ],
                 ];
+
                 return false;
             }
 
@@ -276,10 +280,9 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Up sell products
+     * Up sell products.
      *
      * @param array $products
-     *
      * @param array
      */
     private function upSellProducts($products)
@@ -310,9 +313,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Format the vats in an array with the required number format
-     *
-     * @return array
+     * Format the vats in an array with the required number format.
      */
     private function getFormattedVats(): array
     {
@@ -326,12 +327,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Add the product options to the cart
-     *
-     * @param Product $product
-     * @param CartValue $cartValue
-     *
-     * @return void
+     * Add the product options to the cart.
      */
     private function addProductOptionsToCart(Product $product, CartValue $cartValue): void
     {
@@ -342,8 +338,8 @@ class UpdateCart extends DimensionCalculator
         }
 
         foreach ($product->getProductOptionsWithSubOptions() as $productOption) {
-            $fieldName = 'option_' . $productOption->getId();
-            $customValueFieldName = $fieldName .'_custom_value';
+            $fieldName = 'option_'.$productOption->getId();
+            $customValueFieldName = $fieldName.'_custom_value';
 
             if ($this->data->{$fieldName} || isset($this->data->{$customValueFieldName})) {
                 /**
@@ -401,7 +397,7 @@ class UpdateCart extends DimensionCalculator
                     // Only do extra calculations based on square unit type
                     if ($productOption->isSquareUnitType() && $product->usesDimensions()) {
                         // @TODO assumed unit is given in MM
-                        $square = ceil(($this->getWidth()/100) * ($this->getHeight()/100));
+                        $square = ceil(($this->getWidth() / 100) * ($this->getHeight() / 100));
 
                         $cartValueOption->setPrice($cartValueOption->getPrice() * $square);
                         $cartValueOption->setVatPrice($cartValueOption->getVatPrice() * $square);
@@ -422,11 +418,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Get the cart value option totals for the given product
-     *
-     * @param CartValue $cartValue
-     *
-     * @return array
+     * Get the cart value option totals for the given product.
      */
     private function getCartValueOptionTotals(CartValue $cartValue): array
     {
@@ -440,9 +432,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Build the ecommerce category in required format
-     *
-     * @param Product $product
+     * Build the ecommerce category in required format.
      *
      * @return string
      */
@@ -460,9 +450,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     private function getCartRepository(): CartRepository
     {
@@ -470,9 +458,7 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Get the cart value repository
-     *
-     * @return CartValueRepository
+     * Get the cart value repository.
      */
     private function getCartValueRepository(): CartValueRepository
     {

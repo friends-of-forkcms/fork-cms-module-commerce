@@ -8,11 +8,9 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Order */
-    private $order;
+    private Order $order;
 
-    /** @var OrderHistory */
-    private $orderHistory;
+    private OrderHistory $orderHistory;
 
     public function __construct(Order $order, OrderHistory $orderHistory)
     {

@@ -6,89 +6,36 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotification;
 use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Commerce\Domain\Product\Product;
+use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class OrderProductDataTransferObject
 {
-    /**
-     * @var OrderProduct
-     */
-    protected $orderProductEntity;
+    protected ?OrderProduct $orderProductEntity;
+    public int $id;
+    public ?Product $product;
+    public int $type;
+    public Order $order;
+    public string $sku;
+    public string $title;
+    public int $amount;
+    public ?int $width;
+    public ?int $height;
+    public ?int $order_width;
+    public ?int $order_height;
+    public float $price;
+    public float $total;
 
     /**
-     * @var int
+     * @var Collection|ProductOption[]
      */
-    public $id;
+    public Collection $productOptions;
 
     /**
-     * @var Product
+     * @var Collection|OrderProductNotification[]
      */
-    public $product;
-
-    /**
-     * @var int
-     */
-    public $type;
-
-    /**
-     * @var Order
-     */
-    public $order;
-
-    /**
-     * @var string
-     */
-    public $sku;
-
-    /**
-     * @var string
-     */
-    public $title;
-
-    /**
-     * @var int
-     */
-    public $amount;
-
-    /**
-     * @var int
-     */
-    public $width;
-
-    /**
-     * @var int
-     */
-    public $height;
-
-    /**
-     * @var int
-     */
-    public $order_width;
-
-    /**
-     * @var int
-     */
-    public $order_height;
-
-    /**
-     * @var float
-     */
-    public $price;
-
-    /**
-     * @var float
-     */
-    public $total;
-
-    /**
-     * @var ArrayCollection
-     */
-    public $productOptions;
-
-    /**
-     * @var ArrayCollection
-     */
-    public $productNotifications;
+    public Collection $productNotifications;
 
     public function __construct(OrderProduct $orderProduct = null)
     {
@@ -100,34 +47,28 @@ class OrderProductDataTransferObject
             return;
         }
 
-        $this->id = $orderProduct->getId();
-        $this->product = $orderProduct->getProduct();
-        $this->type = $orderProduct->getType();
-        $this->order = $orderProduct->getOrder();
-        $this->sku = $orderProduct->getSku();
-        $this->title = $orderProduct->getTitle();
-        $this->amount = $orderProduct->getAmount();
-        $this->width = $orderProduct->getWidth();
-        $this->height = $orderProduct->getHeight();
-        $this->order_width = $orderProduct->getOrderWidth();
-        $this->order_height = $orderProduct->getOrderHeight();
-        $this->price = $orderProduct->getPrice();
-        $this->total = $orderProduct->getTotal();
-        $this->productOptions = $orderProduct->getProductOptions();
-        $this->productNotifications = $orderProduct->getProductNotifications();
+        $this->id = $this->orderProductEntity->getId();
+        $this->product = $this->orderProductEntity->getProduct();
+        $this->type = $this->orderProductEntity->getType();
+        $this->order = $this->orderProductEntity->getOrder();
+        $this->sku = $this->orderProductEntity->getSku();
+        $this->title = $this->orderProductEntity->getTitle();
+        $this->amount = $this->orderProductEntity->getAmount();
+        $this->width = $this->orderProductEntity->getWidth();
+        $this->height = $this->orderProductEntity->getHeight();
+        $this->order_width = $this->orderProductEntity->getOrderWidth();
+        $this->order_height = $this->orderProductEntity->getOrderHeight();
+        $this->price = $this->orderProductEntity->getPrice();
+        $this->total = $this->orderProductEntity->getTotal();
+        $this->productOptions = $this->orderProductEntity->getProductOptions();
+        $this->productNotifications = $this->orderProductEntity->getProductNotifications();
     }
 
-    /**
-     * @param OrderProductOption $productOption
-     */
     public function addProductOption(OrderProductOption $productOption): void
     {
         $this->productOptions->add($productOption);
     }
 
-    /**
-     * @param OrderProductNotification $productNotification
-     */
     public function addProductNotification(OrderProductNotification $productNotification): void
     {
         $this->productNotifications->add($productNotification);

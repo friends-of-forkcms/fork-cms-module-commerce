@@ -28,7 +28,7 @@ class CustomerOrders extends FrontendBaseBlock
     private $account;
 
     /**
-     * Execute the action
+     * Execute the action.
      *
      * @throws RedirectException
      * @throws \Exception
@@ -77,12 +77,12 @@ class CustomerOrders extends FrontendBaseBlock
         $this->template->assign('account', $this->account);
         $this->template->assign('order', $order);
 
-        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')) .' - '. $order->getId());
+        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')).' - '.$order->getId());
     }
 
     /**
-     * @param string $path The path for the template to use.
-     * @param bool $overwrite Should the template overwrite the default?
+     * @param string $path      the path for the template to use
+     * @param bool   $overwrite Should the template overwrite the default?
      */
     protected function loadTemplate(string $path = null, bool $overwrite = false): void
     {
@@ -90,7 +90,7 @@ class CustomerOrders extends FrontendBaseBlock
         if ($path === null) {
             $path = $this->getAction();
         }
-        $path = $this->getModule() . '/Layout/Templates/Customer/' . $path  . '.html.twig';
+        $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
 
         parent::loadTemplate($path, $overwrite);
     }

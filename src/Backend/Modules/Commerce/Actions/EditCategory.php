@@ -23,9 +23,6 @@ use Symfony\Component\Form\Form;
  */
 class EditCategory extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -39,7 +36,7 @@ class EditCategory extends BackendBaseActionEdit
             ['id' => $category->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteCategory'
+                'action' => 'DeleteCategory',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
@@ -67,7 +64,7 @@ class EditCategory extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateCategory->title,
-                    'highlight' => 'row-' . $updateCategory->getCategoryEntity()->getId(),
+                    'highlight' => 'row-'.$updateCategory->getCategoryEntity()->getId(),
                 ]
             )
         );
@@ -78,7 +75,7 @@ class EditCategory extends BackendBaseActionEdit
         parent::parse();
 
         $this->header->addJS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', null, false, true);
-        $this->header->addJS(sprintf("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js", Locale::workingLocale()), null, false, true);
+        $this->header->addJS(sprintf('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js', Locale::workingLocale()), null, false, true);
         $this->header->addJS('Select2Entity.js');
 
         $this->header->addCSS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', null, true, false);
@@ -140,9 +137,9 @@ class EditCategory extends BackendBaseActionEdit
     {
         $filesystem = new Filesystem();
         $kernelRootDir = $this->getKernel()->getRootDir();
-        $googleTaxonomyFile = $kernelRootDir . '/../src/Backend/Modules/Commerce/GoogleTaxonomy/'
-            . Locale::workingLocale()->getLocale()
-            . '/taxonomies.txt';
+        $googleTaxonomyFile = $kernelRootDir.'/../src/Backend/Modules/Commerce/GoogleTaxonomy/'
+            .Locale::workingLocale()->getLocale()
+            .'/taxonomies.txt';
 
         $categories = [];
         if ($filesystem->exists($googleTaxonomyFile)) {

@@ -15,19 +15,19 @@ class FilterType extends AbstractType
             'order',
             EntityType::class,
             [
-                'required'     => false,
-                'label'        => 'lbl.Order',
-                'placeholder'  => 'lbl.None',
-                'class'        => Order::class,
-                'choices'      => $options['categories'],
+                'required' => false,
+                'label' => 'lbl.Order',
+                'placeholder' => 'lbl.None',
+                'class' => Order::class,
+                'choices' => $options['categories'],
                 'choice_label' => function ($order) {
                     $prefix = null;
                     if ($order->path > 0) {
-                        $prefix = str_repeat('-', $order->path) .' ';
+                        $prefix = str_repeat('-', $order->path).' ';
                     }
 
-                    return $prefix . $order->getTitle();
-                }
+                    return $prefix.$order->getTitle();
+                },
             ]
         );
     }
@@ -36,7 +36,7 @@ class FilterType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'categories' => null
+                'categories' => null,
             ]
         );
     }

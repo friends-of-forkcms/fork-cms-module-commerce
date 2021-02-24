@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOptionRepository;
 
 final class CreateProductOptionHandler
 {
-    /** @var ProductOptionRepository */
-    private $productOptionRepository;
+    private ProductOptionRepository $productOptionRepository;
 
     public function __construct(ProductOptionRepository $productRepository)
     {

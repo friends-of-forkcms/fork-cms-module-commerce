@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Cart\Cart;
 
 final class DeleteCart
 {
-    /** @var Cart */
-    public $cart;
+    public Cart $cart;
 
     public function __construct(Cart $cart)
     {

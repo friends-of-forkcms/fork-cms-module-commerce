@@ -6,34 +6,31 @@ use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Commerce\Domain\StockStatus\Command\DeleteStockStatus as DeleteCommand;
+use Backend\Modules\Commerce\Domain\StockStatus\Event\Deleted;
 use Backend\Modules\Commerce\Domain\StockStatus\Exception\StockStatusNotFound;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
-use Backend\Modules\Commerce\Domain\StockStatus\Event\Deleted;
-use Backend\Modules\Commerce\Domain\StockStatus\Command\DeleteStockStatus as DeleteCommand;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
- * This action will delete a stock status
+ * This action will delete a stock status.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class DeleteStockStatus extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $stockStatus = $this->getStockStatus((int)$deleteFormData['id']);
+        $stockStatus = $this->getStockStatus((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.
@@ -49,7 +46,6 @@ class DeleteStockStatus extends BackendBaseActionDelete
             $this->redirect($this->getBackLink(['error' => 'products-connected']));
         }
     }
-
 
     private function getBackLink(array $parameters = []): string
     {

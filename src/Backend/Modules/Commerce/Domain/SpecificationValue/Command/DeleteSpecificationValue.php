@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 
 final class DeleteSpecificationValue
 {
-    /** @var SpecificationValue */
-    public $specificationValue;
+    public SpecificationValue $specificationValue;
 
     public function __construct(SpecificationValue $specificationValue)
     {

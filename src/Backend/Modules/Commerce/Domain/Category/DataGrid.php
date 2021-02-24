@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\Category;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
@@ -27,7 +27,7 @@ class DataGrid extends DataGridDatabase
                 ['category' => $category->getId(), 'language' => $locale]
             );
 
-            $this->setURL('&amp;category=' . $category->getId(), true);
+            $this->setURL('&amp;category='.$category->getId(), true);
         } else {
             parent::__construct(
                 'SELECT c.id, c.title, COUNT(i.id) AS num_products, c.sequence
@@ -43,7 +43,7 @@ class DataGrid extends DataGridDatabase
 
         // sequence
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceCategories'));
+        $this->setAttributes(['data-action' => 'SequenceCategories']);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditCategory')) {

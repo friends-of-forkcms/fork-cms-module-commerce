@@ -12,35 +12,19 @@ use Common\ModulesSettings;
 use Frontend\Core\Engine\TwigTemplate;
 use Frontend\Core\Language\Locale;
 use Knp\Snappy\Pdf;
+use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Mime_SimpleMessage;
 
 class OrderListener
 {
-    /**
-     * @var ModulesSettings
-     */
-    protected $modulesSettings;
-
-    /**
-     * @var Swift_Mailer
-     */
-    protected $mailer;
-
-    /**
-     * @var Order $order
-     */
-    protected $order;
-
-    /**
-     * @var OrderHistory $orderHistory
-     */
-    protected $orderHistory;
+    protected ModulesSettings $modulesSettings;
+    protected Swift_Mailer $mailer;
+    protected Order $order;
+    protected OrderHistory $orderHistory;
 
     /**
      * OrderListener constructor.
-     * @param Swift_Mailer $mailer
-     * @param ModulesSettings $modulesSettings
      */
     public function __construct(Swift_Mailer $mailer, ModulesSettings $modulesSettings)
     {
@@ -48,7 +32,7 @@ class OrderListener
         $this->modulesSettings = $modulesSettings;
     }
 
-    protected function sendCustomerEmail()
+    protected function sendCustomerEmail(): void
     {
         if (!$this->orderHistory->getOrderStatus()->isSendEmail()) {
             return;
@@ -57,7 +41,7 @@ class OrderListener
         $language = $this->orderHistory->getOrderStatus()->getLocale();
         $from = $this->modulesSettings->get('Core', 'mailer_from');
 
-        $subject = $this->modulesSettings->get('Core', 'site_title_' . $language);
+        $subject = $this->modulesSettings->get('Core', 'site_title_'.$language);
         $subject .= ' - ';
         $subject .= $this->orderHistory->getOrderStatus()->getMailSubject();
 
@@ -68,7 +52,7 @@ class OrderListener
         $this->mailer->send($message);
     }
 
-    protected function sendCompanyEmail()
+    protected function sendCompanyEmail(): void
     {
         if (!$this->orderHistory->getOrderStatus()->isSendCompanyEmail()) {
             return;
@@ -78,7 +62,7 @@ class OrderListener
         $from = $this->modulesSettings->get('Core', 'mailer_from');
         $to = $this->modulesSettings->get('Core', 'mailer_to');
 
-        $subject = '[' . $this->modulesSettings->get('Core', 'site_title_' . $language) . ']';
+        $subject = '['.$this->modulesSettings->get('Core', 'site_title_'.$language).']';
         $subject .= ' - ';
         $subject .= $this->orderHistory->getOrderStatus()->getCompanyMailSubject();
 
@@ -89,12 +73,6 @@ class OrderListener
         $this->mailer->send($message);
     }
 
-    /**
-     * @param string $subject
-     * @param string $template
-     * @param bool $allowInvoice
-     * @return Swift_Mime_SimpleMessage
-     */
     protected function getMessage(string $subject, string $template, bool $allowInvoice = false): Swift_Mime_SimpleMessage
     {
         $subject = $this->getSubject($subject);
@@ -103,7 +81,7 @@ class OrderListener
             ->parseHtml(
                 $this->getTemplatePath($template),
                 [
-                    'siteTitle' => $this->modulesSettings->get('Core', 'site_title_' . Locale::frontendLanguage()),
+                    'siteTitle' => $this->modulesSettings->get('Core', 'site_title_'.Locale::frontendLanguage()),
                     'SITE_URL' => SITE_URL,
                     'order' => $this->order,
                     'orderHistory' => $this->orderHistory,
@@ -118,9 +96,9 @@ class OrderListener
                 new OrderGenerateInvoiceNumber($this->order)
             );
 
-            $filename = Language::lbl('Invoice') . '-' . $orderGenerateInvoiceNumber->getOrder()->getInvoiceNumber() . '.pdf';
+            $filename = Language::lbl('Invoice').'-'.$orderGenerateInvoiceNumber->getOrder()->getInvoiceNumber().'.pdf';
 
-            $attachment = new \Swift_Attachment(
+            $attachment = new Swift_Attachment(
                 $this->generateInvoice($orderGenerateInvoiceNumber->getOrder()),
                 $filename,
                 'application/pdf'
@@ -133,10 +111,7 @@ class OrderListener
     }
 
     /**
-     * Replace placeholders with the required values
-     *
-     * @param string $subject
-     * @return string
+     * Replace placeholders with the required values.
      */
     private function getSubject(string $subject): string
     {
@@ -159,19 +134,15 @@ class OrderListener
 
     /**
      * Get the template path since the backend won't use the theme path but this is needed
-     * when there is a custom template
-     *
-     * @param string $template
-     *
-     * @return string
+     * when there is a custom template.
      */
     private function getTemplatePath(string $template): string
     {
         $currentTheme = $this->modulesSettings->get('Core', 'theme');
-        $themePath = '/Themes/' . $currentTheme . '/Modules';
+        $themePath = '/Themes/'.$currentTheme.'/Modules';
 
-        if (file_exists(FRONTEND_PATH . $themePath . $template)) {
-            return $themePath . $template;
+        if (file_exists(FRONTEND_PATH.$themePath.$template)) {
+            return $themePath.$template;
         }
 
         return $template;

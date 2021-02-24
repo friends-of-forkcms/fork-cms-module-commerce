@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\Specification;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,55 +16,45 @@ use Doctrine\ORM\Mapping as ORM;
 class Specification
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Meta
-     *
-     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta",cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
      */
-    private $meta;
+    private ?Meta $meta;
 
     /**
-     * @var SpecificationValue[]
+     * @var Collection|SpecificationValue[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue", mappedBy="specification", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $specification_values;
+    private Collection $specification_values;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="integer", length=11)
      */
-    private $sequence;
+    private int $sequence;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean")
      */
-    private $filter;
+    private bool $filter;
 
     public const TYPE_TEXTBOX = 1;
 
@@ -75,15 +66,15 @@ class Specification
         bool $filter,
         $specification_values
     ) {
-        $this->locale               = $locale;
-        $this->title                = $title;
-        $this->sequence             = $sequence;
-        $this->meta                 = $meta;
-        $this->filter               = $filter;
+        $this->locale = $locale;
+        $this->title = $title;
+        $this->sequence = $sequence;
+        $this->meta = $meta;
+        $this->filter = $filter;
         $this->specification_values = $specification_values;
     }
 
-    public static function fromDataTransferObject(SpecificationDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(SpecificationDataTransferObject $dataTransferObject): Specification
     {
         if ($dataTransferObject->hasExistingSpecification()) {
             return self::update($dataTransferObject);
@@ -134,31 +125,28 @@ class Specification
         return $this->meta;
     }
 
-    /**
-     * @return bool
-     */
     public function isFilter(): bool
     {
         return $this->filter;
     }
 
     /**
-     * @return SpecificationValue[]
+     * @return Collection|SpecificationValue[]
      */
-    public function getSpecificationValues()
+    public function getSpecificationValues(): Collection
     {
         return $this->specification_values;
     }
 
-    private static function update(SpecificationDataTransferObject $dataTransferObject)
+    private static function update(SpecificationDataTransferObject $dataTransferObject): Specification
     {
         $specification = $dataTransferObject->getSpecificationEntity();
 
-        $specification->locale               = $dataTransferObject->locale;
-        $specification->title                = $dataTransferObject->title;
-        $specification->sequence             = $dataTransferObject->sequence;
-        $specification->meta                 = $dataTransferObject->meta;
-        $specification->filter               = $dataTransferObject->filter;
+        $specification->locale = $dataTransferObject->locale;
+        $specification->title = $dataTransferObject->title;
+        $specification->sequence = $dataTransferObject->sequence;
+        $specification->meta = $dataTransferObject->meta;
+        $specification->filter = $dataTransferObject->filter;
         $specification->specification_values = $dataTransferObject->specification_values;
 
         return $specification;

@@ -25,7 +25,7 @@ class OrderType extends AbstractType
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         );
     }

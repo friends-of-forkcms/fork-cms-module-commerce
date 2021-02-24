@@ -30,7 +30,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
     private $session;
 
     /**
-     * TwigTemplate instance
+     * TwigTemplate instance.
      *
      * @var TwigTemplate
      */
@@ -57,15 +57,15 @@ class ShipmentMethods extends FrontendBaseAJAXAction
         $this->output(
             Response::HTTP_OK,
             [
-                'html'      => $html,
+                'html' => $html,
                 'hasErrors' => $this->hasErrors,
-                'nextStep'  => $this->nextStep
+                'nextStep' => $this->nextStep,
             ]
         );
     }
 
     /**
-     * Get the guest form. Returns the path of the template
+     * Get the guest form. Returns the path of the template.
      */
     private function parseShipmentMethods()
     {
@@ -82,7 +82,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
                     'shipment_method',
                     [
                         'code' => $form->getNormData()->shipment_method,
-                        'data' => $shipmentMethods[$form->getNormData()->shipment_method]
+                        'data' => $shipmentMethods[$form->getNormData()->shipment_method],
                     ]
                 );
             }
@@ -110,7 +110,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
             CheckoutShipmentMethodType::class,
             $formData,
             [
-                'shipment_methods' => $this->getShipmentMethods()
+                'shipment_methods' => $this->getShipmentMethods(),
             ]
         );
 
@@ -121,9 +121,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the shipment methods to populate our form
-     *
-     * @return array
+     * Get the shipment methods to populate our form.
      */
     private function getShipmentMethods(): array
     {
@@ -143,7 +141,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
              */
             $class = new $className($shipmentMethod, $cart, $this->session->get('guest_shipment_address'));
             foreach ($class->getQuote() as $key => $options) {
-                $shipmentMethods[$shipmentMethod.'.'. $key] = $options;
+                $shipmentMethods[$shipmentMethod.'.'.$key] = $options;
             }
         }
 
@@ -151,9 +149,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the active cart from the session
-     *
-     * @return Cart
+     * Get the active cart from the session.
      */
     private function getActiveCart(): Cart
     {
@@ -181,11 +177,9 @@ class ShipmentMethods extends FrontendBaseAJAXAction
     /**
      * Creates and returns a Form instance from the type of the form.
      *
-     * @param string $type FQCN of the form type class i.e: MyClass::class
-     * @param mixed $data The initial data for the form
-     * @param array $options Options for the form
-     *
-     * @return Form
+     * @param string $type    FQCN of the form type class i.e: MyClass::class
+     * @param mixed  $data    The initial data for the form
+     * @param array  $options Options for the form
      */
     private function createForm(string $type, $data = null, array $options = []): Form
     {

@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Commerce\Domain\Specification;
 
+use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Specification\Exception\SpecificationNotFound;
@@ -9,13 +10,11 @@ use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Backend\Core\Engine\Model;
 use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationRepository extends EntityRepository
 {
     /**
-     * @param Specification $specification
      * @throws \Doctrine\ORM\ORMException
      */
     public function add(Specification $specification): void
@@ -25,9 +24,6 @@ class SpecificationRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return Specification|null
      * @throws SpecificationNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Specification
@@ -53,18 +49,14 @@ class SpecificationRepository extends EntityRepository
             function (Specification $specification) {
                 $this->getEntityManager()->remove($specification);
             },
-            (array)$this->findBy(['id' => $id, 'locale' => $locale])
+            (array) $this->findBy(['id' => $id, 'locale' => $locale])
         );
     }
 
     /**
-     * Get the next sequence in line
-     *
-     * @param Locale $locale
+     * Get the next sequence in line.
      *
      * @throws NonUniqueResultException
-     *
-     * @return integer
      */
     public function getNextSequence(Locale $locale): int
     {
@@ -79,14 +71,13 @@ class SpecificationRepository extends EntityRepository
 
     /**
      * @param string $url
-     * @param Locale $locale
-     * @param integer $id
+     * @param int    $id
      *
      * @return string
      */
     public function getUrl($url, Locale $locale, $id)
     {
-        $url = Uri::getUrl((string)$url);
+        $url = Uri::getUrl((string) $url);
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
             ->where($query_builder->expr()->eq('m.url', ':url'))
@@ -94,7 +85,7 @@ class SpecificationRepository extends EntityRepository
             ->setParameters(
                 [
                     'url' => $url,
-                    'locale' => $locale
+                    'locale' => $locale,
                 ]
             );
 
@@ -113,11 +104,7 @@ class SpecificationRepository extends EntityRepository
     }
 
     /**
-     * Find the specification filters based on the given category
-     *
-     * @param Category $category
-     *
-     * @return array
+     * Find the specification filters based on the given category.
      */
     public function findFiltersByCategory(Category $category): array
     {
@@ -136,11 +123,7 @@ class SpecificationRepository extends EntityRepository
     }
 
     /**
-     * Get the specifications for a product
-     *
-     * @param Product $product
-     *
-     * @return array
+     * Get the specifications for a product.
      */
     public function findByProduct(Product $product): array
     {
@@ -157,11 +140,7 @@ class SpecificationRepository extends EntityRepository
     }
 
     /**
-     * Find the specification filters based on the given category
-     *
-     * @param string $searchTerm
-     *
-     * @return array
+     * Find the specification filters based on the given category.
      */
     public function findFiltersBySearchTerm(string $searchTerm): array
     {
@@ -176,7 +155,7 @@ class SpecificationRepository extends EntityRepository
             ))
             ->orderBy('s.sequence', 'ASC')
             ->setParameter('filter', true)
-            ->setParameter('search_term', '%' . $searchTerm .'%')
+            ->setParameter('search_term', '%'.$searchTerm.'%')
             ->getQuery()
             ->getResult();
     }

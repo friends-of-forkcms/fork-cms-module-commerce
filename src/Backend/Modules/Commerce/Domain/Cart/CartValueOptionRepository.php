@@ -9,14 +9,9 @@ use Doctrine\ORM\NonUniqueResultException;
 class CartValueOptionRepository extends EntityRepository
 {
     /**
-     * Get a cart value by cart and product
-     *
-     * @param CartValue $cartValue
-     * @param ProductOptionValue $productOptionValue
+     * Get a cart value by cart and product.
      *
      * @throws NonUniqueResultException
-     *
-     * @return CartValueOption|null
      */
     public function getByCartValueAndProductOptionValue(CartValue $cartValue, ProductOptionValue $productOptionValue): ?CartValueOption
     {

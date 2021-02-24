@@ -10,15 +10,8 @@ use JeroenDesloovere\SitemapBundle\Provider\SitemapProviderInterface;
 
 class CategorySitemapProvider extends SitemapProvider implements SitemapProviderInterface
 {
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-
-    /**
-     * @var ModulesSettings
-     */
-    private $settings;
+    private CategoryRepository $categoryRepository;
+    private ModulesSettings $settings;
 
     public function __construct(CategoryRepository $categoryRepository, ModulesSettings $settings)
     {
@@ -40,7 +33,7 @@ class CategorySitemapProvider extends SitemapProvider implements SitemapProvider
         }
     }
 
-    private function addItem(Category $category)
+    private function addItem(Category $category): void
     {
         $this->createItem($category->getUrl(), $category->getEditedOn(), ChangeFrequency::monthly());
 

@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotific
 
 final class UpdateOrderProductNotificationHandler
 {
-    /** @var OrderProductNotificationRepository */
-    private $orderProductNotificationRepository;
+    private OrderProductNotificationRepository $orderProductNotificationRepository;
 
     public function __construct(OrderProductNotificationRepository $orderProductNotificationRepository)
     {

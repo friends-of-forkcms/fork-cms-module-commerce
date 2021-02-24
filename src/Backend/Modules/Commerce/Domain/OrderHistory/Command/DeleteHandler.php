@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistoryRepository;
 
 final class DeleteHandler
 {
-    /** @var OrderHistoryRepository */
-    private $orderHistoryRepository;
+    private OrderHistoryRepository $orderHistoryRepository;
 
     public function __construct(OrderHistoryRepository $orderHistoryRepository)
     {

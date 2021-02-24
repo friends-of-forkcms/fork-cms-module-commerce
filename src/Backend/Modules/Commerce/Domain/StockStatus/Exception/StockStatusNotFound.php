@@ -13,6 +13,6 @@ class StockStatusNotFound extends Exception
 
     public static function forId(string $id): self
     {
-        return new self('Can\'t find a StockStatus with id = "' . $id . '".');
+        return new self('Can\'t find a StockStatus with id = "'.$id.'".');
     }
 }

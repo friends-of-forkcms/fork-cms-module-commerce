@@ -6,25 +6,21 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Commerce\Domain\Vat\Exception\VatNotFound;
-use Backend\Modules\Commerce\Domain\Vat\Exception\VatValueNotFound;
-use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\Domain\Vat\VatType;
-use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use Backend\Modules\Commerce\Domain\Vat\Command\UpdateVat;
 use Backend\Modules\Commerce\Domain\Vat\Event\Updated;
+use Backend\Modules\Commerce\Domain\Vat\Exception\VatNotFound;
+use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Commerce\Domain\Vat\VatRepository;
+use Backend\Modules\Commerce\Domain\Vat\VatType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit vat-action, it will display a form to edit a vat
+ * This is the edit vat-action, it will display a form to edit a vat.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditVat extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -38,12 +34,12 @@ class EditVat extends BackendBaseActionEdit
             ['id' => $vat->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteVat'
+                'action' => 'DeleteVat',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('vat', $vat);
 
@@ -64,9 +60,9 @@ class EditVat extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateVat->title,
-                    'highlight' => 'row-' . $updateVat->getVatEntity()->getId(),
+                    'report' => 'edited',
+                    'var' => $updateVat->title,
+                    'highlight' => 'row-'.$updateVat->getVatEntity()->getId(),
                 ]
             )
         );

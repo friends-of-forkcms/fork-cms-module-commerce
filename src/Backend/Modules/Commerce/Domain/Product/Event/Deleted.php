@@ -7,14 +7,11 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 final class Deleted extends Event
 {
     /**
-     * @var string The name the listener needs to listen to to catch this event.
+     * @var string the name the listener needs to listen to to catch this event
      */
-    const EVENT_NAME = 'commerce.event.product.deleted';
+    public const EVENT_NAME = 'commerce.event.product.deleted';
 
-    /**
-     * @var int
-     */
-    private $id;
+    private int $id;
 
     public function __construct(Product $product, int $id)
     {

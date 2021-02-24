@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderRule\OrderRule;
 
 final class DeleteOrderRule
 {
-    /** @var OrderRule */
-    public $orderRule;
+    public OrderRule $orderRule;
 
     public function __construct(OrderRule $orderRule)
     {

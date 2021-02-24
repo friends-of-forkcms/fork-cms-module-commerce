@@ -7,18 +7,13 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Order\DataGrid;
 
 /**
- * This is the orders-action, it will display the overview of orders
+ * This is the orders-action, it will display the overview of orders.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Orders extends BackendBaseActionIndex
 {
-    /**
-     * Execute the action
-     *
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();

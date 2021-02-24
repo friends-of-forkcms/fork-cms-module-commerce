@@ -4,12 +4,14 @@ namespace Backend\Modules\Commerce\Domain\Order\Mailer;
 
 use Common\Uri;
 use Frontend\Core\Engine\Model;
+use Swift_Attachment;
+use Swift_Message;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
- * This class will send mails
+ * This class will send mails.
  */
-class Message extends \Swift_Message
+class Message extends Swift_Message
 {
     public function __construct(
         string $subject = null,
@@ -27,22 +29,14 @@ class Message extends \Swift_Message
      * @param string $body
      * @param string $contentType
      * @param string $charset
-     *
-     * @return Message
      */
-    public static function newInstance($subject = null, $body = null, $contentType = null, $charset = null)
+    public static function newInstance($subject = null, $body = null, $contentType = null, $charset = null): Message
     {
         return new self($subject, $body, $contentType, $charset);
     }
 
     /**
-     * Parses a TwigTemplate with the wanted variables
-     *
-     * @param string $template
-     * @param array $variables
-     * @param bool $addUTM
-     *
-     * @return self
+     * Parses a TwigTemplate with the wanted variables.
      */
     public function parseHtml(string $template, array $variables, bool $addUTM = false): self
     {
@@ -60,11 +54,7 @@ class Message extends \Swift_Message
     }
 
     /**
-     * Attach multiple attachments to this message
-     *
-     * @param array $attachments
-     *
-     * @return Message
+     * Attach multiple attachments to this message.
      */
     public function addAttachments(array $attachments): Message
     {
@@ -73,7 +63,7 @@ class Message extends \Swift_Message
             foreach ($attachments as $attachment) {
                 // only add existing files
                 if (is_file($attachment)) {
-                    $this->attach(\Swift_Attachment::fromPath($attachment));
+                    $this->attach(Swift_Attachment::fromPath($attachment));
                 }
             }
         }
@@ -82,11 +72,7 @@ class Message extends \Swift_Message
     }
 
     /**
-     * Add plaintext content as fallback for the html
-     *
-     * @param string $content
-     *
-     * @return Message
+     * Add plaintext content as fallback for the html.
      */
     public function setPlainText(string $content): Message
     {
@@ -98,10 +84,8 @@ class Message extends \Swift_Message
     }
 
     /**
-     * @param string $html The html to convert links in.
+     * @param string $html    the html to convert links in
      * @param string $subject The subject of the mail
-     *
-     * @return string
      */
     private function addUTM(string $html, string $subject): string
     {
@@ -122,7 +106,7 @@ class Message extends \Swift_Message
             // loop old links
             foreach ($matches[1] as $i => $link) {
                 $searchLinks[] = $matches[0][$i];
-                $replaceLinks[] = 'href="' . Model::addUrlParameters($link, $utm) . '"';
+                $replaceLinks[] = 'href="'.Model::addUrlParameters($link, $utm).'"';
             }
 
             $html = str_replace($searchLinks, $replaceLinks, $html);
@@ -132,12 +116,10 @@ class Message extends \Swift_Message
     }
 
     /**
-     * Returns the content from a given template
+     * Returns the content from a given template.
      *
-     * @param string $template The template to use.
-     * @param array $variables The variables to assign.
-     *
-     * @return string
+     * @param string $template  the template to use
+     * @param array  $variables the variables to assign
      */
     private function getTemplateContent(string $template, array $variables = null): string
     {
@@ -148,11 +130,7 @@ class Message extends \Swift_Message
     }
 
     /**
-     * Converts all css to inline styles
-     *
-     * @param string $html
-     *
-     * @return string
+     * Converts all css to inline styles.
      */
     private function cssToInlineStyles(string $html): string
     {
@@ -164,17 +142,15 @@ class Message extends \Swift_Message
     }
 
     /**
-     * Replace internal links and images to absolute links
+     * Replace internal links and images to absolute links.
      *
-     * @param string $html The html to convert links in.
-     *
-     * @return string
+     * @param string $html the html to convert links in
      */
     private function relativeToAbsolute(string $html): string
     {
         // replace internal links/images
         $search = ['href="/', 'src="/'];
-        $replace = ['href="' . SITE_URL . '/', 'src="' . SITE_URL . '/'];
+        $replace = ['href="'.SITE_URL.'/', 'src="'.SITE_URL.'/'];
 
         return str_replace($search, $replace, $html);
     }

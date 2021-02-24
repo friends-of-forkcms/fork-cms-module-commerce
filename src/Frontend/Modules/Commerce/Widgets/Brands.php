@@ -8,7 +8,7 @@ use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Locale;
 
 /**
- * This is a widget with the Commerce-brands
+ * This is a widget with the Commerce-brands.
  *
  * @author Waldo Cosman <waldo_cosman@hotmail.com>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -16,7 +16,7 @@ use Frontend\Core\Language\Locale;
 class Brands extends FrontendBaseWidget
 {
     /**
-     * Execute the extra
+     * Execute the extra.
      */
     public function execute(): void
     {
@@ -27,7 +27,7 @@ class Brands extends FrontendBaseWidget
     }
 
     /**
-     * Parse
+     * Parse.
      */
     private function parse()
     {

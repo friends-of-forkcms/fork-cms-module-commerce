@@ -10,7 +10,9 @@ use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 use Backend\Modules\Commerce\Domain\OrderRule\OrderRule;
 use Backend\Modules\Commerce\Domain\OrderVat\OrderVat;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,135 +23,111 @@ use Doctrine\ORM\Mapping as ORM;
 class Order
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Account
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Account\Account", inversedBy="carts")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $account;
+    private ?Account $account;
 
     /**
-     * @var Cart
-     *
      * @ORM\OneToOne(targetEntity="Backend\Modules\Commerce\Domain\Cart\Cart", inversedBy="order")
      * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $cart;
+    private ?Cart $cart;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $invoice_number;
+    private ?string $invoice_number;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $invoice_date;
+    private ?DateTimeInterface $invoice_date;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $payment_method;
+    private string $payment_method;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $shipment_method;
+    private string $shipment_method;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $shipment_price;
+    private float $shipment_price;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $comment;
+    private ?string $comment;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="date")
      */
-    private $date;
+    private DateTimeInterface $date;
 
     /**
-     * @var OrderRule[]
+     * @var Collection|OrderRule[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderRule\OrderRule", mappedBy="order", cascade={"remove", "persist"})
      */
-    private $rules;
+    private Collection $rules;
 
     /**
-     * @var OrderProduct[]
+     * @var Collection|OrderProduct[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct", mappedBy="order", cascade={"remove", "persist"})
      */
-    private $products;
+    private Collection $products;
 
     /**
-     * @var OrderVat[]
+     * @var Collection|OrderVat[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderVat\OrderVat", mappedBy="order", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"title" = "ASC"})
+     * @ORM\OrderBy({"title": "ASC"})
      */
-    private $vats;
+    private Collection $vats;
 
     /**
-     * @var OrderAddress
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
      * @ORM\JoinColumn(name="invoice_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $invoice_address;
+    private OrderAddress $invoice_address;
 
     /**
-     * @var OrderAddress
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
      * @ORM\JoinColumn(name="shipment_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $shipment_address;
+    private OrderAddress $shipment_address;
 
     /**
-     * @var OrderHistory[]
+     * @var Collection|OrderHistory[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="order")
      * @ORM\JoinColumn(name="order_id")
-     * @ORM\OrderBy({"created_at" = "DESC"}))
+     * @ORM\OrderBy({"created_at": "DESC"}))
      */
-    private $history;
+    private Collection $history;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $sub_total;
+    private float $sub_total;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $total;
+    private float $total;
 
     private function __construct(
         Account $account,
@@ -167,7 +145,7 @@ class Order
         ArrayCollection $products,
         ArrayCollection $vats,
         ?string $invoiceNumber,
-        ?\DateTime $invoiceDate
+        ?DateTime $invoiceDate
     ) {
         $this->account = $account;
         $this->cart = $cart;
@@ -218,151 +196,109 @@ class Order
         );
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Account
-     */
     public function getAccount(): Account
     {
         return $this->account;
     }
 
-    /**
-     * @return Cart
-     */
     public function getCart(): ?Cart
     {
         return $this->cart;
     }
 
-    /**
-     * @return mixed
-     */
     public function getInvoiceNumber(): ?string
     {
         return $this->invoice_number;
     }
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getInvoiceDate(): ?\DateTime
+    public function getInvoiceDate(): ?DateTimeInterface
     {
         return $this->invoice_date;
     }
 
-    /**
-     * @return string
-     */
     public function getPaymentMethod(): ?string
     {
         return $this->payment_method;
     }
 
-    /**
-     * @return string
-     */
     public function getShipmentMethod(): string
     {
         return $this->shipment_method;
     }
 
-    /**
-     * @return int
-     */
     public function getShipmentPrice(): ?string
     {
         return $this->shipment_price;
     }
 
-    /**
-     * @return string
-     */
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getDate(): DateTime
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @return float
-     */
     public function getSubTotal(): float
     {
         return $this->sub_total;
     }
 
-    /**
-     * @return float
-     */
     public function getTotal(): float
     {
         return $this->total;
     }
 
     /**
-     * @return OrderRule[]
+     * @return Collection|OrderRule[]
      */
-    public function getRules()
+    public function getRules(): Collection
     {
         return $this->rules;
     }
 
     /**
-     * @return OrderProduct[]
+     * @return Collection|OrderProduct[]
      */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }
 
     /**
-     * @return OrderVat[]
+     * @return Collection|OrderVat[]
      */
-    public function getVats()
+    public function getVats(): Collection
     {
         return $this->vats;
     }
 
-    /**
-     * @return OrderAddress
-     */
     public function getInvoiceAddress(): OrderAddress
     {
         return $this->invoice_address;
     }
 
-    /**
-     * @return OrderAddress
-     */
     public function getShipmentAddress(): OrderAddress
     {
         return $this->shipment_address;
     }
 
     /**
-     * @return OrderHistory[]
+     * @return Collection|OrderHistory[]
      */
-    public function getHistory()
+    public function getHistory(): Collection
     {
         return $this->history;
     }
 
-    private static function update(OrderDataTransferObject $dataTransferObject)
+    private static function update(OrderDataTransferObject $dataTransferObject): Order
     {
         $order = $dataTransferObject->getOrderEntity();
 

@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Cart */
-    private $cart;
+    private Cart $cart;
 
     public function __construct(Cart $cart)
     {

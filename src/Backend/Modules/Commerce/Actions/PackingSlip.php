@@ -8,23 +8,13 @@ use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\Order\OrderRepository;
-use Common\Exception\RedirectException;
 use Frontend\Core\Engine\TwigTemplate;
 use Symfony\Component\HttpFoundation\Response;
 
 class PackingSlip extends Action
 {
-    /**
-     * @var Order
-     */
-    private $order;
+    private ?Order $order;
 
-    /**
-     * Execute the action
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -40,12 +30,12 @@ class PackingSlip extends Action
         $template = $this->get('templating');
         $template->assign('order', $this->order);
 
-        return $template->getContent($this->getModule() . '/Layout/Templates/' . $this->getAction() . '.html.twig');
+        return $template->getContent($this->getModule().'/Layout/Templates/'.$this->getAction().'.html.twig');
     }
 
     public function getContent(): Response
     {
-        $filename = Language::lbl('Order') . '-' . $this->order->getId() .'.pdf';
+        $filename = Language::lbl('Order').'-'.$this->order->getId().'.pdf';
 
         return new Response(
             $this->get('knp_snappy.pdf')->getOutputFromHtml($this->generateHTML()),
@@ -59,6 +49,7 @@ class PackingSlip extends Action
 
     /**
      * @return Order
+     *
      * @throws \Common\Exception\RedirectException
      * @throws \Exception
      */
@@ -77,9 +68,6 @@ class PackingSlip extends Action
     }
 
     /**
-     * @param array $parameters
-     *
-     * @return string
      * @throws \Exception
      */
     private function getBackLink(array $parameters = []): string

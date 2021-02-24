@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\Brand;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
@@ -26,7 +26,7 @@ class DataGrid extends DataGridDatabase
 
         // sequence
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceBrands'));
+        $this->setAttributes(['data-action' => 'SequenceBrands']);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditBrand')) {

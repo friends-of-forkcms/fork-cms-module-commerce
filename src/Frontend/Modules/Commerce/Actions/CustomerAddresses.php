@@ -39,7 +39,7 @@ class CustomerAddresses extends FrontendBaseBlock
     private $address;
 
     /**
-     * Execute the action
+     * Execute the action.
      *
      * @throws RedirectException
      * @throws \Exception
@@ -171,8 +171,8 @@ class CustomerAddresses extends FrontendBaseBlock
     }
 
     /**
-     * @param string $path The path for the template to use.
-     * @param bool $overwrite Should the template overwrite the default?
+     * @param string $path      the path for the template to use
+     * @param bool   $overwrite Should the template overwrite the default?
      */
     protected function loadTemplate(string $path = null, bool $overwrite = false): void
     {
@@ -180,7 +180,7 @@ class CustomerAddresses extends FrontendBaseBlock
         if ($path === null) {
             $path = $this->getAction();
         }
-        $path = $this->getModule() . '/Layout/Templates/Customer/' . $path . '.html.twig';
+        $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
 
         parent::loadTemplate($path, $overwrite);
     }

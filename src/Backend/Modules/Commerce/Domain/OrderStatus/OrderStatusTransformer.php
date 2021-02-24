@@ -7,7 +7,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class OrderStatusTransformer implements DataTransformerInterface
 {
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {
@@ -17,7 +17,8 @@ class OrderStatusTransformer implements DataTransformerInterface
     /**
      * Transforms an object to a string.
      *
-     * @param  mixed $orderStatusId
+     * @param mixed $orderStatusId
+     *
      * @return string
      */
     public function transform($orderStatusId)

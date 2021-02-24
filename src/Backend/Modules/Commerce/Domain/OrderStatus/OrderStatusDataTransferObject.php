@@ -7,92 +7,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderStatusDataTransferObject
 {
-    /**
-     * @var OrderStatus
-     */
-    protected $orderStatusEntity;
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="err.FieldIsRequired")
-     */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $mail_subject;
-
-    /**
-     * @var string
-     */
-    public $company_mail_subject;
-
-    /**
-     * @var string
-     */
-    public $color;
-
-    /**
-     * @var bool
-     */
-    public $pdf_invoice = false;
-
-    /**
-     * @var bool
-     */
-    public $pdf_packing_slip = false;
-
-    /**
-     * @var bool
-     */
-    public $paid = false;
-
-    /**
-     * @var bool
-     */
-    public $shipped = false;
-
-    /**
-     * @var bool
-     */
-    public $download_invoice = false;
-
-    /**
-     * @var bool
-     */
-    public $send_email = false;
-
-    /**
-     * @var bool
-     */
-    public $send_company_email = false;
-
-    /**
-     * @var string
-     */
-    public $template;
-
-    /**
-     * @var string
-     */
-    public $company_template;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var int
-     */
-    public $type;
+    protected ?OrderStatus $orderStatusEntity;
+    public int $id;
+    /** @Assert\NotBlank(message="err.FieldIsRequired") */
+    public string $title;
+    public ?string $mail_subject;
+    public ?string $company_mail_subject;
+    public ?string $color;
+    public bool $pdf_invoice = false;
+    public bool $pdf_packing_slip = false;
+    public bool $paid = false;
+    public bool $shipped = false;
+    public bool $download_invoice = false;
+    public bool $send_email = false;
+    public bool $send_company_email = false;
+    public ?string $template;
+    public ?string $company_template;
+    public Locale $locale;
+    public int $type;
 
     public function __construct(OrderStatus $orderStatus = null)
     {
@@ -103,21 +35,21 @@ class OrderStatusDataTransferObject
             return;
         }
 
-        $this->id = $orderStatus->getId();
-        $this->title = $orderStatus->getTitle();
-        $this->mail_subject = $orderStatus->getMailSubject();
-        $this->company_mail_subject = $orderStatus->getCompanyMailSubject();
-        $this->color = $orderStatus->getColor();
-        $this->locale = $orderStatus->getLocale();
-        $this->pdf_invoice = $orderStatus->isPdfInvoice();
-        $this->pdf_packing_slip = $orderStatus->isPdfPackingSlip();
-        $this->paid = $orderStatus->isPaid();
-        $this->shipped = $orderStatus->isShipped();
-        $this->download_invoice = $orderStatus->isDownloadInvoice();
-        $this->send_email = $orderStatus->isSendEmail();
-        $this->send_company_email = $orderStatus->isSendCompanyEmail();
-        $this->template = $orderStatus->getTemplate();
-        $this->company_template = $orderStatus->getCompanyTemplate();
+        $this->id = $this->orderStatusEntity->getId();
+        $this->title = $this->orderStatusEntity->getTitle();
+        $this->mail_subject = $this->orderStatusEntity->getMailSubject();
+        $this->company_mail_subject = $this->orderStatusEntity->getCompanyMailSubject();
+        $this->color = $this->orderStatusEntity->getColor();
+        $this->locale = $this->orderStatusEntity->getLocale();
+        $this->pdf_invoice = $this->orderStatusEntity->isPdfInvoice();
+        $this->pdf_packing_slip = $this->orderStatusEntity->isPdfPackingSlip();
+        $this->paid = $this->orderStatusEntity->isPaid();
+        $this->shipped = $this->orderStatusEntity->isShipped();
+        $this->download_invoice = $this->orderStatusEntity->isDownloadInvoice();
+        $this->send_email = $this->orderStatusEntity->isSendEmail();
+        $this->send_company_email = $this->orderStatusEntity->isSendCompanyEmail();
+        $this->template = $this->orderStatusEntity->getTemplate();
+        $this->company_template = $this->orderStatusEntity->getCompanyTemplate();
     }
 
     public function setOrderStatusEntity(OrderStatus $orderStatus): void

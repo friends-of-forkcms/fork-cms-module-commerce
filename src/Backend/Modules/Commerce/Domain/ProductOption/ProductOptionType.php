@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductOptionType extends AbstractType
 {
-    public static $typeChoices = [
+    public static array $typeChoices = [
         'lbl.DropDown' => ProductOption::DISPLAY_TYPE_DROP_DOWN,
         'lbl.RadioButton' => ProductOption::DISPLAY_TYPE_RADIO_BUTTON,
         'lbl.Color' => ProductOption::DISPLAY_TYPE_COLOR,
@@ -134,8 +134,8 @@ class ProductOptionType extends AbstractType
                     return $queryBuilder;
                 },
                 'choice_label' => function (ProductOptionValue $productOptionValue) {
-                    return $productOptionValue->getProductOption()->getTitle() .' - '. $productOptionValue->getTitle();
-                }
+                    return $productOptionValue->getProductOption()->getTitle().' - '.$productOptionValue->getTitle();
+                },
             ]
         );
     }

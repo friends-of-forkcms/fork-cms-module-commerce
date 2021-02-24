@@ -6,34 +6,31 @@ use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Commerce\Domain\Vat\Command\DeleteVat as DeleteCommand;
+use Backend\Modules\Commerce\Domain\Vat\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\Domain\Vat\Event\Deleted;
-use Backend\Modules\Commerce\Domain\Vat\Command\DeleteVat as DeleteCommand;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
- * This action will delete a vat
+ * This action will delete a vat.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class DeleteVat extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $vat = $this->getVat((int)$deleteFormData['id']);
+        $vat = $this->getVat((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.
@@ -49,7 +46,6 @@ class DeleteVat extends BackendBaseActionDelete
             $this->redirect($this->getBackLink(['error' => 'products-connected']));
         }
     }
-
 
     private function getBackLink(array $parameters = []): string
     {

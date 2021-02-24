@@ -131,9 +131,7 @@ class OrderStatusType extends AbstractType
     }
 
     /**
-     * Get the available email templates
-     *
-     * @return array
+     * Get the available email templates.
      */
     private function getEmailTemplates(): array
     {
@@ -145,8 +143,8 @@ class OrderStatusType extends AbstractType
         $emailTemplatePath = '/Commerce/Layout/Templates/Mails/Order';
 
         $folders = [
-            FRONTEND_MODULES_PATH . $emailTemplatePath,
-            FRONTEND_THEMES_PATH . '/' . $theme .'/' . $emailTemplatePath,
+            FRONTEND_MODULES_PATH.$emailTemplatePath,
+            FRONTEND_THEMES_PATH.'/'.$theme.'/'.$emailTemplatePath,
         ];
 
         $templates = [];
@@ -162,7 +160,7 @@ class OrderStatusType extends AbstractType
                     continue;
                 }
 
-                $templates[$file] = $emailTemplatePath . '/'. $file;
+                $templates[$file] = $emailTemplatePath.'/'.$file;
             }
         }
 

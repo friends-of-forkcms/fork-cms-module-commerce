@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Country\Country;
 
 final class DeleteCountry
 {
-    /** @var Country */
-    public $country;
+    public Country $country;
 
     public function __construct(Country $country)
     {

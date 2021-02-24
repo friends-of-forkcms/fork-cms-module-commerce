@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Account */
-    private $account;
+    private Account $account;
 
     public function __construct(Account $account)
     {

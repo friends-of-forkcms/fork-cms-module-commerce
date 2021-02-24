@@ -17,14 +17,14 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 /**
- * This controller allows to the user to register
+ * This controller allows to the user to register.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Register extends FrontendBaseBlock
 {
     /**
-     * Execute the action
+     * Execute the action.
      */
     public function execute(): void
     {
@@ -37,6 +37,7 @@ class Register extends FrontendBaseBlock
         $this->loadTemplate();
         if ($this->getRequest()->query->getBoolean('registered')) {
             $this->template->assign('registered', true);
+
             return;
         }
 
@@ -49,13 +50,11 @@ class Register extends FrontendBaseBlock
             return;
         }
 
-        $this->redirect($this->url->getQueryString() . '?registered=true');
+        $this->redirect($this->url->getQueryString().'?registered=true');
     }
 
     /**
-     * Get the account form
-     *
-     * @return Form
+     * Get the account form.
      */
     private function getForm(): Form
     {
@@ -131,9 +130,6 @@ class Register extends FrontendBaseBlock
         return $form;
     }
 
-    /**
-     * @param AccountCustomerDataTransferObject $data
-     */
     private function saveAddress(AccountCustomerDataTransferObject $data)
     {
         $account = $data->getAccountEntity();

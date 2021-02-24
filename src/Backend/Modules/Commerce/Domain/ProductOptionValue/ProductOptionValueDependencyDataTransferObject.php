@@ -2,25 +2,23 @@
 
 namespace Backend\Modules\Commerce\Domain\ProductOptionValue;
 
+use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductOptionValueDependencyDataTransferObject
 {
-    /**
-     * @var ProductOption
-     */
-    public $product_option;
+    public ProductOption $product_option;
 
     /**
-     * @var ProductOptionValue[]
-     *
+     * @var Collection|ProductOptionValue[]
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $values;
+    public Collection $values;
 
-    public $product;
+    public Product $product;
 
     public function __construct(ProductOptionValue $productOptionValue = null)
     {

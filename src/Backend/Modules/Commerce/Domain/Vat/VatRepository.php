@@ -15,9 +15,6 @@ class VatRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return Vat|null
      * @throws VatNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Vat
@@ -48,12 +45,9 @@ class VatRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line
+     * Get the next sequence in line.
      *
-     * @param Locale $locale
      * @param Vat $parent
-     *
-     * @return integer
      */
     public function getNextSequence(Locale $locale, Vat $parent = null): int
     {

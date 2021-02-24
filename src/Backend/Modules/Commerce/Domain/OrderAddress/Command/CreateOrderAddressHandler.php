@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddressRepository;
 
 final class CreateOrderAddressHandler
 {
-    /** @var OrderAddressRepository */
-    private $orderAddressRepository;
+    private OrderAddressRepository $orderAddressRepository;
 
     public function __construct(OrderAddressRepository $orderAddressRepository)
     {

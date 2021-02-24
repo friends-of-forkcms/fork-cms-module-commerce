@@ -44,11 +44,13 @@ class RemoveCartRule extends FrontendBaseAJAXAction
         // Cart rule code must be set
         if (!$this->getRequest()->request->has('code') || empty($code)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, 'Geen waarde opgegeven');
+
             return;
         }
 
         if (!$this->cartRule = $this->getCartRuleRepository()->findByCode($code)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, 'Kortingscode niet gevonden');
+
             return;
         }
 
@@ -59,6 +61,7 @@ class RemoveCartRule extends FrontendBaseAJAXAction
 
         if (!$cartRuleExists) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, 'Kortingscode niet gevonden');
+
             return;
         }
 
@@ -96,21 +99,19 @@ class RemoveCartRule extends FrontendBaseAJAXAction
         }
 
         return [
-            'sub_total' =>  TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
+            'sub_total' => TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
             'vats' => $vats,
             'shipping_method' => [
                 'name' => $shippingMethod['name'],
                 'price' => TemplateModifiers::formatNumber($shippingMethod['price'], 2),
             ],
-            'total' =>  TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
+            'total' => TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
             'cart_rules' => $cartRules,
         ];
     }
 
     /**
-     * Get the active cart from the session
-     *
-     * @return Cart
+     * Get the active cart from the session.
      */
     private function getActiveCart(): Cart
     {

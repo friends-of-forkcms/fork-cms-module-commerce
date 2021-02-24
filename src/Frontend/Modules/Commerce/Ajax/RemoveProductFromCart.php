@@ -40,17 +40,19 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         parent::execute();
 
         $this->cookie = $this->get('fork.cookie');
-        $this->cart   = $this->getActiveCart();
+        $this->cart = $this->getActiveCart();
 
         // Product must be set
         if (!$this->getRequest()->request->has('cart')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
         // Failed to update product, does not exists?
         if (!$cartValue = $this->removeCartValue()) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
+
             return;
         }
 
@@ -78,9 +80,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the active cart from the session
-     *
-     * @return Cart
+     * Get the active cart from the session.
      */
     private function getActiveCart(): Cart
     {
@@ -105,9 +105,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Add or update the product in our cart
-     *
-     * @return CartValue|null
+     * Add or update the product in our cart.
      */
     private function removeCartValue(): ?CartValue
     {
@@ -135,9 +133,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     private function getCartRepository(): CartRepository
     {
@@ -145,9 +141,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the cart value repository
-     *
-     * @return CartValueRepository
+     * Get the cart value repository.
      */
     private function getCartValueRepository(): CartValueRepository
     {
@@ -155,9 +149,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product repository
-     *
-     * @return ProductRepository
+     * Get the product repository.
      */
     private function getProductRepository(): ProductRepository
     {
@@ -165,9 +157,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Format the vats in an array with the required number format
-     *
-     * @return array
+     * Format the vats in an array with the required number format.
      */
     private function getFormattedVats(): array
     {
@@ -181,9 +171,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Build the ecommerce category in required format
-     *
-     * @param Product $product
+     * Build the ecommerce category in required format.
      *
      * @return string
      */

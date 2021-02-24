@@ -2,10 +2,10 @@
 
 namespace Backend\Modules\Commerce\Actions;
 
-use Backend\Core\Language\Locale;
-use Backend\Form\Type\DeleteType;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Language\Locale;
+use Backend\Form\Type\DeleteType;
 use Backend\Modules\Commerce\Domain\Product\Command\UpdateProduct;
 use Backend\Modules\Commerce\Domain\Product\Event\Updated;
 use Backend\Modules\Commerce\Domain\Product\Exception\ProductNotFound;
@@ -16,32 +16,24 @@ use Backend\Modules\Commerce\Domain\ProductOption\DataGrid as ProductOptionDataG
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit-action, it will display a form with the product data to edit
+ * This is the edit-action, it will display a form with the product data to edit.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Edit extends BackendBaseActionEdit
 {
-    /**
-     * @var Product
-     */
-    private $product;
-
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
 
-        $this->product = $this->getProduct();
+        $product = $this->getProduct();
 
-        $form = $this->getForm($this->product);
+        $form = $this->getForm($product);
 
         $deleteForm = $this->createForm(
             DeleteType::class,
-            ['id' => $this->product->getId()],
+            ['id' => $product->getId()],
             [
                 'module' => $this->getModule(),
             ]
@@ -51,7 +43,7 @@ class Edit extends BackendBaseActionEdit
         $copyForm = $this->get('form.factory')->createNamed(
             'copy',
             DeleteType::class,
-            ['id' => $this->product->getId()],
+            ['id' => $product->getId()],
             [
                 'module' => $this->getModule(),
                 'action' => 'Copy',
@@ -62,8 +54,8 @@ class Edit extends BackendBaseActionEdit
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
-            $this->template->assign('product', $this->product);
-            $this->template->assign('productOptionsDataGrid', ProductOptionDataGrid::getHtml($this->product));
+            $this->template->assign('product', $product);
+            $this->template->assign('productOptionsDataGrid', ProductOptionDataGrid::getHtml($product));
 
             $this->parse();
             $this->display();
@@ -84,7 +76,7 @@ class Edit extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateProduct->title,
-                    'highlight' => 'row-' . $updateProduct->getProductEntity()->getId(),
+                    'highlight' => 'row-'.$updateProduct->getProductEntity()->getId(),
                 ]
             )
         );
@@ -95,7 +87,7 @@ class Edit extends BackendBaseActionEdit
         parent::parse();
 
         $this->header->addJS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', null, false, true);
-        $this->header->addJS(sprintf("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js", Locale::workingLocale()), null, false, true);
+        $this->header->addJS(sprintf('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js', Locale::workingLocale()), null, false, true);
         $this->header->addJS('Select2Entity.js');
         $this->header->addJS('ProductDimensions.js');
 

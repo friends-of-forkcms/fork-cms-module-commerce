@@ -7,7 +7,8 @@ use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaItem\MediaItem;
 use DateTime;
-use Doctrine\ORM\PersistentCollection;
+use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,174 +18,136 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductOptionValue
 {
-    const IMPACT_TYPE_ADD = 1;
-    const IMPACT_TYPE_SUBTRACT = 2;
+    public const IMPACT_TYPE_ADD = 1;
+    public const IMPACT_TYPE_SUBTRACT = 2;
 
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var ProductOption
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="product_option_values")
      * @ORM\JoinColumn(name="product_option_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $product_option;
+    private ?ProductOption $product_option;
 
     /**
-     * @var ProductOption[]
+     * @var Collection|ProductOption[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", mappedBy="parent_product_option_value", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $product_options;
+    private Collection $product_options;
 
     /**
-     * @var ProductOptionValue[]
+     * @var Collection|ProductOptionValue[]
      *
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", cascade={"remove", "persist"})
      * @ORM\JoinTable(name="commerce_product_option_values_dependencies",
-     *      joinColumns={@ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="roduct_option_value_dependency_id", referencedColumnName="id")}
-     *      )
+     *     joinColumns={@ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="roduct_option_value_dependency_id", referencedColumnName="id")}
+     * )
      */
-    private $dependencies;
+    private Collection $dependencies;
 
     /**
-     * @var MediaGroup
-     *
      * @ORM\OneToOne(
-     *      targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
-     *      cascade="persist",
-     *      orphanRemoval=true
+     *     targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\JoinColumn(
-     *      name="imageGroupId",
-     *      referencedColumnName="id",
-     *      onDelete="cascade"
+     *     name="imageGroupId",
+     *     referencedColumnName="id",
+     *     onDelete="cascade"
      * )
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    protected $image;
+    protected ?MediaGroup $image;
 
     /**
-     * @var Vat
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Vat\Vat")
      * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $vat;
+    private ?Vat $vat;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $title;
+    private ?string $title;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $start;
+    private ?int $start;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $end;
+    private ?int $end;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $sub_title;
+    private ?string $sub_title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $sku;
+    private ?string $sku;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $price;
+    private float $price;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=1)
      */
-    private $percentage;
+    private float $percentage;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $width;
+    private ?int $width;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $height;
+    private ?int $height;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer")
      */
-    private $impact_type;
+    private int $impact_type;
 
     /**
-     * @var boolean
-     *
      * @ORM\Column(type="boolean")
      */
-    private $default_value;
+    private bool $default_value;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $hex_value;
+    private ?string $hex_value;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
-    private $sequence;
+    private int $sequence;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         ProductOption $product_option,
@@ -229,121 +192,82 @@ class ProductOptionValue
         return $this->id;
     }
 
-    /**
-     * @return ProductOption
-     */
     public function getProductOption(): ProductOption
     {
         return $this->product_option;
     }
 
     /**
-     * @return ProductOption[]
+     * @return Collection|ProductOption[]
      */
-    public function getProductOptions()
+    public function getProductOptions(): Collection
     {
         return $this->product_options;
     }
 
-    /**
-     * @return MediaGroup
-     */
     public function getImage(): ?MediaGroup
     {
         return $this->image;
     }
 
-    /**
-     * @return Vat
-     */
     public function getVat(): Vat
     {
         return $this->vat;
     }
 
     /**
-     * @return ProductOptionValue[]|PersistentCollection
+     * @return Collection|ProductOptionValue[]
      */
-    public function getDependencies(): ?PersistentCollection
+    public function getDependencies(): ?Collection
     {
         return $this->dependencies;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @return int
-     */
     public function getStart(): ?int
     {
         return $this->start;
     }
 
-    /**
-     * @return int
-     */
     public function getEnd(): ?int
     {
         return $this->end;
     }
 
-    /**
-     * @return string
-     */
     public function getSubTitle(): ?string
     {
         return $this->sub_title;
     }
 
-    /**
-     * @return string
-     */
     public function getSku(): ?string
     {
         return $this->sku;
     }
 
-    /**
-     * @return float
-     */
     public function getPrice(): float
     {
         return $this->price;
     }
 
-    /**
-     * @return float
-     */
     public function getPercentage(): float
     {
         return $this->percentage;
     }
 
-    /**
-     * @return int
-     */
     public function getWidth(): ?int
     {
         return $this->width;
     }
 
-    /**
-     * @return int
-     */
     public function getHeight(): ?int
     {
         return $this->height;
     }
 
-    /**
-     * @return int
-     */
     public function getImpactType(): int
     {
         if (!$this->impact_type) {
@@ -353,52 +277,37 @@ class ProductOptionValue
         return $this->impact_type;
     }
 
-    /**
-     * @return bool
-     */
     public function isImpactTypeAdd(): bool
     {
-        return $this->getImpactType() == self::IMPACT_TYPE_ADD;
+        return $this->getImpactType() === self::IMPACT_TYPE_ADD;
     }
 
-    /**
-     * @return bool
-     */
     public function isImpactTypeSubtract(): bool
     {
-        return $this->getImpactType() == self::IMPACT_TYPE_SUBTRACT;
+        return $this->getImpactType() === self::IMPACT_TYPE_SUBTRACT;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefaultValue(): bool
     {
         return $this->default_value;
     }
 
-    /**
-     * @return string
-     */
     public function getHexValue(): ?string
     {
         return $this->hex_value;
     }
 
-    /**
-     * @return int
-     */
     public function getSequence(): int
     {
         return $this->sequence;
     }
 
-    public function getCreatedOn(): DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    public function getEditedOn(): DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
@@ -406,7 +315,7 @@ class ProductOptionValue
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         $this->createdOn = $this->editedOn = new DateTime();
     }
@@ -414,12 +323,12 @@ class ProductOptionValue
     /**
      * @ORM\PreUpdate
      */
-    public function preUpdate()
+    public function preUpdate(): void
     {
         $this->editedOn = new DateTime();
     }
 
-    public static function fromDataTransferObject(ProductOptionValueDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(ProductOptionValueDataTransferObject $dataTransferObject): ProductOptionValue
     {
         if ($dataTransferObject->hasExistingProductOptionValue()) {
             return self::update($dataTransferObject);
@@ -451,7 +360,7 @@ class ProductOptionValue
         );
     }
 
-    private static function update(ProductOptionValueDataTransferObject $dataTransferObject)
+    private static function update(ProductOptionValueDataTransferObject $dataTransferObject): ProductOptionValue
     {
         $productOptionValue = $dataTransferObject->getProductOptionValueEntity();
 
@@ -482,19 +391,15 @@ class ProductOptionValue
     }
 
     /**
-     * Get the vat price only
-     *
-     * @return float
+     * Get the vat price only.
      */
-    public function getVatPrice()
+    public function getVatPrice(): float
     {
         return $this->getPrice() * $this->vat->getAsPercentage();
     }
 
     /**
-     * Get the product thumbnail
-     *
-     * @return MediaItem|null
+     * Get the product thumbnail.
      */
     public function getThumbnail(): ?MediaItem
     {

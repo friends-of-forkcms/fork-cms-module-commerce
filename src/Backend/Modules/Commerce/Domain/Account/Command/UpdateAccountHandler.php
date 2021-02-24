@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\Account\AccountRepository;
 
 final class UpdateAccountHandler
 {
-    /** @var AccountRepository */
-    private $accountRepository;
+    private AccountRepository $accountRepository;
 
     public function __construct(AccountRepository $accountRepository)
     {

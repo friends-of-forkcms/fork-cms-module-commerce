@@ -13,6 +13,6 @@ class SpecificationNotFound extends Exception
 
     public static function forId(string $id): self
     {
-        return new self('Can\'t find a Specification with id = "' . $id . '".');
+        return new self('Can\'t find a Specification with id = "'.$id.'".');
     }
 }

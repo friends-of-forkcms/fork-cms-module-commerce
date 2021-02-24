@@ -18,6 +18,7 @@ class Edit extends BaseEdit
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
+
             return;
         }
 

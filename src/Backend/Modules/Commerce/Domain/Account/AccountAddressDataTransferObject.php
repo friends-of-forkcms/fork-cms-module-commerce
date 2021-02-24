@@ -7,79 +7,50 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AccountAddressDataTransferObject
 {
-    /**
-     * @var Account
-     */
-    public $account;
+    public Account $account;
+    public string $company_name;
 
     /**
-     * @var string
-     */
-    public $company_name;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $first_name;
+    public string $first_name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $last_name;
+    public string $last_name;
+
+    public string $email_address;
 
     /**
-     * @var string
-     */
-    public $email_address;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $phone;
+    public string $phone;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $street;
+    public string $street;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $house_number;
+    public string $house_number;
+
+    public string $house_number_addition;
 
     /**
-     * @var string
-     */
-    public $house_number_addition;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $city;
+    public string $city;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $zip_code;
+    public string $zip_code;
 
     /**
-     * Generate an order address data transfer object based on these values
-     *
-     * @return CreateOrderAddress
+     * Generate an order address data transfer object based on these values.
      */
     public function toCommand(): CreateOrderAddress
     {

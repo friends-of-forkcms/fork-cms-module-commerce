@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\OrderStatus;
 
 use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
 use Common\Locale;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,119 +15,89 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderStatus
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $mail_subject;
+    private ?string $mail_subject;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $company_mail_subject;
+    private ?string $company_mail_subject;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $color;
+    private ?string $color;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $pdf_invoice;
+    private bool $pdf_invoice;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $pdf_packing_slip;
+    private bool $pdf_packing_slip;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $paid;
+    private bool $paid;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $shipped;
+    private bool $shipped;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $download_invoice;
+    private bool $download_invoice;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $send_email;
+    private bool $send_email;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":"0"})
+     * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $send_company_email;
+    private bool $send_company_email;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $template;
+    private ?string $template;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $company_template;
+    private ?string $company_template;
 
     /**
-     * @var OrderHistory[]
+     * @var Collection|OrderHistory[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="order_status")
      * @ORM\JoinColumn(name="order_status_id")
      */
-    private $order_histories;
+    private Collection $order_histories;
 
     private function __construct(
         Locale $locale,
@@ -160,7 +131,7 @@ class OrderStatus
         $this->company_template = $company_template;
     }
 
-    public static function fromDataTransferObject(OrderStatusDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderStatusDataTransferObject $dataTransferObject): OrderStatus
     {
         if ($dataTransferObject->hasExistingOrderStatus()) {
             return self::update($dataTransferObject);
@@ -189,7 +160,7 @@ class OrderStatus
         );
     }
 
-    private static function update(OrderStatusDataTransferObject $dataTransferObject)
+    private static function update(OrderStatusDataTransferObject $dataTransferObject): OrderStatus
     {
         $orderStatus = $dataTransferObject->getOrderStatusEntity();
 
@@ -231,106 +202,70 @@ class OrderStatus
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getMailSubject(): ?string
     {
         return $this->mail_subject;
     }
 
-    /**
-     * @return string
-     */
     public function getCompanyMailSubject(): ?string
     {
         return $this->company_mail_subject;
     }
 
-    /**
-     * @return string
-     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
-    /**
-     * @return bool
-     */
     public function isPdfInvoice(): bool
     {
         return $this->pdf_invoice;
     }
 
-    /**
-     * @return bool
-     */
     public function isPdfPackingSlip(): bool
     {
         return $this->pdf_packing_slip;
     }
 
-    /**
-     * @return bool
-     */
     public function isPaid(): bool
     {
         return $this->paid;
     }
 
-    /**
-     * @return bool
-     */
     public function isShipped(): bool
     {
         return $this->shipped;
     }
 
-    /**
-     * @return bool
-     */
     public function isDownloadInvoice(): bool
     {
         return $this->download_invoice;
     }
 
-    /**
-     * @return bool
-     */
     public function isSendEmail(): bool
     {
         return $this->send_email;
     }
 
-    /**
-     * @return bool
-     */
     public function isSendCompanyEmail(): bool
     {
         return $this->send_company_email;
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): ?string
     {
         return $this->template;
     }
 
-    /**
-     * @return string
-     */
     public function getCompanyTemplate(): ?string
     {
         return $this->company_template;
     }
 
     /**
-     * @return OrderHistory[]
+     * @return Collection|OrderHistory[]
      */
-    public function getOrderHistories()
+    public function getOrderHistories(): Collection
     {
         return $this->order_histories;
     }

@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\Vat\Command\UpdateVat;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce categories
+ * Alters the sequence of Commerce categories.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -22,7 +22,7 @@ class SequenceVats extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the vat repository
+         * get the vat repository.
          */
         $vatRepository = $this->get('commerce.repository.vat');
 
@@ -31,7 +31,6 @@ class SequenceVats extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($vat = $vatRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
                 $updateVat = new UpdateVat($vat);

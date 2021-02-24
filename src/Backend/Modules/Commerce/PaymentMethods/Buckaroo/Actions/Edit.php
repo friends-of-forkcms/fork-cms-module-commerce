@@ -27,6 +27,7 @@ class Edit extends BaseEdit
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('enabledMethods', $enabledMethods);
+
             return;
         }
 
@@ -86,7 +87,7 @@ class Edit extends BaseEdit
 
         $result = $query->getResult();
 
-        if ((int)$result[0]['count'] === 0) {
+        if ((int) $result[0]['count'] === 0) {
             $this->entityManager->getConnection()
                 ->prepare('DROP TABLE IF EXISTS `commerce_orders_buckaroo_payments`')
                 ->execute();

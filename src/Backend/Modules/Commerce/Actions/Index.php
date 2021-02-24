@@ -5,14 +5,15 @@ namespace Backend\Modules\Commerce\Actions;
 use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
+use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
 use Backend\Modules\Commerce\Domain\Category\Exception\CategoryNotFound;
-use Backend\Modules\Commerce\Domain\Product\FilterType;
 use Backend\Modules\Commerce\Domain\Product\DataGrid;
+use Backend\Modules\Commerce\Domain\Product\FilterType;
 use Common\Exception\RedirectException;
 
 /**
- * This is the index-action (default), it will display the overview of products
+ * This is the index-action (default), it will display the overview of products.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -20,45 +21,29 @@ use Common\Exception\RedirectException;
 class Index extends BackendBaseActionIndex
 {
     /**
-     * The category where is filtered on
-     *
-     * @var    array
+     * The category where is filtered on.
      */
-    private $category;
+    private Category $category;
 
     /**
-     * An sku number to filter on
-     *
-     * @var string
+     * An sku number to filter on.
      */
-    private $sku;
+    private string $sku;
 
-    /**
-     * The id of the category where is filtered on
-     *
-     * @var    int
-     */
-    private $categoryId;
-
-    /**
-     * Execute the action
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
 
-        $this->categoryId = $this->getRequest()->query->getInt('category', null);
+        $categoryId = $this->getRequest()->query->getInt('category', null);
         $this->sku = $this->getRequest()->query->get('sku');
         $categoryRepository = $this->getCategoryRepository();
 
-        if ($this->categoryId) {
+        if ($categoryId) {
             try {
-                $this->category = $categoryRepository->findOneByIdAndLocale($this->categoryId, Locale::workingLocale());
+                $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
+
                 return;
             }
         }
@@ -91,7 +76,7 @@ class Index extends BackendBaseActionIndex
                 'sku' => $this->sku,
             ],
             [
-                'categories' => $this->getCategoryRepository()->getTree(Locale::workingLocale())
+                'categories' => $this->getCategoryRepository()->getTree(Locale::workingLocale()),
             ]
         );
 
@@ -122,9 +107,6 @@ class Index extends BackendBaseActionIndex
     }
 
     /**
-     * @param array $parameters
-     *
-     * @return string
      * @throws \Exception
      */
     private function getBackLink(array $parameters = []): string
@@ -137,9 +119,6 @@ class Index extends BackendBaseActionIndex
         );
     }
 
-    /**
-     * @return CategoryRepository
-     */
     private function getCategoryRepository(): CategoryRepository
     {
         return $this->get('commerce.repository.category');

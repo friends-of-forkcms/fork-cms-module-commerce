@@ -21,27 +21,27 @@ class DeliveryType extends Type
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Name',
+                'label' => 'lbl.Name',
             ]
         )->add(
             'price',
             MoneyType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Price',
+                'label' => 'lbl.Price',
             ]
         )->add(
             'vat',
             EntityType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Vat',
-                'class'    => Vat::class,
+                'label' => 'lbl.Vat',
+                'class' => Vat::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
                               ->orderBy('i.sequence', 'ASC');
                 },
-                'choice_label'  => 'title'
+                'choice_label' => 'title',
             ]
         );
     }

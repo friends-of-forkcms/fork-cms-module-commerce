@@ -2,69 +2,40 @@
 
 namespace Backend\Modules\Commerce\Domain\Brand;
 
-use Backend\Core\Language\Locale;
 use Common\Doctrine\Entity\Meta;
+use Common\Locale;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class BrandDataTransferObject
 {
-    /**
-     * @var Brand
-     */
-    protected $brandEntity;
+    protected ?Brand $brandEntity;
+    public int $id;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $text;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var Meta
-     */
-    public $meta;
-
-    /**
-     * @var Image
-     */
-    public $image;
-
-    /**
-     * @var int
-     */
-    public $sequence;
+    public string $title;
+    public ?string $text;
+    public Locale $locale;
+    public ?Meta $meta;
+    public Image $image;
+    public int $sequence;
 
     public function __construct(Brand $brand = null)
     {
         $this->brandEntity = $brand;
 
-        if (! $this->hasExistingBrand()) {
+        if (!$this->hasExistingBrand()) {
             return;
         }
 
-        $this->id      = $brand->getId();
-        $this->title   = $brand->getTitle();
-        $this->text    = $brand->getText();
-        $this->locale  = $brand->getLocale();
-        $this->meta    = $brand->getMeta();
-        $this->image   = $brand->getImage();
-        $this->sequence = $brand->getSequence();
+        $this->id = $this->brandEntity->getId();
+        $this->title = $this->brandEntity->getTitle();
+        $this->text = $this->brandEntity->getText();
+        $this->locale = $this->brandEntity->getLocale();
+        $this->meta = $this->brandEntity->getMeta();
+        $this->image = $this->brandEntity->getImage();
+        $this->sequence = $this->brandEntity->getSequence();
     }
 
     public function getBrandEntity(): Brand

@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\Brand\Command\UpdateBrand;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce categories
+ * Alters the sequence of Commerce categories.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -23,7 +23,7 @@ class SequenceBrands extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the brand repository
+         * get the brand repository.
          */
         $brandRepository = $this->get('commerce.repository.brand');
 
@@ -32,7 +32,6 @@ class SequenceBrands extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($brand = $brandRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
                 $updateBrand = new UpdateBrand($brand);

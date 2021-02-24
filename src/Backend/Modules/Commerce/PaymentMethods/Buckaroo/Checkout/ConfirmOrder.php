@@ -18,13 +18,10 @@ use stdClass;
 
 class ConfirmOrder extends BaseConfirmOrder
 {
-    const IPv4 = 0;
-    const IPv6 = 1;
+    public const IPv4 = 0;
+    public const IPv6 = 1;
 
-    /**
-     * @var string
-     */
-    private $currency = 'EUR'; // @TODO change when shop uses multi currency
+    private string $currency = 'EUR'; // @TODO change when shop uses multi currency
 
     /**
      * @throws PaymentException
@@ -35,7 +32,7 @@ class ConfirmOrder extends BaseConfirmOrder
     public function prePayment(): void
     {
         if (!$this->redirectUrl) {
-            $this->redirectUrl = '/post-payment?order_id=' . $this->order->getId();
+            $this->redirectUrl = '/post-payment?order_id='.$this->order->getId();
         }
 
         $payment = $this->getPayment();
@@ -81,10 +78,9 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * @return StdClass
      * @throws DBALException
      */
-    private function getPayment(): StdClass
+    private function getPayment(): stdClass
     {
         $query = $this->entityManager->getConnection()->prepare(
             'SELECT order_id, method, transaction_id FROM commerce_orders_buckaroo_payments WHERE order_id = :order_id'
@@ -102,13 +98,13 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * Create a new payment
+     * Create a new payment.
      *
      * @param string|null $transactionKey
-     * @return StdClass
+     *
      * @throws DBALException
      */
-    private function createPayment(): StdClass
+    private function createPayment(): stdClass
     {
         $payment = $this->getPaymentResponse($this->getPaymentRequestData());
 
@@ -123,7 +119,6 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * @return stdClass
      * @throws DBALException
      * @throws \Doctrine\DBAL\Exception\InvalidArgumentException
      */
@@ -141,7 +136,7 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     public function runWebhook()
     {
-        $requestContent = json_decode($this->request->getContent());
+        $requestContent = json_decode($this->request->getContent(), false, 512, JSON_THROW_ON_ERROR);
 
         if (!$this->request->query->has('ADD_OrderId')) {
             throw new PaymentException('Invalid payment data');
@@ -152,7 +147,7 @@ class ConfirmOrder extends BaseConfirmOrder
         try {
             $order = $this->getOrder($this->request->query->get('ADD_OrderId'));
         } catch (OrderNotFound $e) {
-            throw new PaymentException('Order not found: '. $this->request->query->get('ADD_OrderId'));
+            throw new PaymentException('Order not found: '.$this->request->query->get('ADD_OrderId'));
         }
 
         if ($this->paymentIsPaid($transactionStatus)) {
@@ -215,8 +210,6 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * @param array $requestData
-     * @return stdClass
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function getPaymentResponse(array $requestData): stdClass
@@ -225,26 +218,23 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * @param string $transactionKey
      * @return stdClass
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function getTransactionStatus(string $transactionKey)
     {
-        return $this->getApiRequest('Transaction/Status/' . $transactionKey, null, 'get');
+        return $this->getApiRequest('Transaction/Status/'.$transactionKey, null, 'get');
     }
 
-    /**
-     * @return array
-     */
     private function getPaymentRequestData(): array
     {
-        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Commerce', 'Cart');
+        $baseUrl = SITE_URL.Navigation::getUrlForBlock('Commerce', 'Cart');
 
         return [
             'Currency' => $this->currency,
             'AmountDebit' => $this->order->getTotal(),
-            'Description' => 'Order ' . $this->order->getId(),
+            'Description' => 'Order '.$this->order->getId(),
             'Invoice' => $this->order->getId(),
             'Order' => $this->order->getId(),
             'ClientIP' => [
@@ -252,12 +242,12 @@ class ConfirmOrder extends BaseConfirmOrder
                 'Address' => $_SERVER['REMOTE_ADDR'],
             ],
             'ContinueOnIncomplete' => true, // Payment gateway
-            'ReturnURL' => SITE_URL . $this->redirectUrl,
-            'ReturnURLCancel' => SITE_URL . $this->redirectUrl,
-            'ReturnURLError' => SITE_URL . $this->redirectUrl,
-            'ReturnURLReject' => SITE_URL . $this->redirectUrl,
-            'PushURL' => $baseUrl . '/webhook?payment_method=Buckaroo.' . $this->option.'&ADD_OrderId=' . $this->order->getId(),
-            'PushURLFailure' => $baseUrl . '/webhook?payment_method=Buckaroo.' . $this->option,
+            'ReturnURL' => SITE_URL.$this->redirectUrl,
+            'ReturnURLCancel' => SITE_URL.$this->redirectUrl,
+            'ReturnURLError' => SITE_URL.$this->redirectUrl,
+            'ReturnURLReject' => SITE_URL.$this->redirectUrl,
+            'PushURL' => $baseUrl.'/webhook?payment_method=Buckaroo.'.$this->option.'&ADD_OrderId='.$this->order->getId(),
+            'PushURLFailure' => $baseUrl.'/webhook?payment_method=Buckaroo.'.$this->option,
             'Services' => [
                 'ServiceList' => [
                     [
@@ -277,16 +267,15 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * @param string $action
-     * @param array $requestData
+     * @param array  $requestData
      * @param string $method
-     * @return stdClass
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function getApiRequest(string $action, array $requestData = null, $method = 'post'): stdClass
     {
         $client = new Client([
-            'base_uri' => $this->getEndpointUrl() . '/json/',
+            'base_uri' => $this->getEndpointUrl().'/json/',
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -300,30 +289,30 @@ class ConfirmOrder extends BaseConfirmOrder
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
     }
 
     private function getHmac(string $requestUri, array $requestData = null): string
     {
         $websiteKey = $this->getSetting('websiteKey');
         $secretKey = $this->getSetting('secretKey');
-        $uri = strtolower(urlencode($this->getEndpointUrl(false) . '/json/' . $requestUri));
-        $nonce = 'nonce_' . rand(0000000, 9999999);
+        $uri = strtolower(urlencode($this->getEndpointUrl(false).'/json/'.$requestUri));
+        $nonce = 'nonce_'.random_int(0000000, 9_999_999);
         $time = time();
         $encodedData = null;
         $requestMethod = 'GET';
 
         // When request data is set, it should be a post
         if ($requestData) {
-            $encodedData = base64_encode(md5(json_encode($requestData), true));
+            $encodedData = base64_encode(md5(json_encode($requestData, JSON_THROW_ON_ERROR), true));
             $requestMethod = 'POST';
         }
 
-        $hmac = $websiteKey . $requestMethod . $uri . $time . $nonce . $encodedData;
+        $hmac = $websiteKey.$requestMethod.$uri.$time.$nonce.$encodedData;
         $s = hash_hmac('sha256', $hmac, $secretKey, true);
         $hmac = base64_encode($s);
 
-        return 'hmac ' . $websiteKey . ':' . $hmac . ':' . $nonce . ':' . $time;
+        return 'hmac '.$websiteKey.':'.$hmac.':'.$nonce.':'.$time;
     }
 
     private function getEndpointUrl($withProtocol = true, $protocol = 'https'): string
@@ -335,7 +324,7 @@ class ConfirmOrder extends BaseConfirmOrder
         }
 
         if ($withProtocol) {
-            $url = $protocol . '://' . $url;
+            $url = $protocol.'://'.$url;
         }
 
         return $url;

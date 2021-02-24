@@ -15,19 +15,19 @@ class FilterType extends AbstractType
             'specification',
             EntityType::class,
             [
-                'required'     => false,
-                'label'        => 'lbl.Specification',
-                'placeholder'  => 'lbl.None',
-                'class'        => Specification::class,
-                'choices'      => $options['specifications'],
+                'required' => false,
+                'label' => 'lbl.Specification',
+                'placeholder' => 'lbl.None',
+                'class' => Specification::class,
+                'choices' => $options['specifications'],
                 'choice_label' => function ($specification) {
                     $prefix = null;
                     if ($specification->path > 0) {
-                        $prefix = str_repeat('-', $specification->path) .' ';
+                        $prefix = str_repeat('-', $specification->path).' ';
                     }
 
-                    return $prefix . $specification->getTitle();
-                }
+                    return $prefix.$specification->getTitle();
+                },
             ]
         );
     }
@@ -36,7 +36,7 @@ class FilterType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'specifications' => null
+                'specifications' => null,
             ]
         );
     }

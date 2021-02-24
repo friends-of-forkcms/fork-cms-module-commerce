@@ -6,19 +6,16 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Commerce\Domain\CartRule\CartRule;
+use Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository;
+use Backend\Modules\Commerce\Domain\CartRule\CartRuleType;
+use Backend\Modules\Commerce\Domain\CartRule\Command\UpdateCartRule;
 use Backend\Modules\Commerce\Domain\CartRule\Event\CartRuleUpdated;
 use Backend\Modules\Commerce\Domain\CartRule\Exception\CartRuleNotFound;
-use Backend\Modules\Commerce\Domain\CartRule\CartRule;
-use Backend\Modules\Commerce\Domain\CartRule\CartRuleType;
-use Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository;
-use Backend\Modules\Commerce\Domain\CartRule\Command\UpdateCartRule;
 use Symfony\Component\Form\Form;
 
 class EditCartRule extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -32,7 +29,7 @@ class EditCartRule extends BackendBaseActionEdit
             ['id' => $cartRule->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteCartRule'
+                'action' => 'DeleteCartRule',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
@@ -59,7 +56,7 @@ class EditCartRule extends BackendBaseActionEdit
             $this->getBackLink([
                 'report' => 'edited',
                 'var' => $updateCartRule->title,
-                'highlight' => 'row-' . $updateCartRule->getCartRuleEntity()->getId(),
+                'highlight' => 'row-'.$updateCartRule->getCartRuleEntity()->getId(),
             ])
         );
     }

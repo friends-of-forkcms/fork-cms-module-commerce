@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\OrderHistory;
 
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,48 +15,40 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderHistory
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Order
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", inversedBy="history")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $order;
+    private Order $order;
 
     /**
-     * @var OrderStatus
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus", inversedBy="order_histories")
      * @ORM\JoinColumn(name="order_status_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $order_status;
+    private OrderStatus $order_status;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private DateTimeInterface $created_at;
 
     private function __construct(
         Order $order,
         OrderStatus $order_status,
-        \DateTime $created_at
+        DateTimeInterface $created_at
     ) {
         $this->order = $order;
         $this->order_status = $order_status;
         $this->created_at = $created_at;
     }
 
-    public static function fromDataTransferObject(OrderHistoryDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderHistoryDataTransferObject $dataTransferObject): OrderHistory
     {
         return self::create($dataTransferObject);
     }
@@ -74,26 +67,17 @@ class OrderHistory
         return $this->id;
     }
 
-    /**
-     * @return Order
-     */
     public function getOrder(): Order
     {
         return $this->order;
     }
 
-    /**
-     * @return OrderStatus
-     */
     public function getOrderStatus(): OrderStatus
     {
         return $this->order_status;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->created_at;
     }

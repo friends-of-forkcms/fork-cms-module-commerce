@@ -8,9 +8,6 @@ use Backend\Modules\Commerce\Domain\CartRule\DataGrid;
 
 class CartRules extends BackendBaseActionIndex
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();

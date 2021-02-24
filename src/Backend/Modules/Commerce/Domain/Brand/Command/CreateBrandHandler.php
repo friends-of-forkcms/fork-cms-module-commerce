@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\Brand\BrandRepository;
 
 final class CreateBrandHandler
 {
-    /** @var BrandRepository */
-    private $brandRepository;
+    private BrandRepository $brandRepository;
 
     public function __construct(BrandRepository $brandRepository)
     {

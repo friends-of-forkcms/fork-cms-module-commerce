@@ -50,10 +50,7 @@ class CartRepository extends EntityRepository
     }
 
     /**
-     * Find by a cart by session id. When there is no cart found create a new one
-     *
-     * @param string $hash
-     * @param string $ip
+     * Find by a cart by session id. When there is no cart found create a new one.
      *
      * @return Cart
      */
@@ -82,9 +79,7 @@ class CartRepository extends EntityRepository
     }
 
     /**
-     * Get the active cart from the session
-     *
-     * @param bool $createNew
+     * Get the active cart from the session.
      *
      * @return Cart
      */

@@ -6,83 +6,51 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AccountCustomerDataTransferObject
 {
-    /**
-     * @var Account
-     */
-    public $accountEntity;
+    public Account $accountEntity;
+    public int $id;
+    public ?int $profile_id;
+    public ?string $company_name;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var int
-     */
-    public $profile_id;
-
-    /**
-     * @var string
-     */
-    public $company_name;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $first_name;
+    public ?string $first_name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $last_name;
+    public ?string $last_name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Email(
-     *     message = "err.EmailIsInvalid",
-     *     checkMX = true
+     *     message="err.EmailIsInvalid",
+     *     checkMX=true
      * )
      */
-    public $email_address;
+    public string $email_address;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $phone;
+    public ?string $phone;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"register"})
      */
-    public $password;
+    public string $password;
 
     /**
-     * @var AccountAddressDataTransferObject
-     *
      * @Assert\Valid
      */
-    public $shipment_address;
+    public AccountAddressDataTransferObject $shipment_address;
 
     /**
-     * @var AccountAddressDataTransferObject
-     *
      * @Assert\Valid(groups={"DifferentInvoiceAddress"})
      */
-    public $invoice_address;
+    public AccountAddressDataTransferObject $invoice_address;
 
-    /**
-     * @var bool
-     */
-    public $same_invoice_address = true;
+    public bool $same_invoice_address = true;
 
     public function __construct(Account $account = null)
     {

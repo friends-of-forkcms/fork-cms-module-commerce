@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\ShipmentMethods\BasedOnWeight;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\Commerce\ShipmentMethods\Base\DataTransferObject;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class BasedOnWeightTransferObject extends DataTransferObject
@@ -12,14 +13,12 @@ class BasedOnWeightTransferObject extends DataTransferObject
     /**
      * @Assert\Valid
      */
-    public $values;
+    public Collection $values;
 
     /**
-     * @var Vat
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $vat;
+    public Vat $vat;
 
     public function __construct()
     {

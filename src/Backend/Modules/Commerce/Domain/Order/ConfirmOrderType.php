@@ -26,7 +26,7 @@ class ConfirmOrderType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => ConfirmOrderDataTransferObject::class,
-                'payment_methods' => []
+                'payment_methods' => [],
             ]
         );
     }

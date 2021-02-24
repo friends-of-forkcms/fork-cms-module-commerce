@@ -8,16 +8,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchDataTransferObject
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $query;
+    public string $query;
 
     /**
-     * Handle the set query which has been set
-     *
-     * @param Request $request
+     * Handle the set query which has been set.
      */
     public function __construct(Request $request)
     {

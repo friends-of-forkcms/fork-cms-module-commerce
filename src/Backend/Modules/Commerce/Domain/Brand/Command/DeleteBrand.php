@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Brand\Brand;
 
 final class DeleteBrand
 {
-    /** @var Brand */
-    public $brand;
+    public Brand $brand;
 
     public function __construct(Brand $brand)
     {

@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Brand\BrandRepository;
 
 final class DeleteBrandHandler
 {
-    /** @var BrandRepository */
-    private $brandRepository;
+    private BrandRepository $brandRepository;
 
     public function __construct(BrandRepository $brandRepository)
     {

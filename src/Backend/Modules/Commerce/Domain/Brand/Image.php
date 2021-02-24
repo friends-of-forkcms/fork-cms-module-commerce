@@ -6,9 +6,6 @@ use Common\Doctrine\ValueObject\AbstractImage;
 
 final class Image extends AbstractImage
 {
-    /**
-     * @return string
-     */
     protected function getUploadDir(): string
     {
         return 'Commerce/brands';
@@ -21,7 +18,7 @@ final class Image extends AbstractImage
     {
         if ($this->getFile()) {
             $this->namePrefix = str_replace(
-                '.' . $this->getFile()->getClientOriginalExtension(),
+                '.'.$this->getFile()->getClientOriginalExtension(),
                 '',
                 $this->getFile()->getClientOriginalName()
             );

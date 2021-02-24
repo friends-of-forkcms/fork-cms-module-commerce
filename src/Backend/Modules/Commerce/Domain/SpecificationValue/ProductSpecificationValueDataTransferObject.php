@@ -3,19 +3,20 @@
 namespace Backend\Modules\Commerce\Domain\SpecificationValue;
 
 use Backend\Core\Engine\Model;
+use Backend\Modules\Commerce\Domain\Specification\Specification;
 use Common\Doctrine\Entity\Meta;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductSpecificationValueDataTransferObject
 {
-    public $specification;
+    public ?Specification $specification;
 
     /**
      * @param SpecificationValue
      *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $value;
+    public SpecificationValue $value;
 
     public $product;
 
@@ -26,7 +27,7 @@ class ProductSpecificationValueDataTransferObject
         }
 
         $this->specification = $specificationValue->getSpecification();
-        $this->value         = $specificationValue;
+        $this->value = $specificationValue;
     }
 
     public function getMeta(): Meta

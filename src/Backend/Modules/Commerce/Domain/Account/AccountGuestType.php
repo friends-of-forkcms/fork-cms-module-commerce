@@ -88,7 +88,7 @@ class AccountGuestType extends AbstractType
             CheckboxType::class,
             [
                 'required' => false,
-                'label' => 'lbl.InvoiceAndShipmentAddressAreTheSame'
+                'label' => 'lbl.InvoiceAndShipmentAddressAreTheSame',
             ]
         );
     }
@@ -97,7 +97,7 @@ class AccountGuestType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => AccountGuestDataTransferObject::class
+                'data_class' => AccountGuestDataTransferObject::class,
             ]
         );
     }

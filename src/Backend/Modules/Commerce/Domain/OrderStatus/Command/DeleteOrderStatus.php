@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 
 final class DeleteOrderStatus
 {
-    /** @var OrderStatus */
-    public $orderStatus;
+    public OrderStatus $orderStatus;
 
     public function __construct(OrderStatus $orderStatus)
     {

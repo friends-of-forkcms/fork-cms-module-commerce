@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\Order\OrderRepository;
 
 final class DeleteOrderHandler
 {
-    /** @var OrderRepository */
-    private $orderRepository;
+    private OrderRepository $orderRepository;
 
     public function __construct(OrderRepository $orderRepository)
     {

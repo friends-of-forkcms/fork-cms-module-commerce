@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 
 final class DeleteVatHandler
 {
-    /** @var VatRepository */
-    private $vatRepository;
+    private VatRepository $vatRepository;
 
     public function __construct(VatRepository $vatRepository)
     {

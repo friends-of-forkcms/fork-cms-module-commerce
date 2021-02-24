@@ -2,87 +2,67 @@
 
 namespace Backend\Modules\Commerce\Domain\Quote;
 
+use DateTime;
+use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class QuoteDataTransferObject
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $first_name;
+    public string $first_name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $last_name;
+    public string $last_name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $phone;
+    public string $phone;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $street;
+    public string $street;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $house_number;
+    public string $house_number;
+
+    public string $house_number_addition;
 
     /**
-     * @var string
-     */
-    public $house_number_addition;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $city;
+    public string $city;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $zip_code;
+    public string $zip_code;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Email(
-     *     message = "err.EmailIsRequired",
-     *     checkMX = true
+     *     message="err.EmailIsRequired",
+     *     checkMX=true
      * )
      */
-    public $email_address;
+    public string $email_address;
 
-    /**
-     * @var \DateTime
-     */
-    public $date;
+    public DateTimeInterface $date;
 
     public function __construct()
     {
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
     }
 
-    public function getFullName()
+    public function getFullName(): string
     {
-        return $this->first_name .' '. $this->last_name;
+        return $this->first_name.' '.$this->last_name;
     }
 }

@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueReposit
 
 final class CreateProductOptionValueHandler
 {
-    /** @var ProductOptionValueRepository */
-    private $productOptionValueRepository;
+    private ProductOptionValueRepository $productOptionValueRepository;
 
     public function __construct(ProductOptionValueRepository $productOptionValueRepository)
     {

@@ -14,135 +14,96 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductDimension
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Product
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="dimensions")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $product;
+    private ?Product $product;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $price;
+    private float $price;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer")
      */
-    private $width;
+    private int $width;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer")
      */
-    private $height;
+    private int $height;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId(?int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return Product
-     */
     public function getProduct(): Product
     {
         return $this->product;
     }
 
-    /**
-     * @param Product $product
-     */
-    public function setProduct(Product $product)
+    public function setProduct(Product $product): void
     {
         $this->product = $product;
     }
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     *
-     * @return float
      */
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    /**
-     * @param float $price
-     */
-    public function setPrice(float $price)
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }
 
     /**
-     * Get the vat price only
-     *
-     * @return float
+     * Get the vat price only.
      */
-    public function getVatPrice()
+    public function getVatPrice(): float
     {
         return $this->getPrice() * $this->product->getVat()->getAsPercentage();
     }
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     *
-     * @return int
      */
-    public function getWidth(): ?int
+    public function getWidth(): int
     {
         return $this->width;
     }
 
-    /**
-     * @param int $width
-     */
-    public function setWidth(int $width)
+    public function setWidth(int $width): void
     {
         $this->width = $width;
     }
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     *
-     * @return int
      */
     public function getHeight(): ?int
     {
         return $this->height;
     }
 
-    /**
-     * @param int $height
-     */
-    public function setHeight(int $height)
+    public function setHeight(int $height): void
     {
         $this->height = $height;
     }

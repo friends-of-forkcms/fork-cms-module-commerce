@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueReposit
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce categories
+ * Alters the sequence of Commerce categories.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -24,6 +24,7 @@ class AutoCompleteProductOptionValue extends BackendBaseAJAXAction
 
         if ($parentId === null) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, 'Parent id not set, try again!');
+
             return;
         }
 

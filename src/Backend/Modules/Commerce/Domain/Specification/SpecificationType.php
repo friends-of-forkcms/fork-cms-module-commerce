@@ -20,18 +20,18 @@ class SpecificationType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         )->add(
             'filter',
             ChoiceType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.UseAsFilter',
-                'choices'  => [
+                'label' => 'lbl.UseAsFilter',
+                'choices' => [
                     'lbl.Yes' => true,
-                    'lbl.No'  => false
-                ]
+                    'lbl.No' => false,
+                ],
             ]
         )->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -40,10 +40,10 @@ class SpecificationType extends AbstractType
                     'meta',
                     MetaType::class,
                     [
-                        'base_field_name'                  => 'title',
-                        'generate_url_callback_class'      => 'commerce.repository.specification',
-                        'generate_url_callback_method'     => 'getUrl',
-                        'detail_url'                       => '',
+                        'base_field_name' => 'title',
+                        'generate_url_callback_class' => 'commerce.repository.specification',
+                        'generate_url_callback_method' => 'getUrl',
+                        'detail_url' => '',
                         'generate_url_callback_parameters' => [
                             $event->getData()->locale,
                             $event->getData()->id,
@@ -58,7 +58,7 @@ class SpecificationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => SpecificationDataTransferObject::class
+                'data_class' => SpecificationDataTransferObject::class,
             ]
         );
     }

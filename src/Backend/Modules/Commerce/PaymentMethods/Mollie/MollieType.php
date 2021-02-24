@@ -25,14 +25,14 @@ class MollieType extends Type
             TextType::class,
             [
                 'required' => true,
-                'label' => 'lbl.Name'
+                'label' => 'lbl.Name',
             ]
         )->add(
             'apiKey',
             TextType::class,
             [
                 'required' => true,
-                'label' => 'lbl.ApiKey'
+                'label' => 'lbl.ApiKey',
             ]
         )->add(
             'orderInitId',
@@ -45,7 +45,7 @@ class MollieType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderCompletedId',
@@ -58,7 +58,7 @@ class MollieType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderCancelledId',
@@ -71,7 +71,7 @@ class MollieType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderExpiredId',
@@ -84,7 +84,7 @@ class MollieType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderRefundedId',
@@ -97,7 +97,7 @@ class MollieType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         );
 
@@ -108,7 +108,7 @@ class MollieType extends Type
         $builder->get('orderRefundedId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
 
         foreach ($options['enabledMethods'] as $method) {
-            /**
+            /*
              * @var FormFactory $formFactory
              */
 //            $formFactory = Model::get('form.factory');
@@ -136,10 +136,10 @@ class MollieType extends Type
                     ChoiceType::class,
                     [
                         'required' => false,
-                        'label'    => 'lbl.Enabled',
+                        'label' => 'lbl.Enabled',
                         'placeholder' => false,
-                        'choices'  => [
-                            'lbl.No'  => false,
+                        'choices' => [
+                            'lbl.No' => false,
                             'lbl.Yes' => true,
                         ],
                     ]

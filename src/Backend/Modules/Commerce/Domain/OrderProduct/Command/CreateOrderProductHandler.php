@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderProduct\OrderProductRepository;
 
 final class CreateOrderProductHandler
 {
-    /** @var OrderProductRepository */
-    private $orderProductRepository;
+    private OrderProductRepository $orderProductRepository;
 
     public function __construct(OrderProductRepository $orderProductRepository)
     {

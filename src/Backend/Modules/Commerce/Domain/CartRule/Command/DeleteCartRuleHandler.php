@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository;
 
 final class DeleteCartRuleHandler
 {
-    /** @var CartRuleRepository */
-    private $cartRuleRepository;
+    private CartRuleRepository $cartRuleRepository;
 
     public function __construct(CartRuleRepository $cartRuleRepository)
     {

@@ -25,7 +25,7 @@ class BuckarooType extends Type
             TextType::class,
             [
                 'required' => true,
-                'label' => 'lbl.Name'
+                'label' => 'lbl.Name',
             ]
         )->add(
             'apiEnvironment',
@@ -43,14 +43,14 @@ class BuckarooType extends Type
             TextType::class,
             [
                 'required' => true,
-                'label' => 'lbl.WebsiteKey'
+                'label' => 'lbl.WebsiteKey',
             ]
         )->add(
             'secretKey',
             TextType::class,
             [
                 'required' => true,
-                'label' => 'lbl.SecretKey'
+                'label' => 'lbl.SecretKey',
             ]
         )->add(
             'orderInitId',
@@ -63,7 +63,7 @@ class BuckarooType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderCompletedId',
@@ -76,7 +76,7 @@ class BuckarooType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderCancelledId',
@@ -89,7 +89,7 @@ class BuckarooType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderExpiredId',
@@ -102,7 +102,7 @@ class BuckarooType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'orderRefundedId',
@@ -115,7 +115,7 @@ class BuckarooType extends Type
                     return $er->createQueryBuilder('i')
                         ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         );
 
@@ -126,7 +126,7 @@ class BuckarooType extends Type
         $builder->get('orderRefundedId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
 
         foreach ($options['enabledMethods'] as $method) {
-            /**
+            /*
              * @var FormFactory $formFactory
              */
 //            $formFactory = Model::get('form.factory');
@@ -154,10 +154,10 @@ class BuckarooType extends Type
                     ChoiceType::class,
                     [
                         'required' => false,
-                        'label'    => 'lbl.Enabled',
+                        'label' => 'lbl.Enabled',
                         'placeholder' => false,
-                        'choices'  => [
-                            'lbl.No'  => false,
+                        'choices' => [
+                            'lbl.No' => false,
                             'lbl.Yes' => true,
                         ],
                     ]

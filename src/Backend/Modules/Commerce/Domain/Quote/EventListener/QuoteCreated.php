@@ -13,15 +13,8 @@ use Swift_Mime_SimpleMessage;
 
 final class QuoteCreated
 {
-    /**
-     * @var ModulesSettings
-     */
-    protected $modulesSettings;
-
-    /**
-     * @var Swift_Mailer
-     */
-    protected $mailer;
+    private ModulesSettings $modulesSettings;
+    private Swift_Mailer $mailer;
 
     public function __construct(
         Swift_Mailer $mailer,
@@ -47,15 +40,9 @@ final class QuoteCreated
         $this->mailer->send($companyMessage);
     }
 
-    /**
-     * @param QuoteDataTransferObject $quote
-     * @param Cart $cart
-     *
-     * @return Swift_Mime_SimpleMessage
-     */
-    private function getCustomerMessage(QuoteDataTransferObject $quote, Cart $cart) : Swift_Mime_SimpleMessage
+    private function getCustomerMessage(QuoteDataTransferObject $quote, Cart $cart): Swift_Mime_SimpleMessage
     {
-        $subject = $this->modulesSettings->get('Core', 'site_title_' . LANGUAGE) .
+        $subject = $this->modulesSettings->get('Core', 'site_title_'.LANGUAGE).
                    ' - '.
                    Language::getLabel('YourQuoteRequestMailSubject');
 
@@ -76,22 +63,16 @@ final class QuoteCreated
         return $message;
     }
 
-    /**
-     * @param QuoteDataTransferObject $quote
-     * @param Cart $cart
-     *
-     * @return Swift_Mime_SimpleMessage
-     */
-    private function getCompanyMessage(QuoteDataTransferObject $quote, Cart $cart) : Swift_Mime_SimpleMessage
+    private function getCompanyMessage(QuoteDataTransferObject $quote, Cart $cart): Swift_Mime_SimpleMessage
     {
-        $subject = $this->modulesSettings->get('Core', 'site_title_' . LANGUAGE) .
+        $subject = $this->modulesSettings->get('Core', 'site_title_'.LANGUAGE).
                    ' - '.
                    Language::getLabel('NewQuoteRequestMailSubject');
 
         $from = $this->modulesSettings->get('Core', 'mailer_from');
         $to = $this->modulesSettings->get('Core', 'mailer_to');
 
-        $message = Message::newInstance($subject)
+        return Message::newInstance($subject)
                           ->parseHtml(
                               '/Commerce/Layout/Templates/Mails/Quote/ConfirmationCompany.html.twig',
                               [
@@ -103,7 +84,5 @@ final class QuoteCreated
                           ->setTo($to['email'])
                           ->setReplyTo([$quote->email_address => $quote->getFullName()])
                           ->setFrom([$from['email'] => $from['name']]);
-
-        return $message;
     }
 }

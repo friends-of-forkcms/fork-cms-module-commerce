@@ -14,7 +14,7 @@ use Frontend\Core\Language\Language;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Resources\Payment;
-use Mollie\Api\Types\PaymentMethod;
+use PDO;
 
 class ConfirmOrder extends BaseConfirmOrder
 {
@@ -23,10 +23,7 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     private $mollie;
 
-    /**
-     * @var string
-     */
-    private $currency = 'EUR'; // @TODO change when shop uses multi currency
+    private string $currency = 'EUR'; // @TODO change when shop uses multi currency
 
     /**
      * @throws ApiException
@@ -41,7 +38,7 @@ class ConfirmOrder extends BaseConfirmOrder
         $this->mollie->setApiKey($this->getSetting('apiKey'));
 
         if (!$this->redirectUrl) {
-            $this->redirectUrl = '/post-payment?order_id=' . $this->order->getId();
+            $this->redirectUrl = '/post-payment?order_id='.$this->order->getId();
         }
 
         $payment = $this->getPayment();
@@ -75,7 +72,7 @@ class ConfirmOrder extends BaseConfirmOrder
         $query->bindValue('order_id', $this->order->getId());
         $query->execute();
 
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
 
         $mollie = new MollieApiClient();
         $mollie->setApiKey($this->getSetting('apiKey'));
@@ -90,7 +87,6 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * @return Payment
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Mollie\Api\Exceptions\ApiException
      * @throws PaymentException
@@ -102,7 +98,7 @@ class ConfirmOrder extends BaseConfirmOrder
         );
         $query->bindValue('order_id', $this->order->getId());
         $query->execute();
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
             return $this->updatePayment($result['transaction_id']);
@@ -112,24 +108,23 @@ class ConfirmOrder extends BaseConfirmOrder
     }
 
     /**
-     * Create a new payment
+     * Create a new payment.
      *
-     * @return Payment
      * @throws \Mollie\Api\Exceptions\ApiException
      * @throws DBALException
      */
     private function createPayment(): Payment
     {
-        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Commerce', 'Cart');
+        $baseUrl = SITE_URL.Navigation::getUrlForBlock('Commerce', 'Cart');
         $payment = $this->mollie->payments->create(
             [
                 'amount' => [
                     'currency' => $this->currency,
                     'value' => number_format($this->order->getTotal(), 2, '.', ''),
                 ],
-                'description' => 'Order ' . $this->order->getId(),
-                'redirectUrl' => SITE_URL . $this->redirectUrl,
-                'webhookUrl' => $baseUrl . '/webhook?payment_method=Mollie.'. $this->option,
+                'description' => 'Order '.$this->order->getId(),
+                'redirectUrl' => SITE_URL.$this->redirectUrl,
+                'webhookUrl' => $baseUrl.'/webhook?payment_method=Mollie.'.$this->option,
                 'method' => $this->option,
                 'issuer' => $this->data->issuer,
                 'metadata' => [
@@ -153,13 +148,13 @@ class ConfirmOrder extends BaseConfirmOrder
 
     /**
      * @param $transactionId
-     * @return Payment
+     *
      * @throws \Mollie\Api\Exceptions\ApiException
      * @throws PaymentException
      */
     private function updatePayment($transactionId): Payment
     {
-        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Commerce', 'Cart');
+        $baseUrl = SITE_URL.Navigation::getUrlForBlock('Commerce', 'Cart');
 
         $payment = $this->mollie->payments->get($transactionId);
 
@@ -171,9 +166,9 @@ class ConfirmOrder extends BaseConfirmOrder
             'currency' => $this->currency,
             'value' => number_format($this->order->getTotal(), 2, '.', ''),
         ];
-        $payment->description = 'Order ' . $this->order->getId();
-        $payment->redirectUrl = SITE_URL . $this->redirectUrl;
-        $payment->webhookUrl = $baseUrl . '/webhook?payment_method=Mollie.'. $this->option;
+        $payment->description = 'Order '.$this->order->getId();
+        $payment->redirectUrl = SITE_URL.$this->redirectUrl;
+        $payment->webhookUrl = $baseUrl.'/webhook?payment_method=Mollie.'.$this->option;
         $payment->method = $this->option;
         $payment->metadata = [
             'order_id' => $this->order->getId(),

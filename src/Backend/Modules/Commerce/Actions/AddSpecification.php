@@ -4,22 +4,19 @@ namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
 use Backend\Core\Engine\Model as BackendModel;
-use Backend\Modules\Commerce\Domain\Specification\SpecificationType;
 use Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecification;
 use Backend\Modules\Commerce\Domain\Specification\Event\Created;
+use Backend\Modules\Commerce\Domain\Specification\SpecificationType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the add specification-action, it will display a form to create a new specification
+ * This is the add specification-action, it will display a form to create a new specification.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Willem van Dam <w.vandam@jvdict.nl>
  */
 class AddSpecification extends BackendBaseActionAdd
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();

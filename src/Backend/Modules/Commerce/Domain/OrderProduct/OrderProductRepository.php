@@ -14,9 +14,6 @@ class OrderProductRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     *
-     * @return OrderProduct|null
      * @throws OrderProductNotFound
      */
     public function findOneById(?int $id): ?OrderProduct

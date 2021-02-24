@@ -16,117 +16,50 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class Edit
 {
-    /**
-     * @var Request $request
-     */
-    protected $request;
+    protected Request $request;
+    protected string $name;
+    protected TwigTemplate $template;
+    protected Locale $locale;
+    protected ModulesSettings $settings;
+    protected ShipmentMethodRepository $shipmentMethodRepository;
 
-    /**
-     * @var string $name
-     */
-    protected $name;
-
-    /**
-     * @var TwigTemplate $template
-     */
-    protected $template;
-
-    /**
-     * @var Locale $locale
-     */
-    protected $locale;
-
-    /**
-     * @var ModulesSettings $settings
-     */
-    protected $settings;
-
-    /**
-     * @var ShipmentMethodRepository $shipmentMethodRepository
-     */
-    protected $shipmentMethodRepository;
-
-    /**
-     * Initiate required data
-     */
     public function __construct()
     {
-        $this->locale                   = Locale::workingLocale();
-        $this->settings                 = Model::get('fork.settings');
+        $this->locale = Locale::workingLocale();
+        $this->settings = Model::get('fork.settings');
         $this->shipmentMethodRepository = Model::get('commerce.repository.shipment_method');
     }
 
-    /**
-     * Set the request object
-     *
-     * @param Request $request
-     *
-     * @return void
-     */
     public function setRequest(Request $request): void
     {
         $this->request = $request;
     }
 
-    /**
-     * Set the shipment method name
-     *
-     * @param string $name
-     *
-     * @return void
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * Set the twig template which is used to handle our template
-     *
-     * @param TwigTemplate $template
-     *
-     * @return void
-     */
     public function setTemplate(TwigTemplate $template): void
     {
         $this->template = $template;
     }
 
-    /**
-     * Get the current request
-     *
-     * @return Request
-     */
     public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * Get template with all the required assigments
-     *
-     * @return TwigTemplate
-     */
     public function getTemplate(): TwigTemplate
     {
         return $this->template;
     }
 
-    /**
-     * Get the template name based on the current shipment method
-     *
-     * @return string
-     */
     public function getTemplateName(): string
     {
-        return '/Commerce/ShipmentMethods/' . $this->name . '/Layout/Edit.html.twig';
+        return '/Commerce/ShipmentMethods/'.$this->name.'/Layout/Edit.html.twig';
     }
 
-    /**
-     * Execute this controller
-     *
-     * @return void
-     */
     public function execute(): void
     {
     }
@@ -134,11 +67,9 @@ abstract class Edit
     /**
      * Creates and returns a Form instance from the type of the form.
      *
-     * @param string $type FQCN of the form type class i.e: MyClass::class
-     * @param mixed $data The initial data for the form
-     * @param array $options Options for the form
-     *
-     * @return Form
+     * @param string $type    FQCN of the form type class i.e: MyClass::class
+     * @param mixed  $data    The initial data for the form
+     * @param array  $options Options for the form
      */
     public function createForm(string $type, $data = null, array $options = []): Form
     {
@@ -158,28 +89,17 @@ abstract class Edit
     }
 
     /**
-     * Save settings for our current shipment method
-     *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $includeLanguage
-     *
-     * @return void
+     * Save settings for our current shipment method.
      */
     protected function saveSetting(string $name, $value, bool $includeLanguage = true): void
     {
         $baseKey = $this->getBaseKey($includeLanguage);
 
-        $this->settings->set('Commerce', $baseKey . '_' . $name, $value);
+        $this->settings->set('Commerce', $baseKey.'_'.$name, $value);
     }
 
     /**
-     * Populate data transfer object with data from the database
-     *
-     * @param DataTransferObject $dataTransferObject
-     * @param bool $includeLanguage
-     *
-     * @return DataTransferObject
+     * Populate data transfer object with data from the database.
      */
     protected function getData(DataTransferObject $dataTransferObject, bool $includeLanguage = true): DataTransferObject
     {
@@ -189,12 +109,12 @@ abstract class Edit
         // Assign the properties to object transfer object
         foreach ($properties as $property => $defaultValue) {
             // Skip the installed var
-            if ($property == 'installed') {
+            if ($property === 'installed') {
                 continue;
             }
 
-            $key                             = $this->getBaseKey($includeLanguage) . '_' . $property;
-            $value                           = $this->settings->get('Commerce', $key, $defaultValue);
+            $key = $this->getBaseKey($includeLanguage).'_'.$property;
+            $value = $this->settings->get('Commerce', $key, $defaultValue);
             $dataTransferObject->{$property} = $value;
         }
 
@@ -211,11 +131,10 @@ abstract class Edit
 
     /**
      * Redirect to a given URL
+     * This is a helper method as the actual implementation is located in the url class.
      *
-     * This is a helper method as the actual implementation is located in the url class
-     *
-     * @param string $url The URL to redirect to.
-     * @param int $code The redirect code, default is 302 which means this is a temporary redirect.
+     * @param string $url  the URL to redirect to
+     * @param int    $code the redirect code, default is 302 which means this is a temporary redirect
      *
      * @throws RedirectException
      */
@@ -225,22 +144,13 @@ abstract class Edit
     }
 
     /**
-     * Generate the data grid row key to highlight this shipment method
-     *
-     * @return string
+     * Generate the data grid row key to highlight this shipment method.
      */
     public function getDataGridRowKey(): string
     {
-        return 'row-shipment_method_' . $this->name;
+        return 'row-shipment_method_'.$this->name;
     }
 
-    /**
-     * Install the current shipment method
-     *
-     * @param bool $install
-     *
-     * @return void
-     */
     protected function installShipmentMethod(bool $install): void
     {
         if ($install === true) {
@@ -259,19 +169,12 @@ abstract class Edit
         }
     }
 
-    /**
-     * Get the settings base key
-     *
-     * @param bool $includeLanguage
-     *
-     * @return string
-     */
     private function getBaseKey(bool $includeLanguage): string
     {
         $key = $this->name;
 
         if ($includeLanguage) {
-            $key .= '_' . $this->locale;
+            $key .= '_'.$this->locale;
         }
 
         return $key;

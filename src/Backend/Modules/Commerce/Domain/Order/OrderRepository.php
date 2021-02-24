@@ -18,9 +18,6 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     *
-     * @return Order|null
      * @throws OrderNotFound
      */
     public function findOneById(?int $id): ?Order
@@ -51,9 +48,6 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param int $id
-     * @param Account $account
-     * @return Order
      * @throws OrderNotFound
      */
     public function findByIdAndAccount(int $id, Account $account): Order
@@ -69,17 +63,12 @@ class OrderRepository extends EntityRepository
                 ])
                 ->getQuery()
                 ->getSingleResult();
-        } catch (NoResultException $e) {
-            throw OrderNotFound::forId($id);
-        } catch (NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException $e) {
             throw OrderNotFound::forId($id);
         }
     }
 
     /**
-     * @param int $id
-     * @param string $email
-     * @return Order
      * @throws OrderNotFound
      */
     public function findByIdAndEmailAddress(int $id, string $email): Order
@@ -96,17 +85,12 @@ class OrderRepository extends EntityRepository
                 ])
                 ->getQuery()
                 ->getSingleResult();
-        } catch (NoResultException $e) {
-            throw OrderNotFound::forId($id);
-        } catch (NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException $e) {
             throw OrderNotFound::forId($id);
         }
     }
 
     /**
-     * @param int $status
-     *
-     * @return int
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

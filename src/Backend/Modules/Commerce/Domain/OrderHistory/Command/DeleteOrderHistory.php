@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
 
 final class DeleteOrderHistory
 {
-    /** @var OrderHistory */
-    public $orderHistory;
+    public OrderHistory $orderHistory;
 
     public function __construct(OrderHistory $orderHistory)
     {

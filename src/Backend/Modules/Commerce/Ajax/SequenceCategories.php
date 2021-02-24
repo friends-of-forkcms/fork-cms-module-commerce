@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\Category\Command\UpdateCategory;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce categories
+ * Alters the sequence of Commerce categories.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -23,7 +23,7 @@ class SequenceCategories extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the category repository
+         * get the category repository.
          */
         $categoryRepository = $this->get('commerce.repository.category');
 
@@ -32,7 +32,6 @@ class SequenceCategories extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($category = $categoryRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
                 $updateCategory = new UpdateCategory($category);

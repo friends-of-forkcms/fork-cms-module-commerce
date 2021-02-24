@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
-use Backend\Core\Engine\DataGridArray;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridArray;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
@@ -20,7 +20,7 @@ class DataGrid extends DataGridArray
         parent::__construct($this->getPaymentMethods());
 
         // our JS needs to know an id, so we can highlight it
-        $this->setRowAttributes(array('id' => 'row-[id]'));
+        $this->setRowAttributes(['id' => 'row-[id]']);
 
         // Hide columns
         $this->setColumnHidden('raw_name');
@@ -37,7 +37,7 @@ class DataGrid extends DataGridArray
         // Overwrite header labels
         $this->setHeaderLabels(
             [
-                'data_grid_installed' => ucfirst(Language::lbl('Installed'))
+                'data_grid_installed' => ucfirst(Language::lbl('Installed')),
             ]
         );
 
@@ -55,9 +55,7 @@ class DataGrid extends DataGridArray
     }
 
     /**
-     * Get all the available payment methods
-     *
-     * @return array
+     * Get all the available payment methods.
      */
     private function getPaymentMethods(): array
     {
@@ -72,7 +70,7 @@ class DataGrid extends DataGridArray
         // get more information for each module
         foreach ($paymentMethods as $paymentMethodName) {
             $paymentMethod = [];
-            $paymentMethod['id'] = 'payment_method_' . $paymentMethodName;
+            $paymentMethod['id'] = 'payment_method_'.$paymentMethodName;
             $paymentMethod['raw_name'] = $paymentMethodName;
             $paymentMethod['name'] = $paymentMethodName;
             $paymentMethod['description'] = '';
@@ -85,7 +83,7 @@ class DataGrid extends DataGridArray
 
             try {
                 $infoXml = @new \SimpleXMLElement(
-                    BACKEND_MODULES_PATH . '/Commerce/PaymentMethods/' . $paymentMethod['raw_name'] . '/Info.xml',
+                    BACKEND_MODULES_PATH.'/Commerce/PaymentMethods/'.$paymentMethod['raw_name'].'/Info.xml',
                     LIBXML_NOCDATA,
                     true
                 );
@@ -114,19 +112,17 @@ class DataGrid extends DataGridArray
     }
 
     /**
-     * Get the payment methods from file system
-     *
-     * @return array
+     * Get the payment methods from file system.
      */
     public static function getPaymentMethodsOnFilesystem(): array
     {
         $paymentMethods = [];
 
         $finder = new Finder();
-        $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Commerce/PaymentMethods')->depth('==0');
+        $directories = $finder->directories()->in(BACKEND_MODULES_PATH.'/Commerce/PaymentMethods')->depth('==0');
         foreach ($directories as $directory) {
             // Exclude some directories
-            if (!file_exists($directory . '/Info.xml')) {
+            if (!file_exists($directory.'/Info.xml')) {
                 continue;
             }
 
@@ -137,11 +133,7 @@ class DataGrid extends DataGridArray
     }
 
     /**
-     * Process the payment method XML
-     *
-     * @param \SimpleXMLElement $xml
-     *
-     * @return array
+     * Process the payment method XML.
      */
     private function processPaymentMethodXml(\SimpleXMLElement $xml): array
     {

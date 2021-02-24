@@ -21,20 +21,20 @@ class CashOnDeliveryType extends Type
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Name'
+                'label' => 'lbl.Name',
             ]
         )->add(
             'orderInitId',
             EntityType::class,
             [
-                'required'      => true,
-                'label'         => 'lbl.OrderInitialized',
-                'class'         => OrderStatus::class,
+                'required' => true,
+                'label' => 'lbl.OrderInitialized',
+                'class' => OrderStatus::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
                               ->orderBy('i.title', 'ASC');
                 },
-                'choice_label'  => 'title'
+                'choice_label' => 'title',
             ]
         );
 

@@ -2,50 +2,22 @@
 
 namespace Backend\Modules\Commerce\PaymentMethods\Base\Checkout;
 
-use Backend\Modules\Commerce\Domain\Account\AddressDataTransferObject;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Common\Core\Model;
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
-use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 
 abstract class Quote
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
+    protected Cart $cart;
+    protected OrderAddress $address;
+    protected ModulesSettings $settings;
+    protected ?Locale $language;
 
-    /**
-     * @var Cart
-     */
-    protected $cart;
-
-    /**
-     * @var OrderAddress
-     */
-    protected $address;
-
-    /**
-     * @var ModulesSettings
-     */
-    protected $settings;
-
-    /**
-     * @var Language
-     */
-    protected $language;
-
-    /**
-     * Quote constructor.
-     *
-     * @param string $name
-     * @param Cart $cart
-     * @param AddressDataTransferObject $address
-     */
     public function __construct(string $name, Cart $cart, OrderAddress $address)
     {
         $this->name = $name;
@@ -56,11 +28,10 @@ abstract class Quote
     }
 
     /**
-     * Get a setting
+     * Get a setting.
      *
-     * @param string $key
      * @param mixed $defaultValue
-     * @param boolean $includeLanguage
+     * @param bool  $includeLanguage
      *
      * @return mixed
      */
@@ -69,10 +40,10 @@ abstract class Quote
         $baseKey = $this->name;
 
         if ($includeLanguage) {
-            $baseKey .= '_'. $this->language->getLocale();
+            $baseKey .= '_'.$this->language->getLocale();
         }
 
-        return $this->settings->get('Commerce', $baseKey .'_'. $key, $defaultValue);
+        return $this->settings->get('Commerce', $baseKey.'_'.$key, $defaultValue);
     }
 
     protected function isAllowedPaymentMethod(): bool
@@ -91,7 +62,7 @@ abstract class Quote
          * @var PaymentMethod $availablePaymentMethod
          */
         foreach ($shipmentMethod['available_payment_methods'] as $availablePaymentMethod) {
-            if ($availablePaymentMethod->getName() == $this->name) {
+            if ($availablePaymentMethod->getName() === $this->name) {
                 return true;
             }
         }
@@ -111,8 +82,6 @@ abstract class Quote
 
     /**
      * Get the quote based on our payment data. A quote can return multiple options.
-     *
-     * @return array
      */
     abstract public function getQuote(): array;
 }

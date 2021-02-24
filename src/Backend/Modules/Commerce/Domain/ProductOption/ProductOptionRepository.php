@@ -42,18 +42,14 @@ class ProductOptionRepository extends EntityRepository
             function (ProductOption $productOption) {
                 $this->getEntityManager()->remove($productOption);
             },
-            (array)$this->findBy(['id' => $id])
+            (array) $this->findBy(['id' => $id])
         );
     }
 
     /**
-     * Get the next sequence in line
-     *
-     * @param Product $product
+     * Get the next sequence in line.
      *
      * @throws
-     *
-     * @return integer
      */
     public function getNextSequence(Product $product): int
     {

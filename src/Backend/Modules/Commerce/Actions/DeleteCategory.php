@@ -7,33 +7,30 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
 use Backend\Modules\Commerce\Domain\Category\Category;
-use Backend\Modules\Commerce\Domain\Category\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Category\Command\DeleteCategory as DeleteCommand;
+use Backend\Modules\Commerce\Domain\Category\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Category\Exception\CategoryNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
- * This action will delete a category
+ * This action will delete a category.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class DeleteCategory extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $category = $this->getCategory((int)$deleteFormData['id']);
+        $category = $this->getCategory((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.

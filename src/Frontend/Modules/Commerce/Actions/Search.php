@@ -9,22 +9,22 @@ use Backend\Modules\Commerce\Domain\Search\SearchType;
 use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
 use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
-use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Engine\Navigation;
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Frontend\Modules\Commerce\Engine\Pagination;
 use Symfony\Component\Form\Form;
 
 /**
- * Search the products
+ * Search the products.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Search extends FrontendBaseBlock
 {
     /**
-     * Execute the action
+     * Execute the action.
      *
      * @throws RedirectException
      */
@@ -43,7 +43,7 @@ class Search extends FrontendBaseBlock
     }
 
     /**
-     * Parse products overview in a category
+     * Parse products overview in a category.
      *
      * @throws RedirectException
      */
@@ -61,7 +61,7 @@ class Search extends FrontendBaseBlock
                 Navigation::getUrlForBlock(
                     'Commerce',
                     'Search'
-                ) . '?query=' . $form->getData()->query
+                ).'?query='.$form->getData()->query
             );
         }
 
@@ -80,7 +80,7 @@ class Search extends FrontendBaseBlock
         $productRepository = $this->getProductRepository();
         $specificationRepository = $this->getSpecificationRepository();
         $productOffset = ($currentPage - 1) * $itemsPerPage;
-        $baseUrl = '/' . implode('/', array_merge($this->url->getPages()));
+        $baseUrl = '/'.implode('/', array_merge($this->url->getPages()));
 
         // Build pagination
         $pagination = new Pagination();
@@ -106,7 +106,7 @@ class Search extends FrontendBaseBlock
             Product::SORT_CREATED_AT => [
                 'label' => 'Toegevoegd',
                 'selected' => false,
-            ]
+            ],
         ];
 
         $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
@@ -172,9 +172,7 @@ class Search extends FrontendBaseBlock
     }
 
     /**
-     * Load the search form
-     *
-     * @return Form
+     * Load the search form.
      */
     private function getSearchForm(): Form
     {
@@ -182,7 +180,7 @@ class Search extends FrontendBaseBlock
             SearchType::class,
             new SearchDataTransferObject($this->getRequest()),
             [
-                'action' => '/' . implode('/', array_merge($this->url->getPages())),
+                'action' => '/'.implode('/', array_merge($this->url->getPages())),
             ]
         );
 
@@ -191,26 +189,18 @@ class Search extends FrontendBaseBlock
         return $form;
     }
 
-    /**
-     * @return ProductRepository
-     */
     private function getProductRepository(): ProductRepository
     {
         return $this->get('commerce.repository.product');
     }
 
-    /**
-     * @return SpecificationRepository
-     */
     private function getSpecificationRepository(): SpecificationRepository
     {
         return $this->get('commerce.repository.specification');
     }
 
     /**
-     * Get an array with the filters which could be used
-     *
-     * @return array
+     * Get an array with the filters which could be used.
      */
     private function getProductFilters(): array
     {

@@ -13,6 +13,6 @@ class OrderAddressNotFound extends Exception
 
     public static function forId(string $id): self
     {
-        return new self('Can\'t find a Order Address with id = "' . $id . '".');
+        return new self('Can\'t find a Order Address with id = "'.$id.'".');
     }
 }

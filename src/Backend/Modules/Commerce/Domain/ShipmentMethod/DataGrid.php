@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\ShipmentMethod;
 
-use Backend\Core\Engine\DataGridArray;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridArray;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
@@ -20,7 +20,7 @@ class DataGrid extends DataGridArray
         parent::__construct($this->getShipmentMethods());
 
         // our JS needs to know an id, so we can highlight it
-        $this->setRowAttributes(array('id' => 'row-[id]'));
+        $this->setRowAttributes(['id' => 'row-[id]']);
 
         // Hide columns
         $this->setColumnHidden('raw_name');
@@ -37,7 +37,7 @@ class DataGrid extends DataGridArray
         // Overwrite header labels
         $this->setHeaderLabels(
             [
-                'data_grid_installed' => ucfirst(Language::lbl('Installed'))
+                'data_grid_installed' => ucfirst(Language::lbl('Installed')),
             ]
         );
 
@@ -55,9 +55,7 @@ class DataGrid extends DataGridArray
     }
 
     /**
-     * Get all the available shipment methods
-     *
-     * @return array
+     * Get all the available shipment methods.
      */
     private function getShipmentMethods(): array
     {
@@ -72,7 +70,7 @@ class DataGrid extends DataGridArray
         // get more information for each module
         foreach ($shipmentMethods as $shipmentMethodName) {
             $shipmentMethod = [];
-            $shipmentMethod['id'] = 'shipment_method_' . $shipmentMethodName;
+            $shipmentMethod['id'] = 'shipment_method_'.$shipmentMethodName;
             $shipmentMethod['raw_name'] = $shipmentMethodName;
             $shipmentMethod['name'] = $shipmentMethodName;
             $shipmentMethod['description'] = '';
@@ -85,7 +83,7 @@ class DataGrid extends DataGridArray
 
             try {
                 $infoXml = @new \SimpleXMLElement(
-                    BACKEND_MODULES_PATH . '/Commerce/ShipmentMethods/' . $shipmentMethod['raw_name'] . '/Info.xml',
+                    BACKEND_MODULES_PATH.'/Commerce/ShipmentMethods/'.$shipmentMethod['raw_name'].'/Info.xml',
                     LIBXML_NOCDATA,
                     true
                 );
@@ -114,20 +112,18 @@ class DataGrid extends DataGridArray
     }
 
     /**
-     * Get the shipment methods from file system
-     *
-     * @return array
+     * Get the shipment methods from file system.
      */
     public static function getShipmentMethodsOnFilesystem(): array
     {
         $shipmentMethods = [];
 
         $excludedDirectories = [
-            'Base'
+            'Base',
         ];
 
         $finder = new Finder();
-        $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Commerce/ShipmentMethods')->depth('==0');
+        $directories = $finder->directories()->in(BACKEND_MODULES_PATH.'/Commerce/ShipmentMethods')->depth('==0');
         foreach ($directories as $directory) {
             // Exclude some directories
             if (in_array($directory->getBasename(), $excludedDirectories)) {
@@ -141,11 +137,7 @@ class DataGrid extends DataGridArray
     }
 
     /**
-     * Process the shipment method XML
-     *
-     * @param \SimpleXMLElement $xml
-     *
-     * @return array
+     * Process the shipment method XML.
      */
     private function processShipmentMethodXml(\SimpleXMLElement $xml): array
     {

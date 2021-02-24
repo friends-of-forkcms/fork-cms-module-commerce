@@ -6,14 +6,14 @@ use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Commerce\Domain\Specification\Specification;
-use Backend\Modules\Commerce\Domain\Specification\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Specification\Command\DeleteSpecification as DeleteCommand;
+use Backend\Modules\Commerce\Domain\Specification\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Specification\Exception\SpecificationValueNotFound;
+use Backend\Modules\Commerce\Domain\Specification\Specification;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
- * This action will delete a specification
+ * This action will delete a specification.
  *
  * @author Tijs Verkoyen <tijs@verkoyen.eu>
  * @author Tim van Wolfswinkel <tim@webleads.nl>
@@ -21,21 +21,18 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
  */
 class DeleteSpecification extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $specification = $this->getSpecification((int)$deleteFormData['id']);
+        $specification = $this->getSpecification((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.
@@ -51,7 +48,6 @@ class DeleteSpecification extends BackendBaseActionDelete
             $this->redirect($this->getBackLink(['error' => 'products-connected']));
         }
     }
-
 
     private function getBackLink(array $parameters = []): string
     {

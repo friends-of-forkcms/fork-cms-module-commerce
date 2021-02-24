@@ -6,36 +6,33 @@ use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Commerce\Domain\Product\Command\DeleteProduct as DeleteCommand;
 use Backend\Modules\Commerce\Domain\Product\Event\BeforeDelete;
 use Backend\Modules\Commerce\Domain\Product\Event\Deleted;
 use Backend\Modules\Commerce\Domain\Product\Exception\ProductNotFound;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Backend\Modules\Commerce\Domain\Product\Command\DeleteProduct as DeleteCommand;
 
 /**
- * This action will delete a product
+ * This action will delete a product.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Delete extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $product = $this->getProduct((int)$deleteFormData['id']);
+        $product = $this->getProduct((int) $deleteFormData['id']);
 
         $this->get('event_dispatcher')->dispatch(
             BeforeDelete::EVENT_NAME,

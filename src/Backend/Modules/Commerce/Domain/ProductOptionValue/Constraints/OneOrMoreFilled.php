@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class OneOrMoreFilled extends Constraint
 {
-    public $message = 'Dit veld of de velden "{{ string }}" moeten gevuld zijn.';
+    public string $message = 'Dit veld of de velden "{{ string }}" moeten gevuld zijn.';
 
-    public $fields = [];
+    public array $fields = [];
 
     public function getRequiredOptions()
     {

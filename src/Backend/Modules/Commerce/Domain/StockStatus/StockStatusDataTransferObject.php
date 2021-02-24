@@ -2,50 +2,32 @@
 
 namespace Backend\Modules\Commerce\Domain\StockStatus;
 
-use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\StockStatusValue\StockStatusValue;
+use Common\Locale;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class StockStatusDataTransferObject
 {
-    /**
-     * @var StockStatus
-     */
-    protected $stockStatusEntity;
+    protected ?StockStatus $stockStatusEntity;
+    public int $id;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var int
-     */
-    public $type;
+    public string $title;
+    public Locale $locale;
+    public int $type;
 
     public function __construct(StockStatus $stockStatus = null)
     {
         $this->stockStatusEntity = $stockStatus;
 
-        if (! $this->hasExistingStockStatus()) {
+        if (!$this->hasExistingStockStatus()) {
             return;
         }
 
-        $this->id       = $stockStatus->getId();
-        $this->title    = $stockStatus->getTitle();
-        $this->locale   = $stockStatus->getLocale();
+        $this->id = $this->stockStatusEntity->getId();
+        $this->title = $this->stockStatusEntity->getTitle();
+        $this->locale = $this->stockStatusEntity->getLocale();
     }
 
     public function getStockStatusEntity(): StockStatus

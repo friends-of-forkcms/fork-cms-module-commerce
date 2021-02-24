@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\Specification\Command\UpdateSpecification;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of specification values
+ * Alters the sequence of specification values.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -22,7 +22,7 @@ class SequenceSpecifications extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the specifications repository
+         * get the specifications repository.
          */
         $specificationRepository = $this->get('commerce.repository.specification');
 
@@ -31,7 +31,6 @@ class SequenceSpecifications extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($vat = $specificationRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
                 $updateSequence = new UpdateSpecification($vat);

@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityRepository;
 class OrderStatusRepository extends EntityRepository
 {
     /**
-     * @param OrderStatus $orderStatus
      * @throws \Doctrine\ORM\ORMException
      */
     public function add(OrderStatus $orderStatus): void
@@ -19,9 +18,6 @@ class OrderStatusRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return OrderStatus|null
      * @throws OrderStatusNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?OrderStatus
@@ -41,8 +37,6 @@ class OrderStatusRepository extends EntityRepository
     }
 
     /**
-     * @param int $id
-     * @return OrderStatus
      * @throws OrderStatusNotFound
      */
     public function findOneById(int $id): OrderStatus
@@ -72,10 +66,10 @@ class OrderStatusRepository extends EntityRepository
     {
         return $this->findBy(
             [
-                'locale' => $locale
+                'locale' => $locale,
             ],
             [
-                'title' => 'ASC'
+                'title' => 'ASC',
             ]
         );
     }

@@ -8,10 +8,7 @@ use JeroenDesloovere\SitemapBundle\Provider\SitemapProviderInterface;
 
 class ProductSitemapProvider extends SitemapProvider implements SitemapProviderInterface
 {
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
     public function __construct(ProductRepository $productRepository)
     {

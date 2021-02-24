@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueReposit
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce categories
+ * Alters the sequence of Commerce categories.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */

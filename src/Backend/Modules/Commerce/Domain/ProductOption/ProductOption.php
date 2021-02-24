@@ -7,6 +7,8 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,145 +20,115 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductOption
 {
     // Define the display type
-    const DISPLAY_TYPE_DROP_DOWN = 1;
-    const DISPLAY_TYPE_RADIO_BUTTON = 2;
-    const DISPLAY_TYPE_COLOR = 3;
-    const DISPLAY_TYPE_SQUARE_UNIT = 4;
-    const DISPLAY_TYPE_BETWEEN = 5;
-    const DISPLAY_TYPE_TEXT = 6;
-    const DISPLAY_TYPE_PIECE = 7;
+    public const DISPLAY_TYPE_DROP_DOWN = 1;
+    public const DISPLAY_TYPE_RADIO_BUTTON = 2;
+    public const DISPLAY_TYPE_COLOR = 3;
+    public const DISPLAY_TYPE_SQUARE_UNIT = 4;
+    public const DISPLAY_TYPE_BETWEEN = 5;
+    public const DISPLAY_TYPE_TEXT = 6;
+    public const DISPLAY_TYPE_PIECE = 7;
 
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Product
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="product_options")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $product;
+    private ?Product $product;
 
     /**
-     * @var ProductOptionValue
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", inversedBy="product_options")
      * @ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
-    private $parent_product_option_value;
+    private ?ProductOptionValue $parent_product_option_value;
 
     /**
-     * @var ProductOptionValue[]
+     * @var Collection|ProductOptionValue[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", mappedBy="product_option", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $product_option_values;
+    private Collection $product_option_values;
 
     /**
-     * @var ProductDimensionNotification[]
+     * @var Collection|ProductDimensionNotification[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="product_option", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"width" = "ASC", "height" = "ASC"})
+     * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
      */
-    private $dimension_notifications;
+    private Collection $dimension_notifications;
 
     /**
-     * @var CartValueOption[]
+     * @var Collection|CartValueOption[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="product_option", cascade={"remove", "persist"})
      */
-    private $cart_value_options;
+    private Collection $cart_value_options;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $text;
+    private ?string $text;
 
     /**
-     * @var boolean
-     *
      * @ORM\Column(type="boolean")
      */
-    private $required;
+    private bool $required;
 
     /**
-     * @var boolean
-     *
      * @ORM\Column(type="boolean")
      */
-    private $custom_value_allowed;
+    private bool $custom_value_allowed;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default" : 0.00})
+     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default": 0.0})
      */
-    private $custom_value_price;
+    private float $custom_value_price;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
-    private $type;
+    private int $type;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
-    private $sequence;
+    private int $sequence;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $placeholder;
+    private ?string $placeholder;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $prefix;
+    private ?string $prefix;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $suffix;
+    private ?string $suffix;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         Product $product,
@@ -188,7 +160,7 @@ class ProductOption
         $this->dimension_notifications = $dimension_notifications;
     }
 
-    public static function fromDataTransferObject(ProductOptionDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(ProductOptionDataTransferObject $dataTransferObject): ProductOption
     {
         if ($dataTransferObject->hasExistingProductOption()) {
             return self::update($dataTransferObject);
@@ -216,7 +188,7 @@ class ProductOption
         );
     }
 
-    private static function update(ProductOptionDataTransferObject $dataTransferObject)
+    private static function update(ProductOptionDataTransferObject $dataTransferObject): ProductOption
     {
         $productOption = $dataTransferObject->getProductOptionEntity();
 
@@ -242,26 +214,20 @@ class ProductOption
         return $this->id;
     }
 
-    /**
-     * @return Product
-     */
     public function getProduct(): Product
     {
         return $this->product;
     }
 
-    /**
-     * @return ProductOptionValue
-     */
     public function getParentProductOptionValue(): ?ProductOptionValue
     {
         return $this->parent_product_option_value;
     }
 
     /**
-     * @return ProductOptionValue[]
+     * @return Collection|ProductOptionValue[]
      */
-    public function getProductOptionValues()
+    public function getProductOptionValues(): Collection
     {
         return $this->product_option_values;
     }
@@ -275,99 +241,69 @@ class ProductOption
     }
 
     /**
-     * @return CartValueOption[]
+     * @return Collection|CartValueOption[]
      */
-    public function getCartValueOptions(): array
+    public function getCartValueOptions(): Collection
     {
         return $this->cart_value_options;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     * @return bool
-     */
     public function isRequired(): bool
     {
         return $this->required;
     }
 
-    /**
-     * @return bool
-     */
     public function isCustomValueAllowed(): bool
     {
         return $this->custom_value_allowed;
     }
 
-    /**
-     * @return float
-     */
     public function getCustomValuePrice(): float
     {
         return $this->custom_value_price;
     }
 
-    /**
-     * @return int
-     */
     public function getType(): int
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getSequence(): int
     {
         return $this->sequence;
     }
 
-    /**
-     * @return string
-     */
     public function getPlaceholder(): ?string
     {
         return $this->placeholder;
     }
 
-    /**
-     * @return string
-     */
     public function getPrefix(): ?string
     {
         return $this->prefix;
     }
 
-    /**
-     * @return string
-     */
     public function getSuffix(): ?string
     {
         return $this->suffix;
     }
 
-    public function getCreatedOn(): DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    public function getEditedOn(): DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
@@ -375,7 +311,7 @@ class ProductOption
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         $this->createdOn = $this->editedOn = new DateTime();
     }
@@ -386,9 +322,7 @@ class ProductOption
     }
 
     /**
-     * Get the default product option value when it exists
-     *
-     * @return ProductOptionValue|null
+     * Get the default product option value when it exists.
      */
     public function getDefaultProductOptionValue(): ?ProductOptionValue
     {
@@ -405,51 +339,31 @@ class ProductOption
         return null;
     }
 
-    /**
-     * @return bool
-     */
     public function isColorType(): bool
     {
-        return $this->type == self::DISPLAY_TYPE_COLOR;
+        return $this->type === self::DISPLAY_TYPE_COLOR;
     }
 
-    /**
-     * @return bool
-     */
     public function isSquareUnitType(): bool
     {
-        return $this->type == self::DISPLAY_TYPE_SQUARE_UNIT;
+        return $this->type === self::DISPLAY_TYPE_SQUARE_UNIT;
     }
 
-    /**
-     * @return bool
-     */
     public function isPieceType(): bool
     {
-        return $this->type == self::DISPLAY_TYPE_PIECE;
+        return $this->type === self::DISPLAY_TYPE_PIECE;
     }
 
-    /**
-     * @return bool
-     */
     public function isBetweenType(): bool
     {
-        return $this->type == self::DISPLAY_TYPE_BETWEEN;
+        return $this->type === self::DISPLAY_TYPE_BETWEEN;
     }
 
-    /**
-     * @return bool
-     */
     public function isTextType(): bool
     {
-        return $this->type == self::DISPLAY_TYPE_TEXT;
+        return $this->type === self::DISPLAY_TYPE_TEXT;
     }
 
-    /**
-     * @param int $width
-     * @param int $height
-     * @return ProductDimensionNotification|null
-     */
     public function getDimensionNotificationByDimension(int $width, int $height): ?ProductDimensionNotification
     {
         $expr = Criteria::expr();
@@ -460,13 +374,9 @@ class ProductOption
 
         $dimensionNotifications = $this->dimension_notifications->matching($criteria)->first();
 
-        return $dimensionNotifications ? $dimensionNotifications : null;
+        return $dimensionNotifications ?: null;
     }
-    /**
-     * @param int $width
-     * @param int $height
-     * @return array
-     */
+
     public function getAllDimensionNotificationsByDimension(int $width, int $height): array
     {
         $notifications = [];
@@ -477,10 +387,7 @@ class ProductOption
 
         foreach ($this->product_option_values as $productOptionValue) {
             foreach ($productOptionValue->getProductOptions() as $productOption) {
-                $notifications = array_merge(
-                    $notifications,
-                    $productOption->getAllDimensionNotificationsByDimension($width, $height)
-                );
+                $notifications = [...$notifications, ...$productOption->getAllDimensionNotificationsByDimension($width, $height)];
             }
         }
 

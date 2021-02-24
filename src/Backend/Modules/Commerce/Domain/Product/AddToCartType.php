@@ -6,10 +6,10 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueRepository;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct;
+use Backend\Modules\Commerce\Form\BetweenType;
 use Backend\Modules\Commerce\Form\ChoiceTypeExtension;
 use Backend\Modules\Commerce\Form\ColorType;
 use Backend\Modules\Commerce\Form\EntityTypeExtension;
-use Backend\Modules\Commerce\Form\BetweenType;
 use Backend\Modules\Commerce\Form\TextTypeExtension;
 use Common\Core\Model;
 use Frontend\Core\Language\Language;
@@ -26,7 +26,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Range;
 
 class AddToCartType extends AbstractType
 {
@@ -84,7 +84,7 @@ class AddToCartType extends AbstractType
             $heightConstraints = [];
 
             if ($product->getMinWidth() && $product->getMaxWidth()) {
-                $widthConstraints[] = new Assert\Range([
+                $widthConstraints[] = new Range([
                     'min' => $product->getMinWidth(),
                     'max' => $product->getMaxWidth(),
                     'minMessage' => str_replace('%s', '{{ limit }}', Language::err('TheMinimalWidthIs')),
@@ -93,7 +93,7 @@ class AddToCartType extends AbstractType
             }
 
             if ($product->getMinHeight() && $product->getMaxHeight()) {
-                $heightConstraints[] = new Assert\Range([
+                $heightConstraints[] = new Range([
                     'min' => $product->getMinHeight(),
                     'max' => $product->getMaxHeight(),
                     'minMessage' => str_replace('%s', '{{ limit }}', Language::err('TheMinimalHeightIs')),
@@ -169,8 +169,8 @@ class AddToCartType extends AbstractType
     }
 
     /**
-     * @param array $data
      * @param ProductOption[] $productOptions
+     *
      * @return mixed
      */
     private function preSubmitEvent(array $data, $productOptions)
@@ -188,8 +188,8 @@ class AddToCartType extends AbstractType
                 continue;
             }
 
-            $name = 'option_' . $productOption->getId();
-            $customValueName = $name . '_custom_value';
+            $name = 'option_'.$productOption->getId();
+            $customValueName = $name.'_custom_value';
 
             if ($data[$name] == 'custom_value' && array_key_exists($customValueName, $data)) {
                 $data[$name] = null;
@@ -219,7 +219,7 @@ class AddToCartType extends AbstractType
                 }
 
                 return $groups;
-            }
+            },
         ]);
     }
 
@@ -229,17 +229,14 @@ class AddToCartType extends AbstractType
     }
 
     /**
-     *
      * @param ProductOption[] $productOptions
-     * @param FormBuilderInterface $builder
-     * @param string $parent
-     * @param string $parentValue
-     * @param boolean $hidden
+     * @param string          $parent
+     * @param string          $parentValue
      */
     private function addProductOptions($productOptions, FormBuilderInterface $builder, string $parent = null, int $parentValue = null, bool $hidden = false): void
     {
         foreach ($productOptions as $productOption) {
-            $name = 'option_' . $productOption->getId();
+            $name = 'option_'.$productOption->getId();
             $type = null;
             $modelTransformer = null;
             $params = [
@@ -269,8 +266,9 @@ class AddToCartType extends AbstractType
 
                         $label = $value->getTitle();
                         if ($value->getPrice()) {
-                            $label .= ' (€ ' . number_format($value->getPrice(), 2, ',', '.') . ')';
+                            $label .= ' (€ '.number_format($value->getPrice(), 2, ',', '.').')';
                         }
+
                         return $label;
                     };
                     $params['choices'] = $productOption->getProductOptionValues();
@@ -286,8 +284,9 @@ class AddToCartType extends AbstractType
 
                         $label = $value->getTitle();
                         if ($value->getPrice()) {
-                            $label .= ' (€ ' . number_format($value->getPrice(), 2, ',', '.') . ')';
+                            $label .= ' (€ '.number_format($value->getPrice(), 2, ',', '.').')';
                         }
+
                         return $label;
                     };
                     $params['choices'] = $productOption->getProductOptionValues();
@@ -314,22 +313,22 @@ class AddToCartType extends AbstractType
                         )->addModelTransformer(
                             new CallbackTransformer(
                             function (?ProductOptionValue $input) {
-                                    $value = null;
+                                $value = null;
 
-                                    if ($input) {
-                                        $value = $input->getId();
-                                    }
-
-                                    return $value;
-                                },
-                            function ($reverseTransform) use ($productOption) {
-                                    /**
-                                     * @var ProductOptionValueRepository $productOptionValueRepository
-                                     */
-                                    $productOptionValueRepository = Model::get('commerce.repository.product_option_value');
-
-                                    return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
+                                if ($input) {
+                                    $value = $input->getId();
                                 }
+
+                                return $value;
+                            },
+                            function ($reverseTransform) use ($productOption) {
+                                /**
+                                 * @var ProductOptionValueRepository $productOptionValueRepository
+                                 */
+                                $productOptionValueRepository = Model::get('commerce.repository.product_option_value');
+
+                                return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
+                            }
                         )
                         )
                     );
@@ -344,7 +343,7 @@ class AddToCartType extends AbstractType
 
                     $modelTransformer = new CallbackTransformer(function ($input) {
                         return $input;
-                    }, function ($reverseTransform) use ($productOption) {
+                    }, function ($reverseTransform) {
                         return $reverseTransform;
                     });
 
@@ -370,7 +369,7 @@ class AddToCartType extends AbstractType
                     $params['attr']['placeholder'] = $productOption->getPlaceholder();
                     $params['attr']['prefix'] = $productOption->getPrefix();
                     $params['attr']['suffix'] = $productOption->getSuffix();
-                    $params['attr']['data-between-values'] = json_encode($values);
+                    $params['attr']['data-between-values'] = json_encode($values, JSON_THROW_ON_ERROR);
                     $params['attr']['data-related-field'] = $name;
                     $name .= '_custom_value';
 
@@ -393,7 +392,7 @@ class AddToCartType extends AbstractType
             $builder->add($field);
 
             if ($productOption->isCustomValueAllowed()) {
-                $fieldName = 'option_' . $productOption->getId() . '_custom_value';
+                $fieldName = 'option_'.$productOption->getId().'_custom_value';
                 if ($productOption->isColorType()) {
                     $builder->add(
                         $fieldName,
@@ -402,10 +401,10 @@ class AddToCartType extends AbstractType
                             'required' => false,
                             'label' => 'lbl.OtherRALColor',
                             'attr' => [
-                                'data-custom-value' => $builder->getName() . '_option_' . $productOption->getId(),
+                                'data-custom-value' => $builder->getName().'_option_'.$productOption->getId(),
                                 'data-option-type' => $productOption->getType(),
                                 'placeholder' => 'lbl.EnterYourOwnRALColor',
-                            ]
+                            ],
                         ]
                     );
                 } else {
@@ -417,11 +416,11 @@ class AddToCartType extends AbstractType
                             'label' => 'lbl.OtherValue',
                             'scale' => 0,
                             'attr' => [
-                                'data-custom-value' => $builder->getName() . '_option_' . $productOption->getId(),
+                                'data-custom-value' => $builder->getName().'_option_'.$productOption->getId(),
                                 'data-option-type' => $productOption->getType(),
                                 'prefix' => $productOption->getPrefix(),
                                 'suffix' => $productOption->getSuffix(),
-                            ]
+                            ],
                         ]
                     );
                 }
@@ -446,12 +445,7 @@ class AddToCartType extends AbstractType
     }
 
     /**
-     * Add the dependencies to the params value when they exists
-     *
-     * @param array $params
-     * @param ProductOption $productOption
-     *
-     * @return void
+     * Add the dependencies to the params value when they exists.
      */
     private function addDependencies(array &$params, ProductOption $productOption): void
     {
@@ -492,16 +486,12 @@ class AddToCartType extends AbstractType
 
         // Only set when exists
         if (!empty($dependencies)) {
-            $params['attr']['data-dependencies'] = json_encode($dependencies);
+            $params['attr']['data-dependencies'] = json_encode($dependencies, JSON_THROW_ON_ERROR);
         }
     }
 
     /**
-     * Get the placeholder based on the product option
-     *
-     * @param ProductOption $productOption
-     *
-     * @return string
+     * Get the placeholder based on the product option.
      */
     private function getPlaceholder(ProductOption $productOption): string
     {
@@ -526,20 +516,17 @@ class AddToCartType extends AbstractType
 
     /**
      * @param ProductOption[] $productOptions
-     * @param FormView $view
-     * @param FormInterface $form
-     * @param array $options
      */
     private function addExtraViewOptions($productOptions, FormView $view, FormInterface $form, array $options)
     {
         foreach ($productOptions as $productOption) {
-            $name = 'option_' . $productOption->getId();
+            $name = 'option_'.$productOption->getId();
 
             if ($productOption->isCustomValueAllowed() && !$productOption->isColorType()) {
                 switch ($productOption->getType()) {
                     case ProductOption::DISPLAY_TYPE_SQUARE_UNIT:
                     case ProductOption::DISPLAY_TYPE_DROP_DOWN:
-                        $newChoice = new ChoiceView(array(), 'custom_value', Language::lbl('EnterCustomValue'));
+                        $newChoice = new ChoiceView([], 'custom_value', Language::lbl('EnterCustomValue'));
                         $view->children[$name]->vars['choices'][] = $newChoice;
                         break;
                 }

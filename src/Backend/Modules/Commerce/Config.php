@@ -5,23 +5,19 @@ namespace Backend\Modules\Commerce;
 use Backend\Core\Engine\Base\Config as BackendBaseConfig;
 
 /**
- * This is the configuration-object for the Commerce module
+ * This is the configuration-object for the Commerce module.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class Config extends BackendBaseConfig
 {
     /**
-     * The default action
-     *
-     * @var string
+     * The default action.
      */
-    protected $defaultAction = 'Index';
+    protected string $defaultAction = 'Index';
 
     /**
-     * The disabled actions
-     *
-     * @var array
+     * The disabled actions.
      */
-    protected $disabledActions = array();
+    protected array $disabledActions = [];
 }

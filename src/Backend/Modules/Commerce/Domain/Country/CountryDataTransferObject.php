@@ -7,34 +7,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CountryDataTransferObject
 {
-    /**
-     * @var Country
-     */
-    protected $countryEntity;
+    protected ?Country $countryEntity;
+    public int $id;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $name;
+    public string $name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $iso;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
+    public string $iso;
+    public Locale $locale;
 
     public function __construct(Country $country = null)
     {
@@ -45,10 +30,10 @@ class CountryDataTransferObject
             return;
         }
 
-        $this->id = $country->getId();
-        $this->name = $country->getName();
-        $this->iso = $country->getIso();
-        $this->locale = $country->getLocale();
+        $this->id = $this->countryEntity->getId();
+        $this->name = $this->countryEntity->getName();
+        $this->iso = $this->countryEntity->getIso();
+        $this->locale = $this->countryEntity->getLocale();
     }
 
     public function setCountryEntity(Country $country): void

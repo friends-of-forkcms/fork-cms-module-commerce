@@ -7,44 +7,44 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
 
 /**
- * This is the category-action, it will display the overview of products/subcategories within a category
+ * This is the category-action, it will display the overview of products/subcategories within a category.
  *
  * @author Waldo Cosman <waldo_cosman@hotmail.com>
  */
 class Brand extends FrontendBaseBlock
 {
     /**
-     * The items
+     * The items.
      *
-     * @var    array
+     * @var array
      */
     private $record;
 
     /**
-     * All products within the category
+     * All products within the category.
      *
-     * @var    array
+     * @var array
      */
     private $products;
 
     /**
-     * All subcategories in flat view
+     * All subcategories in flat view.
      *
-     * @var    array
+     * @var array
      */
     private $subcategories;
 
     /**
-     * All subcategories in tree view
+     * All subcategories in tree view.
      *
-     * @var    array
+     * @var array
      */
     private $subcategoriesTree;
 
     /**
-     * URL parameters
+     * URL parameters.
      *
-     * @var    array
+     * @var array
      */
     private $parameters;
 
@@ -52,12 +52,12 @@ class Brand extends FrontendBaseBlock
      * The pagination array
      * It will hold all needed parameters, some of them need initialization.
      *
-     * @var    array
+     * @var array
      */
-    protected $pagination = array('limit' => 10, 'offset' => 0, 'requested_page' => 1, 'num_items' => null, 'num_pages' => null);
+    protected $pagination = ['limit' => 10, 'offset' => 0, 'requested_page' => 1, 'num_items' => null, 'num_pages' => null];
 
     /**
-     * Execute the action
+     * Execute the action.
      */
     public function execute(): void
     {
@@ -68,7 +68,7 @@ class Brand extends FrontendBaseBlock
     }
 
     /**
-     * Load the data, don't forget to validate the incoming data
+     * Load the data, don't forget to validate the incoming data.
      */
     private function getData()
     {
@@ -93,12 +93,12 @@ class Brand extends FrontendBaseBlock
         $requestedPage = $this->URL->getParameter('page', 'int', 1);
 
         // set URL and limit
-        $this->pagination['url'] = FrontendNavigation::getURLForBlock('commerce', 'category') . '/' . $this->record['url'];
+        $this->pagination['url'] = FrontendNavigation::getURLForBlock('commerce', 'category').'/'.$this->record['url'];
         $this->pagination['limit'] = $this->get('fork.settings')->get('commerce', 'overview_num_items', 10);
 
         // populate count fields in pagination
         $this->pagination['num_items'] = FrontendCommerceModel::getCategoryCount($this->record['id']);
-        $this->pagination['num_pages'] = (int)ceil($this->pagination['num_items'] / $this->pagination['limit']);
+        $this->pagination['num_pages'] = (int) ceil($this->pagination['num_items'] / $this->pagination['limit']);
 
         // num pages is always equal to at least 1
         if ($this->pagination['num_pages'] == 0) {
@@ -116,16 +116,15 @@ class Brand extends FrontendBaseBlock
     }
 
     /**
-     * Parse the page
+     * Parse the page.
      */
     protected function parse()
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/commerce.css');
 
         // add noty js
-        $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
-
+        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
 
         // add breadcrumb
         $this->breadcrumb->addElement($this->record['title'], $this->record['full_url']);
@@ -143,10 +142,10 @@ class Brand extends FrontendBaseBlock
 
         // advanced SEO-attributes
         if (isset($this->record['meta_data']['seo_index'])) {
-            $this->header->addMetaData(array('name' => 'robots', 'content' => $this->record['meta_data']['seo_index']));
+            $this->header->addMetaData(['name' => 'robots', 'content' => $this->record['meta_data']['seo_index']]);
         }
         if (isset($this->record['meta_data']['seo_follow'])) {
-            $this->header->addMetaData(array('name' => 'robots', 'content' => $this->record['meta_data']['seo_follow']));
+            $this->header->addMetaData(['name' => 'robots', 'content' => $this->record['meta_data']['seo_follow']]);
         }
 
         // assign items

@@ -9,7 +9,7 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Locale;
 
 /**
- * This is the detail-action, it will display a product
+ * This is the detail-action, it will display a product.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -17,77 +17,77 @@ use Frontend\Core\Language\Locale;
 class Detail extends FrontendBaseBlock
 {
     /**
-     * The information about a product
+     * The information about a product.
      *
-     * @var    Product
+     * @var Product
      */
     private $product;
 
     /**
-     * The specifications of a product
+     * The specifications of a product.
      *
-     * @var    array
+     * @var array
      */
     private $specifications;
 
     /**
-     * The tags of a product
+     * The tags of a product.
      *
-     * @var    array
+     * @var array
      */
     private $tags;
 
     /**
-     * The comments of a product
+     * The comments of a product.
      *
-     * @var    array
+     * @var array
      */
     private $comments;
 
     /**
-     * Module settings
+     * Module settings.
      *
-     * @var    array
+     * @var array
      */
     private $settings;
 
     /**
-     * The related products
+     * The related products.
      *
-     * @var    array
+     * @var array
      */
     private $relatedProducts;
 
     /**
-     * Videos from a product
+     * Videos from a product.
      *
-     * @var    array
+     * @var array
      */
     private $videos;
 
     /**
-     * Files from a product
+     * Files from a product.
      *
-     * @var    array
+     * @var array
      */
     private $files;
 
     /**
-     * Images from a product
+     * Images from a product.
      *
-     * @var    array
+     * @var array
      */
     private $images;
 
     /**
-     * Brand from a product
+     * Brand from a product.
      *
-     * @var    array
+     * @var array
      */
     private $brand;
 
     /**
-     * Execute the action
+     * Execute the action.
      */
     public function execute(): void
     {
@@ -100,7 +100,7 @@ class Detail extends FrontendBaseBlock
     }
 
     /**
-     * Get the data
+     * Get the data.
      */
     private function getData()
     {
@@ -123,15 +123,15 @@ class Detail extends FrontendBaseBlock
     }
 
     /**
-     * Parse the page
+     * Parse the page.
      */
     protected function parse()
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/commerce.css');
 
         // add noty js
-        $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
+        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
 
         // add into breadcrumb
         $this->breadcrumb->addElement($this->product->getTitle());

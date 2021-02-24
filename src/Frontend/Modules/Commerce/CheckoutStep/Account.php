@@ -68,9 +68,7 @@ class Account extends Step
     }
 
     /**
-     * Get the account form
-     *
-     * @return Form
+     * Get the account form.
      */
     private function getAccountForm(): Form
     {
@@ -165,9 +163,6 @@ class Account extends Step
         return $form;
     }
 
-    /**
-     * @param AccountCustomerDataTransferObject $data
-     */
     private function saveShipmentAddress(AccountCustomerDataTransferObject $data)
     {
         $account = $this->cart->getAccount();
@@ -184,13 +179,11 @@ class Account extends Step
         }
     }
 
-    /**
-     * @param AccountCustomerDataTransferObject $data
-     */
     private function saveInvoiceAddress(AccountCustomerDataTransferObject $data)
     {
         if ($data->same_invoice_address) {
             $this->cart->setInvoiceAddress(null);
+
             return;
         }
 
@@ -210,6 +203,6 @@ class Account extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('Address'));
+        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('Address'));
     }
 }

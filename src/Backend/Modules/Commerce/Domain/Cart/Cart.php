@@ -4,13 +4,14 @@ namespace Backend\Modules\Commerce\Domain\Cart;
 
 use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Account\Account;
-use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\CartRule\CartRule;
+use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
-use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Language\Locale;
 
@@ -22,435 +23,284 @@ use Frontend\Core\Language\Locale;
 class Cart
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Account
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Account\Account", inversedBy="carts")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $account;
+    private ?Account $account;
 
     /**
-     * @var OrderAddress
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
      * @ORM\JoinColumn(name="shipment_address_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $shipment_address;
+    private ?OrderAddress $shipment_address;
 
     /**
-     * @var OrderAddress
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
      * @ORM\JoinColumn(name="invoice_address_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $invoice_address;
+    private ?OrderAddress $invoice_address;
 
     /**
-     * @var CartValue[]
-     *
+     * @var Collection|CartValue[]
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValue", mappedBy="cart", cascade={"remove", "persist"})
      */
-    private $values;
+    private Collection $values;
 
     /**
-     * @var CartRule[]
+     * @var Collection|CartRule[]
      *
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\CartRule\CartRule")
      * @ORM\JoinTable(name="commerce_cart_cart_rules",
-     *      joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="cart_rule_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="cart_rule_id", referencedColumnName="id")}
      * )
      */
-    private $cart_rules;
+    private Collection $cart_rules;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
-    private $total_quantity = 0;
+    private int $total_quantity = 0;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $ip;
+    private string $ip;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $session_id;
+    private string $session_id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $shipment_method;
+    private ?string $shipment_method;
 
     /**
-     * @var array
-     *
      * @ORM\Column(type="json", nullable=true)
      */
-    private $shipment_method_data;
+    private ?array $shipment_method_data;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $payment_method;
+    private ?string $payment_method;
 
     /**
-     * @var array
-     *
      * @ORM\Column(type="json", nullable=true)
      */
-    private $payment_method_data;
+    private ?array $payment_method_data;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     /**
-     * @var Order
-     *
      * @ORM\OneToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", mappedBy="cart")
      */
-    private $order;
+    private ?Order $order;
 
-    /**
-     * @var float
-     */
-    private $vatTotals;
+    private float $vatTotals;
+    private int $total;
+    private int $subTotal;
+    private array $vats = [];
+    private bool $allProductsInStock;
+    private int $totalWeight;
+    private array $cartRuleTotals = [];
 
-    /**
-     * @var float
-     */
-    private $total;
-
-    /**
-     * @var float
-     */
-    private $subTotal;
-
-    /**
-     * @var array
-     */
-    private $vats = [];
-
-    /**
-     * @var bool
-     */
-    private $allProductsInStock;
-
-    /**
-     * @var double
-     */
-    private $totalWeight;
-
-    /**
-     * @var array
-     */
-    private $cartRuleTotals = [];
-
-    /**
-     * Cart constructor.
-     */
     public function __construct()
     {
         $this->values = new ArrayCollection();
         $this->cart_rules = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return Account
-     */
     public function getAccount(): ?Account
     {
         return $this->account;
     }
 
-    /**
-     * @param Account $account
-     */
     public function setAccount(Account $account): void
     {
         $this->account = $account;
     }
 
-    /**
-     * @return OrderAddress
-     */
     public function getShipmentAddress(): ?OrderAddress
     {
         return $this->shipment_address;
     }
 
-    /**
-     * @param OrderAddress $shipment_address
-     */
     public function setShipmentAddress(OrderAddress $shipment_address): void
     {
         $this->shipment_address = $shipment_address;
     }
 
-    /**
-     * @return OrderAddress
-     */
     public function getInvoiceAddress(): ?OrderAddress
     {
         return $this->invoice_address;
     }
 
-    /**
-     * @param OrderAddress $invoice_address
-     */
     public function setInvoiceAddress(?OrderAddress $invoice_address): void
     {
         $this->invoice_address = $invoice_address;
     }
 
     /**
-     * @return CartValue[]
+     * @return Collection|CartValue[]
      */
-    public function getValues()
+    public function getValues(): Collection
     {
         return $this->values;
     }
 
-    /**
-     * @param CartValue $value
-     *
-     * @return void
-     */
     public function addValue(CartValue $value): void
     {
         $this->values->add($value);
 
-        // Recalculate on add
+        // Recalculate
         $this->calculateTotalQuantity();
         $this->calculateTotals();
     }
 
-    /**
-     * @param CartValue $value
-     *
-     * @return void
-     */
     public function removeValue(CartValue $value): void
     {
         $this->values->removeElement($value);
 
+        // Recalculate
         $this->calculateTotalQuantity();
         $this->calculateTotals();
     }
 
     /**
-     * @return CartRule[]
+     * @return Collection|CartRule[]
      */
-    public function getCartRules()
+    public function getCartRules(): Collection
     {
         return $this->cart_rules;
     }
 
-    /**
-     * @param CartRule $cartRule
-     *
-     * @return void
-     */
     public function addCartRule(CartRule $cartRule): void
     {
         $this->cart_rules->add($cartRule);
 
+        // Recalculate
         $this->calculateTotalQuantity();
         $this->calculateTotals();
     }
 
-    /**
-     * @param CartRule $cartRule
-     *
-     * @return void
-     */
     public function removeCartRule(CartRule $cartRule): void
     {
         $this->cart_rules->removeElement($cartRule);
 
+        // Recalculate
         $this->calculateTotalQuantity();
         $this->calculateTotals();
     }
 
-    /**
-     * @return int
-     */
     public function getTotalQuantity(): int
     {
         return $this->total_quantity;
     }
 
-    /**
-     * @return string
-     */
     public function getIp(): string
     {
         return $this->ip;
     }
 
-    /**
-     * @param string $ip
-     */
-    public function setIp(string $ip)
+    public function setIp(string $ip): void
     {
         $this->ip = $ip;
     }
 
-    /**
-     * @return string
-     */
     public function getSessionId(): string
     {
         return $this->session_id;
     }
 
-    /**
-     * @param string $session_id
-     */
-    public function setSessionId(string $session_id)
+    public function setSessionId(string $session_id): void
     {
         $this->session_id = $session_id;
     }
 
-    /**
-     * @return string
-     */
     public function getShipmentMethod(): ?string
     {
         return $this->shipment_method;
     }
 
-    /**
-     * @param string $shipment_method
-     */
     public function setShipmentMethod(?string $shipment_method): void
     {
         $this->shipment_method = $shipment_method;
     }
 
-    /**
-     * @return array
-     */
     public function getShipmentMethodData(): ?array
     {
         return $this->shipment_method_data;
     }
 
-    /**
-     * @param array $shipment_method_data
-     */
     public function setShipmentMethodData(?array $shipment_method_data): void
     {
         $this->shipment_method_data = $shipment_method_data;
     }
 
-    /**
-     * @return string
-     */
     public function getPaymentMethod(): ?string
     {
         return $this->payment_method;
     }
 
-    /**
-     * @param string $payment_method
-     */
     public function setPaymentMethod(?string $payment_method): void
     {
         $this->payment_method = $payment_method;
     }
 
-    /**
-     * @return array
-     */
     public function getPaymentMethodData(): ?array
     {
         return $this->payment_method_data;
     }
 
-    /**
-     * @param array $payment_method_data
-     */
     public function setPaymentMethodData(?array $payment_method_data): void
     {
         $this->payment_method_data = $payment_method_data;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedOn(): DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    /**
-     * @param DateTime $createdOn
-     */
-    public function setCreatedOn(DateTime $createdOn)
+    public function setCreatedOn(DateTimeInterface $createdOn): void
     {
         $this->createdOn = $createdOn;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getEditedOn(): DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
 
-    /**
-     * @param DateTime $editedOn
-     */
-    public function setEditedOn(DateTime $editedOn)
+    public function setEditedOn(DateTimeInterface $editedOn): void
     {
         $this->editedOn = $editedOn;
     }
@@ -458,7 +308,7 @@ class Cart
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         $this->editedOn = new DateTime();
 
@@ -467,19 +317,11 @@ class Cart
         }
     }
 
-    /**
-     * @return Order|null
-     */
     public function getOrder(): ?Order
     {
         return $this->order;
     }
 
-    /**
-     * Get the total cart value
-     *
-     * @return float
-     */
     public function getTotal(): float
     {
         if (!$this->total) {
@@ -489,9 +331,6 @@ class Cart
         return $this->total;
     }
 
-    /**
-     * @return float
-     */
     public function getSubTotal(): float
     {
         if (!$this->subTotal) {
@@ -501,9 +340,6 @@ class Cart
         return $this->subTotal;
     }
 
-    /**
-     * @return array
-     */
     public function getVats(): array
     {
         if (!$this->vats) {
@@ -513,9 +349,6 @@ class Cart
         return $this->vats;
     }
 
-    /**
-     * @return float
-     */
     public function getVatTotals(): ?float
     {
         if (!$this->vatTotals) {
@@ -529,9 +362,6 @@ class Cart
         return $this->vatTotals;
     }
 
-    /**
-     * @return float|null
-     */
     public function getTotalWeight(): float
     {
         if ($this->totalWeight === null) {
@@ -542,9 +372,7 @@ class Cart
     }
 
     /**
-     * Calculate the cart totals
-     *
-     * @return void
+     * Calculate the cart totals.
      */
     public function calculateTotals(): void
     {
@@ -576,7 +404,7 @@ class Cart
                 if (!array_key_exists($vat->getId(), $this->vats)) {
                     $this->vats[$vat->getId()] = [
                         'title' => $vat->getTitle(),
-                        'total' => 0
+                        'total' => 0,
                     ];
                 }
 
@@ -602,12 +430,7 @@ class Cart
         }
     }
 
-    /**
-     * @param Vat|int $vat
-     * @param float|null $price
-     * @param bool $subtractVat
-     */
-    private function addVat($vat, ?float $price, $subtractVat = false)
+    private function addVat($vat, ?float $price, $subtractVat = false): void
     {
         if (is_int($vat)) {
             /** @var VatRepository $vatRepository */
@@ -629,11 +452,6 @@ class Cart
         }
     }
 
-    /**
-     * Calculate the total quantity
-     *
-     * @return void
-     */
     private function calculateTotalQuantity(): void
     {
         $totalQuantity = 0;
@@ -646,9 +464,7 @@ class Cart
     }
 
     /**
-     * Check if all the products are in stock
-     *
-     * @return boolean
+     * Check if all the products are in stock.
      */
     public function isProductsInStock(): bool
     {
@@ -667,17 +483,17 @@ class Cart
         return $this->allProductsInStock;
     }
 
-    private function calculateCartRules()
+    private function calculateCartRules(): void
     {
         foreach ($this->cart_rules as $cartRule) {
             if ($cartRule->getReductionPercentage()) {
-                $total = $this->applyPercentageDiscount($cartRule->getReductionPercentage()/100);
+                $total = $this->applyPercentageDiscount($cartRule->getReductionPercentage() / 100);
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
 
             if ($cartRule->getReductionAmount()) {
-                $total = $this->applyPercentageDiscount($cartRule->getReductionAmount()/$this->total);
+                $total = $this->applyPercentageDiscount($cartRule->getReductionAmount() / $this->total);
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
@@ -701,11 +517,7 @@ class Cart
 
     public function getCartRuleTotal(CartRule $cartRule): ?float
     {
-        if (!array_key_exists($cartRule->getId(), $this->cartRuleTotals)) {
-            return null;
-        }
-
-        return $this->cartRuleTotals[$cartRule->getId()];
+        return $this->cartRuleTotals[$cartRule->getId()] ?? null;
     }
 
     private function setCartRuleTotal(CartRule $cartRule, float $total): void

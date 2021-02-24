@@ -6,6 +6,8 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\ModulesSettings;
+use DOMDocument;
+use DOMElement;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,30 +17,11 @@ class GenerateMerchantFeed extends Command
 {
     protected static $defaultName = 'commerce:generate-merchant-feed';
 
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var ModulesSettings
-     */
-    private $settings;
-
-    /**
-     * @var string
-     */
-    private $kernelRootDir;
-
-    /**
-     * @var \DOMDocument
-     */
-    private $domDocument;
+    private ProductRepository $productRepository;
+    private LoggerInterface $logger;
+    private ModulesSettings $settings;
+    private string $kernelRootDir;
+    private DOMDocument $domDocument;
 
     public function __construct(
         ProductRepository $productRepository,
@@ -56,7 +39,7 @@ class GenerateMerchantFeed extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->domDocument = new \DOMDocument('1.0', 'UTF-8');
+        $this->domDocument = new DOMDocument('1.0', 'UTF-8');
         $domFeed = $this->domDocument->createElement('feed');
         $domFeed->setAttribute('xmlns', 'http://www.w3.org/2005/Atom');
         $domFeed->setAttribute('xmlns:g', 'http://base.google.com/ns/1.0');
@@ -76,7 +59,7 @@ class GenerateMerchantFeed extends Command
                 $item->appendChild($this->domDocument->createElement('g:id', $product->getId()));
                 $titleElement = $item->appendChild($this->domDocument->createElement('g:title'));
                 $titleElement->appendChild($this->domDocument->createCDATASection(trim($product->getTitle())));
-                $item->appendChild($this->createCDATASection('g:link', SITE_URL . $product->getUrl()));
+                $item->appendChild($this->createCDATASection('g:link', SITE_URL.$product->getUrl()));
                 $descriptionElement = $this->domDocument->createElement('g:description');
                 $descriptionElement->appendChild($this->domDocument->createCDATASection($this->getText($product)));
                 $item->appendChild($descriptionElement);
@@ -86,15 +69,15 @@ class GenerateMerchantFeed extends Command
                 $imageCount = 0;
                 foreach ($product->getImages()->getConnectedMediaItems() as $image) {
                     if ($first) {
-                        $item->appendChild($this->createCDATASection('g:image_link', SITE_URL . $image->getWebPath()));
+                        $item->appendChild($this->createCDATASection('g:image_link', SITE_URL.$image->getWebPath()));
 
                         $first = false;
                         continue;
                     }
 
-                    $item->appendChild($this->createCDATASection('g:additional_image_link', SITE_URL . $image->getWebPath()));
+                    $item->appendChild($this->createCDATASection('g:additional_image_link', SITE_URL.$image->getWebPath()));
 
-                    $imageCount++;
+                    ++$imageCount;
                     if ($imageCount >= $maxImages) {
                         break;
                     }
@@ -102,7 +85,7 @@ class GenerateMerchantFeed extends Command
 
                 // Only add weight when available
                 if ($product->getWeight()) {
-                    $item->appendChild($this->createCDATASection('g:shipping_weight', $product->getWeight() . ' kg'));
+                    $item->appendChild($this->createCDATASection('g:shipping_weight', $product->getWeight().' kg'));
                 }
 
                 $item->appendChild($this->createCDATASection('g:condition', 'new'));
@@ -110,12 +93,12 @@ class GenerateMerchantFeed extends Command
                     'g:availability',
                     $this->getAvailability($product)
                 ));
-                $item->appendChild($this->domDocument->createElement('g:price', $product->getPrice() . ' EUR'));
+                $item->appendChild($this->domDocument->createElement('g:price', $product->getPrice().' EUR'));
 
                 if ($product->hasActiveSpecialPrice()) {
                     $item->appendChild($this->domDocument->createElement(
                         'g:sale_price',
-                        number_format($product->getActivePrice(false), 2, '.', '') . ' EUR'
+                        number_format($product->getActivePrice(false), 2, '.', '').' EUR'
                     ));
                 }
 
@@ -151,13 +134,10 @@ class GenerateMerchantFeed extends Command
         }
 
         $this->domDocument->appendChild($domFeed);
-        $this->domDocument->save($this->kernelRootDir . '/../shopping_feed.xml');
+        $this->domDocument->save($this->kernelRootDir.'/../shopping_feed.xml');
     }
 
-    /**
-     * @return \DOMElement
-     */
-    private function getTitle(): \DOMElement
+    private function getTitle(): DOMElement
     {
         $title = $this->settings->get('Core', 'site_title_nl');
 
@@ -200,11 +180,9 @@ class GenerateMerchantFeed extends Command
     }
 
     /**
-     * @param string $name
      * @param $value
-     * @return \DOMElement
      */
-    private function createCDATASection(string $name, $value): \DOMElement
+    private function createCDATASection(string $name, $value): DOMElement
     {
         $domElement = $this->domDocument->createElement($name);
 

@@ -20,7 +20,7 @@ use Frontend\Core\Language\Locale;
 use Frontend\Modules\Commerce\Engine\Pagination;
 
 /**
- * This is the overview-action
+ * This is the overview-action.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -28,7 +28,7 @@ use Frontend\Modules\Commerce\Engine\Pagination;
 class Index extends FrontendBaseBlock
 {
     /**
-     * Execute the action
+     * Execute the action.
      *
      * @throws RedirectException
      */
@@ -78,7 +78,7 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Parse overview of categories
+     * Parse overview of categories.
      */
     private function parseOverview()
     {
@@ -88,7 +88,7 @@ class Index extends FrontendBaseBlock
         $this->addCSS('Commerce.css');
 
         // add noty js
-        $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
+        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
         $this->addJS('EnhancedEcommerce.js');
 
         $this->template->assign('categories', $this->getCategoryRepository()->findParents(Locale::frontendLanguage()));
@@ -96,9 +96,7 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Parse products overview in a category
-     *
-     * @param Category $category
+     * Parse products overview in a category.
      *
      * @throws RedirectException
      */
@@ -111,7 +109,7 @@ class Index extends FrontendBaseBlock
         $productRepository = $this->getProductRepository();
         $specificationRepository = $this->getSpecificationRepository();
         $productOffset = ($currentPage - 1) * $itemsPerPage;
-        $baseUrl = '/' . implode(
+        $baseUrl = '/'.implode(
             '/',
             array_merge($this->url->getPages(), $this->url->getParameters(false))
         );
@@ -131,7 +129,7 @@ class Index extends FrontendBaseBlock
         $this->addJSData('category', $category->getId());
         $this->addJS('Filter.js');
         $this->addJS('EnhancedEcommerce.js');
-        $this->header->addJS('/src/Frontend/Modules/' . $this->getModule() . '/Js/noty/packaged/jquery.noty.packaged.min.js');
+        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
 
         // Build pagination
         $pagination = new Pagination();
@@ -160,7 +158,7 @@ class Index extends FrontendBaseBlock
             Product::SORT_CREATED_AT => [
                 'label' => 'Toegevoegd',
                 'selected' => false,
-            ]
+            ],
         ];
 
         $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
@@ -208,7 +206,7 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Parse product
+     * Parse product.
      */
     private function parseProduct(Product $product)
     {
@@ -267,13 +265,10 @@ class Index extends FrontendBaseBlock
         $this->template->assign('form', $form->createView());
         $this->template->assign(
             'siteTitle',
-            $this->get('fork.settings')->get('Core', 'site_title_' . Locale::frontendLanguage())
+            $this->get('fork.settings')->get('Core', 'site_title_'.Locale::frontendLanguage())
         );
     }
 
-    /**
-     * @param Category $category
-     */
     private function categoryToBreadcrumb(Category $category): void
     {
         if ($category->getParent()) {
@@ -283,9 +278,6 @@ class Index extends FrontendBaseBlock
         $this->breadcrumb->addElement($category->getTitle(), $category->getUrl());
     }
 
-    /**
-     * @param Category $category
-     */
     private function categoryPageTitles(Category $category): void
     {
         if ($category->getParent()) {
@@ -323,7 +315,7 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Get the active cart from the session
+     * Get the active cart from the session.
      *
      * @return Cart
      */
@@ -338,34 +330,23 @@ class Index extends FrontendBaseBlock
         return $cartRepository->findBySessionId($cartHash, $this->getRequest()->getClientIp());
     }
 
-    /**
-     * @return CategoryRepository
-     */
     private function getCategoryRepository(): CategoryRepository
     {
         return $this->get('commerce.repository.category');
     }
 
-    /**
-     * @return ProductRepository
-     */
     private function getProductRepository(): ProductRepository
     {
         return $this->get('commerce.repository.product');
     }
 
-    /**
-     * @return SpecificationRepository
-     */
     private function getSpecificationRepository(): SpecificationRepository
     {
         return $this->get('commerce.repository.specification');
     }
 
     /**
-     * Get an array with the filters which could be used
-     *
-     * @return array
+     * Get an array with the filters which could be used.
      */
     private function getProductFilters(): array
     {
@@ -379,9 +360,7 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     private function getCartRepository(): CartRepository
     {
@@ -389,9 +368,7 @@ class Index extends FrontendBaseBlock
     }
 
     /**
-     * Get the cart value repository
-     *
-     * @return CartValueRepository
+     * Get the cart value repository.
      */
     private function getCartValueRepository(): CartValueRepository
     {

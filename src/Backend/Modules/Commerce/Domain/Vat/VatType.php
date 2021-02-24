@@ -16,14 +16,14 @@ class VatType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         )->add(
             'percentage',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Percentage'
+                'label' => 'lbl.Percentage',
             ]
         );
     }
@@ -32,7 +32,7 @@ class VatType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => VatDataTransferObject::class
+                'data_class' => VatDataTransferObject::class,
             ]
         );
     }

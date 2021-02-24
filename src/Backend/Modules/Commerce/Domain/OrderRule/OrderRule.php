@@ -14,57 +14,43 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderRule
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Order
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", inversedBy="rules")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $order;
+    private Order $order;
 
     /**
-     * @var CartRule
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\CartRule\CartRule")
      * @ORM\JoinColumn(name="cart_rule_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $cart_rule;
+    private ?CartRule $cart_rule;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $total;
+    private float $total;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $code;
+    private string $code;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $value;
+    private string $value;
 
     private function __construct(
         Order $order,
@@ -82,7 +68,7 @@ class OrderRule
         $this->value = $value;
     }
 
-    public static function fromDataTransferObject(OrderRuleDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderRuleDataTransferObject $dataTransferObject): OrderRule
     {
         if ($dataTransferObject->hasExistingOrderRule()) {
             return self::update($dataTransferObject);
@@ -103,7 +89,7 @@ class OrderRule
         );
     }
 
-    private static function update(OrderRuleDataTransferObject $dataTransferObject)
+    private static function update(OrderRuleDataTransferObject $dataTransferObject): OrderRule
     {
         return $dataTransferObject->getOrderRuleEntity();
     }
@@ -113,57 +99,36 @@ class OrderRule
         return new OrderRuleDataTransferObject($this);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Order
-     */
     public function getOrder(): Order
     {
         return $this->order;
     }
 
-    /**
-     * @return CartRule
-     */
     public function getCartRule(): ?CartRule
     {
         return $this->cart_rule;
     }
 
-    /**
-     * @return float
-     */
     public function getTotal(): float
     {
         return $this->total;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;

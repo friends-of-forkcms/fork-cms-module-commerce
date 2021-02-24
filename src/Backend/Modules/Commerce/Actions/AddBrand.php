@@ -10,16 +10,13 @@ use Backend\Modules\Commerce\Domain\Brand\Event\Created;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the add brand-action, it will display a form to create a new brand
+ * This is the add brand-action, it will display a form to create a new brand.
  *
  * @author Waldo Cosman <waldo_cosman@hotmail.com>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddBrand extends BackendBaseActionAdd
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();

@@ -2,12 +2,12 @@
 
 namespace Backend\Modules\Commerce\Domain\Category;
 
+use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Category\Exception\CategoryNotFound;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Backend\Core\Engine\Model;
 
 class CategoryRepository extends EntityRepository
 {
@@ -18,10 +18,6 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     *
-     * @return Category|null
      * @throws CategoryNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Category
@@ -47,14 +43,12 @@ class CategoryRepository extends EntityRepository
             function (Category $category) {
                 $this->getEntityManager()->remove($category);
             },
-            (array)$this->findBy(['id' => $id, 'locale' => $locale])
+            (array) $this->findBy(['id' => $id, 'locale' => $locale])
         );
     }
 
     /**
-     * Find parent categories ordered by sequence
-     *
-     * @param Locale $locale
+     * Find parent categories ordered by sequence.
      *
      * @return Category[]
      */
@@ -81,7 +75,7 @@ class CategoryRepository extends EntityRepository
             ->setParameters(
                 [
                     'locale' => $locale,
-                    'url' => $url
+                    'url' => $url,
                 ]
             )
             ->getQuery()
@@ -89,12 +83,9 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line
+     * Get the next sequence in line.
      *
-     * @param Locale $locale
      * @param Category $parent
-     *
-     * @return integer
      */
     public function getNextSequence(Locale $locale, Category $parent = null): int
     {
@@ -115,9 +106,7 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * Get an tree of categories
-     *
-     * @param Locale $locale
+     * Get an tree of categories.
      *
      * @return array
      */
@@ -143,21 +132,19 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * A recursive function to populate the tree array
+     * A recursive function to populate the tree array.
      *
-     * @param array $treeResult
      * @param Category[] $categories
-     * @param integer $path
      *
      * @return void
      */
     private function parseTreeChildren(array &$treeResult, $categories, int $path)
     {
         foreach ($categories as $category) {
-            $category->path                    = $path;
+            $category->path = $path;
             $treeResult[$category->getTitle()] = $category;
 
-            if (! $category->getChildren()->isEmpty()) {
+            if (!$category->getChildren()->isEmpty()) {
                 $this->parseTreeChildren($treeResult, $category->getChildren(), $path + 1);
             }
         }
@@ -165,22 +152,21 @@ class CategoryRepository extends EntityRepository
 
     /**
      * @param string $url
-     * @param Locale $locale
-     * @param integer $id
+     * @param int    $id
      *
      * @return string
      */
     public function getUrl($url, Locale $locale, $id)
     {
-        $url           = Uri::getUrl((string)$url);
+        $url = Uri::getUrl((string) $url);
         $query_builder = $this->createQueryBuilder('i');
         $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
                       ->where($query_builder->expr()->eq('m.url', ':url'))
                       ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
                       ->setParameters(
                           [
-                              'url'    => $url,
-                              'locale' => $locale
+                              'url' => $url,
+                              'locale' => $locale,
                           ]
                       );
 

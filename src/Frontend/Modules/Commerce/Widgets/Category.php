@@ -10,7 +10,7 @@ use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
 use Frontend\Core\Language\Locale;
 
 /**
- * This is a widget with the Commerce-categories
+ * This is a widget with the Commerce-categories.
  *
  * @author Waldo Cosman <waldo@comsa.be>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -28,7 +28,7 @@ class Category extends FrontendBaseWidget
     private $products;
 
     /**
-     * Execute the extra
+     * Execute the extra.
      */
     public function execute(): void
     {
@@ -40,7 +40,7 @@ class Category extends FrontendBaseWidget
     }
 
     /**
-     * Load the data
+     * Load the data.
      */
     private function loadData()
     {
@@ -60,7 +60,7 @@ class Category extends FrontendBaseWidget
     }
 
     /**
-     * Parse
+     * Parse.
      */
     private function parse()
     {
@@ -70,9 +70,7 @@ class Category extends FrontendBaseWidget
     }
 
     /**
-     * Get the category repository
-     *
-     * @return CategoryRepository
+     * Get the category repository.
      */
     private function getCategoryRepository(): CategoryRepository
     {
@@ -80,9 +78,7 @@ class Category extends FrontendBaseWidget
     }
 
     /**
-     * Get the product repository
-     *
-     * @return ProductRepository
+     * Get the product repository.
      */
     private function getProductRepository(): ProductRepository
     {

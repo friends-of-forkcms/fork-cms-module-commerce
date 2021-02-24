@@ -7,7 +7,6 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Modules\Commerce\Domain\Settings\Command\UpdateSettings;
 use Backend\Modules\Commerce\Domain\Settings\Event\SettingsUpdated;
 use Backend\Modules\Commerce\Domain\Settings\SettingsType;
-use Common\Exception\RedirectException;
 use Symfony\Component\Form\Form;
 
 /**
@@ -18,12 +17,6 @@ use Symfony\Component\Form\Form;
  */
 class Settings extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -79,9 +72,6 @@ class Settings extends BackendBaseActionEdit
     }
 
     /**
-     * @param array $parameters
-     *
-     * @return string
      * @throws \Exception
      */
     private function getBackLink(array $parameters = []): string

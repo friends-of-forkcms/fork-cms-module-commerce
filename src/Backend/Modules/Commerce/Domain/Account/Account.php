@@ -5,6 +5,9 @@ namespace Backend\Modules\Commerce\Domain\Account;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
+use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,91 +18,73 @@ use Doctrine\ORM\Mapping as ORM;
 class Account
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var OrderAddress[]
+     * @var Collection|OrderAddress[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress", mappedBy="account")
      */
-    private $addresses;
+    private Collection $addresses;
 
     /**
-     * @var Order[]
+     * @var Collection|Order[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", mappedBy="account")
-     * @ORM\OrderBy({"date" = "DESC"})
+     * @ORM\OrderBy({"date": "DESC"})
      */
-    private $orders;
+    private Collection $orders;
 
     /**
-     * @var Cart[]
+     * @var Collection|Cart[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\Cart", mappedBy="account")
      */
-    private $carts;
+    private Collection $carts;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $profile_id;
+    private ?int $profile_id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private string $email;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $phone;
+    private ?string $phone;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $company_name;
+    private ?string $company_name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $first_name;
+    private string $first_name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $last_name;
+    private string $last_name;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         ?int $profile_id,
@@ -154,9 +139,6 @@ class Account
         return $this->profile_id;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
@@ -194,18 +176,12 @@ class Account
         return $this->last_name;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedOn(): \DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getEditedOn(): \DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
@@ -213,16 +189,16 @@ class Account
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
-        $this->editedOn = new \DateTime();
+        $this->editedOn = new DateTime();
 
         if (!$this->id) {
             $this->createdOn = $this->editedOn;
         }
     }
 
-    public static function fromDataTransferObject(AccountCustomerDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(AccountCustomerDataTransferObject $dataTransferObject): Account
     {
         if ($dataTransferObject->hasExistingAccount()) {
             return self::update($dataTransferObject);
@@ -264,6 +240,6 @@ class Account
 
     public function getFullName()
     {
-        return $this->getFirstName() .' '. $this->getLastName();
+        return $this->getFirstName().' '.$this->getLastName();
     }
 }

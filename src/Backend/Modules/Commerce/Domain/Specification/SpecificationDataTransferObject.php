@@ -2,71 +2,49 @@
 
 namespace Backend\Modules\Commerce\Domain\Specification;
 
-use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
+use Common\Locale;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SpecificationDataTransferObject
 {
-    /**
-     * @var Specification
-     */
-    protected $specificationEntity;
+    protected ?Specification $specificationEntity;
+
+    public int $id;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
+    public string $title;
+    public Locale $locale;
+    public ?Meta $meta;
+    public int $sequence;
 
     /**
-     * @var Locale
+     * @var Collection|SpecificationValue[]
      */
-    public $locale;
+    public Collection $specification_values;
 
-    /**
-     * @var Meta
-     */
-    public $meta;
-
-    /**
-     * @var int
-     */
-    public $sequence;
-
-    /**
-     * @var SpecificationValue[]
-     */
-    public $specification_values;
-
-    /**
-     * @var bool
-     */
-    public $filter;
+    public bool $filter;
 
     public function __construct(Specification $specification = null)
     {
         $this->specificationEntity = $specification;
-        $this->filter              = false;
+        $this->filter = false;
 
-        if (! $this->hasExistingSpecification()) {
+        if (!$this->hasExistingSpecification()) {
             return;
         }
 
-        $this->id                   = $specification->getId();
-        $this->title                = $specification->getTitle();
-        $this->locale               = $specification->getLocale();
-        $this->meta                 = $specification->getMeta();
-        $this->sequence             = $specification->getSequence();
-        $this->filter               = $specification->isFilter();
-        $this->specification_values = $specification->getSpecificationValues();
+        $this->id = $this->specificationEntity->getId();
+        $this->title = $this->specificationEntity->getTitle();
+        $this->locale = $this->specificationEntity->getLocale();
+        $this->meta = $this->specificationEntity->getMeta();
+        $this->sequence = $this->specificationEntity->getSequence();
+        $this->filter = $this->specificationEntity->isFilter();
+        $this->specification_values = $this->specificationEntity->getSpecificationValues();
     }
 
     public function getSpecificationEntity(): Specification

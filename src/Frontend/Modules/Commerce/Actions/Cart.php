@@ -8,39 +8,39 @@ use Backend\Modules\Commerce\Domain\Quote\Event\QuoteCreated;
 use Backend\Modules\Commerce\Domain\Quote\QuoteDataTransferObject;
 use Backend\Modules\Commerce\Domain\Quote\QuoteType;
 use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder;
-use Frontend\Modules\Commerce\CheckoutProgress;
-use Frontend\Modules\Commerce\CheckoutStep\Account as AccountStep;
-use Frontend\Modules\Commerce\CheckoutStep\Addresses as AddressesStep;
-use Frontend\Modules\Commerce\CheckoutStep\ChangeStepException;
-use Frontend\Modules\Commerce\CheckoutStep\ConfirmOrder as ConfirmOrderStep;
-use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethod as ShipmentMethodStep;
-use Frontend\Modules\Commerce\CheckoutStep\PaymentMethod as PaymentMethodStep;
-use Frontend\Modules\Commerce\CheckoutStep\PayOrder as PayOrderStep;
-use Frontend\Modules\Commerce\CheckoutStep\Login as LoginStep;
-use Frontend\Modules\Commerce\CheckoutStep\OrderPlaced as OrderPlacedStep;
 use Common\Exception\ExitException;
 use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
+use Frontend\Modules\Commerce\CheckoutProgress;
+use Frontend\Modules\Commerce\CheckoutStep\Account as AccountStep;
+use Frontend\Modules\Commerce\CheckoutStep\Addresses as AddressesStep;
+use Frontend\Modules\Commerce\CheckoutStep\ChangeStepException;
+use Frontend\Modules\Commerce\CheckoutStep\ConfirmOrder as ConfirmOrderStep;
+use Frontend\Modules\Commerce\CheckoutStep\Login as LoginStep;
+use Frontend\Modules\Commerce\CheckoutStep\OrderPlaced as OrderPlacedStep;
+use Frontend\Modules\Commerce\CheckoutStep\PaymentMethod as PaymentMethodStep;
+use Frontend\Modules\Commerce\CheckoutStep\PayOrder as PayOrderStep;
+use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethod as ShipmentMethodStep;
 use Frontend\Modules\Profiles\Engine\Authentication;
 
 /**
- * This is the cart-action, it will display the cart
+ * This is the cart-action, it will display the cart.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Cart extends FrontendBaseBlock
 {
     /**
-     * Our current cart
+     * Our current cart.
      *
-     * @var    \Backend\Modules\Commerce\Domain\Cart\Cart
+     * @var \Backend\Modules\Commerce\Domain\Cart\Cart
      */
     private $cart;
 
     /**
-     * Execute the action
+     * Execute the action.
      *
      * @throws RedirectException
      * @throws \Exception
@@ -88,9 +88,7 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Display the cart overview
-     *
-     * @return void
+     * Display the cart overview.
      */
     private function overview(): void
     {
@@ -102,11 +100,9 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Display the checkout page
+     * Display the checkout page.
      *
      * @throws RedirectException
-     *
-     * @return void
      */
     private function checkout(): void
     {
@@ -118,7 +114,7 @@ class Cart extends FrontendBaseBlock
 
         $this->breadcrumb->addElement(
             ucfirst(Language::lbl('Checkout')),
-            Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . Language::lbl('Checkout')
+            Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('Checkout')
         );
 
         $baseUrl = Navigation::getUrlForBlock('Commerce', 'Cart');
@@ -139,7 +135,7 @@ class Cart extends FrontendBaseBlock
             ->addStep(new OrderPlacedStep());
 
         $urlParameters = $this->url->getParameters(false);
-        $requestedUrl = $baseUrl . '/'. implode('/', $urlParameters);
+        $requestedUrl = $baseUrl.'/'.implode('/', $urlParameters);
 
         // Load the first step
         if (count($urlParameters) == 1) {
@@ -161,7 +157,7 @@ class Cart extends FrontendBaseBlock
         try {
             $currentStep->execute();
             foreach ($currentStep->getJsFiles() as $file) {
-                $this->addJS('Checkout/' . $file);
+                $this->addJS('Checkout/'.$file);
             }
         } catch (ChangeStepException $exception) {
             $url = $exception->getStep()->getUrl();
@@ -173,9 +169,8 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Display the request quote page
+     * Display the request quote page.
      *
-     * @return void
      * @throws RedirectException
      */
     private function requestQuote(): void
@@ -195,7 +190,7 @@ class Cart extends FrontendBaseBlock
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->breadcrumb->addElement(
                 ucfirst(Language::lbl('RequestQuote')),
-                Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . Language::lbl('RequestQuoteUrl')
+                Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('RequestQuoteUrl')
             );
 
             if ($this->getRequest()->get('submitted')) {
@@ -223,16 +218,14 @@ class Cart extends FrontendBaseBlock
         );
 
         $this->redirect(
-            Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . Language::lbl('RequestQuoteUrl') . '?submitted=1'
+            Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('RequestQuoteUrl').'?submitted=1'
         );
     }
 
     /**
      * Handle the webhook which is called by the payment provider.
      *
-     * @return string
      * @throws \Exception
-     *
      */
     private function runWebhook(): string
     {
@@ -244,9 +237,7 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     private function getCartRepository(): CartRepository
     {
@@ -254,13 +245,9 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Get the payment method handler
+     * Get the payment method handler.
      *
-     * @param string $paymentMethod
-     *
-     * @return ConfirmOrder
      * @throws \Exception
-     *
      */
     private function getPaymentMethod(string $paymentMethod): ConfirmOrder
     {
@@ -273,7 +260,7 @@ class Cart extends FrontendBaseBlock
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
 
         if (!class_exists($className)) {
-            throw new \Exception('Class ' . $className . ' not found');
+            throw new \Exception('Class '.$className.' not found');
         }
 
         /**
@@ -285,7 +272,7 @@ class Cart extends FrontendBaseBlock
     }
 
     /**
-     * Check if it is allowed to checkout
+     * Check if it is allowed to checkout.
      *
      * @throws RedirectException
      */

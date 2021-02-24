@@ -13,6 +13,6 @@ class PaymentMethodNotFound extends Exception
 
     public static function forName(string $name): self
     {
-        return new self('Can\'t find a PaymentMethod with name = "' . $name . '".');
+        return new self('Can\'t find a PaymentMethod with name = "'.$name.'".');
     }
 }

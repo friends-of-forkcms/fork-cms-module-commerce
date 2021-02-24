@@ -2,6 +2,8 @@
 
 namespace Backend\Modules\Commerce\PaymentMethods\Exception;
 
-class PaymentException extends \Exception
+use Exception;
+
+class PaymentException extends Exception
 {
 }

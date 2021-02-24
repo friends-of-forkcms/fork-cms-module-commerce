@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\ProductOption;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
@@ -34,13 +34,13 @@ class DataGrid extends DataGridDatabase
         parent::__construct($query, $parameters);
 
         // our JS needs to know an id, so we can highlight it
-        $this->setRowAttributes(array('id' => 'row-[id]'));
+        $this->setRowAttributes(['id' => 'row-[id]']);
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[required]'], 'required');
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[custom_value_allowed]'], 'custom_value_allowed');
         $this->setColumnFunction([self::class, 'getType'], ['[type]'], 'type');
-        $this->setColumnsHidden(array('sequence'));
+        $this->setColumnsHidden(['sequence']);
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceProductOptions'));
+        $this->setAttributes(['data-action' => 'SequenceProductOptions']);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditProductOption')) {

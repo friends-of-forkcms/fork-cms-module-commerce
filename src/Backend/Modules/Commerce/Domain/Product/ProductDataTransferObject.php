@@ -15,260 +15,132 @@ use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
-use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type;
+use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Common\Doctrine\Entity\Meta;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductDataTransferObject
 {
-    /**
-     * @var Product
-     */
-    protected $productEntity;
+    protected ?Product $productEntity;
+    public ?int $id;
+    public bool $hidden = false;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var boolean
-     */
-    public $hidden = false;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $type = Product::TYPE_DEFAULT;
+    public int $type = Product::TYPE_DEFAULT;
 
     /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $min_width = 0;
+    public int $min_width = 0;
 
     /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $min_height = 0;
+    public int $min_height = 0;
 
     /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $max_width = 0;
+    public int $max_width = 0;
 
     /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $max_height = 0;
+    public int $max_height = 0;
+
+    public int $extra_production_width = 0;
+
+    public int $extra_production_height = 0;
 
     /**
-     * @var int
-     */
-    public $extra_production_width = 0;
-
-    /**
-     * @var int
-     */
-    public $extra_production_height = 0;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
+    public string $title;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $summary;
+    public ?string $summary;
+
+    public float $weight;
 
     /**
-     * @var string
-     */
-    public $weight;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $price;
+    public ?string $price;
 
     /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $stock;
+    public int $stock;
 
     /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $order_quantity = 1;
+    public int $order_quantity = 1;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $sku;
+    public string $sku;
+    public ?string $ean13;
+    public ?string $isbn;
+    public ?string $text;
+    public ?string $dimension_instructions;
+    public Locale $locale;
 
     /**
-     * @var string
-     */
-    public $ean13;
-
-    /**
-     * @var string
-     */
-    public $isbn;
-
-    /**
-     * @var string
-     */
-    public $text;
-
-    /**
-     * @var string
-     */
-    public $dimension_instructions;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var Category
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $category;
+    public Category $category;
 
     /**
-     * @var Brand
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $brand;
+    public ?Brand $brand;
 
     /**
-     * @var Vat
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $vat;
+    public ?Vat $vat;
 
     /**
-     * @var StockStatus
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $stock_status;
-
-    /**
-     * @var boolean
-     */
-    public $from_stock = true;
-
-    /**
-     * @var Meta
-     */
-    public $meta;
-
-    /**
-     * @var Image
-     */
-    public $image;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $specification_values;
+    public StockStatus $stock_status;
+    public bool $from_stock = true;
+    public ?Meta $meta;
+    public Image $image;
+    public Collection $specification_values;
 
     /**
      * @Assert\Valid(groups={"dimensions"})
-     *
-     * @var PersistentCollection
      */
-    public $specials;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $remove_specials;
+    public Collection $specials;
+    public Collection $remove_specials;
 
     /**
      * @Assert\Valid
-     *
-     * @var PersistentCollection
      */
-    public $dimensions;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $remove_dimensions;
+    public Collection $dimensions;
+    public Collection $remove_dimensions;
 
     /**
      * @Assert\Valid
-     *
-     * @var PersistentCollection
      */
-    public $dimension_notifications;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $remove_dimension_notifications;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $related_products;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $up_sell_products;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $remove_up_sell_products;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $remove_specification_values;
-
-    /**
-     * @var PersistentCollection
-     */
-    public $remove_related_products;
-
-    /**
-     * @var MediaGroup
-     */
-    public $images;
+    public Collection $dimension_notifications;
+    public Collection $remove_dimension_notifications;
+    public Collection $related_products;
+    public Collection $up_sell_products;
+    public Collection $remove_up_sell_products;
+    public Collection $remove_specification_values;
+    public Collection $remove_related_products;
+    public MediaGroup $images;
 
     /**
      * @var MediaGroup
@@ -276,12 +148,10 @@ class ProductDataTransferObject
     public $downloads;
 
     /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\GreaterThanOrEqual(value=1, message="err.SequenceInvalid")
      */
-    public $sequence;
+    public int $sequence;
 
     public function __construct(Product $product = null)
     {
@@ -302,49 +172,49 @@ class ProductDataTransferObject
         $this->remove_related_products = new ArrayCollection();
         $this->images = MediaGroup::create(MediaGroupType::fromString(Type::IMAGE));
         $this->downloads = MediaGroup::create(MediaGroupType::fromString(Type::FILE));
-        $this->weight = (float)0.00;
+        $this->weight = 0.00;
         $this->sequence = $this->getProductRepository()->getNextSequence($this->locale, $this->category);
 
         if (!$this->hasExistingProduct()) {
             return;
         }
 
-        $this->id = $product->getId();
-        $this->meta = $product->getMeta();
-        $this->category = $product->getCategory();
-        $this->brand = $product->getBrand();
-        $this->vat = $product->getVat();
-        $this->stock_status = $product->getStockStatus();
-        $this->hidden = $product->isHidden();
-        $this->type = $product->getType();
-        $this->min_width = $product->getMinWidth();
-        $this->min_height = $product->getMinHeight();
-        $this->max_width = $product->getMaxWidth();
-        $this->max_height = $product->getMaxHeight();
-        $this->extra_production_width = $product->getExtraProductionWidth();
-        $this->extra_production_height = $product->getExtraProductionHeight();
-        $this->title = $product->getTitle();
-        $this->summary = $product->getSummary();
-        $this->text = $product->getText();
-        $this->dimension_instructions = $product->getDimensionInstructions();
-        $this->locale = $product->getLocale();
-        $this->weight = $product->getWeight();
-        $this->price = $product->getPrice();
-        $this->stock = $product->getStock();
-        $this->order_quantity = $product->getOrderQuantity();
-        $this->from_stock = $product->isFromStock();
-        $this->sku = $product->getSku();
-        $this->ean13 = $product->getEan13();
-        $this->isbn = $product->getIsbn();
-        $this->sequence = $product->getSequence();
-        $this->specification_values = $product->getSpecificationValues();
-        $this->specials = $product->getSpecials();
-        $this->dimensions = $product->getDimensions();
-        $this->dimension_notifications = $product->getDimensionNotifications();
-        $this->images = $product->getImages();
-        $this->downloads = $product->getDownloads();
-        $this->related_products = $product->getRelatedProducts();
-        $this->up_sell_products = $product->getUpSellProducts();
+        $this->id = $this->productEntity->getId();
+        $this->meta = $this->productEntity->getMeta();
+        $this->category = $this->productEntity->getCategory();
+        $this->brand = $this->productEntity->getBrand();
+        $this->vat = $this->productEntity->getVat();
+        $this->stock_status = $this->productEntity->getStockStatus();
+        $this->hidden = $this->productEntity->isHidden();
+        $this->type = $this->productEntity->getType();
+        $this->min_width = $this->productEntity->getMinWidth();
+        $this->min_height = $this->productEntity->getMinHeight();
+        $this->max_width = $this->productEntity->getMaxWidth();
+        $this->max_height = $this->productEntity->getMaxHeight();
+        $this->extra_production_width = $this->productEntity->getExtraProductionWidth();
+        $this->extra_production_height = $this->productEntity->getExtraProductionHeight();
+        $this->title = $this->productEntity->getTitle();
+        $this->summary = $this->productEntity->getSummary();
+        $this->text = $this->productEntity->getText();
+        $this->dimension_instructions = $this->productEntity->getDimensionInstructions();
+        $this->locale = $this->productEntity->getLocale();
+        $this->weight = $this->productEntity->getWeight();
+        $this->price = $this->productEntity->getPrice();
+        $this->stock = $this->productEntity->getStock();
+        $this->order_quantity = $this->productEntity->getOrderQuantity();
+        $this->from_stock = $this->productEntity->isFromStock();
+        $this->sku = $this->productEntity->getSku();
+        $this->ean13 = $this->productEntity->getEan13();
+        $this->isbn = $this->productEntity->getIsbn();
+        $this->sequence = $this->productEntity->getSequence();
+        $this->specification_values = $this->productEntity->getSpecificationValues();
+        $this->specials = $this->productEntity->getSpecials();
+        $this->dimensions = $this->productEntity->getDimensions();
+        $this->dimension_notifications = $this->productEntity->getDimensionNotifications();
+        $this->images = $this->productEntity->getImages();
+        $this->downloads = $this->productEntity->getDownloads();
+        $this->related_products = $this->productEntity->getRelatedProducts();
+        $this->up_sell_products = $this->productEntity->getUpSellProducts();
 
         // just a fallback
         if (!$this->images instanceof MediaGroup) {
@@ -372,13 +242,13 @@ class ProductDataTransferObject
         return $this->productEntity instanceof Product;
     }
 
-    public function copy()
+    public function copy(): void
     {
         $this->id = null;
         $this->productEntity = null;
     }
 
-    public function addSpecificationValue(SpecificationValue $value)
+    public function addSpecificationValue(SpecificationValue $value): void
     {
         // If the specification value has no entity save a new one
         if (!$value->getId()) {
@@ -393,18 +263,18 @@ class ProductDataTransferObject
         $this->specification_values->add($value);
     }
 
-    public function removeSpecificationValue($value)
+    public function removeSpecificationValue($value): void
     {
         $this->specification_values->remove($value->getId());
         $this->remove_specification_values->add($value);
     }
 
-    public function addRelatedProduct(Product $product)
+    public function addRelatedProduct(Product $product): void
     {
         $this->related_products->add($product);
     }
 
-    public function removeRelatedProduct(Product $product)
+    public function removeRelatedProduct(Product $product): void
     {
         // for our current entity
         $this->related_products->removeElement($product);
@@ -413,12 +283,12 @@ class ProductDataTransferObject
         $this->remove_related_products->add($product);
     }
 
-    public function addUpSellProduct(UpSellProduct $upSellProduct)
+    public function addUpSellProduct(UpSellProduct $upSellProduct): void
     {
         $this->up_sell_products->add($upSellProduct);
     }
 
-    public function removeUpSellProduct(UpSellProduct $upSellProduct)
+    public function removeUpSellProduct(UpSellProduct $upSellProduct): void
     {
         // for our current entity
         $this->up_sell_products->removeElement($upSellProduct);
@@ -426,37 +296,37 @@ class ProductDataTransferObject
         $this->remove_up_sell_products->add($upSellProduct);
     }
 
-    public function addSpecial(ProductSpecial $special)
+    public function addSpecial(ProductSpecial $special): void
     {
         $this->specials->add($special);
     }
 
-    public function removeSpecial(ProductSpecial $special)
+    public function removeSpecial(ProductSpecial $special): void
     {
         // for our current entity
         $this->remove_specials->add($special);
     }
 
-    public function addDimension(ProductDimension $dimension)
+    public function addDimension(ProductDimension $dimension): void
     {
-        if ($this->type != Product::TYPE_DIMENSIONS) {
+        if ($this->type !== Product::TYPE_DIMENSIONS) {
             return;
         }
 
         $this->dimensions->add($dimension);
     }
 
-    public function removeDimension(ProductDimension $dimension)
+    public function removeDimension(ProductDimension $dimension): void
     {
         $this->remove_dimensions->add($dimension);
     }
 
-    public function addDimensionNotification(ProductDimensionNotification $dimensionNotification)
+    public function addDimensionNotification(ProductDimensionNotification $dimensionNotification): void
     {
         $this->dimension_notifications->add($dimensionNotification);
     }
 
-    public function removeDimensionNotification(ProductDimensionNotification $dimensionNotification)
+    public function removeDimensionNotification(ProductDimensionNotification $dimensionNotification): void
     {
         $this->remove_dimension_notifications->add($dimensionNotification);
     }

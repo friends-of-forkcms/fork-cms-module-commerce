@@ -5,22 +5,19 @@ namespace Backend\Modules\Commerce\Actions;
 use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Form\Type\DeleteType;
+use Backend\Modules\Commerce\Domain\ProductOption\Command\DeleteProductOption as DeleteCommand;
 use Backend\Modules\Commerce\Domain\ProductOption\Event\DeletedProductOption;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
-use Backend\Modules\Commerce\Domain\ProductOption\Command\DeleteProductOption as DeleteCommand;
 use Backend\Modules\Commerce\Domain\SpecificationValue\Exception\SpecificationValueNotFound;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
- * This action will delete a product option value
+ * This action will delete a product option value.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class DeleteProductOption extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
@@ -42,7 +39,7 @@ class DeleteProductOption extends BackendBaseActionDelete
         }
         $deleteFormData = $deleteForm->getData();
 
-        $productOption = $this->getProductOption((int)$deleteFormData['id']);
+        $productOption = $this->getProductOption((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.
@@ -58,15 +55,14 @@ class DeleteProductOption extends BackendBaseActionDelete
                     [
                         'id' => $productOption->getProduct()->getId(),
                         'report' => 'deleted',
-                        'var' => $productOption->getTitle()
+                        'var' => $productOption->getTitle(),
                     ]
-                ) . '#tabOptions'
+                ).'#tabOptions'
             );
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->redirect($this->getBackLink(['error' => 'products-connected']));
         }
     }
-
 
     private function getBackLink(array $parameters = []): string
     {

@@ -3,6 +3,7 @@
 namespace Backend\Modules\Commerce\Domain\CartRule;
 
 use Common\Locale;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,96 +14,72 @@ use Doctrine\ORM\Mapping as ORM;
 class CartRule
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="date", name="from_date")
      */
-    private $from;
+    private DateTimeInterface $from;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="date", name="till_date", nullable=true)
      */
-    private $till;
+    private ?DateTimeInterface $till;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer")
      */
-    private $quantity;
+    private int $quantity;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $quantity_per_user;
+    private ?int $quantity_per_user;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $code;
+    private string $code;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $minimum_amount;
+    private ?float $minimum_amount;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=1, nullable=true)
      */
-    private $reduction_percentage;
+    private ?float $reduction_percentage;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $reduction_amount;
+    private ?float $reduction_amount;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default" : false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $hidden;
+    private bool $hidden;
 
     private function __construct(
         Locale $locale,
         string $title,
-        \DateTime $from,
-        ?\DateTime $till,
+        DateTimeInterface $from,
+        ?DateTimeInterface $till,
         int $quantity,
         ?int $quantity_per_user,
         string $code,
@@ -124,7 +101,7 @@ class CartRule
         $this->hidden = $hidden;
     }
 
-    public static function fromDataTransferObject(CartRuleDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(CartRuleDataTransferObject $dataTransferObject): CartRule
     {
         if ($dataTransferObject->hasExistingCartRule()) {
             return self::update($dataTransferObject);
@@ -150,7 +127,7 @@ class CartRule
         );
     }
 
-    private static function update(CartRuleDataTransferObject $dataTransferObject)
+    private static function update(CartRuleDataTransferObject $dataTransferObject): CartRule
     {
         $cartRule = $dataTransferObject->getCartRuleEntity();
 
@@ -184,81 +161,51 @@ class CartRule
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getFrom(): \DateTime
+    public function getFrom(): DateTimeInterface
     {
         return $this->from;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getTill(): ?\DateTime
+    public function getTill(): ?DateTimeInterface
     {
         return $this->till;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): int
     {
         return $this->quantity;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantityPerUser(): ?int
     {
         return $this->quantity_per_user;
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return float
-     */
     public function getMinimumAmount(): ?float
     {
         return $this->minimum_amount;
     }
 
-    /**
-     * @return float
-     */
     public function getReductionPercentage(): ?float
     {
         return $this->reduction_percentage;
     }
 
-    /**
-     * @return float
-     */
     public function getReductionAmount(): ?float
     {
         return $this->reduction_amount;
     }
 
-    /**
-     * @return bool
-     */
     public function isHidden(): bool
     {
         return $this->hidden;

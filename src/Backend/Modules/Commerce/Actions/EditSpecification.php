@@ -6,17 +6,17 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Form\Type\DeleteType;
-use Backend\Modules\Commerce\Domain\Specification\Exception\SpecificationNotFound;
-use Backend\Modules\Commerce\Domain\Specification\Specification;
-use Backend\Modules\Commerce\Domain\Specification\SpecificationType;
-use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
 use Backend\Modules\Commerce\Domain\Specification\Command\UpdateSpecification;
 use Backend\Modules\Commerce\Domain\Specification\Event\Updated;
+use Backend\Modules\Commerce\Domain\Specification\Exception\SpecificationNotFound;
+use Backend\Modules\Commerce\Domain\Specification\Specification;
+use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
+use Backend\Modules\Commerce\Domain\Specification\SpecificationType;
 use Backend\Modules\Commerce\Domain\SpecificationValue\DataGrid;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit specification-action, it will display a form to edit a specification
+ * This is the edit specification-action, it will display a form to edit a specification.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Willem van Dam <w.vandam@jvdict.nl>
@@ -24,9 +24,6 @@ use Symfony\Component\Form\Form;
  */
 class EditSpecification extends BackendBaseActionEdit
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -40,12 +37,12 @@ class EditSpecification extends BackendBaseActionEdit
             ['id' => $specification->getId()],
             [
                 'module' => $this->getModule(),
-                'action' => 'DeleteSpecification'
+                'action' => 'DeleteSpecification',
             ]
         );
         $this->template->assign('deleteForm', $deleteForm->createView());
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('specification', $specification);
             $this->template->assign('dataGridValues', DataGrid::getHtml($specification));
@@ -67,9 +64,9 @@ class EditSpecification extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'var'       => $updateSpecification->title,
-                    'highlight' => 'row-' . $updateSpecification->getSpecificationEntity()->getId(),
+                    'report' => 'edited',
+                    'var' => $updateSpecification->title,
+                    'highlight' => 'row-'.$updateSpecification->getSpecificationEntity()->getId(),
                 ]
             )
         );

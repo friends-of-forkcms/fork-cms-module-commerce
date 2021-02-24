@@ -8,7 +8,7 @@ use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
 
 /**
- * This is a widget for the shopping cart
+ * This is a widget for the shopping cart.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
@@ -21,7 +21,7 @@ class ShoppingCart extends FrontendBaseWidget
     private $cookie;
 
     /**
-     * Execute the extra
+     * Execute the extra.
      */
     public function execute(): void
     {
@@ -34,9 +34,7 @@ class ShoppingCart extends FrontendBaseWidget
     }
 
     /**
-     * Get the active cart from the session
-     *
-     * @return Cart
+     * Get the active cart from the session.
      */
     private function getActiveCart(): Cart
     {
@@ -50,9 +48,7 @@ class ShoppingCart extends FrontendBaseWidget
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     private function getCartRepository(): CartRepository
     {

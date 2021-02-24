@@ -14,12 +14,12 @@ class Quote extends BaseQuote
     {
         return [
             $this->name => [
-                'label' => $this->getSetting('name') .' (&euro; '. number_format($this->getSetting('price'), 2, ',', '.') .')',
+                'label' => $this->getSetting('name').' (&euro; '.number_format($this->getSetting('price'), 2, ',', '.').')',
                 'name' => $this->getSetting('name'),
                 'price' => (float) $this->getSetting('price'),
                 'vat' => $this->getVatPrice((float) $this->getSetting('price')),
                 'available_payment_methods' => $this->getSetting('available_payment_methods'),
-            ]
+            ],
         ];
     }
 

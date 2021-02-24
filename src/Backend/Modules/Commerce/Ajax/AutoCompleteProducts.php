@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of Commerce categories
+ * Alters the sequence of Commerce categories.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -19,7 +19,7 @@ class AutoCompleteProducts extends BackendBaseAJAXAction
         parent::execute();
 
         $entityManager = $this->get('commerce.repository.product');
-        $page          = $this->getRequest()->query->get('page');
+        $page = $this->getRequest()->query->get('page');
 
         if ($page < 1) {
             $page = 1;
@@ -38,12 +38,12 @@ class AutoCompleteProducts extends BackendBaseAJAXAction
 
         // build the return data
         $returnData = [
-            'query_data' => []
+            'query_data' => [],
         ];
 
         foreach ($products as $product) {
             $returnData['query_data'][] = [
-                'id'   => $product->getId(),
+                'id' => $product->getId(),
                 'text' => $product->getTitle(),
             ];
         }

@@ -14,21 +14,18 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 class DeleteCartRule extends BackendBaseActionDelete
 {
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         $deleteForm = $this->createForm(DeleteType::class, null, ['module' => $this->getModule()]);
         $deleteForm->handleRequest($this->getRequest());
-        if (! $deleteForm->isSubmitted() || ! $deleteForm->isValid()) {
+        if (!$deleteForm->isSubmitted() || !$deleteForm->isValid()) {
             $this->redirect(BackendModel::createUrlForAction('Index', null, null, ['error' => 'non-existing']));
 
             return;
         }
         $deleteFormData = $deleteForm->getData();
 
-        $cartRule = $this->getCartRule((int)$deleteFormData['id']);
+        $cartRule = $this->getCartRule((int) $deleteFormData['id']);
 
         try {
             // The command bus will handle the saving of the content block in the database.

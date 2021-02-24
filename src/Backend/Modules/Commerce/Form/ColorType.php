@@ -2,6 +2,8 @@
 
 namespace Backend\Modules\Commerce\Form;
 
+use Closure;
+use RuntimeException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator;
@@ -27,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ColorType extends AbstractType
 {
-    private $choiceListFactory;
+    private ChoiceListFactoryInterface $choiceListFactory;
 
     public function __construct(ChoiceListFactoryInterface $choiceListFactory = null)
     {
@@ -82,7 +84,7 @@ class ColorType extends AbstractType
                 // empty data here so its value is submitted to sub forms
                 if (null === $data) {
                     $emptyData = $form->getConfig()->getEmptyData();
-                    $data = $emptyData instanceof \Closure ? $emptyData($form, $data) : $emptyData;
+                    $data = $emptyData instanceof Closure ? $emptyData($form, $data) : $emptyData;
                 }
 
                 // Convert the submitted data to a string, if scalar, before
@@ -160,7 +162,7 @@ class ColorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $choiceTranslationDomain = $options['choice_translation_domain'];
         if ($view->parent && null === $choiceTranslationDomain) {
@@ -242,7 +244,7 @@ class ColorType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $emptyData = function (Options $options) {
+        $emptyData = static function (Options $options) {
             if ($options['expanded'] && !$options['multiple']) {
                 return;
             }
@@ -266,7 +268,7 @@ class ColorType extends AbstractType
 
             // Set by the user
             if (true !== $choicesAsValues) {
-                throw new \RuntimeException(sprintf('The "choices_as_values" option of the %s should not be used. Remove it and flip the contents of the "choices" option instead.', \get_class($this)));
+                throw new RuntimeException(sprintf('The "choices_as_values" option of the %s should not be used. Remove it and flip the contents of the "choices" option instead.', \get_class($this)));
             }
 
             @trigger_error('The "choices_as_values" option is deprecated since Symfony 3.1 and will be removed in 4.0. You should not use it anymore.', E_USER_DEPRECATED);
@@ -410,7 +412,7 @@ class ColorType extends AbstractType
         }
 
         // Harden against NULL values (like in EntityType and ModelType)
-        $choices = null !== $options['choices'] ? $options['choices'] : [];
+        $choices = $options['choices'] ?? [];
 
         return $this->choiceListFactory->createListFromChoices($choices, $options['choice_value']);
     }

@@ -20,14 +20,14 @@ class BrandType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         )->add(
             'image',
             ImageType::class,
             [
-                'required'    => false,
-                'label'       => 'lbl.Image',
+                'required' => false,
+                'label' => 'lbl.Image',
                 'image_class' => Image::class,
             ]
         )->addEventListener(
@@ -37,10 +37,10 @@ class BrandType extends AbstractType
                     'meta',
                     MetaType::class,
                     [
-                        'base_field_name'                  => 'title',
-                        'generate_url_callback_class'      => 'commerce.repository.brand',
-                        'generate_url_callback_method'     => 'getUrl',
-                        'detail_url'                       => '',
+                        'base_field_name' => 'title',
+                        'generate_url_callback_class' => 'commerce.repository.brand',
+                        'generate_url_callback_method' => 'getUrl',
+                        'detail_url' => '',
                         'generate_url_callback_parameters' => [
                             $event->getData()->locale,
                             $event->getData()->id,
@@ -55,7 +55,7 @@ class BrandType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => BrandDataTransferObject::class
+                'data_class' => BrandDataTransferObject::class,
             ]
         );
     }

@@ -8,11 +8,9 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var QuoteDataTransferObject */
-    private $quote;
+    private QuoteDataTransferObject $quote;
 
-    /** @var Cart */
-    private $cart;
+    private Cart $cart;
 
     public function __construct(QuoteDataTransferObject $quote, Cart $cart)
     {

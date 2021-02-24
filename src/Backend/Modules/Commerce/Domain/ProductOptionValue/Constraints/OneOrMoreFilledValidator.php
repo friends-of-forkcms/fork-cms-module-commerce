@@ -40,7 +40,7 @@ class OneOrMoreFilledValidator extends ConstraintValidator
 
         if (!$isValid) {
             $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ fields }}', implode(", ", $fieldLabels))
+            ->setParameter('{{ fields }}', implode(', ', $fieldLabels))
             ->addViolation();
         }
     }

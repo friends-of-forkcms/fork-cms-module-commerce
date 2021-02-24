@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 
 final class DeleteProduct
 {
-    /** @var Product */
-    public $product;
+    public Product $product;
 
     public function __construct(Product $product)
     {

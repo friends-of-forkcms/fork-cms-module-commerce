@@ -3,107 +3,73 @@
 namespace Backend\Modules\Commerce\Domain\CartRule;
 
 use Backend\Core\Language\Locale;
+use DateTime;
+use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CartRuleDataTransferObject
 {
-    /**
-     * @var CartRule
-     */
-    protected $cartRuleEntity;
+    protected ?CartRule $cartRuleEntity;
+    public int $id;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
+    public string $title;
 
     /**
-     * @var \DateTime
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $from;
+    public DateTimeInterface $from;
+
+    public ?DateTimeInterface $till;
 
     /**
-     * @var \DateTime
-     */
-    public $till;
-
-    /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $quantity;
+    public int $quantity;
+
+    public ?int $quantity_per_user;
 
     /**
-     * @var int
-     */
-    public $quantity_per_user;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"Edit"})
      */
-    public $code;
+    public string $code;
 
-    /**
-     * @var float
-     */
-    public $minimum_amount;
+    public ?float $minimum_amount;
 
-    /**
-     * @var float
-     */
-    public $reduction_percentage;
+    public ?float $reduction_percentage;
 
-    /**
-     * @var float
-     */
-    public $reduction_amount;
+    public ?float $reduction_amount;
 
-    /**
-     * @var bool
-     */
-    public $hidden;
+    public bool $hidden;
 
-    /**
-     * @var Locale
-     */
-    public $locale;
+    public Locale $locale;
 
     public function __construct(CartRule $cartRule = null)
     {
         $this->cartRuleEntity = $cartRule;
         $this->locale = Locale::workingLocale();
         $this->hidden = false;
-        $this->from = new \DateTime();
+        $this->from = new DateTime();
         $this->quantity = 0;
 
         if (!$this->hasExistingCartRule()) {
             return;
         }
 
-        $this->id = $cartRule->getId();
-        $this->locale = $cartRule->getLocale();
-        $this->title = $cartRule->getTitle();
-        $this->from = $cartRule->getFrom();
-        $this->till = $cartRule->getTill();
-        $this->quantity = $cartRule->getQuantity();
-        $this->quantity_per_user = $cartRule->getQuantityPerUser();
-        $this->code = $cartRule->getCode();
-        $this->minimum_amount = $cartRule->getMinimumAmount();
-        $this->reduction_percentage = $cartRule->getReductionPercentage();
-        $this->reduction_amount = $cartRule->getReductionAmount();
-        $this->hidden = $cartRule->isHidden();
+        $this->id = $this->cartRuleEntity->getId();
+        $this->locale = $this->cartRuleEntity->getLocale();
+        $this->title = $this->cartRuleEntity->getTitle();
+        $this->from = $this->cartRuleEntity->getFrom();
+        $this->till = $this->cartRuleEntity->getTill();
+        $this->quantity = $this->cartRuleEntity->getQuantity();
+        $this->quantity_per_user = $this->cartRuleEntity->getQuantityPerUser();
+        $this->code = $this->cartRuleEntity->getCode();
+        $this->minimum_amount = $this->cartRuleEntity->getMinimumAmount();
+        $this->reduction_percentage = $this->cartRuleEntity->getReductionPercentage();
+        $this->reduction_amount = $this->cartRuleEntity->getReductionAmount();
+        $this->hidden = $this->cartRuleEntity->isHidden();
     }
 
     public function setCartRuleEntity(CartRule $cartRule): void

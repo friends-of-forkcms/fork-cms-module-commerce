@@ -13,39 +13,31 @@ use Doctrine\ORM\Mapping as ORM;
 class Vat
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $percentage;
+    private float $percentage;
 
     /**
      * @ORM\Column(type="integer", length=11)
      */
-    private $sequence;
+    private int $sequence;
 
     private function __construct(
         Locale $locale,
@@ -53,13 +45,13 @@ class Vat
         float $percentage,
         int $sequence
     ) {
-        $this->locale     = $locale;
-        $this->title      = $title;
+        $this->locale = $locale;
+        $this->title = $title;
         $this->percentage = $percentage;
-        $this->sequence   = $sequence;
+        $this->sequence = $sequence;
     }
 
-    public static function fromDataTransferObject(VatDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(VatDataTransferObject $dataTransferObject): Vat
     {
         if ($dataTransferObject->hasExistingVat()) {
             return self::update($dataTransferObject);
@@ -99,9 +91,7 @@ class Vat
     }
 
     /**
-     * Get the VAT percentage as a real percentage value
-     *
-     * @return float
+     * Get the VAT percentage as a real percentage value.
      */
     public function getAsPercentage(): float
     {
@@ -113,19 +103,19 @@ class Vat
         return $this->sequence;
     }
 
-    public function setSequence($sequence): void
+    public function setSequence(int $sequence): void
     {
         $this->sequence = $sequence;
     }
 
-    private static function update(VatDataTransferObject $dataTransferObject)
+    private static function update(VatDataTransferObject $dataTransferObject): Vat
     {
         $vat = $dataTransferObject->getVatEntity();
 
-        $vat->locale     = $dataTransferObject->locale;
-        $vat->title      = $dataTransferObject->title;
+        $vat->locale = $dataTransferObject->locale;
+        $vat->title = $dataTransferObject->title;
         $vat->percentage = $dataTransferObject->percentage;
-        $vat->sequence   = $dataTransferObject->sequence;
+        $vat->sequence = $dataTransferObject->sequence;
 
         return $vat;
     }

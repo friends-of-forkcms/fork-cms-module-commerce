@@ -23,56 +23,56 @@ class AccountShipmentAddressType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.FirstName',
+                'label' => 'lbl.FirstName',
             ]
         )->add(
             'last_name',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.LastName',
+                'label' => 'lbl.LastName',
             ]
         )->add(
             'phone',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Phone',
+                'label' => 'lbl.Phone',
             ]
         )->add(
             'street',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Street',
+                'label' => 'lbl.Street',
             ]
         )->add(
             'house_number',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.HouseNumber',
+                'label' => 'lbl.HouseNumber',
             ]
         )->add(
             'house_number_addition',
             TextType::class,
             [
                 'required' => false,
-                'label'    => 'lbl.HouseNumberAddition',
+                'label' => 'lbl.HouseNumberAddition',
             ]
         )->add(
             'city',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.City',
+                'label' => 'lbl.City',
             ]
         )->add(
             'zip_code',
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.ZipCode',
+                'label' => 'lbl.ZipCode',
             ]
         );
     }
@@ -81,7 +81,7 @@ class AccountShipmentAddressType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => AccountShipmentAddressDataTransferObject::class
+                'data_class' => AccountShipmentAddressDataTransferObject::class,
             ]
         );
     }

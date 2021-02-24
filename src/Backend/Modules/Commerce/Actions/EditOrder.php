@@ -12,28 +12,18 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\Order\OrderRepository;
 use Backend\Modules\Commerce\Domain\Order\OrderType;
 use Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory;
-use Common\Exception\RedirectException;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the edit-action, it will display a form to edit an existing item
+ * This is the edit-action, it will display a form to edit an existing item.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditOrder extends BackendBaseActionEdit
 {
-    /**
-     * @var Order
-     */
-    private $order;
+    private Order $order;
 
-    /**
-     * Execute the action
-     *
-     * @throws RedirectException
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -42,7 +32,7 @@ class EditOrder extends BackendBaseActionEdit
 
         $form = $this->getForm();
 
-        if (! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('order', $this->order);
             $this->template->assign('dataGridOrderProducts', DataGridProducts::getHtml($this->order));
@@ -67,8 +57,8 @@ class EditOrder extends BackendBaseActionEdit
         $this->redirect(
             $this->getBackLink(
                 [
-                    'report'    => 'edited',
-                    'highlight' => 'row-' . $this->order->getId(),
+                    'report' => 'edited',
+                    'highlight' => 'row-'.$this->order->getId(),
                 ]
             )
         );
@@ -99,7 +89,6 @@ class EditOrder extends BackendBaseActionEdit
     }
 
     /**
-     * @return Order
      * @throws \Common\Exception\RedirectException
      * @throws \Exception
      */
@@ -116,9 +105,6 @@ class EditOrder extends BackendBaseActionEdit
     }
 
     /**
-     * @param array $parameters
-     *
-     * @return string
      * @throws \Exception
      */
     private function getBackLink(array $parameters = []): string

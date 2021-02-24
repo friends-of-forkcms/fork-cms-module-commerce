@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\Event as EventDispatcher;
 
 abstract class Event extends EventDispatcher
 {
-    /** @var Country */
-    private $country;
+    private Country $country;
 
     public function __construct(Country $country)
     {

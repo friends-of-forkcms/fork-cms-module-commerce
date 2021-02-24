@@ -7,23 +7,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AccountRegisterDataTransferObject extends AddressDataTransferObject
 {
-    /**
-     * @var int
-     */
-    public $id;
+    public int $id;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Email(
-     *     message = "err.EmailIsRequired",
-     *     checkMX = true
+     *     message="err.EmailIsRequired",
+     *     checkMX=true
      * )
      */
-    public $email_address;
+    public string $email_address;
 
-    public $same_shipping_address = true;
+    public bool $same_shipping_address = true;
 
     public $password;
 

@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 
 final class DeleteProductOptionValue
 {
-    /** @var ProductOptionValue */
-    public $specificationValue;
+    public ProductOptionValue $specificationValue;
 
     public function __construct(ProductOptionValue $specificationValue)
     {

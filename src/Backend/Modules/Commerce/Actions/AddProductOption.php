@@ -17,7 +17,7 @@ use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueReposit
 use Symfony\Component\Form\Form;
 
 /**
- * This is the add product option-action, it will display a form to create a new product option
+ * This is the add product option-action, it will display a form to create a new product option.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -26,9 +26,6 @@ class AddProductOption extends BackendBaseActionAdd
     private Product $product;
     private ProductOptionValue $productOptionValue;
 
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -81,14 +78,14 @@ class AddProductOption extends BackendBaseActionAdd
                 'id' => $this->productOptionValue->getId(),
             ]);
 
-            return BackendModel::createUrlForAction('EditProductOptionValue', null, null, $parameters) . '#tabSubOptions';
+            return BackendModel::createUrlForAction('EditProductOptionValue', null, null, $parameters).'#tabSubOptions';
         }
 
         $parameters = array_merge($parameters, [
             'id' => $this->product->getId(),
         ]);
 
-        return BackendModel::createUrlForAction('Edit', null, null, $parameters) . '#tabOptions';
+        return BackendModel::createUrlForAction('Edit', null, null, $parameters).'#tabOptions';
     }
 
     private function getForm(): Form

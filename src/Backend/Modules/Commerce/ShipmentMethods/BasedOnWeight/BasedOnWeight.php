@@ -20,13 +20,13 @@ class BasedOnWeight extends Type
             EntityType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Vat',
-                'class'    => Vat::class,
+                'label' => 'lbl.Vat',
+                'class' => Vat::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
                               ->orderBy('i.sequence', 'ASC');
                 },
-                'choice_label'  => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'values',

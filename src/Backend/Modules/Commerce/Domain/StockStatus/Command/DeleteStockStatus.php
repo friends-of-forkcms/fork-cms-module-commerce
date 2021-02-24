@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 
 final class DeleteStockStatus
 {
-    /** @var StockStatus */
-    public $stockStatus;
+    public StockStatus $stockStatus;
 
     public function __construct(StockStatus $stockStatus)
     {

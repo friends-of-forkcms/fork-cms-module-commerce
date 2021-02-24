@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueReposit
 
 final class DeleteSpecificationValueHandler
 {
-    /** @var SpecificationValueRepository */
-    private $specificationValueRepository;
+    private SpecificationValueRepository $specificationValueRepository;
 
     public function __construct(SpecificationValueRepository $specificationValueRepository)
     {

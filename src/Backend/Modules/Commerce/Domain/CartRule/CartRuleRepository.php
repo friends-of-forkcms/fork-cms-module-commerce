@@ -4,12 +4,12 @@ namespace Backend\Modules\Commerce\Domain\CartRule;
 
 use Backend\Modules\Commerce\Domain\CartRule\Exception\CartRuleNotFound;
 use Common\Locale;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class CartRuleRepository extends EntityRepository
 {
     /**
-     * @param CartRule $cartRule
      * @throws \Doctrine\ORM\ORMException
      */
     public function add(CartRule $cartRule): void
@@ -19,9 +19,6 @@ class CartRuleRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return CartRule|null
      * @throws CartRuleNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?CartRule
@@ -41,8 +38,6 @@ class CartRuleRepository extends EntityRepository
     }
 
     /**
-     * @param int $id
-     * @return CartRule
      * @throws CartRuleNotFound
      */
     public function findOneById(int $id): CartRule
@@ -65,7 +60,6 @@ class CartRuleRepository extends EntityRepository
     public function findByCode(string $code): ?CartRule
     {
         $queryBuilder = $this->createQueryBuilder('i');
-        $now = new \DateTime();
 
         return $queryBuilder->where('i.code LIKE :code')
             ->setParameters([
@@ -78,7 +72,7 @@ class CartRuleRepository extends EntityRepository
     public function findValidByCode(string $code): ?CartRule
     {
         $queryBuilder = $this->createQueryBuilder('i');
-        $now = new \DateTime();
+        $now = new DateTime();
 
         return $queryBuilder->where('i.code LIKE :code')
             ->andWhere('i.from <= :now')

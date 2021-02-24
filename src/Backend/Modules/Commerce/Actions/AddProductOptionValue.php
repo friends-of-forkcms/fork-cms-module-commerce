@@ -9,12 +9,12 @@ use Backend\Modules\Commerce\Domain\ProductOption\Exception\ProductOptionNotFoun
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOptionRepository;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\Command\CreateProductOptionValue;
-use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueType;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\Event\CreatedProductOptionValue;
+use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueType;
 use Symfony\Component\Form\Form;
 
 /**
- * This is the add product option value-action, it will display a form to create a new product option value
+ * This is the add product option value-action, it will display a form to create a new product option value.
  *
  * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
@@ -22,9 +22,6 @@ class AddProductOptionValue extends BackendBaseActionAdd
 {
     private ProductOption $productOption;
 
-    /**
-     * Execute the action
-     */
     public function execute(): void
     {
         parent::execute();
@@ -80,7 +77,7 @@ class AddProductOptionValue extends BackendBaseActionAdd
         parent::parse();
 
         $this->header->addJS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', null, false, true);
-        $this->header->addJS(sprintf("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js", Locale::workingLocale()), null, false, true);
+        $this->header->addJS(sprintf('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/%s.min.js', Locale::workingLocale()), null, false, true);
         $this->header->addJS('Select2Entity.js');
 
         $this->header->addCSS('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', null, true, false);
@@ -107,7 +104,7 @@ class AddProductOptionValue extends BackendBaseActionAdd
             null,
             null,
             $parameters
-        ) . '#tabValues';
+        ).'#tabValues';
     }
 
     private function getForm(): Form

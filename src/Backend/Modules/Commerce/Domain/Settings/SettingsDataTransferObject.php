@@ -7,65 +7,47 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SettingsDataTransferObject
 {
-    /**
-     * @var ModulesSettings
-     */
-    private $modulesSettings;
+    private ModulesSettings $modulesSettings;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Range(
-     *      min = "1",
-     *      max = "1000"
+     *     min="1",
+     *     max="1000"
      * )
      */
-    public $overview_num_items;
+    public string $overview_num_items;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Range(
-     *      min = "1",
-     *      max = "1000"
+     *     min="1",
+     *     max="1000"
      * )
      */
-    public $filters_show_more_num_items;
+    public string $filters_show_more_num_items;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $next_invoice_number;
+    public string $next_invoice_number;
+
+    public string $automatic_invoice_statuses;
 
     /**
-     * @var string
-     */
-    public $automatic_invoice_statuses;
-
-    /**
-     * @var int
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Range(
-     *      min = "1",
-     *      max = "50"
+     *     min="1",
+     *     max="50"
      * )
      */
-    public $products_in_widget;
+    public int $products_in_widget;
 
     /**
-     * @var string
      * @Assert\Url
      */
-    public $google_product_categories;
+    public string $google_product_categories;
 
-    /**
-     * @param ModulesSettings $modulesSettings
-     */
     public function __construct(ModulesSettings $modulesSettings)
     {
         $this->modulesSettings = $modulesSettings;
@@ -78,14 +60,9 @@ class SettingsDataTransferObject
     }
 
     /**
-     * A wrapper for the modules settings
-     *
-     * @param $key
-     * @param $defaultValue
-     *
-     * @return mixed
+     * A wrapper for the modules settings.
      */
-    private function get($key, $defaultValue = null)
+    private function get(string $key, $defaultValue = null)
     {
         return $this->modulesSettings->get('Commerce', $key, $defaultValue);
     }

@@ -3,36 +3,23 @@
 namespace Backend\Modules\Commerce\Domain\Account\EventListener;
 
 use Backend\Modules\Commerce\Domain\Account\Account;
+use Backend\Modules\Commerce\Domain\Account\Event\Created as AccountCreatedEvent;
+use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
 use Common\Mailer\Message;
+use Common\ModulesSettings;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Language as FL;
 use Frontend\Modules\Profiles\Engine\Model as FrontendProfilesModel;
-use \Swift_Mailer;
-use Backend\Modules\Commerce\Domain\Account\Event\Created as AccountCreatedEvent;
-use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
-use Common\ModulesSettings;
+use Swift_Mailer;
 
 final class AccountCreated
 {
-    /**
-     * @var ModulesSettings
-     */
-    protected $modulesSettings;
-
-    /**
-     * @var Swift_Mailer
-     */
-    protected $mailer;
-
-    /**
-     * @var OrderHistory $orderHistory
-     */
-    protected $orderHistory;
+    private ModulesSettings $modulesSettings;
+    private Swift_Mailer $mailer;
+    private OrderHistory $orderHistory;
 
     /**
      * OrderListener constructor.
-     * @param Swift_Mailer $mailer
-     * @param ModulesSettings $modulesSettings
      */
     public function __construct(Swift_Mailer $mailer, ModulesSettings $modulesSettings)
     {
@@ -43,7 +30,7 @@ final class AccountCreated
     public function onCreated(AccountCreatedEvent $event): void
     {
         $account = $event->getAccount();
-        $activationUrl = SITE_URL . FrontendNavigation::getUrlForBlock('Profiles', 'Activate');
+        $activationUrl = SITE_URL.FrontendNavigation::getUrlForBlock('Profiles', 'Activate');
         $activationKey = $this->getProfileActivationKey($account);
 
         $from = $this->modulesSettings->get('Core', 'mailer_from');
@@ -55,7 +42,7 @@ final class AccountCreated
             ->setReplyTo([$replyTo['email'] => $replyTo['name']])
             ->parseHtml(
                 'Profiles/Layout/Templates/Mails/Register.html.twig',
-                ['activationUrl' => $activationUrl . '/' . $activationKey],
+                ['activationUrl' => $activationUrl.'/'.$activationKey],
                 true
             );
 

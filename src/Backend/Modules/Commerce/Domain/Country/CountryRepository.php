@@ -15,9 +15,6 @@ class CountryRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $id
-     * @param Locale $locale
-     * @return Country|null
      * @throws CountryNotFound
      */
     public function findOneByIdAndLocale(?int $id, Locale $locale): ?Country

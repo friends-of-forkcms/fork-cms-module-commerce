@@ -18,14 +18,14 @@ class ValueType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Name',
+                'label' => 'lbl.Name',
             ]
         )->add(
             'price',
             MoneyType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Price',
+                'label' => 'lbl.Price',
             ]
         )->add(
             'tillWeight',

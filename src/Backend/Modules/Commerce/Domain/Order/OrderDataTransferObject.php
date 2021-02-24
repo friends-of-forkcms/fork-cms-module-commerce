@@ -8,110 +8,49 @@ use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 use Backend\Modules\Commerce\Domain\OrderRule\OrderRule;
 use Backend\Modules\Commerce\Domain\OrderVat\OrderVat;
+use Backend\Modules\Commerce\Domain\Vat\Vat;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class OrderDataTransferObject
 {
-    /**
-     * @var Order
-     */
-    protected $orderEntity;
+    protected ?Order $orderEntity;
+    public int $id;
+    public Account $account;
+    public ?Cart $cart;
+    public ?string $paymentMethod;
+    public string $shipment_method;
+    public ?string $shipment_price;
+    public DateTimeInterface $date;
+    public ?string $comment;
+    public float $sub_total;
+    public float $total;
+    public ?string $invoiceNumber;
+    public ?DateTimeInterface $invoiceDate;
+    public OrderAddress $invoiceAddress;
+    public OrderAddress $shipmentAddress;
 
     /**
-     * @var int
+     * @var Collection|OrderRule[]
      */
-    public $id;
+    public Collection $rules;
 
     /**
-     * @var Account
+     * @var Collection|Product[]
      */
-    public $account;
+    public Collection $products;
 
     /**
-     * @var Cart
-     */
-    public $cart;
-
-    /**
-     * @var string
-     */
-    public $paymentMethod;
-
-    /**
-     * @var string
-     */
-    public $shipment_method;
-
-    /**
-     * @var float
-     */
-    public $shipment_price;
-
-    /**
-     * @var \DateTime
-     */
-    public $date;
-
-    /**
-     * @var string
-     */
-    public $comment;
-
-    /**
-     * @var float
-     */
-    public $sub_total;
-
-    /**
-     * @var float
-     */
-    public $total;
-
-    /**
-     * @var string
-     */
-    public $invoiceNumber;
-
-    /**
-     * @var \DateTime
-     */
-    public $invoiceDate;
-
-    /**
-     * @var OrderAddress
-     */
-    public $invoiceAddress;
-
-    /**
-     * @var OrderAddress
-     */
-    public $shipmentAddress;
-
-    /**
-     * @var ArrayCollection
-     */
-    public $rules;
-
-    /**
-     * @var ArrayCollection
-     */
-    public $products;
-
-    /**
-     * @var ArrayCollection
+     * @var Collection|Vat[]
      */
     public $vats;
 
-    /**
-     * OrderDataTransferObject constructor.
-     *
-     * @param Order|null $order
-     * @throws \Exception
-     */
     public function __construct(Order $order = null)
     {
         $this->orderEntity = $order;
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
         $this->rules = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->vats = new ArrayCollection();
@@ -120,23 +59,23 @@ class OrderDataTransferObject
             return;
         }
 
-        $this->id = $order->getId();
-        $this->account = $order->getAccount();
-        $this->cart = $order->getCart();
-        $this->paymentMethod = $order->getPaymentMethod();
-        $this->shipment_method = $order->getShipmentMethod();
-        $this->shipment_price = $order->getShipmentPrice();
-        $this->date = $order->getDate();
-        $this->comment = $order->getComment();
-        $this->sub_total = $order->getSubTotal();
-        $this->total = $order->getTotal();
-        $this->invoiceNumber = $order->getInvoiceNumber();
-        $this->invoiceDate = $order->getInvoiceDate();
-        $this->invoiceAddress = $order->getInvoiceAddress();
-        $this->shipmentAddress = $order->getShipmentAddress();
-        $this->rules = $order->getRules();
-        $this->products = $order->getProducts();
-        $this->vats = $order->getVats();
+        $this->id = $this->orderEntity->getId();
+        $this->account = $this->orderEntity->getAccount();
+        $this->cart = $this->orderEntity->getCart();
+        $this->paymentMethod = $this->orderEntity->getPaymentMethod();
+        $this->shipment_method = $this->orderEntity->getShipmentMethod();
+        $this->shipment_price = $this->orderEntity->getShipmentPrice();
+        $this->date = $this->orderEntity->getDate();
+        $this->comment = $this->orderEntity->getComment();
+        $this->sub_total = $this->orderEntity->getSubTotal();
+        $this->total = $this->orderEntity->getTotal();
+        $this->invoiceNumber = $this->orderEntity->getInvoiceNumber();
+        $this->invoiceDate = $this->orderEntity->getInvoiceDate();
+        $this->invoiceAddress = $this->orderEntity->getInvoiceAddress();
+        $this->shipmentAddress = $this->orderEntity->getShipmentAddress();
+        $this->rules = $this->orderEntity->getRules();
+        $this->products = $this->orderEntity->getProducts();
+        $this->vats = $this->orderEntity->getVats();
     }
 
     public function setOrderEntity(Order $orderEntity): void
@@ -144,33 +83,21 @@ class OrderDataTransferObject
         $this->orderEntity = $orderEntity;
     }
 
-    /**
-     * @param OrderRule $orderRule
-     */
     public function addRule(OrderRule $orderRule): void
     {
         $this->rules->add($orderRule);
     }
 
-    /**
-     * @param OrderRule $orderRule
-     */
     public function removeRule(OrderRule $orderRule): void
     {
         $this->rules->removeElement($orderRule);
     }
 
-    /**
-     * @param OrderProduct $product
-     */
     public function addProduct(OrderProduct $product): void
     {
         $this->products->add($product);
     }
 
-    /**
-     * @param OrderVat $vat
-     */
     public function addVat(OrderVat $vat): void
     {
         $this->vats->add($vat);

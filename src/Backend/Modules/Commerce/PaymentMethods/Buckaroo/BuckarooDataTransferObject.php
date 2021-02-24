@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class BuckarooDataTransferObject extends DataTransferObject
 {
-    const PAYMENT_METHODS = [
+    public const PAYMENT_METHODS = [
         [
             'id' => 'ideal',
             'description' => 'iDeal',
@@ -38,76 +38,58 @@ class BuckarooDataTransferObject extends DataTransferObject
         ],
     ];
 
-    const ENVIRONMENT_TEST = 1;
-    const ENVIRONMENT_PRODUCTION = 2;
+    public const ENVIRONMENT_TEST = 1;
+    public const ENVIRONMENT_PRODUCTION = 2;
 
-    const TEST_ENDPOINT = 'testcheckout.buckaroo.nl';
-    const PRODUCTION_ENDPOINT = 'checkout.buckaroo.nl';
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="err.FieldIsRequired")
-     */
-    public $name;
+    public const TEST_ENDPOINT = 'testcheckout.buckaroo.nl';
+    public const PRODUCTION_ENDPOINT = 'checkout.buckaroo.nl';
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $apiEnvironment;
+    public string $name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $websiteKey;
+    public string $apiEnvironment;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $secretKey;
+    public string $websiteKey;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderInitId;
+    public string $secretKey;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderCompletedId;
+    public string $orderInitId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderCancelledId;
+    public string $orderCompletedId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderRefundedId;
+    public string $orderCancelledId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderExpiredId;
+    public string $orderRefundedId;
 
-    public $paymentMethods = [];
+    /**
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
+    public string $orderExpiredId;
+
+    public array $paymentMethods = [];
 
     public function __set($key, $value)
     {
@@ -116,10 +98,6 @@ class BuckarooDataTransferObject extends DataTransferObject
 
     public function __get($key)
     {
-        if (!isset($this->paymentMethods[$key])) {
-            return null;
-        }
-
-        return $this->paymentMethods[$key];
+        return $this->paymentMethods[$key] ?? null;
     }
 }

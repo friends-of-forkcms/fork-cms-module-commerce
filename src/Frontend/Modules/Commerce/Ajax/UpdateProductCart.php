@@ -40,23 +40,26 @@ class UpdateProductCart extends FrontendBaseAJAXAction
         parent::execute();
 
         $this->cookie = $this->get('fork.cookie');
-        $this->cart   = $this->getActiveCart();
+        $this->cart = $this->getActiveCart();
 
         // Cart id must be set
         if (!$this->getRequest()->request->has('cartValueId')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
         // Amount must be set and valid
         if (!$this->getRequest()->request->has('amount')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
         // Failed to update product, does not exists?
         if (!$cartValue = $this->updateProductCart()) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
+
             return;
         }
 
@@ -84,9 +87,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the active cart from the session
-     *
-     * @return Cart
+     * Get the active cart from the session.
      */
     private function getActiveCart(): Cart
     {
@@ -111,9 +112,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Add or update the product in our cart
-     *
-     * @return CartValue|null
+     * Add or update the product in our cart.
      */
     private function updateProductCart(): ?CartValue
     {
@@ -147,9 +146,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     private function getCartRepository(): CartRepository
     {
@@ -157,9 +154,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the cart value repository
-     *
-     * @return CartValueRepository
+     * Get the cart value repository.
      */
     private function getCartValueRepository(): CartValueRepository
     {
@@ -167,9 +162,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product repository
-     *
-     * @return ProductRepository
+     * Get the product repository.
      */
     private function getProductRepository(): ProductRepository
     {
@@ -177,9 +170,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Format the vats in an array with the required number format
-     *
-     * @return array
+     * Format the vats in an array with the required number format.
      */
     private function getFormattedVats(): array
     {
@@ -193,9 +184,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Build the ecommerce category in required format
-     *
-     * @param Product $product
+     * Build the ecommerce category in required format.
      *
      * @return string
      */

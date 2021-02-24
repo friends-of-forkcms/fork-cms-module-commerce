@@ -4,71 +4,42 @@ namespace Backend\Modules\Commerce\Domain\Product;
 
 use Backend\Modules\Commerce\Domain\Cart\CartValue;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
+use Doctrine\Common\Collections\Collection;
 use Frontend\Core\Language\Language;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class AddToCartDataTransferObject
 {
     /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $id;
+    public int $id;
 
     /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $amount;
+    public int $amount;
 
     /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"Dimensions"})
      */
-    public $width = 0.00;
+    public ?float $width = 0.00;
 
     /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"Dimensions"})
      */
-    public $height = 0.00;
-
-    /**
-     * @var boolean
-     */
-    public $quote;
-
-    /**
-     * @var boolean
-     */
-    public $overwrite;
+    public ?float $height = 0.00;
+    public bool $quote;
+    public bool $overwrite;
 
     /**
      * @var Product[]
      */
-    public $up_sell;
+    public array $up_sell;
+    public Product $product;
+    public CartValue $cartValueEntity;
 
-    /**
-     * @var Product
-     */
-    public $product;
-
-    /**
-     * @var CartValue
-     */
-    public $cartValueEntity;
-
-    /**
-     * AddToCartDataTransferObject constructor.
-     *
-     * @param Product $product
-     * @param CartValue $cartValue
-     */
     public function __construct(Product $product, ?CartValue $cartValue = null)
     {
         $this->id = $product->getId();
@@ -88,8 +59,8 @@ class AddToCartDataTransferObject
             foreach ($cartValue->getCartValueOptions() as $cartValueOption) {
                 $productOption = $cartValueOption->getProductOption();
 
-                $key = $prefix . $productOption->getId();
-                $customValueKey = $key . '_custom_value';
+                $key = $prefix.$productOption->getId();
+                $customValueKey = $key.'_custom_value';
 
                 if (!property_exists($this, $key)) {
                     return;
@@ -104,22 +75,17 @@ class AddToCartDataTransferObject
         }
     }
 
-    /**
-     * @Assert\Callback
-     * @param ExecutionContextInterface $context
-     * @param $payload
-     */
-    public function validate(ExecutionContextInterface $context, $payload)
+    public function validate(ExecutionContextInterface $context, $payload): void
     {
         foreach ($this->product->getProductOptions() as $productOption) {
             $this->validateProductOption($productOption, $context);
         }
     }
 
-    private function validateProductOption(ProductOption $productOption, ExecutionContextInterface $context)
+    private function validateProductOption(ProductOption $productOption, ExecutionContextInterface $context): void
     {
-        $fieldName = 'option_' . $productOption->getId();
-        $customValueFieldName = $fieldName . '_custom_value';
+        $fieldName = 'option_'.$productOption->getId();
+        $customValueFieldName = $fieldName.'_custom_value';
         $valid = true;
 
         if ($productOption->isRequired()) {
@@ -133,7 +99,7 @@ class AddToCartDataTransferObject
 
         if ($valid) {
             foreach ($productOption->getProductOptionValues() as $productOptionValue) {
-                if ($this->$fieldName && $this->$fieldName->getId() == $productOptionValue->getId()) {
+                if ($this->$fieldName && $this->$fieldName->getId() === $productOptionValue->getId()) {
                     foreach ($productOptionValue->getProductOptions() as $subProductOption) {
                         $this->validateProductOption($subProductOption, $context);
                     }
@@ -158,30 +124,27 @@ class AddToCartDataTransferObject
 
                 $valid = false;
             }
-        } else {
-            if (!$this->$fieldName) {
-                $context->buildViolation(ucfirst(Language::err('FieldIsRequired')))
-                    ->atPath($fieldName)
-                    ->addViolation();
+        } elseif (!$this->$fieldName) {
+            $context->buildViolation(ucfirst(Language::err('FieldIsRequired')))
+                ->atPath($fieldName)
+                ->addViolation();
 
-                $valid = false;
-            }
+            $valid = false;
         }
 
         return $valid;
     }
 
     /**
-     * @param ProductOption[] $productOptions
-     * @param string $prefix
+     * @param Collection|ProductOption[] $productOptions
      */
-    private function loadProductOptions($productOptions, string $prefix)
+    private function loadProductOptions(Collection $productOptions, string $prefix): void
     {
         foreach ($productOptions as $productOption) {
-            $this->{$prefix . $productOption->getId()} = $productOption->getDefaultProductOptionValue();
+            $this->{$prefix.$productOption->getId()} = $productOption->getDefaultProductOptionValue();
 
             if ($productOption->isCustomValueAllowed() || $productOption->isBetweenType()) {
-                $this->{$prefix . $productOption->getId() . '_custom_value'} = null;
+                $this->{$prefix.$productOption->getId().'_custom_value'} = null;
             }
 
             foreach ($productOption->getProductOptionValues() as $productOptionValue) {

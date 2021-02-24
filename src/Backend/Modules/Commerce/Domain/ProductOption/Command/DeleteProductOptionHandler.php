@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOptionRepository;
 
 final class DeleteProductOptionHandler
 {
-    /** @var ProductOptionRepository */
-    private $productOptionRepository;
+    private ProductOptionRepository $productOptionRepository;
 
     public function __construct(ProductOptionRepository $productOptionRepository)
     {

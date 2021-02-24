@@ -44,6 +44,7 @@ class CheckoutProgress
 
     /**
      * @param $url
+     *
      * @return bool|Step
      */
     public function getStepByUrl($url)
@@ -57,6 +58,7 @@ class CheckoutProgress
 
     /**
      * @param $identifier
+     *
      * @return mixed
      */
     public function getUrlByIdentifier($identifier)
@@ -64,9 +66,6 @@ class CheckoutProgress
         return $this->steps[$identifier]->getUrl();
     }
 
-    /**
-     * @param Step $step
-     */
     public function setCurrentStep(Step $step): void
     {
         $this->steps[$step::$stepIdentifier]->setCurrent(true);

@@ -3,10 +3,10 @@
 namespace Frontend\Modules\Commerce\CheckoutStep;
 
 use Backend\Modules\Commerce\Domain\Cart\Event\CartUpdated;
-use Backend\Modules\Commerce\Domain\OrderAddress\Event\Created;
-use Backend\Modules\Commerce\Domain\OrderAddress\Event\Updated;
 use Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddress;
 use Backend\Modules\Commerce\Domain\OrderAddress\Command\UpdateOrderAddress;
+use Backend\Modules\Commerce\Domain\OrderAddress\Event\Created;
+use Backend\Modules\Commerce\Domain\OrderAddress\Event\Updated;
 use Backend\Modules\Commerce\Domain\OrderAddress\Exception\OrderAddressNotFound;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddressRepository;
@@ -157,8 +157,8 @@ class Addresses extends Step
                 'expanded' => true,
                 'constraints' => [new Required(), new NotBlank()],
                 'attr' => [
-                    'edit_link' => $this->getUrl() . '?edit=',
-                ]
+                    'edit_link' => $this->getUrl().'?edit=',
+                ],
             ]
         )->add(
             'invoice_address',
@@ -173,8 +173,8 @@ class Addresses extends Step
                 'block_name' => 'order_address',
                 'expanded' => true,
                 'attr' => [
-                    'edit_link' => $this->getUrl() . '?edit=',
-                ]
+                    'edit_link' => $this->getUrl().'?edit=',
+                ],
             ]
         )->add(
             'same_invoice_address',
@@ -234,7 +234,7 @@ class Addresses extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('Addresses'));
+        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('Addresses'));
     }
 
     private function getOrderAddressRepository(): OrderAddressRepository

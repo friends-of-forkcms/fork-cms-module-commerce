@@ -10,8 +10,6 @@ class DataGridOrderHistory extends DataGridDatabase
     /**
      * DataGrid constructor.
      *
-     * @param Order $order
-     *
      * @throws \Exception
      */
     public function __construct(Order $order)
@@ -23,7 +21,7 @@ class DataGridOrderHistory extends DataGridDatabase
         parent::__construct($query, [$order->getId()]);
 
         // assign column functions
-        $this->setColumnFunction(array(new DataGridFunctions(), 'getDate'), '[date]', 'date', true);
+        $this->setColumnFunction([new DataGridFunctions(), 'getDate'], '[date]', 'date', true);
     }
 
     public static function getHtml(Order $order): string

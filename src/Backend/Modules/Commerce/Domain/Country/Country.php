@@ -13,34 +13,26 @@ use Doctrine\ORM\Mapping as ORM;
 class Country
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $iso;
+    private string $iso;
 
     private function __construct(
         Locale $locale,
@@ -52,7 +44,7 @@ class Country
         $this->iso = $iso;
     }
 
-    public static function fromDataTransferObject(CountryDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(CountryDataTransferObject $dataTransferObject): Country
     {
         if ($dataTransferObject->hasExistingCountry()) {
             return self::update($dataTransferObject);
@@ -61,7 +53,7 @@ class Country
         return self::create($dataTransferObject);
     }
 
-    private static function create(CountryDataTransferObject $dataTransferObject): self
+    private static function create(CountryDataTransferObject $dataTransferObject): Country
     {
         return new self(
             $dataTransferObject->locale,
@@ -70,7 +62,7 @@ class Country
         );
     }
 
-    private static function update(CountryDataTransferObject $dataTransferObject)
+    private static function update(CountryDataTransferObject $dataTransferObject): Country
     {
         $country = $dataTransferObject->getCountryEntity();
 
@@ -96,17 +88,11 @@ class Country
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getIso(): string
     {
         return $this->iso;

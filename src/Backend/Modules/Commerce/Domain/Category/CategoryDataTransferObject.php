@@ -2,73 +2,28 @@
 
 namespace Backend\Modules\Commerce\Domain\Category;
 
-use Backend\Core\Language\Locale;
 use Common\Doctrine\Entity\Meta;
+use Common\Locale;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryDataTransferObject
 {
-    /**
-     * @var Category
-     */
-    protected $categoryEntity;
+    protected ?Category $categoryEntity;
+    public int $id;
+    public int $extraId;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var int
-     */
-    public $extraId;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $intro;
-
-    /**
-     * @var string
-     */
-    public $text;
-
-    /**
-     * @var Locale
-     */
-    public $locale;
-
-    /**
-     * @var Category
-     */
-    public $parent;
-
-    /**
-     * @var Meta
-     */
-    public $meta;
-
-    /**
-     * @var Image
-     */
-    public $image;
-
-    /**
-     * @var int
-     */
-    public $googleTaxonomyId;
-
-    /**
-     * @var int
-     */
-    public $sequence;
+    public string $title;
+    public ?string $intro;
+    public ?string $text;
+    public Locale $locale;
+    public ?Category $parent;
+    public ?Meta $meta;
+    public Image $image;
+    public ?int $googleTaxonomyId;
+    public int $sequence;
 
     public function __construct(Category $category = null)
     {
@@ -78,17 +33,17 @@ class CategoryDataTransferObject
             return;
         }
 
-        $this->id = $category->getId();
-        $this->extraId = $category->getExtraId();
-        $this->googleTaxonomyId = $category->getGoogleTaxonomyId();
-        $this->title = $category->getTitle();
-        $this->intro = $category->getIntro();
-        $this->text = $category->getText();
-        $this->locale = $category->getLocale();
-        $this->parent = $category->getParent();
-        $this->meta = $category->getMeta();
-        $this->image = $category->getImage();
-        $this->sequence = $category->getSequence();
+        $this->id = $this->categoryEntity->getId();
+        $this->extraId = $this->categoryEntity->getExtraId();
+        $this->googleTaxonomyId = $this->categoryEntity->getGoogleTaxonomyId();
+        $this->title = $this->categoryEntity->getTitle();
+        $this->intro = $this->categoryEntity->getIntro();
+        $this->text = $this->categoryEntity->getText();
+        $this->locale = $this->categoryEntity->getLocale();
+        $this->parent = $this->categoryEntity->getParent();
+        $this->meta = $this->categoryEntity->getMeta();
+        $this->image = $this->categoryEntity->getImage();
+        $this->sequence = $this->categoryEntity->getSequence();
     }
 
     public function getCategoryEntity(): Category

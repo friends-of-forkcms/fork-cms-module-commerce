@@ -8,7 +8,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueReposit
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Alters the sequence of specification values
+ * Alters the sequence of specification values.
  */
 class SequenceSpecificationValues extends BackendBaseAJAXAction
 {
@@ -20,7 +20,7 @@ class SequenceSpecificationValues extends BackendBaseAJAXAction
         $newIdSequence = trim($this->getRequest()->request->get('new_id_sequence', null));
 
         /**
-         * get the specification values repository
+         * get the specification values repository.
          *
          * @var SpecificationValueRepository $specificationValueRepository
          */
@@ -31,7 +31,6 @@ class SequenceSpecificationValues extends BackendBaseAJAXAction
 
         // loop id's and set new sequence
         foreach ($ids as $i => $id) {
-
             // update sequence
             if ($item = $specificationValueRepository->findOneById($id)) {
                 $updateSequence = new UpdateSpecificationValue($item);

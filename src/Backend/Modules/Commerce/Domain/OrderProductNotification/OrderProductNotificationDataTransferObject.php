@@ -6,30 +6,11 @@ use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 
 class OrderProductNotificationDataTransferObject
 {
-    /**
-     * @var OrderProductNotification
-     */
-    protected $orderProductNotificationEntity;
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var int
-     */
-    public $type;
-
-    /**
-     * @var OrderProduct
-     */
-    public $order_product;
-
-    /**
-     * @var string
-     */
-    public $message;
+    protected ?OrderProductNotification $orderProductNotificationEntity;
+    public int $id;
+    public int $type;
+    public OrderProduct $order_product;
+    public string $message;
 
     public function __construct(OrderProductNotification $orderProductNotification = null)
     {
@@ -39,9 +20,9 @@ class OrderProductNotificationDataTransferObject
             return;
         }
 
-        $this->id = $orderProductNotification->getId();
-        $this->order_product = $orderProductNotification->getOrderProduct();
-        $this->message = $orderProductNotification->getMessage();
+        $this->id = $this->orderProductNotificationEntity->getId();
+        $this->order_product = $this->orderProductNotificationEntity->getOrderProduct();
+        $this->message = $this->orderProductNotificationEntity->getMessage();
     }
 
     public function getOrderProductNotificationEntity(): OrderProductNotification

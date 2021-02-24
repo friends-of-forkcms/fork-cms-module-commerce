@@ -11,17 +11,12 @@ use Symfony\Component\Form\Form;
 
 class ConfirmOrder extends Step
 {
-    public static $stepIdentifier = 'confirmOrder';
+    public static string $stepIdentifier = 'confirmOrder';
+    private Form $form;
 
-    /**
-     * @var Form
-     */
-    private $form;
-
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('ConfirmOrder'));
-
         $this->complete = $this->session->has('confirm_order');
     }
 
@@ -43,7 +38,7 @@ class ConfirmOrder extends Step
         }
     }
 
-    public function render()
+    public function render(): string
     {
         $this->template->assign('form', $this->form->createView());
 
@@ -71,7 +66,7 @@ class ConfirmOrder extends Step
         return parent::render();
     }
 
-    public function invalidateStep()
+    public function invalidateStep(): void
     {
         $this->session->remove('confirm_order');
 
@@ -107,6 +102,6 @@ class ConfirmOrder extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('ConfirmOrder'));
+        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('ConfirmOrder'));
     }
 }

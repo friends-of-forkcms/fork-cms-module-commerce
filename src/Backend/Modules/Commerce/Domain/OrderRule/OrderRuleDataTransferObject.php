@@ -7,45 +7,14 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 
 class OrderRuleDataTransferObject
 {
-    /**
-     * @var OrderRule
-     */
-    protected $orderRuleEntity;
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var Order
-     */
-    public $order;
-
-    /**
-     * @var CartRule
-     */
-    public $cartRule;
-
-    /**
-     * @var float
-     */
-    public $total;
-
-    /**
-     * @var string
-     */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $code;
-
-    /**
-     * @var string
-     */
-    public $value;
+    protected ?OrderRule $orderRuleEntity;
+    public int $id;
+    public Order $order;
+    public ?CartRule $cartRule;
+    public float $total;
+    public string $title;
+    public string $code;
+    public string $value;
 
     public function __construct(OrderRule $orderRule = null)
     {
@@ -55,13 +24,13 @@ class OrderRuleDataTransferObject
             return;
         }
 
-        $this->id = $orderRule->getId();
-        $this->order = $orderRule->getOrder();
-        $this->cartRule = $orderRule->getCartRule();
-        $this->total = $orderRule->getTotal();
-        $this->title = $orderRule->getTitle();
-        $this->code = $orderRule->getCode();
-        $this->value = $orderRule->getValue();
+        $this->id = $this->orderRuleEntity->getId();
+        $this->order = $this->orderRuleEntity->getOrder();
+        $this->cartRule = $this->orderRuleEntity->getCartRule();
+        $this->total = $this->orderRuleEntity->getTotal();
+        $this->title = $this->orderRuleEntity->getTitle();
+        $this->code = $this->orderRuleEntity->getCode();
+        $this->value = $this->orderRuleEntity->getValue();
     }
 
     public function setOrderRuleEntity(OrderRule $orderRuleEntity): void

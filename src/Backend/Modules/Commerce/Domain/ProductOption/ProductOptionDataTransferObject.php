@@ -6,96 +6,40 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductOptionDataTransferObject
 {
-    /**
-     * @var ProductOption
-     */
-    protected $productOptionEntity;
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var Product
-     */
-    public $product;
-
-    /**
-     * @var ProductOptionValue
-     */
-    public $parent_product_option_value;
+    protected ?ProductOption $productOptionEntity;
+    public ?int $id;
+    public Product $product;
+    public ?ProductOptionValue $parent_product_option_value;
 
     /**
      * @Assert\Valid
-     *
-     * @var PersistentCollection
      */
-    public $dimension_notifications;
+    public Collection $dimension_notifications;
+
+    public Collection $remove_dimension_notifications;
 
     /**
-     * @var PersistentCollection
-     */
-    public $remove_dimension_notifications;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $title;
+    public string $title;
+    public ?string $text;
+    public bool $required;
+    public bool $custom_value_allowed;
+    public float $custom_value_price = 0.00;
 
     /**
-     * @var string
-     */
-    public $text;
-
-    /**
-     * @var boolean
-     */
-    public $required;
-
-    /**
-     * @var boolean
-     */
-    public $custom_value_allowed;
-
-    /**
-     * @var float
-     */
-    public $custom_value_price = 0.00;
-
-    /**
-     * @var integer
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $type;
-
-    /**
-     * @var string
-     */
-    public $placeholder;
-
-    /**
-     * @var string
-     */
-    public $prefix;
-
-    /**
-     * @var string
-     */
-    public $suffix;
-
-    /**
-     * @var int
-     */
-    public $sequence;
+    public int $type;
+    public ?string $placeholder;
+    public ?string $prefix;
+    public ?string $suffix;
+    public int $sequence;
 
     public function __construct(ProductOption $productOption = null)
     {
@@ -109,20 +53,20 @@ class ProductOptionDataTransferObject
             return;
         }
 
-        $this->id = $productOption->getId();
-        $this->product = $productOption->getProduct();
-        $this->parent_product_option_value = $productOption->getParentProductOptionValue();
-        $this->title = $productOption->getTitle();
-        $this->text = $productOption->getText();
-        $this->required = $productOption->isRequired();
-        $this->custom_value_allowed = $productOption->isCustomValueAllowed();
-        $this->custom_value_price = $productOption->getCustomValuePrice();
-        $this->type = $productOption->getType();
-        $this->placeholder = $productOption->getPlaceholder();
-        $this->prefix = $productOption->getPrefix();
-        $this->suffix = $productOption->getSuffix();
-        $this->sequence = $productOption->getSequence();
-        $this->dimension_notifications = $productOption->getDimensionNotifications();
+        $this->id = $this->productOptionEntity->getId();
+        $this->product = $this->productOptionEntity->getProduct();
+        $this->parent_product_option_value = $this->productOptionEntity->getParentProductOptionValue();
+        $this->title = $this->productOptionEntity->getTitle();
+        $this->text = $this->productOptionEntity->getText();
+        $this->required = $this->productOptionEntity->isRequired();
+        $this->custom_value_allowed = $this->productOptionEntity->isCustomValueAllowed();
+        $this->custom_value_price = $this->productOptionEntity->getCustomValuePrice();
+        $this->type = $this->productOptionEntity->getType();
+        $this->placeholder = $this->productOptionEntity->getPlaceholder();
+        $this->prefix = $this->productOptionEntity->getPrefix();
+        $this->suffix = $this->productOptionEntity->getSuffix();
+        $this->sequence = $this->productOptionEntity->getSequence();
+        $this->dimension_notifications = $this->productOptionEntity->getDimensionNotifications();
     }
 
     public function setProductOptionEntity(ProductOption $productOptionEntity): void
@@ -140,18 +84,18 @@ class ProductOptionDataTransferObject
         return $this->productOptionEntity instanceof ProductOption;
     }
 
-    public function copy()
+    public function copy(): void
     {
         $this->id = null;
         $this->productOptionEntity = null;
     }
 
-    public function addDimensionNotification(ProductDimensionNotification $dimensionNotification)
+    public function addDimensionNotification(ProductDimensionNotification $dimensionNotification): void
     {
         $this->dimension_notifications->add($dimensionNotification);
     }
 
-    public function removeDimensionNotification(ProductDimensionNotification $dimensionNotification)
+    public function removeDimensionNotification(ProductDimensionNotification $dimensionNotification): void
     {
         $this->remove_dimension_notifications->add($dimensionNotification);
     }

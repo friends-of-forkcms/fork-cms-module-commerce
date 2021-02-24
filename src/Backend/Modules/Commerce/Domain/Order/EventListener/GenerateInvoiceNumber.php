@@ -5,25 +5,15 @@ namespace Backend\Modules\Commerce\Domain\Order\EventListener;
 use Backend\Modules\Commerce\Domain\Order\Command\UpdateOrder;
 use Backend\Modules\Commerce\Domain\Order\Event\OrderGenerateInvoiceNumber;
 use Common\ModulesSettings;
-use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
+use DateTime;
+use SimpleBus\Message\Bus\MessageBus;
 
 final class GenerateInvoiceNumber
 {
-    /**
-     * @var MessageBusSupportingMiddleware
-     */
-    private $commandBus;
+    private MessageBus $commandBus;
+    private ModulesSettings $modulesSettings;
 
-    /**
-     * @var ModulesSettings
-     */
-    private $modulesSettings;
-
-    /**
-     * @param MessageBusSupportingMiddleware $commandBus
-     * @param ModulesSettings $modulesSettings
-     */
-    public function __construct(MessageBusSupportingMiddleware $commandBus, ModulesSettings $modulesSettings)
+    public function __construct(MessageBus $commandBus, ModulesSettings $modulesSettings)
     {
         $this->commandBus = $commandBus;
         $this->modulesSettings = $modulesSettings;
@@ -37,7 +27,7 @@ final class GenerateInvoiceNumber
 
         if (!$updateOrder->invoiceNumber) {
             $updateOrder->invoiceNumber = $invoiceNumber;
-            $updateOrder->invoiceDate = new \DateTime();
+            $updateOrder->invoiceDate = new DateTime();
 
             $this->commandBus->handle($updateOrder);
 

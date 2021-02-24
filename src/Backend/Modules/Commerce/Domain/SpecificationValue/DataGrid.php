@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\SpecificationValue;
 
-use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\Specification\Specification;
@@ -22,10 +22,9 @@ class DataGrid extends DataGridDatabase
             ['specification' => $specification->getId()]
         );
 
-
         // sequence
         $this->enableSequenceByDragAndDrop();
-        $this->setAttributes(array('data-action' => 'SequenceSpecificationValues'));
+        $this->setAttributes(['data-action' => 'SequenceSpecificationValues']);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditSpecificationValue')) {

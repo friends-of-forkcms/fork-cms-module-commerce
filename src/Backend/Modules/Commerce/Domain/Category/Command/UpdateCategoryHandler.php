@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
 
 final class UpdateCategoryHandler
 {
-    /** @var CategoryRepository */
-    private $categoryRepository;
+    private CategoryRepository $categoryRepository;
 
     public function __construct(CategoryRepository $categoryRepository)
     {

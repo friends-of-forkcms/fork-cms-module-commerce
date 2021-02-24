@@ -6,6 +6,7 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotification;
 use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Commerce\Domain\Product\Product;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,113 +17,87 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderProduct
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Order
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", inversedBy="products")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $order;
+    private Order $order;
 
     /**
-     * @var Product
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $product;
+    private ?Product $product;
 
     /**
-     * @var OrderProductOption[]
+     * @var Collection|OrderProductOption[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption", mappedBy="order_product", cascade={"remove", "persist"})
      */
-    private $product_options;
+    private Collection $product_options;
 
     /**
-     * @var OrderProductNotification[]
+     * @var Collection|OrderProductNotification[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotification", mappedBy="order_product", cascade={"remove", "persist"})
      */
-    private $product_notifications;
+    private Collection $product_notifications;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 1})
+     * @ORM\Column(type="integer", options={"default": 1})
      */
-    private $type;
+    private int $type;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $sku;
+    private string $sku;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
-    private $amount;
+    private ?int $amount;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $price;
+    private float $price;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $width;
+    private ?int $width;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $height;
+    private ?int $height;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $order_width;
+    private ?int $order_width;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $order_height;
+    private ?int $order_height;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $total;
+    private float $total;
 
     private function __construct(
         Order $order,
@@ -156,7 +131,7 @@ class OrderProduct
         $this->product_notifications = $product_notifications;
     }
 
-    public static function fromDataTransferObject(OrderProductDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(OrderProductDataTransferObject $dataTransferObject): OrderProduct
     {
         if ($dataTransferObject->hasExistingOrderProduct()) {
             return self::update($dataTransferObject);
@@ -185,7 +160,7 @@ class OrderProduct
         );
     }
 
-    private static function update(OrderProductDataTransferObject $dataTransferObject)
+    private static function update(OrderProductDataTransferObject $dataTransferObject): OrderProduct
     {
         return $dataTransferObject->getOrderProductEntity();
     }
@@ -195,121 +170,82 @@ class OrderProduct
         return new OrderProductDataTransferObject($this);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Product
-     */
     public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    /**
-     * @return int
-     */
     public function getType(): int
     {
         return $this->type;
     }
 
-    /**
-     * @return Order
-     */
     public function getOrder(): Order
     {
         return $this->order;
     }
 
     /**
-     * @return OrderProductOption[]
+     * @return Collection|OrderProductOption[]
      */
-    public function getProductOptions()
+    public function getProductOptions(): Collection
     {
         return $this->product_options;
     }
 
     /**
-     * @return OrderProductNotification[]
+     * @return Collection|OrderProductNotification[]
      */
-    public function getProductNotifications()
+    public function getProductNotifications(): Collection
     {
         return $this->product_notifications;
     }
 
-    /**
-     * @return string
-     */
     public function getSku(): string
     {
         return $this->sku;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return int
-     */
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    /**
-     * @return float
-     */
     public function getPrice(): float
     {
         return $this->price;
     }
 
-    /**
-     * @return int
-     */
     public function getWidth(): ?int
     {
         return $this->width;
     }
 
-    /**
-     * @return int
-     */
     public function getHeight(): ?int
     {
         return $this->height;
     }
 
-    /**
-     * @return float
-     */
     public function getOrderWidth(): ?int
     {
         return $this->order_width;
     }
 
-    /**
-     * @return float
-     */
     public function getOrderHeight(): ?int
     {
         return $this->order_height;
     }
 
-    /**
-     * @return float
-     */
     public function getTotal(): float
     {
         return $this->total;
@@ -317,6 +253,6 @@ class OrderProduct
 
     public function hasDimensions(): bool
     {
-        return $this->type == Product::TYPE_DIMENSIONS;
+        return $this->type === Product::TYPE_DIMENSIONS;
     }
 }

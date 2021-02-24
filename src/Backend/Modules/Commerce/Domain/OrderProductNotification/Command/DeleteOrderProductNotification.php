@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotific
 
 final class DeleteOrderProductNotification
 {
-    /** @var OrderProductNotification */
-    public $orderProductNotification;
+    public OrderProductNotification $orderProductNotification;
 
     public function __construct(OrderProductNotification $orderProductNotification)
     {

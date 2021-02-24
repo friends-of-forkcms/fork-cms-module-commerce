@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\Category\Category;
 
 final class DeleteCategory
 {
-    /** @var Category */
-    public $category;
+    public Category $category;
 
     public function __construct(Category $category)
     {

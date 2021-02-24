@@ -37,7 +37,7 @@ class PaymentMethodRepository extends EntityRepository
                 $this->getEntityManager()->remove($paymentMethod);
                 $this->getEntityManager()->flush();
             },
-            (array)$this->findBy(['name' => $name, 'locale' => $locale])
+            (array) $this->findBy(['name' => $name, 'locale' => $locale])
         );
     }
 

@@ -19,7 +19,7 @@ class SpecificationValueType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'lbl.Title',
+                'label' => 'lbl.Title',
             ]
         )->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -28,10 +28,10 @@ class SpecificationValueType extends AbstractType
                     'meta',
                     MetaType::class,
                     [
-                        'base_field_name'                  => 'value',
-                        'generate_url_callback_class'      => 'commerce.repository.specification_value',
-                        'generate_url_callback_method'     => 'getUrl',
-                        'detail_url'                       => '',
+                        'base_field_name' => 'value',
+                        'generate_url_callback_class' => 'commerce.repository.specification_value',
+                        'generate_url_callback_method' => 'getUrl',
+                        'detail_url' => '',
                         'generate_url_callback_parameters' => [
                             $event->getData()->specification->getId(),
                             $event->getData()->id,
@@ -46,7 +46,7 @@ class SpecificationValueType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => SpecificationValueDataTransferObject::class
+                'data_class' => SpecificationValueDataTransferObject::class,
             ]
         );
     }

@@ -20,10 +20,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 abstract class Step
 {
-    /**
-     * @var string
-     */
-    public static $stepIdentifier;
+    public static string $stepIdentifier;
 
     /**
      * @var string
@@ -31,22 +28,22 @@ abstract class Step
     protected $name;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $active = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $current = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $complete = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $reachable = false;
 
@@ -111,25 +108,16 @@ abstract class Step
     {
     }
 
-    /**
-     * @param string $name
-     */
     public function setStepName(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getStepName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
     public function isReachable(): bool
     {
         if ($this->previousStep) {
@@ -139,25 +127,16 @@ abstract class Step
         return $this->reachable;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete(): bool
     {
         return $this->complete;
     }
 
-    /**
-     * @return bool
-     */
     public function isCurrent(): bool
     {
         return $this->current;
     }
 
-    /**
-     * @param bool $current
-     */
     public function setCurrent(bool $current): void
     {
         $this->current = $current;
@@ -172,7 +151,7 @@ abstract class Step
 
     protected function goToStep(string $class)
     {
-        die();
+        exit();
     }
 
     public function render()
@@ -189,7 +168,7 @@ abstract class Step
         $this->template->assign('cart', $this->cart);
         $this->template->assign('step', $this);
 
-        $html = $this->template->getContent('Commerce/Layout/Templates/Checkout/Step/' . $name . '.html.twig');
+        $html = $this->template->getContent('Commerce/Layout/Templates/Checkout/Step/'.$name.'.html.twig');
 
         return $html;
     }
@@ -202,11 +181,9 @@ abstract class Step
     /**
      * Creates and returns a Form instance from the type of the form.
      *
-     * @param string $type FQCN of the form type class i.e: MyClass::class
-     * @param mixed $data The initial data for the form
-     * @param array $options Options for the form
-     *
-     * @return Form
+     * @param string $type    FQCN of the form type class i.e: MyClass::class
+     * @param mixed  $data    The initial data for the form
+     * @param array  $options Options for the form
      */
     public function createForm(string $type, $data = null, array $options = []): Form
     {
@@ -216,7 +193,7 @@ abstract class Step
     /**
      * Creates and returns a form builder instance.
      *
-     * @param mixed $data The initial data for the form
+     * @param mixed $data    The initial data for the form
      * @param array $options Options for the form
      *
      * @return FormBuilderInterface
@@ -230,8 +207,6 @@ abstract class Step
 
     /**
      * Get the request from the container.
-     *
-     * @return Request
      */
     public function getRequest(): Request
     {
@@ -239,9 +214,7 @@ abstract class Step
     }
 
     /**
-     * Get the account repository
-     *
-     * @return AccountRepository
+     * Get the account repository.
      */
     protected function getAccountRepository(): AccountRepository
     {
@@ -249,9 +222,7 @@ abstract class Step
     }
 
     /**
-     * Get the cart repository
-     *
-     * @return CartRepository
+     * Get the cart repository.
      */
     protected function getCartRepository(): CartRepository
     {
@@ -281,7 +252,7 @@ abstract class Step
 
     public function getUrl(): ?string
     {
-        return Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . Language::lbl('Checkout');
+        return Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('Checkout');
     }
 
     public function setCheckoutProgress(CheckoutProgress $checkoutProgress): void
@@ -315,9 +286,7 @@ abstract class Step
     }
 
     /**
-     * Add an error which will be displayed once
-     *
-     * @param string $message
+     * Add an error which will be displayed once.
      */
     public function flashError(string $message): void
     {

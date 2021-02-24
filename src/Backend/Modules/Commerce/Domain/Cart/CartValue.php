@@ -4,7 +4,10 @@ namespace Backend\Modules\Commerce\Domain\Cart;
 
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,162 +18,116 @@ use Doctrine\ORM\Mapping as ORM;
 class CartValue
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Cart
-     *
      * @ORM\ManyToOne(targetEntity="Cart", inversedBy="values")
      * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $cart;
+    private Cart $cart;
 
     /**
-     * @var CartValueOption[]
+     * @var Collection|CartValueOption[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="cart_value", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $cart_value_options;
+    private Collection $cart_value_options;
 
     /**
-     * @var Product
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="cart_values")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
-    private $product;
+    private ?Product $product;
 
     /**
-     * @var ProductDimension
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension", inversedBy="cart_values")
      * @ORM\JoinColumn(name="product_dimension_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
-    private $product_dimension;
+    private ?ProductDimension $product_dimension;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $width = 0;
+    private int $width = 0;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $height = 0;
+    private int $height = 0;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $order_width = 0;
+    private int $order_width = 0;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $order_height = 0;
+    private int $order_height = 0;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
-    private $quantity = 0;
+    private int $quantity = 0;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $total = 0;
+    private int $total = 0;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="datetime", name="date")
      */
-    private $date;
+    private DateTimeInterface $date;
 
-    /**
-     * @var float
-     */
-    private $price;
-
-    /**
-     * @var bool
-     */
-    private $isInStock;
+    private ?float $price;
+    private bool $isInStock;
 
     public function __construct()
     {
         $this->cart_value_options = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Cart
-     */
     public function getCart(): Cart
     {
         return $this->cart;
     }
 
-    /**
-     * @param Cart $cart
-     */
-    public function setCart(Cart $cart)
+    public function setCart(Cart $cart): void
     {
         $this->cart = $cart;
     }
 
     /**
-     * @return CartValueOption[]
+     * @return Collection|CartValueOption[]
      */
-    public function getCartValueOptions()
+    public function getCartValueOptions(): Collection
     {
         return $this->cart_value_options;
     }
 
     /**
-     * @param CartValueOption[] $cart_value_options
+     * @param Collection|CartValueOption[] $cart_value_options
      */
-    public function setCartValueOptions($cart_value_options): void
+    public function setCartValueOptions(Collection $cart_value_options): void
     {
         $this->cart_value_options = $cart_value_options;
     }
 
-    /**
-     * Add a cart value option
-     *
-     * @param CartValueOption $cartValueOption
-     */
     public function addCartValueOption(CartValueOption $cartValueOption): void
     {
         $this->cart_value_options->add($cartValueOption);
     }
 
-    /**
-     * @param CartValueOption $cartValueOption
-     */
     public function removeCartValueOption(CartValueOption $cartValueOption): void
     {
         if (!$this->cart_value_options->contains($cartValueOption)) {
@@ -180,146 +137,92 @@ class CartValue
         $this->cart_value_options->removeElement($cartValueOption);
     }
 
-    /**
-     * @return Product
-     */
     public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    /**
-     * @param Product $product
-     */
-    public function setProduct(Product $product)
+    public function setProduct(Product $product): void
     {
         $this->product = $product;
     }
 
-    /**
-     * @return ProductDimension
-     */
     public function getProductDimension(): ?ProductDimension
     {
         return $this->product_dimension;
     }
 
-    /**
-     * @param ProductDimension $product_dimension
-     */
     public function setProductDimension(ProductDimension $product_dimension): void
     {
         $this->product_dimension = $product_dimension;
     }
 
-    /**
-     * @return float
-     */
     public function getWidth(): ?float
     {
         return $this->width;
     }
 
-    /**
-     * @param float $width
-     */
     public function setWidth(float $width): void
     {
         $this->width = $width;
     }
 
-    /**
-     * @return float
-     */
     public function getHeight(): ?float
     {
         return $this->height;
     }
 
-    /**
-     * @param float $height
-     */
     public function setHeight(float $height): void
     {
         $this->height = $height;
     }
 
-    /**
-     * @return float
-     */
     public function getOrderWidth(): ?float
     {
         return $this->order_width;
     }
 
-    /**
-     * @param float $order_width
-     */
     public function setOrderWidth(float $order_width): void
     {
         $this->order_width = $order_width;
     }
 
-    /**
-     * @return float
-     */
     public function getOrderHeight(): ?float
     {
         return $this->order_height;
     }
 
-    /**
-     * @param float $order_height
-     */
     public function setOrderHeight(float $order_height): void
     {
         $this->order_height = $order_height;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     */
-    public function setQuantity(int $quantity)
+    public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
     }
 
-    /**
-     * @return float
-     */
     public function getTotal(): float
     {
         return $this->total;
     }
 
-    /**
-     * @param float $total
-     */
-    public function setTotal(float $total)
+    public function setTotal(float $total): void
     {
         $this->total = $total;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDate(): \DateTime
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTime $date
-     */
-    public function setDate(\DateTime $date)
+    public function setDate(DateTimeInterface $date): void
     {
         $this->date = $date;
     }
@@ -327,10 +230,10 @@ class CartValue
     /**
      * @ORM\PrePersist
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         if (!$this->id) {
-            $this->date = new \DateTime();
+            $this->date = new DateTime();
         }
     }
 
@@ -353,11 +256,6 @@ class CartValue
         return $this->isInStock;
     }
 
-    /**
-     * Get the price for the product
-     *
-     * @return float|null
-     */
     public function getPrice(): float
     {
         if ($this->price) {
@@ -382,9 +280,7 @@ class CartValue
     }
 
     /**
-     * Get the vat price of a single product in this row
-     *
-     * @return float
+     * Get the vat price of a single product in this row.
      */
     public function getVatPrice(): float
     {

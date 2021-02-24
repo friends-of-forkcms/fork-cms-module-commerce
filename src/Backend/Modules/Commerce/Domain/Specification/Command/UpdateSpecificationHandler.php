@@ -7,8 +7,7 @@ use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
 
 final class UpdateSpecificationHandler
 {
-    /** @var SpecificationRepository */
-    private $specificationRepository;
+    private SpecificationRepository $specificationRepository;
 
     public function __construct(SpecificationRepository $specificationRepository)
     {

@@ -6,8 +6,7 @@ use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 
 final class DeleteCartRule
 {
-    /** @var CartRule */
-    public $cartRule;
+    public CartRule $cartRule;
 
     public function __construct(CartRule $cartRule)
     {

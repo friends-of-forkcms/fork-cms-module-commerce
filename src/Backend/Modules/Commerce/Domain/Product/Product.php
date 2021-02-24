@@ -12,10 +12,11 @@ use Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Common\Doctrine\Entity\Meta;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
+use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,69 +29,57 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
     // Define the sort orders
-    const SORT_RANDOM = 'random';
-    const SORT_PRICE_ASC = 'price-asc';
-    const SORT_PRICE_DESC = 'price-desc';
-    const SORT_CREATED_AT = 'create-at';
+    public const SORT_RANDOM = 'random';
+    public const SORT_PRICE_ASC = 'price-asc';
+    public const SORT_PRICE_DESC = 'price-desc';
+    public const SORT_CREATED_AT = 'create-at';
 
     // Define product types
-    const TYPE_DEFAULT = 1;
-    const TYPE_DIMENSIONS = 2;
+    public const TYPE_DEFAULT = 1;
+    public const TYPE_DIMENSIONS = 2;
 
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    public $id;
+    public int $id;
 
     /**
-     * @var Meta
-     *
-     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta",cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
      */
-    private $meta;
+    private ?Meta $meta;
 
     /**
-     * @var Category
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Category\Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $category;
+    private ?Category $category;
 
     /**
-     * @var Brand
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Brand\Brand", inversedBy="products")
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $brand;
+    private ?Brand $brand;
 
     /**
-     * @var Vat
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Vat\Vat")
      * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $vat;
+    private ?Vat $vat;
 
     /**
-     * @var StockStatus
-     *
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\StockStatus\StockStatus")
      * @ORM\JoinColumn(name="stock_status_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $stock_status;
+    private ?StockStatus $stock_status;
 
     /**
      * @var ProductOption[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", mappedBy="product", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
     private $product_options;
 
@@ -103,7 +92,7 @@ class Product
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id")}
      * )
-     * @ORM\OrderBy({"value" = "ASC"})
+     * @ORM\OrderBy({"value": "ASC"})
      */
     private $specification_values;
 
@@ -118,7 +107,7 @@ class Product
      * @var ProductDimension[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension", mappedBy="product", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"width" = "ASC", "height" = "ASC"})
+     * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
      */
     private $dimensions;
 
@@ -126,12 +115,13 @@ class Product
      * @var ProductDimensionNotification[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="product", cascade={"remove", "persist"})
-     * @ORM\OrderBy({"width" = "ASC", "height" = "ASC"})
+     * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
      */
     private $dimension_notifications;
 
     /**
      * Many Products may have many related products.
+     *
      * @var Product[]
      *
      * @ORM\ManyToMany(targetEntity="Product")
@@ -139,13 +129,13 @@ class Product
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="related_product_id", referencedColumnName="id")}
      * )
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
     private $related_products;
 
     /**
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct", mappedBy="product", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
     protected $up_sell_products;
 
@@ -157,214 +147,161 @@ class Product
     private $cart_values;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default" : false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $hidden;
+    private bool $hidden;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 1})
+     * @ORM\Column(type="integer", options={"default": 1})
      */
-    private $type;
+    private int $type;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $min_width;
+    private int $min_width;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $min_height;
+    private int $min_height;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $max_width;
+    private int $max_width;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $max_height;
+    private int $max_height;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $extra_production_width;
+    private int $extra_production_width;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $extra_production_height;
+    private int $extra_production_height;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $sku;
+    private string $sku;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $ean13;
+    private ?string $ean13;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $isbn;
+    private ?string $isbn;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $weight;
+    private ?float $weight;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $price;
+    private float $price;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
-    private $stock;
+    private int $stock;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
-    private $order_quantity;
+    private int $order_quantity;
 
     /**
-     * @var boolean
-     *
      * @ORM\Column(type="boolean")
      */
-    private $from_stock;
+    private bool $from_stock;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text")
      */
-    private $summary;
+    private string $summary;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $text;
+    private ?string $text;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $dimension_instructions;
+    private ?string $dimension_instructions;
 
     /**
-     * @var MediaGroup
-     *
      * @ORM\OneToOne(
-     *      targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
-     *      cascade="persist",
-     *      orphanRemoval=true
+     *     targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\JoinColumn(
-     *      name="imageGroupId",
-     *      referencedColumnName="id",
-     *      onDelete="cascade"
+     *     name="imageGroupId",
+     *     referencedColumnName="id",
+     *     onDelete="cascade"
      * )
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    protected $images;
+    protected ?MediaGroup $images;
 
     /**
-     * @var MediaGroup
-     *
      * @ORM\OneToOne(
-     *      targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
-     *      cascade="persist",
-     *      orphanRemoval=true
+     *     targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\JoinColumn(
-     *      name="downloadGroupId",
-     *      referencedColumnName="id",
-     *      onDelete="cascade"
+     *     name="downloadGroupId",
+     *     referencedColumnName="id",
+     *     onDelete="cascade"
      * )
-     * @ORM\OrderBy({"sequence" = "ASC"})
+     * @ORM\OrderBy({"sequence": "ASC"})
      */
-    protected $downloads;
+    protected ?MediaGroup $downloads;
 
     /**
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
-    private $sequence;
+    private ?int $sequence;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="created_on")
      */
-    private $createdOn;
+    private DateTimeInterface $createdOn;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="datetime", name="edited_on")
      */
-    private $editedOn;
+    private DateTimeInterface $editedOn;
 
     /**
-     * Current object active price
-     *
-     * @var float
+     * Current object active price.
      */
-    private $activePrice;
+    private float $activePrice;
 
-    /**
-     * @var boolean
-     */
-    private $hasActiveSpecialPrice = false;
+    private bool $hasActiveSpecialPrice = false;
 
     private function __construct(
         Meta $meta,
@@ -520,9 +457,6 @@ class Product
         return $this->vat;
     }
 
-    /**
-     * @return StockStatus
-     */
     public function getStockStatus(): StockStatus
     {
         return $this->stock_status;
@@ -547,81 +481,51 @@ class Product
         return $this->product_options;
     }
 
-    /**
-     * @return Locale
-     */
     public function getLocale(): Locale
     {
         return $this->locale;
     }
 
-    /**
-     * @return bool
-     */
     public function isHidden(): bool
     {
         return $this->hidden;
     }
 
-    /**
-     * @return int
-     */
     public function getType(): int
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getMinWidth(): int
     {
         return $this->min_width;
     }
 
-    /**
-     * @return int
-     */
     public function getMinHeight(): int
     {
         return $this->min_height;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxWidth(): int
     {
         return $this->max_width;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxHeight(): int
     {
         return $this->max_height;
     }
 
-    /**
-     * @return int
-     */
     public function getExtraProductionWidth(): int
     {
         return $this->extra_production_width;
     }
 
-    /**
-     * @return int
-     */
     public function getExtraProductionHeight(): int
     {
         return $this->extra_production_height;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
@@ -640,49 +544,31 @@ class Product
         return $this->price;
     }
 
-    /**
-     * @return int
-     */
     public function getStock(): int
     {
         return $this->stock;
     }
 
-    /**
-     * @param int $stock
-     */
     public function setStock(int $stock)
     {
         $this->stock = $stock;
     }
 
-    /**
-     * @return int
-     */
     public function getOrderQuantity(): int
     {
         return $this->order_quantity;
     }
 
-    /**
-     * @return bool
-     */
     public function isFromStock(): bool
     {
         return $this->from_stock;
     }
 
-    /**
-     * @param bool $from_stock
-     */
     public function setFromStock(bool $from_stock)
     {
         $this->from_stock = $from_stock;
     }
 
-    /**
-     * @return string
-     */
     public function getSku(): string
     {
         return $this->sku;
@@ -810,12 +696,12 @@ class Product
         return $this->up_sell_products;
     }
 
-    public function getCreatedOn(): DateTime
+    public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
-    public function getEditedOn(): DateTime
+    public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
     }
@@ -895,17 +781,15 @@ class Product
     }
 
     /**
-     * Get the frontend url based on the parent category
-     *
-     * @return string
+     * Get the frontend url based on the parent category.
      */
     public function getUrl(): string
     {
-        return $this->category->getUrl() . '/' . $this->meta->getUrl();
+        return $this->category->getUrl().'/'.$this->meta->getUrl();
     }
 
     /**
-     * Get the product thumbnail
+     * Get the product thumbnail.
      */
     public function getThumbnail()
     {
@@ -917,11 +801,7 @@ class Product
     }
 
     /**
-     * Get the active price if is special or the current price
-     *
-     * @param bool $includeVat
-     *
-     * @return float
+     * Get the active price if is special or the current price.
      */
     public function getActivePrice(bool $includeVat = true): float
     {
@@ -937,11 +817,7 @@ class Product
     }
 
     /**
-     * Get the old price
-     *
-     * @param bool $includeVat
-     *
-     * @return float
+     * Get the old price.
      */
     public function getOldPrice(bool $includeVat = true): float
     {
@@ -955,7 +831,7 @@ class Product
     }
 
     /**
-     * Get the vat price only
+     * Get the vat price only.
      *
      * @return float
      */
@@ -965,9 +841,9 @@ class Product
     }
 
     /**
-     * Check if product has a special price going on
+     * Check if product has a special price going on.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasActiveSpecialPrice()
     {
@@ -977,9 +853,7 @@ class Product
     }
 
     /**
-     * Check if the product is in stock
-     *
-     * @return boolean
+     * Check if the product is in stock.
      */
     public function inStock(): bool
     {
@@ -991,7 +865,7 @@ class Product
     }
 
     /**
-     * Calculate the active price
+     * Calculate the active price.
      */
     private function calculateActivePrice(): void
     {
@@ -999,12 +873,12 @@ class Product
             return;
         }
 
-        $today = (new \DateTime('now'))->setTime(0, 0, 0);
+        $today = (new DateTime('now'))->setTime(0, 0, 0);
         $price = $this->getPrice();
 
         if ($this->type == self::TYPE_DIMENSIONS) {
             $criteria = Criteria::create()->orderBy([
-                'price' => Criteria::ASC
+                'price' => Criteria::ASC,
             ])->setMaxResults(1);
 
             /**
@@ -1040,19 +914,11 @@ class Product
         $this->activePrice = $price;
     }
 
-    /**
-     * @return bool
-     */
     public function usesDimensions(): bool
     {
         return $this->type == self::TYPE_DIMENSIONS;
     }
 
-    /**
-     * @param int $width
-     * @param int $height
-     * @return ProductDimensionNotification|null
-     */
     public function getDimensionNotificationByDimension(int $width, int $height): ?ProductDimensionNotification
     {
         $expr = Criteria::expr();
@@ -1067,8 +933,6 @@ class Product
     }
 
     /**
-     * @param int $width
-     * @param int $height
      * @return ProductDimensionNotification[]
      */
     public function getAllDimensionNotificationsByDimension(int $width, int $height): array
@@ -1084,10 +948,7 @@ class Product
         }
 
         foreach ($this->product_options as $productOption) {
-            $notifications = array_merge(
-                $notifications,
-                $productOption->getAllDimensionNotificationsByDimension($width, $height)
-            );
+            $notifications = [...$notifications, ...$productOption->getAllDimensionNotificationsByDimension($width, $height)];
         }
 
         return $notifications;

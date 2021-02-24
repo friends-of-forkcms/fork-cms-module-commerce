@@ -55,7 +55,7 @@ class PaymentMethod extends Step
     }
 
     /**
-     * Get the guest form. Returns the path of the template
+     * Get the guest form. Returns the path of the template.
      */
     private function handleForm(Form $form, $paymentMethods): Form
     {
@@ -104,9 +104,7 @@ class PaymentMethod extends Step
     }
 
     /**
-     * Get the payment methods to populate our form
-     *
-     * @return array
+     * Get the payment methods to populate our form.
      */
     private function getPaymentMethods(): array
     {
@@ -125,16 +123,13 @@ class PaymentMethod extends Step
              */
             $class = new $className($paymentMethod, $this->cart, $this->getPaymentAddress());
             foreach ($class->getQuote() as $key => $options) {
-                $paymentMethods[$paymentMethod . '.' . $key] = $options;
+                $paymentMethods[$paymentMethod.'.'.$key] = $options;
             }
         }
 
         return $paymentMethods;
     }
 
-    /**
-     * @return OrderAddress
-     */
     private function getPaymentAddress(): OrderAddress
     {
         if ($this->cart->getInvoiceAddress()) {
@@ -146,6 +141,6 @@ class PaymentMethod extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('PaymentMethod'));
+        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('PaymentMethod'));
     }
 }

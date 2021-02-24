@@ -13,37 +13,29 @@ use Doctrine\ORM\Mapping as ORM;
 class StockStatus
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var Locale
-     *
      * @ORM\Column(type="locale", name="language")
      */
-    private $locale;
+    private Locale $locale;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
-    private function __construct(
-        Locale $locale,
-        string $title
-    ) {
-        $this->locale     = $locale;
-        $this->title      = $title;
+    private function __construct(Locale $locale, string $title)
+    {
+        $this->locale = $locale;
+        $this->title = $title;
     }
 
-    public static function fromDataTransferObject(StockStatusDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(StockStatusDataTransferObject $dataTransferObject): StockStatus
     {
         if ($dataTransferObject->hasExistingStockStatus()) {
             return self::update($dataTransferObject);
@@ -75,17 +67,12 @@ class StockStatus
         return $this->title;
     }
 
-    public function setSequence($sequence): void
-    {
-        $this->sequence = $sequence;
-    }
-
-    private static function update(StockStatusDataTransferObject $dataTransferObject)
+    private static function update(StockStatusDataTransferObject $dataTransferObject): StockStatus
     {
         $stockStatus = $dataTransferObject->getStockStatusEntity();
 
-        $stockStatus->locale     = $dataTransferObject->locale;
-        $stockStatus->title      = $dataTransferObject->title;
+        $stockStatus->locale = $dataTransferObject->locale;
+        $stockStatus->title = $dataTransferObject->title;
 
         return $stockStatus;
     }

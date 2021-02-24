@@ -8,55 +8,41 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MollieDataTransferObject extends DataTransferObject
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $name;
+    public string $name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $apiKey;
+    public string $apiKey;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderInitId;
+    public string $orderInitId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderCompletedId;
+    public string $orderCompletedId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderCancelledId;
+    public string $orderCancelledId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderRefundedId;
+    public string $orderRefundedId;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public $orderExpiredId;
+    public string $orderExpiredId;
 
-    public $paymentMethods = [];
+    public array $paymentMethods = [];
 
     public function __set($key, $value)
     {
@@ -65,10 +51,6 @@ class MollieDataTransferObject extends DataTransferObject
 
     public function __get($key)
     {
-        if (!isset($this->paymentMethods[$key])) {
-            return null;
-        }
-
-        return $this->paymentMethods[$key];
+        return $this->paymentMethods[$key] ?? null;
     }
 }

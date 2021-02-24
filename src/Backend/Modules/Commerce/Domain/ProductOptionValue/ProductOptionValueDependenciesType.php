@@ -33,7 +33,7 @@ class ProductOptionValueDependenciesType extends AbstractType
                         ->where('p = :product')
                         ->setParameter('product', $productOption->getProduct());
                 },
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ]
         )->add(
             'values',
@@ -50,7 +50,7 @@ class ProductOptionValueDependenciesType extends AbstractType
                 'allow_add' => false,
                 'delay' => 250,
                 'cache' => true,
-                'cache_timeout' => 10000,
+                'cache_timeout' => 10_000,
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.Values',
                 'action' => 'AutoCompleteProductOptionValue',
@@ -63,7 +63,7 @@ class ProductOptionValueDependenciesType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => ProductOptionValueDependencyDataTransferObject::class,
-                'product_option' => ProductOption::class
+                'product_option' => ProductOption::class,
             ]
         );
     }
