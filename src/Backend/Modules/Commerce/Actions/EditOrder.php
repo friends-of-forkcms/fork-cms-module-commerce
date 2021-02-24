@@ -88,10 +88,6 @@ class EditOrder extends BackendBaseActionEdit
         return $form;
     }
 
-    /**
-     * @throws \Common\Exception\RedirectException
-     * @throws \Exception
-     */
     private function getOrder(): Order
     {
         /** @var OrderRepository $orderRepository */

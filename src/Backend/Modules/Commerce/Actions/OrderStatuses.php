@@ -14,8 +14,6 @@ use Backend\Modules\Commerce\Domain\OrderStatus\DataGrid;
  */
 class OrderStatuses extends BackendBaseActionIndex
 {
-    protected BackendDataGridDB $dataGrid;
-
     public function execute(): void
     {
         parent::execute();

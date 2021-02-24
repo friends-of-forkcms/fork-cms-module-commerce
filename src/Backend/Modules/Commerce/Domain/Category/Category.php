@@ -108,7 +108,7 @@ class Category
     /**
      * This is used to determine the path of our children for a display.
      */
-    public int $path;
+    public int $path = 0;
 
     /**
      * This is used to store the url path.

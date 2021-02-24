@@ -13,14 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PackingSlip extends Action
 {
-    private ?Order $order;
+    private Order $order;
 
     public function execute(): void
     {
         parent::execute();
 
         $this->order = $this->getOrder();
-
         $this->generateHTML();
     }
 
@@ -47,13 +46,7 @@ class PackingSlip extends Action
         );
     }
 
-    /**
-     * @return Order
-     *
-     * @throws \Common\Exception\RedirectException
-     * @throws \Exception
-     */
-    private function getOrder(): ?Order
+    private function getOrder(): Order
     {
         /** @var OrderRepository $orderRepository */
         $orderRepository = $this->get('commerce.repository.order');
@@ -63,8 +56,6 @@ class PackingSlip extends Action
         } catch (OrderNotFound $e) {
             $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
-
-        return null;
     }
 
     /**

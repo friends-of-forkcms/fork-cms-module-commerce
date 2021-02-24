@@ -14,13 +14,12 @@ class ProductOptionDataTransferObject
     protected ?ProductOption $productOptionEntity;
     public ?int $id = null;
     public Product $product;
-    public ?ProductOptionValue $parent_product_option_value;
+    public ?ProductOptionValue $parent_product_option_value = null;
 
     /**
      * @Assert\Valid
      */
     public Collection $dimension_notifications;
-
     public Collection $remove_dimension_notifications;
 
     /**

@@ -23,8 +23,8 @@ use Symfony\Component\Form\Form;
  */
 class AddProductOption extends BackendBaseActionAdd
 {
-    private Product $product;
-    private ProductOptionValue $productOptionValue;
+    private ?Product $product = null;
+    private ?ProductOptionValue $productOptionValue = null;
 
     public function execute(): void
     {

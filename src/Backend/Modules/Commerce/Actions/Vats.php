@@ -14,8 +14,6 @@ use Backend\Modules\Commerce\Domain\Vat\DataGrid;
  */
 class Vats extends BackendBaseActionIndex
 {
-    protected BackendDataGridDB $dataGrid;
-
     public function execute(): void
     {
         parent::execute();

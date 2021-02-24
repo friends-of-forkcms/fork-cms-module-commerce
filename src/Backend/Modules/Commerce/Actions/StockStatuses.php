@@ -14,8 +14,6 @@ use Backend\Modules\Commerce\Domain\StockStatus\DataGrid;
  */
 class StockStatuses extends BackendBaseActionIndex
 {
-    protected BackendDataGridDB $dataGrid;
-
     public function execute(): void
     {
         parent::execute();

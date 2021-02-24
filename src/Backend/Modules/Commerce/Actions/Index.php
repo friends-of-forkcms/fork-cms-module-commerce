@@ -23,12 +23,12 @@ class Index extends BackendBaseActionIndex
     /**
      * The category where is filtered on.
      */
-    private Category $category;
+    private ?Category $category = null;
 
     /**
      * An sku number to filter on.
      */
-    private string $sku;
+    private ?string $sku = null;
 
     public function execute(): void
     {
@@ -43,7 +43,6 @@ class Index extends BackendBaseActionIndex
                 $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
-
                 return;
             }
         }

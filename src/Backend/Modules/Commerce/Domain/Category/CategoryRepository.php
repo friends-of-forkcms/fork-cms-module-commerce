@@ -110,7 +110,7 @@ class CategoryRepository extends EntityRepository
      *
      * @return array
      */
-    public function getTree(Locale $locale)
+    public function getTree(Locale $locale): array
     {
         $queryBuilder = $this->createQueryBuilder('i');
 

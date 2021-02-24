@@ -77,7 +77,7 @@ class CategoryType extends AbstractType
 
                     return $queryBuilder;
                 },
-                'choice_label' => function ($category) {
+                'choice_label' => function (Category $category) {
                     $prefix = null;
                     if ($category->path > 0) {
                         $prefix = str_repeat('-', $category->path).' ';
@@ -99,7 +99,7 @@ class CategoryType extends AbstractType
                         'detail_url' => '',
                         'generate_url_callback_parameters' => [
                             $event->getData()->locale,
-                            $event->getData()->id,
+                            $event->getData()->id ?? null,
                         ],
                     ]
                 );

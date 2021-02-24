@@ -15,8 +15,6 @@ use Backend\Modules\Commerce\Domain\Specification\DataGrid;
  */
 class Specifications extends BackendBaseActionIndex
 {
-    protected BackendDataGridDB $dataGrid;
-
     public function execute(): void
     {
         parent::execute();

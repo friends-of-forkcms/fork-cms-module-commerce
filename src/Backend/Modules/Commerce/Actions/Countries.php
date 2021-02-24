@@ -14,8 +14,6 @@ use Backend\Modules\Commerce\Domain\Country\DataGrid;
  */
 class Countries extends BackendBaseActionIndex
 {
-    protected BackendDataGridDB $dataGrid;
-
     public function execute(): void
     {
         parent::execute();

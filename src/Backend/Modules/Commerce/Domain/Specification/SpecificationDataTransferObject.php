@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\Specification;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,6 +33,7 @@ class SpecificationDataTransferObject
     public function __construct(Specification $specification = null)
     {
         $this->specificationEntity = $specification;
+        $this->specification_values = new ArrayCollection();
         $this->filter = false;
 
         if (!$this->hasExistingSpecification()) {

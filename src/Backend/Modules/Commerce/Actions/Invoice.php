@@ -20,7 +20,6 @@ class Invoice extends Action
     public function execute(): void
     {
         parent::execute();
-
         $this->order = $this->getOrder();
 
         // Generate invoice number when it doesn't exists
@@ -64,13 +63,7 @@ class Invoice extends Action
         );
     }
 
-    /**
-     * @return Order
-     *
-     * @throws \Common\Exception\RedirectException
-     * @throws \Exception
-     */
-    private function getOrder(): ?Order
+    private function getOrder(): Order
     {
         /** @var OrderRepository $orderRepository */
         $orderRepository = $this->get('commerce.repository.order');
@@ -80,8 +73,6 @@ class Invoice extends Action
         } catch (OrderNotFound $e) {
             $this->redirect($this->getBackLink(['error' => 'non-existing']));
         }
-
-        return null;
     }
 
     /**

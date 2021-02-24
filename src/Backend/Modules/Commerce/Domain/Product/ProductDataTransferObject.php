@@ -52,9 +52,7 @@ class ProductDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public int $max_height = 0;
-
     public int $extra_production_width = 0;
-
     public int $extra_production_height = 0;
 
     /**
@@ -97,7 +95,7 @@ class ProductDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public Category $category;
+    public ?Category $category = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -141,11 +139,7 @@ class ProductDataTransferObject
     public Collection $remove_specification_values;
     public Collection $remove_related_products;
     public MediaGroup $images;
-
-    /**
-     * @var MediaGroup
-     */
-    public $downloads;
+    public MediaGroup $downloads;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")

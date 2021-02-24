@@ -19,7 +19,7 @@ use Backend\Modules\Commerce\Domain\Category\FilterType;
  */
 class Categories extends BackendBaseActionIndex
 {
-    private ?Category $category;
+    private ?Category $category = null;
 
     public function execute(): void
     {
