@@ -2086,6 +2086,26 @@
         <translation language="nl"><![CDATA[De wachtwoorden komen niet overeen]]></translation>
         <translation language="en"><![CDATA[The password fields must match.]]></translation>
       </item>
+      <item type="label" name="SortOn">
+        <translation language="nl"><![CDATA[sorteer op]]></translation>
+        <translation language="en"><![CDATA[sort on]]></translation>
+      </item>
+      <item type="label" name="SortRandom">
+        <translation language="nl"><![CDATA[standaard]]></translation>
+        <translation language="en"><![CDATA[standard]]></translation>
+      </item>
+      <item type="label" name="SortPriceLowToHigh">
+        <translation language="nl"><![CDATA[prijs laag - hoog]]></translation>
+        <translation language="en"><![CDATA[price low - high]]></translation>
+      </item>
+      <item type="label" name="SortPriceHighToLow">
+        <translation language="nl"><![CDATA[prijs hoog - laag]]></translation>
+        <translation language="en"><![CDATA[price high - low]]></translation>
+      </item>
+      <item type="label" name="SortNewest">
+        <translation language="nl"><![CDATA[nieuwst]]></translation>
+        <translation language="en"><![CDATA[newest]]></translation>
+      </item>
     </Core>
   </Frontend>
 </locale>

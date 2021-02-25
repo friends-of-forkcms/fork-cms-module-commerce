@@ -2,41 +2,47 @@
 {% import "Layout/Templates/macros.html.twig" as macro %}
 
 {% block actionbar %}
-    {% if showCommerceAddCategory %}
-        <div class="btn-toolbar pull-right">
-            <div class="btn-group" role="group">
-                {{ macro.buttonIcon( geturl('AddCategory'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
-            </div>
-        </div>
-    {% endif %}
+  {% if showCommerceAdd %}
+    <div class="btn-toolbar pull-right">
+      <div class="btn-group" role="group">
+        {{ macro.buttonIcon( geturl('Add'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="content-block">
-        {{ form_start(filterCategory) }}
+  <div class="content-block">
+    {{ form_start(form) }}
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="category" class="control-label">{{ 'lbl.ShowOnlyCategoriesUnderCategory'|trans|ucfirst }}</label>
-                            {{ form_widget(filterCategory.category) }}
-                        </div>
-                    </div>
-                </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              {{ form_label(form.category) }}
+              {{ form_widget(form.category) }}
             </div>
-            <div class="panel-footer">
-                <div class="btn-toolbar">
-                    <div class="btn-group pull-right">
-                        {{ macro.buttonIcon('', 'refresh', 'lbl.UpdateFilter'|trans|ucfirst, 'btn-primary', { "type":"submit", "id":"search", "name":"search" }) }}
-                    </div>
-                </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              {{ form_label(form.sku) }}
+              {{ form_widget(form.sku) }}
             </div>
+          </div>
         </div>
-
-        {{ form_end(filterCategory) }}
+      </div>
+      <div class="panel-footer">
+        <div class="btn-toolbar">
+          <div class="btn-group pull-right">
+            {{ macro.buttonIcon('', 'refresh', 'lbl.UpdateFilter'|trans|ucfirst, 'btn-primary', { "type":"submit", "id":"search", "name":"search" }) }}
+          </div>
+        </div>
+      </div>
     </div>
 
-    {{ macro.dataGrid(dataGrid) }}
+    {{ form_end(form) }}
+  </div>
+
+  {{ macro.dataGrid(dataGrid) }}
 {% endblock %}

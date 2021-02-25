@@ -1,6 +1,8 @@
 {% if navigation %}
   <ul class="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
-    {% for nav in navigation %}
+
+    {# Don't render home, slice it out of the nav list #}
+    {% for nav in navigation|slice(1, navigation.length - 1 ) %}
       <li class="{% if nav.selected %}active{% endif %} inline-block px-4 py-2 no-underline hover:text-black hover:underline">
         <a href="{{ nav.link }}" title="{{ nav.navigation_title }}"{% if nav.nofollow %} rel="nofollow"{% endif %}{% if nav.link_class %} class="{{ nav.link_class }}"{% endif %}>{{ nav.navigation_title|e('html') }}</a>
         {% if nav.selected %}{{ nav.children|raw }}{% endif %}

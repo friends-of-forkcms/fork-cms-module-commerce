@@ -1,35 +1,23 @@
 services:
-  commerce.event.order_created:
-    class: Backend\Modules\Commerce\Domain\Order\EventListener\OrderCreated
-    arguments:
-      - "@mailer"
-      - "@fork.settings"
-    tags:
-      - {
-          name: kernel.event_listener,
-          event: commerce.event.order.created,
-          method: onOrderCreated,
-        }
-  commerce.event.order_updated:
-    class: Backend\Modules\Commerce\Domain\Order\EventListener\OrderUpdated
-    arguments:
-      - "@mailer"
-      - "@fork.settings"
-    tags:
-      - {
-          name: kernel.event_listener,
-          event: commerce.event.order.updated,
-          method: onOrderUpdated,
-        }
+    commerce.event.order_created:
+        class: Backend\Modules\Commerce\Domain\Order\EventListener\OrderCreated
+        arguments:
+            - "@mailer"
+            - "@fork.settings"
+        tags:
+            - { name: kernel.event_listener, event: commerce.event.order.created, method: onOrderCreated }
+    commerce.event.order_updated:
+        class: Backend\Modules\Commerce\Domain\Order\EventListener\OrderUpdated
+        arguments:
+            - "@mailer"
+            - "@fork.settings"
+        tags:
+            - { name: kernel.event_listener, event: commerce.event.order.updated, method: onOrderUpdated }
 
-  commerce.event.order_generate_invoice_number:
-    class: Backend\Modules\Commerce\Domain\Order\EventListener\GenerateInvoiceNumber
-    arguments:
-      - "@command_bus"
-      - "@fork.settings"
-    tags:
-      - {
-          name: kernel.event_listener,
-          event: commerce.event.order.generate_invoice_number,
-          method: onGenerateInvoiceNumber,
-        }
+    commerce.event.order_generate_invoice_number:
+        class: Backend\Modules\Commerce\Domain\Order\EventListener\GenerateInvoiceNumber
+        arguments:
+            - "@command_bus"
+            - "@fork.settings"
+        tags:
+            - { name: kernel.event_listener, event: commerce.event.order.generate_invoice_number, method: onGenerateInvoiceNumber }

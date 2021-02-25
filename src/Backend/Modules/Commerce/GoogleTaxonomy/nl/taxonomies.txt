@@ -87,7 +87,7 @@
 5651 - Bagage en tassen > Bagageaccessoires > Bagagelabels
 499691 - Bagage en tassen > Bagageaccessoires > Bagagerekken en -houders
 5652 - Bagage en tassen > Bagageaccessoires > Bagageriemen
-503014 - Bagage en tassen > Bagageaccessoires > Binnenhoezen en inzetstukken voor waterdichte opbergboxen
+503014 - Bagage en tassen > Bagageaccessoires > Binnenhoezen en inzetstukken voor waterdichte opbergboxen 
 7521 - Bagage en tassen > Bagageaccessoires > Koffer- en rugzakhoezen
 6919 - Bagage en tassen > Bagageaccessoires > Reisflessen en -flacons
 5650 - Bagage en tassen > Bagageaccessoires > Reistasjes
@@ -692,7 +692,7 @@
 296248 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Beeldsensoren voor camera's
 6307 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Behuizing voor onderwatercamera's
 8174 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Camera-accessoiresets
-503020 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Camera-geluiddempers en blimps
+503020 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Camera-geluiddempers en blimps 
 153 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Camerafilm
 148 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Cameraflitsers
 500104 - Camera's en optiek > Optische en camera-accessoires > Cameraonderdelen en -accessoires > Camerafocusapparaten
@@ -1624,7 +1624,7 @@
 4767 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Biometrische meters > Hartslagmonitors voor prenatale zorg
 501 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Biometrische meters > Medische thermometers
 5551 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Biometrische meters > Pulse-oxymeters
-505822 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Biometrische meters > Vruchtbaarheidsmonitors en ovulatietests
+505822 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Biometrische meters > Vruchtbaarheidsmonitors en ovulatietests 
 5923 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Chirurgische smeermiddelen
 775 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > Condooms
 508 - Gezondheid en persoonlijke verzorging > Gezondheidszorg > EHBO

@@ -1,10 +1,6 @@
 services:
   commerce.listener.on_kernel_request:
     class: Backend\Modules\Commerce\Domain\ForkCMS\OnKernelResponse
-    arguments: ["@service_container"]
+    arguments: [ "@service_container" ]
     tags:
-      - {
-          name: kernel.event_listener,
-          event: kernel.response,
-          method: onKernelResponse,
-        }
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

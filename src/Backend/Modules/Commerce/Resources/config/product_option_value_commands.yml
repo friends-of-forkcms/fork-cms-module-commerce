@@ -1,30 +1,21 @@
 services:
-  commerce.handler.create_product_option_value:
-    class: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\CreateProductOptionValueHandler
-    arguments:
-      - "@commerce.repository.product_option_value"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\CreateProductOptionValue,
-        }
+    commerce.handler.create_product_option_value:
+        class: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\CreateProductOptionValueHandler
+        arguments:
+            - "@commerce.repository.product_option_value"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\CreateProductOptionValue }
 
-  commerce.handler.update_product_option_value:
-    class: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\UpdateProductOptionValueHandler
-    arguments:
-      - "@commerce.repository.product_option_value"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\UpdateProductOptionValue,
-        }
+    commerce.handler.update_product_option_value:
+        class: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\UpdateProductOptionValueHandler
+        arguments:
+            - "@commerce.repository.product_option_value"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\UpdateProductOptionValue }
 
-  commerce.handler.delete_product_option_value:
-    class: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\DeleteProductOptionValueHandler
-    arguments:
-      - "@commerce.repository.product_option_value"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\DeleteProductOptionValue,
-        }
+    commerce.handler.delete_product_option_value:
+        class: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\DeleteProductOptionValueHandler
+        arguments:
+            - "@commerce.repository.product_option_value"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\ProductOptionValue\Command\DeleteProductOptionValue }

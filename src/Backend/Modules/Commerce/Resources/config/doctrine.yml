@@ -132,17 +132,17 @@ doctrine:
         alias: CommercePaymentMethod
         prefix: Backend\Modules\Commerce\Domain\PaymentMethod
       commerce_product_dimension:
-        type: annotation
-        is_bundle: false
-        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductDimension"
-        alias: CommerceProductDimension
-        prefix: Backend\Modules\Commerce\Domain\ProductDimension
+          type: annotation
+          is_bundle: false
+          dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductDimension"
+          alias: CommerceProductDimension
+          prefix: Backend\Modules\Commerce\Domain\ProductDimension
       commerce_product_dimension_notification:
-        type: annotation
-        is_bundle: false
-        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductDimensionNotification"
-        alias: CommerceProductDimensionNotification
-        prefix: Backend\Modules\Commerce\Domain\ProductDimensionNotification
+          type: annotation
+          is_bundle: false
+          dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductDimensionNotification"
+          alias: CommerceProductDimensionNotification
+          prefix: Backend\Modules\Commerce\Domain\ProductDimensionNotification
       commerce_product_option:
         type: annotation
         is_bundle: false

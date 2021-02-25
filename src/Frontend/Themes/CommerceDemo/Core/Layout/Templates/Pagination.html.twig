@@ -1,0 +1,63 @@
+{% set buttonStyles = "-ml-px relative inline-flex items-center border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" %}
+
+{% if pagination %}
+  {% if pagination.multiple_pages %}
+    <nav role="navigation" class="inline-flex">
+      <ul class="inline-flex shadow-sm">
+
+        {# Previous page arrow #}
+        <li{% if not pagination.show_previous %} class="{{ buttonStyles }} rounded-l-md disabled"{% else %} class="{{ buttonStyles }} rounded-l-md"{% endif %}>
+          {% if pagination.show_previous %}
+            <a href="{{ pagination.previous_url }}" class="px-4 py-2" rel="prev nofollow" title="{{ 'lbl.PreviousPage'|trans|ucfirst }}">
+              &larr;<span class="sr-only"> {{ 'lbl.PreviousPage'|trans|ucfirst }}</span>
+            </a>
+          {% else %}
+            <span class="px-4 py-2">&larr;<span class="sr-only"> {{ 'lbl.PreviousPage'|trans|ucfirst }}</span></span>
+          {% endif %}
+        </li>
+
+        {# First page #}
+        {% if pagination.first %}
+          {% for pagination in pagination.first %}
+            <li{% if pagination.current %} class="{{ buttonStyles }} bg-gray-50"{% else %} class="{{ buttonStyles }}"{% endif %}>
+              <a href="{{ pagination.url }}" class="px-4 py-2" rel="nofollow" title="{{ 'lbl.GoToPage'|trans|ucfirst }} {{ pagination.label }}">{{ pagination.label }}</a>
+            </li>
+          {% endfor %}
+          <li class="{{ buttonStyles }}"><span class="px-4 py-2">…</span></li>
+        {% endif %}
+
+        {# Middle pages #}
+        {% for pagination in pagination.pages %}
+          <li{% if pagination.current %} class="{{ buttonStyles }} bg-gray-50"{% else %} class="{{ buttonStyles }}"{% endif %}>
+            <a href="{{ pagination.url }}" class="px-4 py-2" rel="nofollow" title="{{ 'lbl.GoToPage'|trans|ucfirst }}{{ pagination.label }}">
+              {{ pagination.label }}
+            </a>
+          </li>
+        {% endfor %}
+
+        {# Last page #}
+        {% if pagination.last %}
+          <li class="{{ buttonStyles }}"><span class="px-4 py-2">…</span></li>
+          {% for pagination in pagination.last %}
+            <li{% if pagination.current %} class="{{ buttonStyles }} bg-gray-50"{% else %} class="{{ buttonStyles }}"{% endif %}>
+              <a href="{{ pagination.url }}" class="px-4 py-2" rel="nofollow" title="{{ 'lbl.GoToPage'|trans|ucfirst }} {{ pagination.label }}">
+                {{ pagination.label }}
+              </a>
+            </li>
+          {% endfor %}
+        {% endif %}
+
+        {# Next page arrow #}
+        <li{% if not pagination.show_next %} class="{{ buttonStyles }} rounded-r-md disabled" {% else %} class="{{ buttonStyles }} rounded-r-md"{% endif %}>
+          {% if pagination.show_next %}
+            <a href="{{ pagination.next_url }}" class="px-4 py-2" rel="next nofollow" title="{{ 'lbl.NextPage'|trans|ucfirst }}">
+              <span class="sr-only">{{ 'lbl.NextPage'|trans|ucfirst }} </span>&rarr;
+            </a>
+          {% else %}
+            <span class="px-4 py-2"><span class="sr-only">{{ 'lbl.NextPage'|trans|ucfirst }} </span>&rarr;</span>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+  {% endif %}
+{% endif %}

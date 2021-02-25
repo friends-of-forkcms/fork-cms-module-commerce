@@ -1,20 +1,17 @@
 $(function () {
-  $("[data-toggle]").on("change", function () {
-    $($(this).data("toggle")).toggleClass($(this).data("toggleClass"));
-  });
+  $('[data-toggle]').on('change', function () {
+    $($(this).data('toggle')).toggleClass($(this).data('toggleClass'))
+  })
 
-  $(".card.order-address").click(function () {
-    $('[data-type="' + $(this).data("type") + '"]')
-      .removeClass("order-address-checked")
-      .find("input[type=radio]")
-      .prop("checked", false);
+  $('.card.order-address').click(function () {
+    $('[data-type="' + $(this).data('type') + '"]')
+      .removeClass('order-address-checked')
+      .find('input[type=radio]').prop('checked', false)
 
-    $(this)
-      .addClass("order-address-checked")
-      .find("input[type=radio]")
-      .prop("checked", true);
-  });
-});
+    $(this).addClass('order-address-checked')
+      .find('input[type=radio]').prop('checked', true)
+  })
+})
 
 // $(function () {
 //   $(document).on('submit', 'form[name=account_customer]', function (e) {

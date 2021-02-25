@@ -1,168 +1,168 @@
 services:
-  commerce.repository.category:
-    class: Backend\Modules\Commerce\Domain\Category\CategoryRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Category\Category
+    commerce.repository.category:
+        class: Backend\Modules\Commerce\Domain\Category\CategoryRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Category\Category
 
-  commerce.repository.product:
-    class: Backend\Modules\Commerce\Domain\Product\ProductRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Product\Product
+    commerce.repository.product:
+        class: Backend\Modules\Commerce\Domain\Product\ProductRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Product\Product
 
-  commerce.repository.brand:
-    class: Backend\Modules\Commerce\Domain\Brand\BrandRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Brand\Brand
+    commerce.repository.brand:
+        class: Backend\Modules\Commerce\Domain\Brand\BrandRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Brand\Brand
 
-  commerce.repository.order:
-    class: Backend\Modules\Commerce\Domain\Order\OrderRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Order\Order
+    commerce.repository.order:
+        class: Backend\Modules\Commerce\Domain\Order\OrderRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Order\Order
 
-  commerce.repository.order_product:
-    class: Backend\Modules\Commerce\Domain\OrderProduct\OrderProductRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct
+    commerce.repository.order_product:
+        class: Backend\Modules\Commerce\Domain\OrderProduct\OrderProductRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct
 
-  commerce.repository.order_product_option:
-    class: Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOptionRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption
+    commerce.repository.order_product_option:
+        class: Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOptionRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption
 
-  commerce.repository.order_product_notification:
-    class: Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotificationRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotification
+    commerce.repository.order_product_notification:
+        class: Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotificationRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotification
 
-  commerce.repository.order_address:
-    class: Backend\Modules\Commerce\Domain\OrderAddress\OrderAddressRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress
+    commerce.repository.order_address:
+        class: Backend\Modules\Commerce\Domain\OrderAddress\OrderAddressRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress
 
-  commerce.repository.order_vat:
-    class: Backend\Modules\Commerce\Domain\OrderVat\OrderVatRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderVat\OrderVat
+    commerce.repository.order_vat:
+        class: Backend\Modules\Commerce\Domain\OrderVat\OrderVatRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderVat\OrderVat
 
-  commerce.repository.order_status:
-    class: Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus
+    commerce.repository.order_status:
+        class: Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus
 
-  commerce.repository.order_history:
-    class: Backend\Modules\Commerce\Domain\OrderHistory\OrderHistoryRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory
+    commerce.repository.order_history:
+        class: Backend\Modules\Commerce\Domain\OrderHistory\OrderHistoryRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory
 
-  commerce.repository.order_rule:
-    class: Backend\Modules\Commerce\Domain\OrderRule\OrderRuleRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\OrderRule\OrderRule
+    commerce.repository.order_rule:
+        class: Backend\Modules\Commerce\Domain\OrderRule\OrderRuleRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\OrderRule\OrderRule
 
-  commerce.repository.specification:
-    class: Backend\Modules\Commerce\Domain\Specification\SpecificationRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Specification\Specification
+    commerce.repository.specification:
+        class: Backend\Modules\Commerce\Domain\Specification\SpecificationRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Specification\Specification
 
-  commerce.repository.specification_value:
-    class: Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue
+    commerce.repository.specification_value:
+        class: Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue
 
-  commerce.repository.vat:
-    class: Backend\Modules\Commerce\Domain\Vat\VatRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Vat\Vat
+    commerce.repository.vat:
+        class: Backend\Modules\Commerce\Domain\Vat\VatRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Vat\Vat
 
-  commerce.repository.country:
-    class: Backend\Modules\Commerce\Domain\Country\CountryRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Country\Country
+    commerce.repository.country:
+        class: Backend\Modules\Commerce\Domain\Country\CountryRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Country\Country
 
-  commerce.repository.stock_status:
-    class: Backend\Modules\Commerce\Domain\StockStatus\StockStatusRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\StockStatus\StockStatus
+    commerce.repository.stock_status:
+        class: Backend\Modules\Commerce\Domain\StockStatus\StockStatusRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\StockStatus\StockStatus
 
-  commerce.repository.cart:
-    class: Backend\Modules\Commerce\Domain\Cart\CartRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Cart\Cart
+    commerce.repository.cart:
+        class: Backend\Modules\Commerce\Domain\Cart\CartRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Cart\Cart
 
-  commerce.repository.cart_rule:
-    class: Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\CartRule\CartRule
+    commerce.repository.cart_rule:
+        class: Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\CartRule\CartRule
 
-  commerce.repository.cart_value:
-    class: Backend\Modules\Commerce\Domain\Cart\CartValueRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Cart\CartValue
+    commerce.repository.cart_value:
+        class: Backend\Modules\Commerce\Domain\Cart\CartValueRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Cart\CartValue
 
-  commerce.repository.cart_value_option:
-    class: Backend\Modules\Commerce\Domain\Cart\CartValueOptionRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Cart\CartValueOption
+    commerce.repository.cart_value_option:
+        class: Backend\Modules\Commerce\Domain\Cart\CartValueOptionRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Cart\CartValueOption
 
-  commerce.repository.shipment_method:
-    class: Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod
+    commerce.repository.shipment_method:
+        class: Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod
 
-  commerce.repository.payment_method:
-    class: Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod
+    commerce.repository.payment_method:
+        class: Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod
 
-  commerce.repository.product_option:
-    class: Backend\Modules\Commerce\Domain\ProductOption\ProductOptionRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\ProductOption\ProductOption
+    commerce.repository.product_option:
+        class: Backend\Modules\Commerce\Domain\ProductOption\ProductOptionRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\ProductOption\ProductOption
 
-  commerce.repository.product_option_value:
-    class: Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue
+    commerce.repository.product_option_value:
+        class: Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue
 
-  commerce.repository.product_dimension:
-    class: Backend\Modules\Commerce\Domain\ProductDimension\ProductDimensionRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension
+    commerce.repository.product_dimension:
+        class: Backend\Modules\Commerce\Domain\ProductDimension\ProductDimensionRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension
 
-  commerce.repository.up_sell_product:
-    class: Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProductRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct
+    commerce.repository.up_sell_product:
+        class: Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProductRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct
 
-  commerce.repository.account:
-    class: Backend\Modules\Commerce\Domain\Account\AccountRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments:
-      - Backend\Modules\Commerce\Domain\Account\Account
+    commerce.repository.account:
+        class: Backend\Modules\Commerce\Domain\Account\AccountRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\Commerce\Domain\Account\Account

@@ -1,33 +1,24 @@
 services:
-  commerce.handler.create_product:
-    class: Backend\Modules\Commerce\Domain\Product\Command\CreateProductHandler
-    arguments:
-      - "@commerce.repository.product"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Product\Command\CreateProduct,
-        }
+    commerce.handler.create_product:
+        class: Backend\Modules\Commerce\Domain\Product\Command\CreateProductHandler
+        arguments:
+            - "@commerce.repository.product"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Product\Command\CreateProduct }
 
-  commerce.handler.update_product:
-    class: Backend\Modules\Commerce\Domain\Product\Command\UpdateProductHandler
-    arguments:
-      - "@commerce.repository.product"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Product\Command\UpdateProduct,
-        }
+    commerce.handler.update_product:
+        class: Backend\Modules\Commerce\Domain\Product\Command\UpdateProductHandler
+        arguments:
+            - "@commerce.repository.product"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Product\Command\UpdateProduct }
 
-  commerce.handler.delete_product:
-    class: Backend\Modules\Commerce\Domain\Product\Command\DeleteProductHandler
-    arguments:
-      - "@commerce.repository.product"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Product\Command\DeleteProduct,
-        }
+    commerce.handler.delete_product:
+        class: Backend\Modules\Commerce\Domain\Product\Command\DeleteProductHandler
+        arguments:
+            - "@commerce.repository.product"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Product\Command\DeleteProduct }
 
-  commerce.form.product_validation_resolver:
-    class: Backend\Modules\Commerce\Domain\Product\ValidationGroupResolver
+    commerce.form.product_validation_resolver:
+        class: Backend\Modules\Commerce\Domain\Product\ValidationGroupResolver

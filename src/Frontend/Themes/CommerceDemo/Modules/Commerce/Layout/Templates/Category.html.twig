@@ -1,0 +1,91 @@
+{# Show subcategories #}
+{# {% if category.children.count > 0 %}
+    <div class="col-md-12 left">
+      {% include 'Commerce/Layout/Templates/IndexCategory.html.twig' with{'parentUrl' : category.url, 'categories' : category.children} %}
+    </div>
+{% endif %} #}
+
+<div class="container flex px-6 py-3 mx-auto mb-12">
+
+    {# Sidebar filters #}
+    <aside class="w-1/4 pr-12">
+        {% for filter in filters %}
+            <ul class="filter-option">
+                <li class="pb-10 mb-10 border-b border-gray-200">
+                    <h3 class="text-base font-normal capitalize">{{ filter.title }}</h3>
+                    <div class="flex-col filter-checkboxes">
+                        {% for specificationValue in filter.specificationValues|slice(0, filtersShowMoreCount) %}
+                            <div>
+                                <label class="inline-flex items-center text-sm" for="specification-value-{{ specificationValue.id }}">
+                                    <input id="specification-value-{{ specificationValue.id }}" type="checkbox" class="rounded" data-filter="{{ filter.meta.url }}" data-filter-value="{{ specificationValue.meta.url }}" value="{{ specificationValue.meta.url }}">
+                                    <span class="ml-2">{{ specificationValue.value|ucfirst }}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% for specificationValue in filter.specificationValues|slice(filtersShowMoreCount) %}
+                        {% if loop.first %}
+                            <div class="show-more-block" id="show_more_{{ filter.id }}" style="display:none;">
+                        {% endif %}
+
+                        <div>
+                            <label class="inline-flex items-center text-sm" for="specification-value-{{ specificationValue.id }}">
+                                <input id="specification-value-{{ specificationValue.id }}" type="checkbox" class="rounded" data-filter="{{ filter.meta.url }}" data-filter-value="{{ specificationValue.meta.url }}" value="{{ specificationValue.meta.url }}">
+                                <span class="ml-2">{{ specificationValue.value|ucfirst }}</span>
+                            </label>
+                        </div>
+
+                    {% if loop.last %}
+                        </div>
+                        <a class="block mt-2 text-sm text-gray-400 hover:text-yellow-500" href="#show_more_{{ filter.id }}" data-show-more="{{ 'lbl.ShowMore'|trans|ucfirst }}" data-show-less="{{ 'lbl.ShowLess'|trans|ucfirst }}">{{ 'lbl.ShowMore'|trans|ucfirst }}</a>
+                    {% endif %}
+                {% endfor %}
+                </li>
+            </ul>
+        {% endfor %}
+    </aside>
+
+    {# Product grid #}
+    <main class="w-3/4 pl-6">
+        {% if category.products.count > 0 %}
+            <div class="product-overview" data-product-list="Category">
+
+                {# Overview bar #}
+                <div class="overview-bar | mb-10 flex">
+                    <div class="overview-bar-left | flex flex-1 items-center">
+                        <h1 class="text-2xl">{{ category.title|ucfirst }}</h1>
+                    </div>
+                    <div class="overview-bar-right | flex justify-end items-center space-x-4">
+                        <p class="text-right">{{ 'lbl.SortOn'|trans|ucfirst }}:</p>
+                        <div>
+                            <div class="select-style">
+                                <select class="border-gray-200" title="Sorteren" data-sort>
+                                {% for key, sortOrder in sortOrders %}
+                                    <option value="{{ key }}"{% if sortOrder.selected %} selected{% endif %}>{{ sortOrder.label|ucfirst }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Products #}
+                <div class="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {% if products %}
+                        {% for product in products %}
+                            {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {'product': product} %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="overview-footer">
+                    {# Pagination #}
+                    <div class="flex justify-center my-20">
+                        {% include "Core/Layout/Templates/Pagination.html.twig" with {'pagination': pagination}  %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </main>
+</div>

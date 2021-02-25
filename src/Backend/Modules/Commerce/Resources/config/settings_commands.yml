@@ -1,11 +1,8 @@
 services:
-  commerce.handler.update_settings:
-    class: Backend\Modules\Commerce\Domain\Settings\Command\UpdateSettingsHandler
-    arguments:
-      - "@fork.settings"
-      - "%kernel.root_dir%"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Settings\Command\UpdateSettings,
-        }
+    commerce.handler.update_settings:
+        class: Backend\Modules\Commerce\Domain\Settings\Command\UpdateSettingsHandler
+        arguments:
+            - "@fork.settings"
+            - "%kernel.root_dir%"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Settings\Command\UpdateSettings }

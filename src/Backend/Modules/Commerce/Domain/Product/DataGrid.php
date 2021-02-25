@@ -17,16 +17,16 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(Locale $locale, ?Category $category, ?string $sku, int $offset = 0)
     {
-        $query = 'SELECT
-                    i.id,
-                    i.title AS title,
-                    i.sku,
-                    i.category_id,
-                    b.title AS brand,
-                    i.price,
-                    i.stock,
-                    i.sequence,
-                    i.hidden,
+        $query = 'SELECT 
+                    i.id, 
+                    i.title AS title, 
+                    i.sku, 
+                    i.category_id, 
+                    b.title AS brand, 
+                    i.price, 
+                    i.stock, 
+                    i.sequence, 
+                    i.hidden, 
                     i.sequence as `sort_order`
                 FROM commerce_products AS i
                 LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
@@ -37,16 +37,16 @@ class DataGrid extends DataGridDatabase
         ];
 
         if ($category) {
-            $query = 'SELECT
-                        i.id,
-                        i.title AS title,
-                        i.sku,
+            $query = 'SELECT 
+                        i.id, 
+                        i.title AS title, 
+                        i.sku, 
                         i.category_id,
-                        b.title AS brand,
+                        b.title AS brand, 
                         i.price,
-                        i.stock,
-                        i.sequence,
-                        i.hidden,
+                        i.stock, 
+                        i.sequence, 
+                        i.hidden, 
                         i.sequence as `sort_order`
                     FROM commerce_products AS i
                     LEFT JOIN commerce_brands AS b ON b.id = i.brand_id

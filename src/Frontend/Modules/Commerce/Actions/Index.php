@@ -18,6 +18,8 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Frontend\Modules\Commerce\Engine\Pagination;
+use Frontend\Modules\Commerce\Engine\ProductSorting;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the overview-action.
@@ -63,9 +65,11 @@ class Index extends FrontendBaseBlock
             $parameterCount === 1 && (
                 $category = $categoryRepository->findByLocaleAndUrl(Locale::frontendLanguage(), $parameters[0])
             )
-        ) { // Category
+        ) {
+            // Category-view
             $this->parseCategory($category);
-        } elseif ($parameterCount === 0) { // Overview
+        } elseif ($parameterCount === 0) {
+            // Overview
             $this->parseOverview();
         } else {
             $this->redirect(FrontendNavigation::getUrl(404));
@@ -99,10 +103,7 @@ class Index extends FrontendBaseBlock
         $productRepository = $this->getProductRepository();
         $specificationRepository = $this->getSpecificationRepository();
         $productOffset = ($currentPage - 1) * $itemsPerPage;
-        $baseUrl = '/'.implode(
-            '/',
-            array_merge($this->url->getPages(), $this->url->getParameters(false))
-        );
+        $baseUrl = '/'.implode('/', array_merge($this->url->getPages(), $this->url->getParameters(false)));
 
         // Set page defaults
         $this->loadTemplate('Commerce/Layout/Templates/Category.html.twig');
@@ -121,36 +122,11 @@ class Index extends FrontendBaseBlock
         $this->addJS('EnhancedEcommerce.js');
         $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
 
-        // Build pagination
-        $pagination = new Pagination();
-        $pagination->setCurrentPage($currentPage);
-        $pagination->setItemsPerPage($itemsPerPage);
-        $pagination->setBaseUrl($baseUrl);
-        $pagination->setParameters($this->getRequest()->query->all());
-
         // Add categories to breadcrumbs
         $this->categoryToBreadcrumb($category);
 
         // Define the sort orders
-        $sortOrders = [
-            Product::SORT_RANDOM => [
-                'label' => 'Willekeurig',
-                'selected' => false,
-            ],
-            Product::SORT_PRICE_ASC => [
-                'label' => 'Prijs (laag/hoog)',
-                'selected' => false,
-            ],
-            Product::SORT_PRICE_DESC => [
-                'label' => 'Prijs (hoog/laag)',
-                'selected' => false,
-            ],
-            Product::SORT_CREATED_AT => [
-                'label' => 'Toegevoegd',
-                'selected' => false,
-            ],
-        ];
-
+        $sortOrders = ProductSorting::getAll();
         $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
         if (array_key_exists($currentSortOrder, $sortOrders)) {
             $sortOrders[$currentSortOrder]['selected'] = true;
@@ -168,7 +144,9 @@ class Index extends FrontendBaseBlock
                 $productOffset,
                 $currentSortOrder
             );
-            $pagination->setItemCount($productRepository->filterProductsCount($productFilters, $category));
+
+            $itemCount = $productRepository->filterProductsCount($productFilters, $category);
+            $this->pagination = $this->buildPaginationConfig($itemCount);
         } else {
             $products = $productRepository->findLimitedByCategory(
                 $category,
@@ -176,23 +154,17 @@ class Index extends FrontendBaseBlock
                 $productOffset,
                 $currentSortOrder
             );
-            $pagination->setItemCount($category->getActiveProducts()->count());
-        }
-
-        // When requesting an invalid page return to 404
-        if ($currentPage > $pagination->getPageCount() || $currentPage < 1) {
-            $this->redirect(
-                FrontendNavigation::getUrl(404)
-            );
+            $itemCount = $category->getActiveProducts()->count();
+            $this->pagination = $this->buildPaginationConfig($itemCount);
         }
 
         // Assign to our template
         $this->template->assign('category', $category);
         $this->template->assign('products', $products);
-        $this->template->assign('pagination', $pagination);
         $this->template->assign('filters', $filters);
         $this->template->assign('sortOrders', $sortOrders);
         $this->template->assign('filtersShowMoreCount', $filtersShowMoreCount);
+        $this->parsePagination();
     }
 
     /**
@@ -347,6 +319,32 @@ class Index extends FrontendBaseBlock
         }
 
         return $filters;
+    }
+
+    private function buildPaginationConfig(int $numberOfItems): array
+    {
+        $requestedPage = $this->url->getParameter('page', 'int', 1);
+
+        $limit = $this->get('fork.settings')->get($this->getModule(), 'overview_num_items', 10);
+        $numberOfPages = (int) ceil($numberOfItems / $limit);
+
+        if ($numberOfPages === 0) {
+            $numberOfPages = 1;
+        }
+
+        // Check if the page exists
+        if ($requestedPage > $numberOfPages || $requestedPage < 1) {
+            throw new NotFoundHttpException();
+        }
+
+        return [
+            'url' => '/'.implode('/', array_merge($this->url->getPages(), $this->url->getParameters(false))),
+            'limit' => $limit,
+            'offset' => ($requestedPage * $limit) - $limit,
+            'requested_page' => $requestedPage,
+            'num_items' => $numberOfItems,
+            'num_pages' => $numberOfPages,
+        ];
     }
 
     /**

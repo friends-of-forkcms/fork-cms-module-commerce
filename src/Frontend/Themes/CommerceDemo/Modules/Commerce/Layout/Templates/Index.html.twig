@@ -1,0 +1,18 @@
+{#
+	variables that are available:
+	- {{ categories }}: contains a flat array of all categories
+	- {{ products }}: contains all products
+#}
+
+<div class="container px-6 py-3 mx-auto mb-12">
+    {% if categories %}
+        <div class="categories">
+            {% include 'Commerce/Layout/Templates/IndexCategory.html.twig' with {
+                parentUrl: categoriesBaseUrl,
+                categories: categories
+            } %}
+        </div>
+    {% else %}
+        {{ 'msg.NoCategories'|trans|ucfirst }}
+    {% endif %}
+</div>

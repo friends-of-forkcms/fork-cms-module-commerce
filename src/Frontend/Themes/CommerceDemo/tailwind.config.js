@@ -32,6 +32,12 @@ module.exports = {
         },
     },
     theme: {
+        screens: {
+            sm: '640px',
+            md: '768px',
+            lg: '1024px',
+            xl: '1280px', // Removed the 2xl breakpoint
+        },
         fontFamily: {
             sans: [
                 'Inter',
@@ -52,4 +58,5 @@ module.exports = {
             },
         },
     },
+    plugins: [require('tailwindcss-multi-column')(), require('@tailwindcss/forms')],
 };

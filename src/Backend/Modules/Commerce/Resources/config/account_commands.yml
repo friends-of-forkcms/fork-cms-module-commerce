@@ -1,42 +1,29 @@
 services:
-  commerce.handler.create_account:
-    class: Backend\Modules\Commerce\Domain\Account\Command\CreateAccountHandler
-    arguments:
-      - "@commerce.repository.account"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Account\Command\CreateAccount,
-        }
+    commerce.handler.create_account:
+        class: Backend\Modules\Commerce\Domain\Account\Command\CreateAccountHandler
+        arguments:
+            - "@commerce.repository.account"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Account\Command\CreateAccount }
 
-  commerce.handler.update_account:
-    class: Backend\Modules\Commerce\Domain\Account\Command\UpdateAccountHandler
-    arguments:
-      - "@commerce.repository.account"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Account\Command\UpdateAccount,
-        }
+    commerce.handler.update_account:
+        class: Backend\Modules\Commerce\Domain\Account\Command\UpdateAccountHandler
+        arguments:
+            - "@commerce.repository.account"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Account\Command\UpdateAccount }
 
-  commerce.handler.delete_account:
-    class: Backend\Modules\Commerce\Domain\Account\Command\DeleteAccountHandler
-    arguments:
-      - "@commerce.repository.account"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Account\Command\DeleteAccount,
-        }
+    commerce.handler.delete_account:
+        class: Backend\Modules\Commerce\Domain\Account\Command\DeleteAccountHandler
+        arguments:
+            - "@commerce.repository.account"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Account\Command\DeleteAccount }
 
-  commerce.event.account_created:
-    class: Backend\Modules\Commerce\Domain\Account\EventListener\AccountCreated
-    arguments:
-      - "@mailer"
-      - "@fork.settings"
-    tags:
-      - {
-          name: kernel.event_listener,
-          event: commerce.event.account.created,
-          method: onCreated,
-        }
+    commerce.event.account_created:
+        class: Backend\Modules\Commerce\Domain\Account\EventListener\AccountCreated
+        arguments:
+            - "@mailer"
+            - "@fork.settings"
+        tags:
+            - { name: kernel.event_listener, event: commerce.event.account.created, method: onCreated }

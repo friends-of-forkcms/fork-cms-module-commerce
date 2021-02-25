@@ -1,10 +1,7 @@
 services:
-  commerce.handler.delete_cart:
-    class: Backend\Modules\Commerce\Domain\Cart\Command\DeleteCartHandler
-    arguments:
-      - "@commerce.repository.cart"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Cart\Command\DeleteCart,
-        }
+    commerce.handler.delete_cart:
+        class: Backend\Modules\Commerce\Domain\Cart\Command\DeleteCartHandler
+        arguments:
+            - "@commerce.repository.cart"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Cart\Command\DeleteCart }

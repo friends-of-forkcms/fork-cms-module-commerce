@@ -1,6 +1,7 @@
 -- Execute these queries to uninstall the module (used for module development)
+
 -- Drop module tables
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS commerce_account;
 DROP TABLE IF EXISTS commerce_brands;
 DROP TABLE IF EXISTS commerce_cart_cart_rules;
@@ -35,28 +36,23 @@ DROP TABLE IF EXISTS commerce_specifications;
 DROP TABLE IF EXISTS commerce_stock_statuses;
 DROP TABLE IF EXISTS commerce_up_sell_products;
 DROP TABLE IF EXISTS commerce_vats;
-SET FOREIGN_KEY_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS=1;
+
 -- Remove from backend navigation
-DELETE FROM backend_navigation
-WHERE label = 'Commerce';
-DELETE FROM backend_navigation
-WHERE url LIKE '%commerce%';
+DELETE FROM backend_navigation WHERE label = 'Commerce';
+DELETE FROM backend_navigation WHERE url LIKE '%commerce%';
+
 -- Remove from groups_rights
-DELETE FROM groups_rights_actions
-WHERE module = 'Commerce';
-DELETE FROM groups_rights_modules
-WHERE module = 'Commerce';
+DELETE FROM groups_rights_actions WHERE module = 'Commerce';
+DELETE FROM groups_rights_modules WHERE module = 'Commerce';
+
 -- Remove from locale
-DELETE FROM locale
-WHERE module = 'Commerce';
-DELETE FROM locale
-WHERE module = 'core'
-    AND name LIKE 'Commerce%';
+DELETE FROM locale WHERE module = 'Commerce';
+DELETE FROM locale WHERE module = 'core' AND name LIKE 'Commerce%';
+
 -- Remove from modules
-DELETE FROM modules
-WHERE name = 'Commerce';
-DELETE FROM modules_extras
-WHERE module = 'Commerce';
-DELETE FROM modules_settings
-WHERE module = 'Commerce';
+DELETE FROM modules WHERE name = 'Commerce';
+DELETE FROM modules_extras WHERE module = 'Commerce';
+DELETE FROM modules_settings WHERE module = 'Commerce';
+
 -- Don't forget to clear cache: bin/console c:c

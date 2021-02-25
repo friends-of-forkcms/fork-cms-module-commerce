@@ -1,30 +1,21 @@
 services:
-  commerce.handler.create_specification:
-    class: Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecificationHandler
-    arguments:
-      - "@commerce.repository.specification"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecification,
-        }
+    commerce.handler.create_specification:
+        class: Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecificationHandler
+        arguments:
+            - "@commerce.repository.specification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecification }
 
-  commerce.handler.update_specification:
-    class: Backend\Modules\Commerce\Domain\Specification\Command\UpdateSpecificationHandler
-    arguments:
-      - "@commerce.repository.specification"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Specification\Command\UpdateSpecification,
-        }
+    commerce.handler.update_specification:
+        class: Backend\Modules\Commerce\Domain\Specification\Command\UpdateSpecificationHandler
+        arguments:
+            - "@commerce.repository.specification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Specification\Command\UpdateSpecification }
 
-  commerce.handler.delete_specification:
-    class: Backend\Modules\Commerce\Domain\Specification\Command\DeleteSpecificationHandler
-    arguments:
-      - "@commerce.repository.specification"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Specification\Command\DeleteSpecification,
-        }
+    commerce.handler.delete_specification:
+        class: Backend\Modules\Commerce\Domain\Specification\Command\DeleteSpecificationHandler
+        arguments:
+            - "@commerce.repository.specification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Specification\Command\DeleteSpecification }

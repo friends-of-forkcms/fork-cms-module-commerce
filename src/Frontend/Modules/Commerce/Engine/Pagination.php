@@ -4,6 +4,9 @@ namespace Frontend\Modules\Commerce\Engine;
 
 use Frontend\Core\Language\Language;
 
+/**
+ * @deprecated Use the pagination mechanism of Fork CMS
+ */
 class Pagination
 {
     /**

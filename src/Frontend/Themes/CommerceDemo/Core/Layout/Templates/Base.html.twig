@@ -4,10 +4,10 @@
     {{ siteHTMLStartOfBody|raw }}
 
     {% block navigation %}
-        <nav id="header" class="top-0 z-30 w-full py-1">
+        <header class="top-0 z-30 w-full py-1 mb-2">
             <div class="container flex flex-wrap items-center justify-between w-full px-6 py-3 mx-auto mt-0">
                 {# Main navigation #}
-                <div class="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
+                <div class="flex-1 order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
                     <nav>
                         {{ getnavigation('page', 0, 1) }}
                     </nav>
@@ -21,7 +21,7 @@
                 </div>
 
                 {# Icon navigation right #}
-                <div class="flex items-center order-2 gap-8 md:order-3" id="nav-content">
+                <div class="flex items-center flex-1 order-2 gap-8 md:order-3 md:justify-end">
                     <a class="no-underline hover:text-black" href="#">
                         <svg class="hover:text-black"
                             width="18"
@@ -40,7 +40,7 @@
                     <a class="no-underline hover:text-black" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}"">Cart</a>
                 </div>
             </div>
-        </nav>
+        </header>
     {% endblock %}
 
     {# Main content #}

@@ -1,240 +1,168 @@
 services:
-  commerce.handler.create_order:
-    class: Backend\Modules\Commerce\Domain\Order\Command\CreateOrderHandler
-    arguments:
-      - "@commerce.repository.order"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Order\Command\CreateOrder,
-        }
+    commerce.handler.create_order:
+        class: Backend\Modules\Commerce\Domain\Order\Command\CreateOrderHandler
+        arguments:
+            - "@commerce.repository.order"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Order\Command\CreateOrder }
 
-  commerce.handler.update_order:
-    class: Backend\Modules\Commerce\Domain\Order\Command\UpdateOrderHandler
-    arguments:
-      - "@commerce.repository.order"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Order\Command\UpdateOrder,
-        }
+    commerce.handler.update_order:
+        class: Backend\Modules\Commerce\Domain\Order\Command\UpdateOrderHandler
+        arguments:
+            - "@commerce.repository.order"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Order\Command\UpdateOrder }
 
-  commerce.handler.delete_order:
-    class: Backend\Modules\Commerce\Domain\Order\Command\DeleteOrderHandler
-    arguments:
-      - "@commerce.repository.order"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Order\Command\DeleteOrder,
-        }
+    commerce.handler.delete_order:
+        class: Backend\Modules\Commerce\Domain\Order\Command\DeleteOrderHandler
+        arguments:
+            - "@commerce.repository.order"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Order\Command\DeleteOrder }
 
-  commerce.handler.create_order_address:
-    class: Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddressHandler
-    arguments:
-      - "@commerce.repository.order_address"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddress,
-        }
+    commerce.handler.create_order_address:
+        class: Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddressHandler
+        arguments:
+            - "@commerce.repository.order_address"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderAddress\Command\CreateOrderAddress }
 
-  commerce.handler.update_order_address:
-    class: Backend\Modules\Commerce\Domain\OrderAddress\Command\UpdateOrderAddressHandler
-    arguments:
-      - "@commerce.repository.order_address"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderAddress\Command\UpdateOrderAddress,
-        }
+    commerce.handler.update_order_address:
+        class: Backend\Modules\Commerce\Domain\OrderAddress\Command\UpdateOrderAddressHandler
+        arguments:
+            - "@commerce.repository.order_address"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderAddress\Command\UpdateOrderAddress }
 
-  commerce.handler.delete_order_address:
-    class: Backend\Modules\Commerce\Domain\OrderAddress\Command\DeleteOrderAddressHandler
-    arguments:
-      - "@commerce.repository.order_address"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderAddress\Command\DeleteOrderAddress,
-        }
+    commerce.handler.delete_order_address:
+        class: Backend\Modules\Commerce\Domain\OrderAddress\Command\DeleteOrderAddressHandler
+        arguments:
+            - "@commerce.repository.order_address"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderAddress\Command\DeleteOrderAddress }
 
-  commerce.handler.create_order_product:
-    class: Backend\Modules\Commerce\Domain\OrderProduct\Command\CreateOrderProductHandler
-    arguments:
-      - "@commerce.repository.order_product"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProduct\Command\CreateOrderProduct,
-        }
+    commerce.handler.create_order_product:
+        class: Backend\Modules\Commerce\Domain\OrderProduct\Command\CreateOrderProductHandler
+        arguments:
+            - "@commerce.repository.order_product"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProduct\Command\CreateOrderProduct }
 
-  commerce.handler.update_order_product:
-    class: Backend\Modules\Commerce\Domain\OrderProduct\Command\UpdateOrderProductHandler
-    arguments:
-      - "@commerce.repository.order_product"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProduct\Command\UpdateOrderProduct,
-        }
+    commerce.handler.update_order_product:
+        class: Backend\Modules\Commerce\Domain\OrderProduct\Command\UpdateOrderProductHandler
+        arguments:
+            - "@commerce.repository.order_product"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProduct\Command\UpdateOrderProduct }
 
-  commerce.handler.delete_order_product:
-    class: Backend\Modules\Commerce\Domain\OrderProduct\Command\DeleteOrderProductHandler
-    arguments:
-      - "@commerce.repository.order_product"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProduct\Command\DeleteOrderProduct,
-        }
+    commerce.handler.delete_order_product:
+        class: Backend\Modules\Commerce\Domain\OrderProduct\Command\DeleteOrderProductHandler
+        arguments:
+            - "@commerce.repository.order_product"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProduct\Command\DeleteOrderProduct }
 
-  commerce.handler.create_order_product_option:
-    class: Backend\Modules\Commerce\Domain\OrderProductOption\Command\CreateOrderProductOptionHandler
-    arguments:
-      - "@commerce.repository.order_product_option"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProductOption\Command\CreateOrderProductOption,
-        }
+    commerce.handler.create_order_product_option:
+        class: Backend\Modules\Commerce\Domain\OrderProductOption\Command\CreateOrderProductOptionHandler
+        arguments:
+            - "@commerce.repository.order_product_option"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProductOption\Command\CreateOrderProductOption }
 
-  commerce.handler.update_order_product_option:
-    class: Backend\Modules\Commerce\Domain\OrderProductOption\Command\UpdateOrderProductOptionHandler
-    arguments:
-      - "@commerce.repository.order_product_option"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProductOption\Command\UpdateOrderProductOption,
-        }
+    commerce.handler.update_order_product_option:
+        class: Backend\Modules\Commerce\Domain\OrderProductOption\Command\UpdateOrderProductOptionHandler
+        arguments:
+            - "@commerce.repository.order_product_option"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProductOption\Command\UpdateOrderProductOption }
 
-  commerce.handler.delete_order_product_option:
-    class: Backend\Modules\Commerce\Domain\OrderProductOption\Command\DeleteOrderProductOptionHandler
-    arguments:
-      - "@commerce.repository.order_product_option"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProductOption\Command\DeleteOrderProductOption,
-        }
+    commerce.handler.delete_order_product_option:
+        class: Backend\Modules\Commerce\Domain\OrderProductOption\Command\DeleteOrderProductOptionHandler
+        arguments:
+            - "@commerce.repository.order_product_option"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProductOption\Command\DeleteOrderProductOption }
 
-  commerce.handler.create_order_product_notification:
-    class: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\CreateOrderProductNotificationHandler
-    arguments:
-      - "@commerce.repository.order_product_notification"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\CreateOrderProductNotification,
-        }
+    commerce.handler.create_order_product_notification:
+        class: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\CreateOrderProductNotificationHandler
+        arguments:
+            - "@commerce.repository.order_product_notification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\CreateOrderProductNotification }
 
-  commerce.handler.update_order_product_notification:
-    class: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\UpdateOrderProductNotificationHandler
-    arguments:
-      - "@commerce.repository.order_product_notification"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\UpdateOrderProductNotification,
-        }
+    commerce.handler.update_order_product_notification:
+        class: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\UpdateOrderProductNotificationHandler
+        arguments:
+            - "@commerce.repository.order_product_notification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\UpdateOrderProductNotification }
 
-  commerce.handler.delete_order_product_notification:
-    class: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\DeleteOrderProductNotificationHandler
-    arguments:
-      - "@commerce.repository.order_product_notification"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\DeleteOrderProductNotification,
-        }
+    commerce.handler.delete_order_product_notification:
+        class: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\DeleteOrderProductNotificationHandler
+        arguments:
+            - "@commerce.repository.order_product_notification"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderProductNotification\Command\DeleteOrderProductNotification }
 
-  commerce.handler.create_order_vat:
-    class: Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVatHandler
-    arguments:
-      - "@commerce.repository.order_vat"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVat,
-        }
+    commerce.handler.create_order_vat:
+        class: Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVatHandler
+        arguments:
+            - "@commerce.repository.order_vat"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVat }
 
-  commerce.handler.update_order_vat:
-    class: Backend\Modules\Commerce\Domain\OrderVat\Command\UpdateOrderVatHandler
-    arguments:
-      - "@commerce.repository.order_vat"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderVat\Command\UpdateOrderVat,
-        }
+    commerce.handler.update_order_vat:
+        class: Backend\Modules\Commerce\Domain\OrderVat\Command\UpdateOrderVatHandler
+        arguments:
+            - "@commerce.repository.order_vat"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderVat\Command\UpdateOrderVat }
 
-  commerce.handler.delete_order_vat:
-    class: Backend\Modules\Commerce\Domain\OrderVat\Command\DeleteOrderVatHandler
-    arguments:
-      - "@commerce.repository.order_vat"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderVat\Command\DeleteOrderVat,
-        }
+    commerce.handler.delete_order_vat:
+        class: Backend\Modules\Commerce\Domain\OrderVat\Command\DeleteOrderVatHandler
+        arguments:
+            - "@commerce.repository.order_vat"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderVat\Command\DeleteOrderVat }
 
-  commerce.handler.create_order_status:
-    class: Backend\Modules\Commerce\Domain\OrderStatus\Command\CreateOrderStatusHandler
-    arguments:
-      - "@commerce.repository.order_status"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderStatus\Command\CreateOrderStatus,
-        }
+    commerce.handler.create_order_status:
+        class: Backend\Modules\Commerce\Domain\OrderStatus\Command\CreateOrderStatusHandler
+        arguments:
+            - "@commerce.repository.order_status"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderStatus\Command\CreateOrderStatus }
 
-  commerce.handler.update_order_status:
-    class: Backend\Modules\Commerce\Domain\OrderStatus\Command\UpdateOrderStatusHandler
-    arguments:
-      - "@commerce.repository.order_status"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderStatus\Command\UpdateOrderStatus,
-        }
+    commerce.handler.update_order_status:
+        class: Backend\Modules\Commerce\Domain\OrderStatus\Command\UpdateOrderStatusHandler
+        arguments:
+            - "@commerce.repository.order_status"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderStatus\Command\UpdateOrderStatus }
 
-  commerce.handler.delete_order_status:
-    class: Backend\Modules\Commerce\Domain\OrderStatus\Command\DeleteOrderStatusHandler
-    arguments:
-      - "@commerce.repository.order_status"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderStatus\Command\DeleteOrderStatus,
-        }
+    commerce.handler.delete_order_status:
+        class: Backend\Modules\Commerce\Domain\OrderStatus\Command\DeleteOrderStatusHandler
+        arguments:
+            - "@commerce.repository.order_status"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderStatus\Command\DeleteOrderStatus }
 
-  commerce.handler.create_order_rule:
-    class: Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRuleHandler
-    arguments:
-      - "@commerce.repository.order_rule"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRule,
-        }
+    commerce.handler.create_order_rule:
+        class: Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRuleHandler
+        arguments:
+            - "@commerce.repository.order_rule"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRule }
 
-  commerce.handler.update_order_rule:
-    class: Backend\Modules\Commerce\Domain\OrderRule\Command\UpdateOrderRuleHandler
-    arguments:
-      - "@commerce.repository.order_rule"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderRule\Command\UpdateOrderRule,
-        }
+    commerce.handler.update_order_rule:
+        class: Backend\Modules\Commerce\Domain\OrderRule\Command\UpdateOrderRuleHandler
+        arguments:
+            - "@commerce.repository.order_rule"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderRule\Command\UpdateOrderRule }
 
-  commerce.handler.delete_order_rule:
-    class: Backend\Modules\Commerce\Domain\OrderRule\Command\DeleteOrderRuleHandler
-    arguments:
-      - "@commerce.repository.order_rule"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\OrderRule\Command\DeleteOrderRule,
-        }
+    commerce.handler.delete_order_rule:
+        class: Backend\Modules\Commerce\Domain\OrderRule\Command\DeleteOrderRuleHandler
+        arguments:
+            - "@commerce.repository.order_rule"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\OrderRule\Command\DeleteOrderRule }

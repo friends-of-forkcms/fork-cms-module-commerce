@@ -1,30 +1,21 @@
 services:
-  commerce.handler.create_brand:
-    class: Backend\Modules\Commerce\Domain\Brand\Command\CreateBrandHandler
-    arguments:
-      - "@commerce.repository.brand"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Brand\Command\CreateBrand,
-        }
+    commerce.handler.create_brand:
+        class: Backend\Modules\Commerce\Domain\Brand\Command\CreateBrandHandler
+        arguments:
+            - "@commerce.repository.brand"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Brand\Command\CreateBrand }
 
-  commerce.handler.update_brand:
-    class: Backend\Modules\Commerce\Domain\Brand\Command\UpdateBrandHandler
-    arguments:
-      - "@commerce.repository.brand"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Brand\Command\UpdateBrand,
-        }
+    commerce.handler.update_brand:
+        class: Backend\Modules\Commerce\Domain\Brand\Command\UpdateBrandHandler
+        arguments:
+            - "@commerce.repository.brand"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Brand\Command\UpdateBrand }
 
-  commerce.handler.delete_brand:
-    class: Backend\Modules\Commerce\Domain\Brand\Command\DeleteBrandHandler
-    arguments:
-      - "@commerce.repository.brand"
-    tags:
-      - {
-          name: command_handler,
-          handles: Backend\Modules\Commerce\Domain\Brand\Command\DeleteBrand,
-        }
+    commerce.handler.delete_brand:
+        class: Backend\Modules\Commerce\Domain\Brand\Command\DeleteBrandHandler
+        arguments:
+            - "@commerce.repository.brand"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\Commerce\Domain\Brand\Command\DeleteBrand }

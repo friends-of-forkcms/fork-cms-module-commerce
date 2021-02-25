@@ -18,13 +18,13 @@ class DataGrid extends DataGridDatabase
     {
         parent::__construct(
             '
-            SELECT
-                c.id,
-                IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title,
-                c.impact_type,
-                c.percentage,
-                c.price,
-                c.default_value,
+            SELECT 
+                c.id, 
+                IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title, 
+                c.impact_type, 
+                c.percentage, 
+                c.price, 
+                c.default_value, 
                 c.sequence,
                 (SELECT(count(*)) FROM commerce_product_options i WHERE i.product_option_value_id = c.id) as sub_options
             FROM commerce_product_option_values AS c
