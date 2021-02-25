@@ -1,0 +1,9 @@
+services:
+  Backend\Modules\Commerce\Command\GenerateMerchantFeed:
+    tags:
+      - { name: "console.command", command: "commerce:generate-merchant-feed" }
+    arguments:
+      - "@commerce.repository.product"
+      - "@logger"
+      - "@fork.settings"
+      - "%kernel.root_dir%"

@@ -1,0 +1,30 @@
+services:
+  commerce.handler.create_category:
+    class: Backend\Modules\Commerce\Domain\Category\Command\CreateCategoryHandler
+    arguments:
+      - "@commerce.repository.category"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Category\Command\CreateCategory,
+        }
+
+  commerce.handler.update_category:
+    class: Backend\Modules\Commerce\Domain\Category\Command\UpdateCategoryHandler
+    arguments:
+      - "@commerce.repository.category"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Category\Command\UpdateCategory,
+        }
+
+  commerce.handler.delete_category:
+    class: Backend\Modules\Commerce\Domain\Category\Command\DeleteCategoryHandler
+    arguments:
+      - "@commerce.repository.category"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Category\Command\DeleteCategory,
+        }

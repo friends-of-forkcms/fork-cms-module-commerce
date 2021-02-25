@@ -1,0 +1,16 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+    {% if showCommerceAddVat %}
+		<div class="btn-toolbar pull-right">
+			<div class="btn-group" role="group">
+                {{ macro.buttonIcon( geturl('AddVat'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
+			</div>
+		</div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ macro.dataGrid(dataGrid) }}
+{% endblock %}

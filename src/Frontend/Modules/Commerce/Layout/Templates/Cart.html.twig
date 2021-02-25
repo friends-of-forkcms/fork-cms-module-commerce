@@ -1,0 +1,99 @@
+<div class="col-md-12 col-sm-12 col-xs-12 left">
+  <h1>{{ 'lbl.Cart'|trans|ucfirst }}</h1>
+  {% if cart and cart.values.count > 0 %}
+    {% if not cart.productsInStock %}
+      <div class="alert alert-warning">
+        <strong>Bestellen niet mogelijk!</strong> Omdat niet alle producten van uw bestelling op voorraad zijn is het
+        niet mogelijk om een bestelling te plaatsen. U kunt wel een offerte aanvragen.
+      </div>
+    {% endif %}
+    <div class="shopping-cart">
+      {% for value in cart.values %}
+        <div class="shopping-cart-row bg-light clearfix">
+          <div class="col-md-1 no-gutter shopping-cart-image">
+            <img src="{{ (value.product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}"
+                 alt="{{ value.product.title }}"/>
+          </div>
+          <div class="col-md-4 shopping-cart-details">
+            <div class="col-md-8">
+              <a href="{{ value.product.url }}">{{ value.product.title }}</a>
+            </div>
+            <div class="col-md-4">
+              <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span><br/>
+              {{ value.product.sku }}</div>
+          </div>
+          <div class="col-md-7 shopping-cart-actions">
+            <div class="col-md-4">
+              <span>{{ 'lbl.Amount'|trans|ucfirst }}:</span><br/>
+              <input type="number" value="{{ value.quantity }}" data-product="{{ value.product.id }}"
+                     name="product[{{ value.product.id }}][amount]"/>
+            </div>
+            <div class="col-md-3 text-right">
+              <span>{{ 'lbl.Price'|trans|ucfirst }}: </span><br/>
+              &euro; {% if value.product.hasActiveSpecialPrice %}{{ value.product.activePrice(false)|formatnumber(2) }}{% else %}{{ value.product.activePrice(false)|formatnumber(2) }}{% endif %}
+            </div>
+            <div class="col-md-3 text-right">
+              <span>{{ 'lbl.Total'|trans|ucfirst }}:</span> <br/>
+              <strong data-total="{{ value.product.id }}">€ {{ value.total|formatnumber(2) }}</strong></div>
+            <div class="col-md-2 text-right"><a href="javascript:void(0);" class="btn btn-danger"
+                                                data-remove-product="{{ value.product.id }}"><span
+                  class="glyphicons glyphicons-remove-sign"></span></a></div>
+          </div>
+        </div>
+
+        {% for valueOption in value.cartValueOptions %}
+          <div class="shopping-cart-row bg-light clearfix">
+            <div class="col-md-5 shopping-cart-details">
+              {{ valueOption.productOptionValue.title }}
+              <input type="hidden" value="{{ valueOption.productOptionValue.id }}" data-option="option_{{ valueOption.productOptionValue.productOption.id }}"
+                     name="product[{{ value.product.id }}][option_{{ valueOption.productOptionValue.productOption.id }}]"/>
+            </div>
+            <div class="col-md-7 shopping-cart-actions">
+              <div class="col-md-4">
+              </div>
+              <div class="col-md-3 text-right">
+                &euro; {{ valueOption.productOptionValue.price|formatnumber(2) }}
+              </div>
+              <div class="col-md-3 text-right">
+                <strong data-total="{{ value.product.id }}_option_{{ valueOption.productOptionValue.id }}">€ {{ valueOption.total|formatnumber(2) }}</strong></div>
+              <div class="col-md-2 text-right"></div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <div class="shopping-cart-total clearfix padding-bottom-small">
+      <div class="col-md-4 col-md-offset-8 bg-light">
+        <div class="row">
+          <div class="col-md-3 text-right"><span>Sub totaal</span></div>
+          <div class="col-md-5 text-right" data-sub-total>&euro; {{ cart.subTotal|formatnumber(2) }}</div>
+        </div>
+        {% for key, vat in cart.vats %}
+          <div class="row">
+            <div class="col-md-3 text-right"><span>{{ vat.title }}</span></div>
+            <div class="col-md-5 text-right" data-vat="{{ key }}">&euro; {{ vat.total|formatnumber(2) }}</div>
+          </div>
+        {% endfor %}
+        <div class="row">
+          <div class="col-md-3 text-right"><span>Totaal</span></div>
+          <div class="col-md-5 text-right" data-cart-total><strong>&euro; {{ cart.total|formatnumber(2) }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 no-gutter steps">
+      <p>
+        {% if cart.productsInStock %}
+          <a class="btn btn-primary arrow pull-right"
+             href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">{{ 'lbl.Checkout'|trans|ucfirst }}</a>
+        {% endif %}
+        <a class="btn btn-primary arrow pull-right"
+           href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.RequestQuoteUrl'|trans }}">{{ 'lbl.RequestQuote'|trans|ucfirst }}</a>
+      </p>
+    </div>
+  {% else %}
+    <p>{{ 'msg.NoProductsInCart'|trans }}</p>
+  {% endif %}
+</div>

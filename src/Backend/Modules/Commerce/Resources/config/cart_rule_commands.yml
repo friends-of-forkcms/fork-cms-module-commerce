@@ -1,0 +1,30 @@
+services:
+  commerce.handler.create_cart_rule:
+    class: Backend\Modules\Commerce\Domain\CartRule\Command\CreateCartRuleHandler
+    arguments:
+      - "@commerce.repository.cart_rule"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\CartRule\Command\CreateCartRule,
+        }
+
+  commerce.handler.update_cart_rule:
+    class: Backend\Modules\Commerce\Domain\CartRule\Command\UpdateCartRuleHandler
+    arguments:
+      - "@commerce.repository.cart_rule"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\CartRule\Command\UpdateCartRule,
+        }
+
+  commerce.handler.delete_cart_rule:
+    class: Backend\Modules\Commerce\Domain\CartRule\Command\DeleteCartRuleHandler
+    arguments:
+      - "@commerce.repository.cart_rule"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\CartRule\Command\DeleteCartRule,
+        }

@@ -1,0 +1,30 @@
+services:
+  commerce.handler.create_vat:
+    class: Backend\Modules\Commerce\Domain\Vat\Command\CreateVatHandler
+    arguments:
+      - "@commerce.repository.vat"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Vat\Command\CreateVat,
+        }
+
+  commerce.handler.update_vat:
+    class: Backend\Modules\Commerce\Domain\Vat\Command\UpdateVatHandler
+    arguments:
+      - "@commerce.repository.vat"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Vat\Command\UpdateVat,
+        }
+
+  commerce.handler.delete_vat:
+    class: Backend\Modules\Commerce\Domain\Vat\Command\DeleteVatHandler
+    arguments:
+      - "@commerce.repository.vat"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Vat\Command\DeleteVat,
+        }

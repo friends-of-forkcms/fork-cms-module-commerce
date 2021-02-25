@@ -1,0 +1,2087 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  <Backend>
+    <Commerce>
+      <item type="label" name="AddProduct">
+        <translation language="nl"><![CDATA[product toevoegen]]></translation>
+        <translation language="en"><![CDATA[add product]]></translation>
+      </item>
+      <item type="label" name="AddSpecification">
+        <translation language="nl"><![CDATA[specificatie toevoegen]]></translation>
+        <translation language="en"><![CDATA[add specification]]></translation>
+      </item>
+      <item type="label" name="Media">
+        <translation language="nl"><![CDATA[media]]></translation>
+        <translation language="en"><![CDATA[media]]></translation>
+      </item>
+      <item type="label" name="AddImage">
+        <translation language="nl"><![CDATA[afbeelding toevoegen]]></translation>
+        <translation language="en"><![CDATA[add specification]]></translation>
+      </item>
+      <item type="message" name="NoImages">
+        <translation language="nl"><![CDATA[Er zijn nog geen afbeeldingen toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no images added yet.]]></translation>
+      </item>
+      <item type="label" name="AddFile">
+        <translation language="nl"><![CDATA[bestand toevoegen]]></translation>
+        <translation language="en"><![CDATA[add specification]]></translation>
+      </item>
+      <item type="message" name="NoFiles">
+        <translation language="nl"><![CDATA[Er zijn nog geen bestanden toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no files added yet.]]></translation>
+      </item>
+      <item type="label" name="AddVideo">
+        <translation language="nl"><![CDATA[video toevoegen]]></translation>
+        <translation language="en"><![CDATA[add specification]]></translation>
+      </item>
+      <item type="message" name="NoVideos">
+        <translation language="nl"><![CDATA[Er zijn nog geen video's toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no videos added yet.]]></translation>
+      </item>
+      <item type="message" name="NoBrands">
+        <translation language="nl"><![CDATA[Er zijn nog geen merken toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no brands added yet.]]></translation>
+      </item>
+      <item type="label" name="EmbeddedUrl">
+        <translation language="nl"><![CDATA[embedded url]]></translation>
+        <translation language="en"><![CDATA[embedded url]]></translation>
+      </item>
+      <item type="label" name="RelatedProducts">
+        <translation language="nl"><![CDATA[gerelateerde producten]]></translation>
+        <translation language="en"><![CDATA[related products]]></translation>
+      </item>
+      <item type="label" name="Product">
+        <translation language="nl"><![CDATA[product]]></translation>
+        <translation language="en"><![CDATA[product]]></translation>
+      </item>
+      <item type="label" name="Products">
+        <translation language="nl"><![CDATA[producten]]></translation>
+        <translation language="en"><![CDATA[products]]></translation>
+      </item>
+      <item type="label" name="ManageMedia">
+        <translation language="nl"><![CDATA[beheer media]]></translation>
+        <translation language="en"><![CDATA[manage media]]></translation>
+      </item>
+      <item type="label" name="Media">
+        <translation language="nl"><![CDATA[media]]></translation>
+        <translation language="en"><![CDATA[media]]></translation>
+      </item>
+      <item type="label" name="Category">
+        <translation language="nl"><![CDATA[categorie]]></translation>
+        <translation language="en"><![CDATA[category]]></translation>
+      </item>
+      <item type="label" name="InCategory">
+        <translation language="nl"><![CDATA[in categorie]]></translation>
+        <translation language="en"><![CDATA[in category]]></translation>
+      </item>
+      <item type="message" name="ShowOnlyProductsInCategory">
+        <translation language="nl"><![CDATA[Toon enkel producten in de categorie]]></translation>
+        <translation language="en"><![CDATA[Show only products in category]]></translation>
+      </item>
+      <item type="message" name="ProductsFor">
+        <translation language="nl"><![CDATA[Producten in &quot;%1$s&quot;]]></translation>
+        <translation language="en"><![CDATA[Products in &quot;%1$s&quot;]]></translation>
+      </item>
+      <item type="message" name="NoProducts">
+        <translation language="nl"><![CDATA[Er zijn nog geen producten toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no products added yet.]]></translation>
+      </item>
+      <item type="label" name="Specifications">
+        <translation language="nl"><![CDATA[specificaties]]></translation>
+        <translation language="en"><![CDATA[specifications]]></translation>
+      </item>
+      <item type="label" name="Specification">
+        <translation language="nl"><![CDATA[specificatie]]></translation>
+        <translation language="en"><![CDATA[specification]]></translation>
+      </item>
+      <item type="message" name="NoSpecifications">
+        <translation language="nl"><![CDATA[Er zijn nog geen specificaties toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no specifications added yet.]]></translation>
+      </item>
+      <item type="message" name="NoCategories">
+        <translation language="nl"><![CDATA[Er zijn nog geen categorieën toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no categories added yet.]]></translation>
+      </item>
+      <item type="label" name="InCategorie">
+        <translation language="nl"><![CDATA[in categorie]]></translation>
+        <translation language="en"><![CDATA[in category]]></translation>
+      </item>
+      <item type="label" name="NumProducts">
+        <translation language="nl"><![CDATA[Aantal producten]]></translation>
+        <translation language="en"><![CDATA[Amount of products]]></translation>
+      </item>
+      <item type="label" name="Orders">
+        <translation language="nl"><![CDATA[bestellingen]]></translation>
+        <translation language="en"><![CDATA[orders]]></translation>
+      </item>
+      <item type="label" name="Order">
+        <translation language="nl"><![CDATA[bestelling]]></translation>
+        <translation language="en"><![CDATA[order]]></translation>
+      </item>
+      <item type="label" name="OrderedOn">
+        <translation language="nl"><![CDATA[Besteld op]]></translation>
+        <translation language="en"><![CDATA[Ordered on]]></translation>
+      </item>
+      <item type="label" name="OrderNr">
+        <translation language="nl"><![CDATA[Bestellingsnummer]]></translation>
+        <translation language="en"><![CDATA[Ordernumber]]></translation>
+      </item>
+      <item type="message" name="OrderMovedCompleted">
+        <translation language="nl"><![CDATA[Bestelling verplaatst naar afgerond.]]></translation>
+        <translation language="en"><![CDATA[Order moved to completed.]]></translation>
+      </item>
+      <item type="message" name="OrderMovedModeration">
+        <translation language="nl"><![CDATA[Bestelling verplaatst naar moderatie.]]></translation>
+        <translation language="en"><![CDATA[Order moved to moderation.]]></translation>
+      </item>
+      <item type="label" name="TotalPrice">
+        <translation language="nl"><![CDATA[Totale prijs]]></translation>
+        <translation language="en"><![CDATA[Total price]]></translation>
+      </item>
+      <item type="label" name="MoveToCompleted">
+        <translation language="nl"><![CDATA[verplaats naar afgerond]]></translation>
+        <translation language="en"><![CDATA[move to completed]]></translation>
+      </item>
+      <item type="label" name="Completed">
+        <translation language="nl"><![CDATA[afgerond]]></translation>
+        <translation language="en"><![CDATA[completed]]></translation>
+      </item>
+      <item type="label" name="StatusCompleted">
+        <translation language="nl"><![CDATA[Bestelling Afronden]]></translation>
+        <translation language="en"><![CDATA[Complete order]]></translation>
+      </item>
+      <item type="message" name="NoOrders">
+        <translation language="nl"><![CDATA[Er zijn nog geen bestellingen geplaatst.]]></translation>
+        <translation language="en"><![CDATA[There are no orders placed yet.]]></translation>
+      </item>
+      <item type="message" name="DeleteAllCompleted">
+        <translation language="nl"><![CDATA[Alle afgeronde bestellingen verwijderen]]></translation>
+        <translation language="en"><![CDATA[Remove all completed orders:]]></translation>
+      </item>
+      <item type="label" name="FirstName">
+        <translation language="nl"><![CDATA[Voornaam]]></translation>
+        <translation language="en"><![CDATA[First name]]></translation>
+      </item>
+      <item type="label" name="LastName">
+        <translation language="nl"><![CDATA[Achternaam]]></translation>
+        <translation language="en"><![CDATA[Last name]]></translation>
+      </item>
+      <item type="label" name="HouseNumber">
+        <translation language="nl"><![CDATA[Huisnummer]]></translation>
+        <translation language="en"><![CDATA[Number of the house]]></translation>
+      </item>
+      <item type="label" name="City">
+        <translation language="nl"><![CDATA[Plaats]]></translation>
+        <translation language="en"><![CDATA[City]]></translation>
+      </item>
+      <item type="label" name="PostalCode">
+        <translation language="nl"><![CDATA[Postcode]]></translation>
+        <translation language="en"><![CDATA[Postal code]]></translation>
+      </item>
+      <item type="message" name="AddedSpecification">
+        <translation language="nl"><![CDATA[De specificatie is toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[The specification is added.]]></translation>
+      </item>
+      <item type="message" name="AddedProduct">
+        <translation language="nl"><![CDATA[Product is toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[The product is added.]]></translation>
+      </item>
+      <item type="message" name="HelpSpamFilter">
+        <translation language="nl">
+          <![CDATA[Schakel de ingebouwde spam-filter (Akismet) in om spam-berichten in reacties te vermijden.]]></translation>
+      </item>
+      <item type="message" name="NotifyByEmailOnNewComment">
+        <translation language="nl"><![CDATA[Verwittig via email als er een nieuwe reactie is.]]></translation>
+      </item>
+      <item type="message" name="NotifyByEmailOnNewCommentToModerate">
+        <translation language="nl">
+          <![CDATA[Verwittig via email als er een nieuwe reactie te modereren is.]]></translation>
+      </item>
+      <item type="message" name="NumItemsInRecentProductsFull">
+        <translation language="nl"><![CDATA[Aantal items in recente producten (volledig) widget]]></translation>
+      </item>
+      <item type="label" name="Files">
+        <translation language="nl"><![CDATA[bestanden]]></translation>
+        <translation language="en"><![CDATA[files]]></translation>
+      </item>
+      <item type="label" name="File">
+        <translation language="nl"><![CDATA[bestand]]></translation>
+        <translation language="en"><![CDATA[file]]></translation>
+      </item>
+      <item type="label" name="Videos">
+        <translation language="nl"><![CDATA[video's]]></translation>
+        <translation language="en"><![CDATA[videos]]></translation>
+      </item>
+      <item type="label" name="Video">
+        <translation language="nl"><![CDATA[video]]></translation>
+        <translation language="en"><![CDATA[video]]></translation>
+      </item>
+      <item type="label" name="BackToOverview">
+        <translation language="nl"><![CDATA[terug naar overzicht]]></translation>
+        <translation language="en"><![CDATA[back to overview]]></translation>
+      </item>
+      <item type="message" name="CommentOnWithURL">
+        <translation language="nl"><![CDATA[Reactie op: <a href="%1$s">%2$s</a>]]></translation>
+        <translation language="en"><![CDATA[Comment on: <a href="%1$s">%2$s</a>]]></translation>
+      </item>
+      <item type="message" name="ConfirmDelete">
+        <translation language="nl"><![CDATA[Weet je zeker dat je het item "%1$s" wilt verwijderen?]]></translation>
+        <translation language="en"><![CDATA[Are you sure you want to remove "%1$s"?]]></translation>
+      </item>
+      <item type="message" name="ConfirmMassCompleted">
+        <translation language="nl">
+          <![CDATA[Weet je zeker dat je geselecteerde item(s) wilt verplaatsen naar afgerond?]]></translation>
+        <translation language="en">
+          <![CDATA[Are you sure you want to move selected item(s) to completed?]]></translation>
+      </item>
+      <item type="message" name="DeleteAllSpam">
+        <translation language="nl"><![CDATA[Alle spam verwijderen:]]></translation>
+        <translation language="en"><![CDATA[Delete all spam:]]></translation>
+      </item>
+      <item type="message" name="DeletedSpam">
+        <translation language="nl"><![CDATA[Alle spamberichten werden verwijderd.]]></translation>
+        <translation language="en"><![CDATA[All spam is deleted.]]></translation>
+      </item>
+      <item type="message" name="DeletedCompleted">
+        <translation language="nl"><![CDATA[Alle afgeronde bestellingen werden verwijderd.]]></translation>
+        <translation language="en"><![CDATA[All completed orders are deleted.]]></translation>
+      </item>
+      <item type="message" name="DeletedBrand">
+        <translation language="nl"><![CDATA[Het merk werd verwijderd.]]></translation>
+        <translation language="en"><![CDATA[The brand is deleted.]]></translation>
+      </item>
+      <item type="message" name="EditCommentOn">
+        <translation language="nl"><![CDATA[bewerk reactie op &quot;%1$s&quot;]]></translation>
+        <translation language="en"><![CDATA[edit comment on &quot;%1$s&quot;]]></translation>
+      </item>
+      <item type="message" name="EditedComment">
+        <translation language="nl"><![CDATA[De reactie werd opgeslagen.]]></translation>
+        <translation language="en"><![CDATA[The comment is saved.]]></translation>
+      </item>
+      <item type="message" name="EditedOrder">
+        <translation language="nl"><![CDATA[De bestelling werd opgeslagen.]]></translation>
+        <translation language="en"><![CDATA[The order is saved.]]></translation>
+      </item>
+      <item type="message" name="EditOrderOn">
+        <translation language="nl"><![CDATA[bewerk bestelling van &quot;%1$s&quot;]]></translation>
+        <translation language="en"><![CDATA[edit order from &quot;%1$s&quot;]]></translation>
+      </item>
+      <item type="label" name="AllowEnlargment">
+        <translation language="nl"><![CDATA[vergroting toestaan]]></translation>
+        <translation language="en"><![CDATA[allow enlargment]]></translation>
+      </item>
+      <item type="label" name="ForceAspectRatio">
+        <translation language="nl"><![CDATA[beeldverhouding behouden]]></translation>
+        <translation language="en"><![CDATA[force aspect ratio]]></translation>
+      </item>
+      <item type="label" name="Dimension">
+        <translation language="nl"><![CDATA[afmeting]]></translation>
+        <translation language="en"><![CDATA[dimension]]></translation>
+      </item>
+      <item type="label" name="AllowMultipleCategories">
+        <translation language="nl"><![CDATA[meerdere categorieën toestaan]]></translation>
+        <translation language="en"><![CDATA[allow multiple categories]]></translation>
+      </item>
+      <item type="message" name="HelpSpamFilter">
+        <translation language="nl">
+          <![CDATA[Schakel de ingebouwde spam-filter (Akismet) in om spam-berichten in reacties te vermijden.]]></translation>
+        <translation language="en">
+          <![CDATA[Enable the built-in spamfilter (Akismet) to help avoid spam comments.]]></translation>
+        <translation language="it">
+          <![CDATA[Abilita il filtro antispam (Askimet) per evitare spam nei commenti. ]]></translation>
+        <translation language="ru"><![CDATA[Включить спам-фильтр Akismet.]]></translation>
+        <translation language="zh"><![CDATA[开启内置的垃圾评论滤镜（Akismet)过滤垃圾评论。]]></translation>
+        <translation language="de">
+          <![CDATA[Aktiviere den eingebauten Spamfilter (Akismet) um Spam in den Kommentaren zu vermeiden.]]></translation>
+        <translation language="hu">
+          <![CDATA[Engedélyezd a beépített spamszűrőt (Akismet) a spam hozzászólások kivédéséhez.]]></translation>
+        <translation language="fr">
+          <![CDATA[Activez le filtre de spam (Akismet) pour éviter les spams dans les commentaires.]]></translation>
+        <translation language="es">
+          <![CDATA[Activar el filtro spam incorporado (Akismet) para ayudar a evitar los comentarios spam.]]></translation>
+        <translation language="sv">
+          <![CDATA[Aktivera det inbyggda skräpfiltret (Akismet) för att undvika skräpkommentarer.]]></translation>
+        <translation language="el">
+          <![CDATA[Ενεργοποίηση του ενσωματωμένου φίλτρου (Akismet) γιά την παρεμπόδιση ανεπιθύμητων σχολίων.]]></translation>
+      </item>
+      <item type="message" name="NotifyByEmailOnNewComment">
+        <translation language="nl"><![CDATA[Verwittig via email als er een nieuwe reactie is.]]></translation>
+        <translation language="nl"><![CDATA[Verwittig via email als er een nieuwe reactie is.]]></translation>
+        <translation language="en"><![CDATA[Notify by email when there is a new comment.]]></translation>
+        <translation language="it"><![CDATA[Invia una mail quando viene aggiunto un commento.]]></translation>
+        <translation language="ru"><![CDATA[Оповещать по E-Mail о новых комментариях.]]></translation>
+        <translation language="zh"><![CDATA[有新评论时发邮件提醒我。]]></translation>
+        <translation language="de"><![CDATA[Benachrichtigung per E-Mail bei neuen Kommentare.]]></translation>
+        <translation language="hu"><![CDATA[Értesítés e-mailben, ha új hozzászólás érkezik.]]></translation>
+        <translation language="fr"><![CDATA[Notifier par e-mail quand il y a un nouveau commentaire.]]></translation>
+        <translation language="es"><![CDATA[Notificar por email cuando haya un nuevo comentario.]]></translation>
+        <translation language="sv"><![CDATA[Notifiera via e-post när det finns en ny kommentar.]]></translation>
+        <translation language="el"><![CDATA[Ειδοποίηση με email όταν υπάρχει νέο σχόλιο.]]></translation>
+      </item>
+      <item type="message" name="NotifyByEmailOnNewCommentToModerate">
+        <translation language="nl">
+          <![CDATA[Verwittig via email als er een nieuwe reactie te modereren is.]]></translation>
+        <translation language="en"><![CDATA[Notify by email when there is a new comment to moderate.]]></translation>
+        <translation language="it"><![CDATA[Invia una mail quando ci sono nuovi commenti da moderare.]]></translation>
+        <translation language="ru">
+          <![CDATA[Оповещать по E-Mail о новых комментариях со статусом для модерации.]]></translation>
+        <translation language="zh"><![CDATA[有新评论待审核时发邮件提醒我。]]></translation>
+        <translation language="de">
+          <![CDATA[Benachrichtigung per E-Mail bei neuen, freizuschaltenden Kommentaren.]]></translation>
+        <translation language="hu"><![CDATA[Értesítés e-mailben, ha új hozzászólást moderációra vár.]]></translation>
+        <translation language="fr">
+          <![CDATA[Notifier par e-mail quand il y a un nouveau commentaire à modérer.]]></translation>
+        <translation language="es">
+          <![CDATA[Notificar por email cuando haya un nuevo comentario que moderar.]]></translation>
+        <translation language="sv">
+          <![CDATA[Notifiera via e-post när det finns en ny kommentar till moderera.]]></translation>
+        <translation language="el">
+          <![CDATA[Ειδοποίηση με email όταν υπάρχει ένα νέο σχόλιο προς έγκριση.]]></translation>
+      </item>
+      <item type="message" name="NumItemsInRecentProductsFull">
+        <translation language="nl"><![CDATA[Aantal items in recente producten (volledig) widget]]></translation>
+        <translation language="en"><![CDATA[Number of products in the recent products (full) widget]]></translation>
+      </item>
+      <item type="message" name="ShowOnlyProductsInCategory">
+        <translation language="nl"><![CDATA[Toon enkel producten in de categorie]]></translation>
+        <translation language="en"><![CDATA[Show only products for]]></translation>
+      </item>
+      <item type="message" name="DeletedSpecification">
+        <translation language="nl"><![CDATA[De specificatie is succesvol verwijderd.]]></translation>
+        <translation language="en"><![CDATA[The specification has been succesfully removed.]]></translation>
+      </item>
+      <item type="label" name="EditSpecification">
+        <translation language="nl"><![CDATA[bewerk specificatie]]></translation>
+        <translation language="en"><![CDATA[edit specification]]></translation>
+      </item>
+      <item type="message" name="ConfirmDeleteSpecification">
+        <translation language="nl">
+          <![CDATA[Weet je zeker dat je de specificatie "%1$s" wilt verwijderen?]]></translation>
+        <translation language="en"><![CDATA[Are you sure you want to remove the specification "%1$s"?]]></translation>
+      </item>
+      <item type="error" name="FileExtensionNotAllowed">
+        <translation language="nl"><![CDATA[De extensie die u wilt uploaden is niet toegestaan.]]></translation>
+        <translation language="en"><![CDATA[The extension you are trying to upload is not allowed.]]></translation>
+      </item>
+      <item type="error" name="SameCategory">
+        <translation language="nl"><![CDATA[Je kunt geen categorie in zichzelf plaatsen.]]></translation>
+        <translation language="en"><![CDATA[You cannot add a category in itself.]]></translation>
+      </item>
+      <item type="label" name="AddBrand">
+        <translation language="nl"><![CDATA[merk toevoegen]]></translation>
+        <translation language="en"><![CDATA[add brand]]></translation>
+      </item>
+      <item type="label" name="EditBrand">
+        <translation language="nl"><![CDATA[merk bewerken]]></translation>
+        <translation language="en"><![CDATA[edit brand]]></translation>
+      </item>
+      <item type="label" name="Brands">
+        <translation language="nl"><![CDATA[merken]]></translation>
+        <translation language="en"><![CDATA[brands]]></translation>
+      </item>
+      <item type="label" name="Brand">
+        <translation language="nl"><![CDATA[merk]]></translation>
+        <translation language="en"><![CDATA[brand]]></translation>
+      </item>
+      <item type="label" name="Textbox">
+        <translation language="nl"><![CDATA[Tekstveld]]></translation>
+        <translation language="en"><![CDATA[Textbox]]></translation>
+      </item>
+      <item type="label" name="Percentage">
+        <translation language="nl"><![CDATA[percentage]]></translation>
+        <translation language="en"><![CDATA[percentage]]></translation>
+      </item>
+      <item type="label" name="Vats">
+        <translation language="nl"><![CDATA[BTW]]></translation>
+        <translation language="en"><![CDATA[VAT's]]></translation>
+      </item>
+      <item type="label" name="Vat">
+        <translation language="nl"><![CDATA[BTW]]></translation>
+        <translation language="en"><![CDATA[VAT]]></translation>
+      </item>
+      <item type="label" name="StockStatuses">
+        <translation language="nl"><![CDATA[voorraad statussen]]></translation>
+        <translation language="en"><![CDATA[stock statuses]]></translation>
+      </item>
+      <item type="label" name="StockStatus">
+        <translation language="nl"><![CDATA[voorraad status]]></translation>
+        <translation language="en"><![CDATA[stock status]]></translation>
+      </item>
+      <item type="label" name="NotInStockStatus">
+        <translation language="nl"><![CDATA[niet op voorraad status]]></translation>
+        <translation language="en"><![CDATA[not in stock status]]></translation>
+      </item>
+      <item type="label" name="Stock">
+        <translation language="nl"><![CDATA[voorraad]]></translation>
+        <translation language="en"><![CDATA[stock]]></translation>
+      </item>
+      <item type="label" name="FromStock">
+        <translation language="nl"><![CDATA[van voorraad]]></translation>
+        <translation language="en"><![CDATA[from stock]]></translation>
+      </item>
+      <item type="label" name="OrderStatuses">
+        <translation language="nl"><![CDATA[order statussen]]></translation>
+        <translation language="en"><![CDATA[order statuses]]></translation>
+      </item>
+      <item type="label" name="OrderStatus">
+        <translation language="nl"><![CDATA[order status]]></translation>
+        <translation language="en"><![CDATA[order status]]></translation>
+      </item>
+      <item type="label" name="AddOrderStatus">
+        <translation language="nl"><![CDATA[order status toevoegen]]></translation>
+        <translation language="en"><![CDATA[add order status]]></translation>
+      </item>
+      <item type="label" name="EditOrderStatus">
+        <translation language="nl"><![CDATA[order status bewerken]]></translation>
+        <translation language="en"><![CDATA[edit order status]]></translation>
+      </item>
+      <item type="label" name="Offer">
+        <translation language="nl"><![CDATA[aanbieding]]></translation>
+        <translation language="en"><![CDATA[offer]]></translation>
+      </item>
+      <item type="label" name="Yes">
+        <translation language="nl"><![CDATA[ja]]></translation>
+        <translation language="en"><![CDATA[yes]]></translation>
+      </item>
+      <item type="label" name="No">
+        <translation language="nl"><![CDATA[nee]]></translation>
+        <translation language="en"><![CDATA[no]]></translation>
+      </item>
+      <item type="label" name="OrderQuantity">
+        <translation language="nl"><![CDATA[bestel hoeveelheid]]></translation>
+        <translation language="en"><![CDATA[order quantity]]></translation>
+      </item>
+      <item type="label" name="ArticleNumber">
+        <translation language="nl"><![CDATA[artikelnummer]]></translation>
+        <translation language="en"><![CDATA[article number]]></translation>
+      </item>
+      <item type="error" name="EndDateAfterStartDate">
+        <translation language="nl"><![CDATA[Eind datum moet na start datum zijn]]></translation>
+        <translation language="en"><![CDATA[End date must be after start date]]></translation>
+      </item>
+      <item type="message" name="EditBrand">
+        <translation language="nl"><![CDATA[merk bewerken]]></translation>
+        <translation language="en"><![CDATA[edit brand]]></translation>
+      </item>
+      <item type="message" name="EditedBrand">
+        <translation language="nl"><![CDATA[Het merk werd opgeslagen.]]></translation>
+        <translation language="en"><![CDATA[The brand is saved.]]></translation>
+      </item>
+      <item type="message" name="EditedBrand">
+        <translation language="nl"><![CDATA[Het merk werd opgeslagen.]]></translation>
+        <translation language="en"><![CDATA[The brand is saved.]]></translation>
+      </item>
+      <item type="label" name="ShowOnlyProductsInCategory">
+        <translation language="nl"><![CDATA[toon enkel producten in de categorie:]]></translation>
+        <translation language="en"><![CDATA[show only products in category:]]></translation>
+      </item>
+      <item type="label" name="FilterOnSku">
+        <translation language="nl"><![CDATA[filter op artikelnummer:]]></translation>
+        <translation language="en"><![CDATA[filter on sku:]]></translation>
+      </item>
+      <item type="label" name="UpSellProducts">
+        <translation language="nl"><![CDATA[upsell producten]]></translation>
+        <translation language="en"><![CDATA[up sell products]]></translation>
+      </item>
+      <item type="label" name="ShipmentMethods">
+        <translation language="nl"><![CDATA[verzendmethoden]]></translation>
+        <translation language="en"><![CDATA[shipment methods]]></translation>
+      </item>
+      <item type="label" name="Version">
+        <translation language="nl"><![CDATA[versie]]></translation>
+        <translation language="en"><![CDATA[version]]></translation>
+      </item>
+      <item type="label" name="Installed">
+        <translation language="nl"><![CDATA[geïnstalleerd]]></translation>
+        <translation language="en"><![CDATA[installed]]></translation>
+      </item>
+      <item type="label" name="EditShipmentMethod">
+        <translation language="nl"><![CDATA[bewerk verzendtmethode]]></translation>
+        <translation language="en"><![CDATA[edit shipment method]]></translation>
+      </item>
+      <item type="label" name="PaymentMethods">
+        <translation language="nl"><![CDATA[betaalmethoden]]></translation>
+        <translation language="en"><![CDATA[payment methods]]></translation>
+      </item>
+      <item type="label" name="PaymentMethod">
+        <translation language="nl"><![CDATA[betaalmethode]]></translation>
+        <translation language="en"><![CDATA[payment method]]></translation>
+      </item>
+      <item type="label" name="EditPaymentMethod">
+        <translation language="nl"><![CDATA[bewerk betaalmethode]]></translation>
+        <translation language="en"><![CDATA[edit payment method]]></translation>
+      </item>
+      <item type="label" name="ApiKey">
+        <translation language="nl"><![CDATA[api sleutel]]></translation>
+        <translation language="en"><![CDATA[api key]]></translation>
+      </item>
+      <item type="label" name="ApiUrl">
+        <translation language="nl"><![CDATA[api url]]></translation>
+        <translation language="en"><![CDATA[api url]]></translation>
+      </item>
+      <item type="label" name="ApiEnvironment">
+        <translation language="nl"><![CDATA[api omgeving]]></translation>
+        <translation language="en"><![CDATA[api environment]]></translation>
+      </item>
+      <item type="label" name="Test">
+        <translation language="nl"><![CDATA[test]]></translation>
+        <translation language="en"><![CDATA[test]]></translation>
+      </item>
+      <item type="label" name="Production">
+        <translation language="nl"><![CDATA[productie]]></translation>
+        <translation language="en"><![CDATA[production]]></translation>
+      </item>
+      <item type="label" name="WebsiteKey">
+        <translation language="nl"><![CDATA[website sleutel]]></translation>
+        <translation language="en"><![CDATA[website key]]></translation>
+      </item>
+      <item type="label" name="SecretKey">
+        <translation language="nl"><![CDATA[geheime sleutel]]></translation>
+        <translation language="en"><![CDATA[secret key]]></translation>
+      </item>
+      <item type="label" name="OrderStatuses">
+        <translation language="nl"><![CDATA[order statussen]]></translation>
+        <translation language="en"><![CDATA[order statuses]]></translation>
+      </item>
+      <item type="label" name="OrderInitialized">
+        <translation language="nl"><![CDATA[order geïnitialiseerd]]></translation>
+        <translation language="en"><![CDATA[order initialized]]></translation>
+      </item>
+      <item type="label" name="OrderCompleted">
+        <translation language="nl"><![CDATA[order afgerond]]></translation>
+        <translation language="en"><![CDATA[order completed]]></translation>
+      </item>
+      <item type="label" name="OrderCancelled">
+        <translation language="nl"><![CDATA[order geannuleerd]]></translation>
+        <translation language="en"><![CDATA[order cancelled]]></translation>
+      </item>
+      <item type="label" name="UseAsFilter">
+        <translation language="nl"><![CDATA[gebruik als filter]]></translation>
+        <translation language="en"><![CDATA[use as filter]]></translation>
+      </item>
+      <item type="label" name="Weight">
+        <translation language="nl"><![CDATA[gewicht]]></translation>
+        <translation language="en"><![CDATA[weight]]></translation>
+      </item>
+      <item type="label" name="ShowMoreAfterFilterItems">
+        <translation language="nl"><![CDATA[laat "meer zien" naar aantal filters]]></translation>
+        <translation language="en"><![CDATA[display "show more" after filters count]]></translation>
+      </item>
+      <item type="label" name="OrderNumber">
+        <translation language="nl"><![CDATA[bestelnummer]]></translation>
+        <translation language="en"><![CDATA[order number]]></translation>
+      </item>
+      <item type="label" name="OrderDate">
+        <translation language="nl"><![CDATA[bestel datum]]></translation>
+        <translation language="en"><![CDATA[order date]]></translation>
+      </item>
+      <item type="label" name="Total">
+        <translation language="nl"><![CDATA[totaal]]></translation>
+        <translation language="en"><![CDATA[totaal]]></translation>
+      </item>
+      <item type="label" name="CustomerDetails">
+        <translation language="nl"><![CDATA[klantdetails]]></translation>
+        <translation language="en"><![CDATA[customer details]]></translation>
+      </item>
+      <item type="label" name="InvoiceAddress">
+        <translation language="nl"><![CDATA[factuuradres]]></translation>
+        <translation language="en"><![CDATA[invoice address]]></translation>
+      </item>
+      <item type="label" name="ShipmentAddress">
+        <translation language="nl"><![CDATA[verzendadres]]></translation>
+        <translation language="en"><![CDATA[shipment address]]></translation>
+      </item>
+      <item type="label" name="OrderHistory">
+        <translation language="nl"><![CDATA[bestelgeschiedenis]]></translation>
+        <translation language="en"><![CDATA[order history]]></translation>
+      </item>
+      <item type="label" name="CustomerNotified">
+        <translation language="nl"><![CDATA[klant geïnformeerd]]></translation>
+        <translation language="en"><![CDATA[customer notified]]></translation>
+      </item>
+      <item type="label" name="NotifyCustomer">
+        <translation language="nl"><![CDATA[klant informeren]]></translation>
+        <translation language="en"><![CDATA[notify customer]]></translation>
+      </item>
+      <item type="label" name="AddOrderHistory">
+        <translation language="nl"><![CDATA[bestelgeschiedenis toevoegen]]></translation>
+        <translation language="en"><![CDATA[add order history]]></translation>
+      </item>
+      <item type="message" name="OrderUpdated">
+        <translation language="nl"><![CDATA[Uw bestelling is zojuist bijgewerkt.]]></translation>
+        <translation language="en"><![CDATA[Your order has been updated.]]></translation>
+      </item>
+      <item type="label" name="OrderGreeting">
+        <translation language="nl"><![CDATA[beste %s,]]></translation>
+        <translation language="en"><![CDATA[dear %s,]]></translation>
+      </item>
+      <item type="message" name="OrderUpdated">
+        <translation language="nl"><![CDATA[Uw bestelling is zojuist bijgewerkt.]]></translation>
+        <translation language="en"><![CDATA[Your order has been updated.]]></translation>
+      </item>
+      <item type="label" name="UpdateOrderMailSubject">
+        <translation language="nl"><![CDATA[Uw bestelling %s]]></translation>
+        <translation language="en"><![CDATA[Your order %s]]></translation>
+      </item>
+      <item type="label" name="OrderNumber">
+        <translation language="nl"><![CDATA[bestelnummer]]></translation>
+        <translation language="en"><![CDATA[order number]]></translation>
+      </item>
+      <item type="label" name="KindRegards">
+        <translation language="nl"><![CDATA[Met vriendelijke groet,]]></translation>
+        <translation language="en"><![CDATA[Kind regards,]]></translation>
+      </item>
+      <item type="label" name="OrderDetails">
+        <translation language="nl"><![CDATA[bestelgegevens]]></translation>
+        <translation language="en"><![CDATA[order details]]></translation>
+      </item>
+      <item type="label" name="OrderRefunded">
+        <translation language="nl"><![CDATA[order terug gestort]]></translation>
+        <translation language="en"><![CDATA[order refunded]]></translation>
+      </item>
+      <item type="label" name="OrderExpired">
+        <translation language="nl"><![CDATA[order verlopen]]></translation>
+        <translation language="en"><![CDATA[order expired]]></translation>
+      </item>
+      <item type="label" name="DefaultSettings">
+        <translation language="nl"><![CDATA[standaard instellingen]]></translation>
+        <translation language="en"><![CDATA[default settings]]></translation>
+      </item>
+      <item type="label" name="Options">
+        <translation language="nl"><![CDATA[opties]]></translation>
+        <translation language="en"><![CDATA[options]]></translation>
+      </item>
+      <item type="label" name="Required">
+        <translation language="nl"><![CDATA[verplicht]]></translation>
+        <translation language="en"><![CDATA[required]]></translation>
+      </item>
+      <item type="label" name="DropDown">
+        <translation language="nl"><![CDATA[keuze menu]]></translation>
+        <translation language="en"><![CDATA[drop down]]></translation>
+      </item>
+      <item type="label" name="RadioButtons">
+        <translation language="nl"><![CDATA[keuze rondjes]]></translation>
+        <translation language="en"><![CDATA[radio buttons]]></translation>
+      </item>
+      <item type="label" name="RadioButton">
+        <translation language="nl"><![CDATA[keuze rondje]]></translation>
+        <translation language="en"><![CDATA[radio button]]></translation>
+      </item>
+      <item type="label" name="HTMLHexValue">
+        <translation language="nl"><![CDATA[HTML hex waarde]]></translation>
+        <translation language="en"><![CDATA[HTML hex value]]></translation>
+      </item>
+      <item type="label" name="Color">
+        <translation language="nl"><![CDATA[kleur]]></translation>
+        <translation language="en"><![CDATA[color]]></translation>
+      </item>
+      <item type="label" name="SquareUnit">
+        <translation language="nl"><![CDATA[vierkante eenheid]]></translation>
+        <translation language="en"><![CDATA[square unit]]></translation>
+      </item>
+      <item type="label" name="Piece">
+        <translation language="nl"><![CDATA[stuk]]></translation>
+        <translation language="en"><![CDATA[piece]]></translation>
+      </item>
+      <item type="label" name="Placeholder">
+        <translation language="nl"><![CDATA[placeholder]]></translation>
+        <translation language="en"><![CDATA[placeholder]]></translation>
+      </item>
+      <item type="label" name="SubTitle">
+        <translation language="nl"><![CDATA[sub titel]]></translation>
+        <translation language="en"><![CDATA[sub title]]></translation>
+      </item>
+      <item type="label" name="MakeAChoice">
+        <translation language="nl"><![CDATA[maak een keuze]]></translation>
+        <translation language="en"><![CDATA[make a choice]]></translation>
+      </item>
+      <item type="label" name="Values">
+        <translation language="nl"><![CDATA[waarden]]></translation>
+        <translation language="en"><![CDATA[values]]></translation>
+      </item>
+      <item type="label" name="DefaultValue">
+        <translation language="nl"><![CDATA[standaard waarde]]></translation>
+        <translation language="en"><![CDATA[default value]]></translation>
+      </item>
+      <item type="label" name="Downloads">
+        <translation language="nl"><![CDATA[downloads]]></translation>
+        <translation language="en"><![CDATA[downloads]]></translation>
+      </item>
+      <item type="message" name="CannotAddProductOptionsWhenCreatingANewProduct">
+        <translation language="nl"><![CDATA[Kan geen product opties toevoegen wanneer een nieuw product wordt toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[Cannot add product options when creating a new product.]]></translation>
+      </item>
+      <item type="message" name="CannotAddProductOptionValuesWhenCreatingANewProductOption">
+        <translation language="nl"><![CDATA[Kan geen product optie waarden toevoegen wanneer een nieuw product opties wordt toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[Cannot add product option values when creating a new product option.]]></translation>
+      </item>
+      <item type="label" name="FromWeight">
+        <translation language="nl"><![CDATA[vanaf gewicht]]></translation>
+        <translation language="en"><![CDATA[from weight]]></translation>
+      </item>
+      <item type="label" name="TillWeight">
+        <translation language="nl"><![CDATA[tot gewicht]]></translation>
+        <translation language="en"><![CDATA[till weight]]></translation>
+      </item>
+      <item type="label" name="SubTotal">
+        <translation language="nl"><![CDATA[sub totaal]]></translation>
+        <translation language="en"><![CDATA[sub total]]></translation>
+      </item>
+      <item type="label" name="Invoice">
+        <translation language="nl"><![CDATA[factuur]]></translation>
+        <translation language="en"><![CDATA[invoice]]></translation>
+      </item>
+      <item type="label" name="NextInvoiceNumber">
+        <translation language="nl"><![CDATA[volgende factuurnummer]]></translation>
+        <translation language="en"><![CDATA[next invoice number]]></translation>
+      </item>
+      <item type="label" name="InvoiceNumber">
+        <translation language="nl"><![CDATA[factuurnummer]]></translation>
+        <translation language="en"><![CDATA[invoice number]]></translation>
+      </item>
+      <item type="label" name="InvoiceDate">
+        <translation language="nl"><![CDATA[factuurdatum]]></translation>
+        <translation language="en"><![CDATA[invoice date]]></translation>
+      </item>
+      <item type="label" name="GenerateInvoiceNumber">
+        <translation language="nl"><![CDATA[genereer factuurnummer]]></translation>
+        <translation language="en"><![CDATA[generate invoice number]]></translation>
+      </item>
+      <item type="label" name="PackingSlip">
+        <translation language="nl"><![CDATA[pakbon]]></translation>
+        <translation language="en"><![CDATA[packing slip]]></translation>
+      </item>
+      <item type="label" name="PhoneNumber">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone number]]></translation>
+      </item>
+      <item type="label" name="SubTotal">
+        <translation language="nl"><![CDATA[sub totaal]]></translation>
+        <translation language="en"><![CDATA[sub total]]></translation>
+      </item>
+      <item type="label" name="AutomaticallyGenerateInvoiceWhenStatusBecomesOneOfThese">
+        <translation language="nl"><![CDATA[genereer een factuur wanneer de status veranderd in een van deze]]></translation>
+        <translation language="en"><![CDATA[automatically generate invoice when status becomes one of these]]></translation>
+      </item>
+      <item type="label" name="AttachInvoice">
+        <translation language="nl"><![CDATA[factuur bijvoegen]]></translation>
+        <translation language="en"><![CDATA[attach invoice]]></translation>
+      </item>
+      <item type="label" name="InvoiceAttached">
+        <translation language="nl"><![CDATA[factuur bijvoegd]]></translation>
+        <translation language="en"><![CDATA[invoice attached]]></translation>
+      </item>
+      <item type="label" name="Relations">
+        <translation language="nl"><![CDATA[relaties]]></translation>
+        <translation language="en"><![CDATA[relations]]></translation>
+      </item>
+      <item type="label" name="Sequence">
+        <translation language="nl"><![CDATA[volgorde]]></translation>
+        <translation language="en"><![CDATA[sequence]]></translation>
+      </item>
+      <item type="error" name="SequenceInvalid">
+        <translation language="nl"><![CDATA[volgorde moet gelijk aan of hoger zijn dan 1]]></translation>
+        <translation language="en"><![CDATA[sequence must be greater than or equal to 1]]></translation>
+      </item>
+      <item type="label" name="ProductWithDimensions">
+        <translation language="nl"><![CDATA[product met afmetingen]]></translation>
+        <translation language="en"><![CDATA[product with dimensions]]></translation>
+      </item>
+      <item type="label" name="Dimensions">
+        <translation language="nl"><![CDATA[afmetingen]]></translation>
+        <translation language="en"><![CDATA[dimensions]]></translation>
+      </item>
+      <item type="label" name="Column">
+        <translation language="nl"><![CDATA[kolom]]></translation>
+        <translation language="en"><![CDATA[column]]></translation>
+      </item>
+      <item type="label" name="Row">
+        <translation language="nl"><![CDATA[regel]]></translation>
+        <translation language="en"><![CDATA[row]]></translation>
+      </item>
+      <item type="label" name="AmountOfProductsToDisplayInAWidget">
+        <translation language="nl"><![CDATA[aantal producten om weer te geven in een widget]]></translation>
+        <translation language="en"><![CDATA[amount of products to display in a widget]]></translation>
+      </item>
+      <item type="label" name="CustomValueAllowed">
+        <translation language="nl"><![CDATA[willekeurige waarde toegestaan?]]></translation>
+        <translation language="en"><![CDATA[custom value allowed?]]></translation>
+      </item>
+      <item type="label" name="CustomValuePrice">
+        <translation language="nl"><![CDATA[willekeurige waarde prijs]]></translation>
+        <translation language="en"><![CDATA[custom value price]]></translation>
+      </item>
+      <item type="label" name="EditProductOption">
+        <translation language="nl"><![CDATA[bewerk optie]]></translation>
+        <translation language="en"><![CDATA[edit option]]></translation>
+      </item>
+      <item type="label" name="AddProductOption">
+        <translation language="nl"><![CDATA[optie toevoegen]]></translation>
+        <translation language="en"><![CDATA[add option]]></translation>
+      </item>
+      <item type="label" name="EditProductOptionValue">
+        <translation language="nl"><![CDATA[bewerk optie waarde]]></translation>
+        <translation language="en"><![CDATA[edit option value]]></translation>
+      </item>
+      <item type="label" name="AddProductOptionValue">
+        <translation language="nl"><![CDATA[optie waarde toevoegen]]></translation>
+        <translation language="en"><![CDATA[add option value]]></translation>
+      </item>
+      <item type="label" name="ParentProductOptionValue">
+        <translation language="nl"><![CDATA[hoofd optie waarde]]></translation>
+        <translation language="en"><![CDATA[parent product option value]]></translation>
+      </item>
+      <item type="label" name="SubOptions">
+        <translation language="nl"><![CDATA[sub opties]]></translation>
+        <translation language="en"><![CDATA[sub options]]></translation>
+      </item>
+      <item type="label" name="AddSubOption">
+        <translation language="nl"><![CDATA[sub optie toevoegen]]></translation>
+        <translation language="en"><![CDATA[add sub option]]></translation>
+      </item>
+      <item type="message" name="SubOptionsAreAvailableOnEdit">
+        <translation language="nl"><![CDATA[Sub opties zijn beschikbaar na het toevoegen van een waarde.]]></translation>
+        <translation language="en"><![CDATA[Sub options are available after adding an value.]]></translation>
+      </item>
+      <item type="label" name="EditSpecificationValue">
+        <translation language="nl"><![CDATA[bewerk specificatie waarde]]></translation>
+        <translation language="en"><![CDATA[edit specification value]]></translation>
+      </item>
+      <item type="label" name="AddSpecificationValue">
+        <translation language="nl"><![CDATA[specificatie waarde toevoegen]]></translation>
+        <translation language="en"><![CDATA[add specification value]]></translation>
+      </item>
+      <item type="label" name="AddValue">
+        <translation language="nl"><![CDATA[waarde toevoegen]]></translation>
+        <translation language="en"><![CDATA[add value]]></translation>
+      </item>
+      <item type="label" name="PriceOptions">
+        <translation language="nl"><![CDATA[prijs opties]]></translation>
+        <translation language="en"><![CDATA[price options]]></translation>
+      </item>
+      <item type="label" name="Subtract">
+        <translation language="nl"><![CDATA[verminder]]></translation>
+        <translation language="en"><![CDATA[subtract]]></translation>
+      </item>
+      <item type="label" name="Percentage">
+        <translation language="nl"><![CDATA[percentage]]></translation>
+        <translation language="en"><![CDATA[percentage]]></translation>
+      </item>
+      <item type="label" name="ImpactType">
+        <translation language="nl"><![CDATA[impact type]]></translation>
+        <translation language="en"><![CDATA[impact type]]></translation>
+      </item>
+      <item type="label" name="MinWidth">
+        <translation language="nl"><![CDATA[minimale breedte]]></translation>
+        <translation language="en"><![CDATA[minimal width]]></translation>
+      </item>
+      <item type="label" name="MaxWidth">
+        <translation language="nl"><![CDATA[maximale breedte]]></translation>
+        <translation language="en"><![CDATA[maximal width]]></translation>
+      </item>
+      <item type="label" name="MinHeight">
+        <translation language="nl"><![CDATA[minimale hoogte]]></translation>
+        <translation language="en"><![CDATA[minimal height]]></translation>
+      </item>
+      <item type="label" name="MaxHeight">
+        <translation language="nl"><![CDATA[maximale hoogte]]></translation>
+        <translation language="en"><![CDATA[maximal height]]></translation>
+      </item>
+      <item type="label" name="DimensionRestrictions">
+        <translation language="nl"><![CDATA[afmeting voorwaarden]]></translation>
+        <translation language="en"><![CDATA[dimension restrictions]]></translation>
+      </item>
+      <item type="label" name="Enabled">
+        <translation language="nl"><![CDATA[ingeschakeld]]></translation>
+        <translation language="en"><![CDATA[enabled]]></translation>
+      </item>
+      <item type="label" name="ValueBetweenValues">
+        <translation language="nl"><![CDATA[waarde tussen waarden]]></translation>
+        <translation language="en"><![CDATA[value between values]]></translation>
+      </item>
+      <item type="label" name="Prefix">
+        <translation language="nl"><![CDATA[voorvoegsel]]></translation>
+        <translation language="en"><![CDATA[prefix]]></translation>
+      </item>
+      <item type="label" name="Suffix">
+        <translation language="nl"><![CDATA[achtervoegsel]]></translation>
+        <translation language="en"><![CDATA[suffix]]></translation>
+      </item>
+      <item type="label" name="Start">
+        <translation language="nl"><![CDATA[begin]]></translation>
+        <translation language="en"><![CDATA[start]]></translation>
+      </item>
+      <item type="label" name="End">
+        <translation language="nl"><![CDATA[einde]]></translation>
+        <translation language="en"><![CDATA[end]]></translation>
+      </item>
+      <item type="label" name="Dependencies">
+        <translation language="nl"><![CDATA[afhankelijkheden]]></translation>
+        <translation language="en"><![CDATA[dependencies]]></translation>
+      </item>
+      <item type="label" name="ShowOnlyCategoriesUnderCategory">
+        <translation language="nl"><![CDATA[laat alleen categorieen zien onder]]></translation>
+        <translation language="en"><![CDATA[show only categories under]]></translation>
+      </item>
+      <item type="label" name="EditCategory">
+        <translation language="nl"><![CDATA[categorie bewerken]]></translation>
+        <translation language="en"><![CDATA[edit category]]></translation>
+      </item>
+      <item type="label" name="AddVat">
+        <translation language="nl"><![CDATA[BTW toevoegen]]></translation>
+        <translation language="en"><![CDATA[add vat]]></translation>
+      </item>
+      <item type="label" name="EditVat">
+        <translation language="nl"><![CDATA[BTW bewerken]]></translation>
+        <translation language="en"><![CDATA[edit vat]]></translation>
+      </item>
+      <item type="label" name="AddStockStatus">
+        <translation language="nl"><![CDATA[voorraad status toevoegen]]></translation>
+        <translation language="en"><![CDATA[add stock status]]></translation>
+      </item>
+      <item type="label" name="EditStockStatus">
+        <translation language="nl"><![CDATA[voorraad status bewerken]]></translation>
+        <translation language="en"><![CDATA[edit stock status]]></translation>
+      </item>
+      <item type="label" name="DimensionInstructions">
+        <translation language="nl"><![CDATA[meet instructies]]></translation>
+        <translation language="en"><![CDATA[dimension instructions]]></translation>
+      </item>
+      <item type="error" name="ProductConnected">
+        <translation language="nl"><![CDATA[Het product is niet verwijderd omdat deze nog verbonden is met een ander product!]]></translation>
+        <translation language="en"><![CDATA[This product is not deleted because it is connected with an other product.]]></translation>
+      </item>
+      <item type="label" name="UpdateAboutYourOrder">
+        <translation language="nl"><![CDATA[een update over je bestelling]]></translation>
+        <translation language="en"><![CDATA[update about your order]]></translation>
+      </item>
+      <item type="label" name="AddProductionWidth">
+        <translation language="nl"><![CDATA[productie breedte toevoegen]]></translation>
+        <translation language="en"><![CDATA[add production width]]></translation>
+      </item>
+      <item type="label" name="AddProductionHeight">
+        <translation language="nl"><![CDATA[productie hoogte toevoegen]]></translation>
+        <translation language="en"><![CDATA[add production height]]></translation>
+      </item>
+      <item type="label" name="ProductionDimensions">
+        <translation language="nl"><![CDATA[productie afmetingen]]></translation>
+        <translation language="en"><![CDATA[production dimensions]]></translation>
+      </item>
+      <item type="label" name="Discounts">
+        <translation language="nl"><![CDATA[kortingen]]></translation>
+        <translation language="en"><![CDATA[discounts]]></translation>
+      </item>
+      <item type="label" name="AddCartRule">
+        <translation language="nl"><![CDATA[korting toevoegen]]></translation>
+        <translation language="en"><![CDATA[add discount]]></translation>
+      </item>
+      <item type="label" name="CartRules">
+        <translation language="nl"><![CDATA[winkelwagen regels]]></translation>
+        <translation language="en"><![CDATA[cart rules]]></translation>
+      </item>
+      <item type="label" name="EditCartRule">
+        <translation language="nl"><![CDATA[korting bewerken]]></translation>
+        <translation language="en"><![CDATA[edit discount]]></translation>
+      </item>
+      <item type="label" name="DiscountCode">
+        <translation language="nl"><![CDATA[kortingscode]]></translation>
+        <translation language="en"><![CDATA[discount code]]></translation>
+      </item>
+      <item type="label" name="Quantity">
+        <translation language="nl"><![CDATA[aantal]]></translation>
+        <translation language="en"><![CDATA[quantity]]></translation>
+      </item>
+      <item type="label" name="MinimumAmount">
+        <translation language="nl"><![CDATA[minimum bestelbedrag]]></translation>
+        <translation language="en"><![CDATA[minimum amount]]></translation>
+      </item>
+      <item type="label" name="ReductionPercentage">
+        <translation language="nl"><![CDATA[kortingspercentage]]></translation>
+        <translation language="en"><![CDATA[reduction percentage]]></translation>
+      </item>
+      <item type="label" name="ReductionAmount">
+        <translation language="nl"><![CDATA[kortingsbedrag]]></translation>
+        <translation language="en"><![CDATA[reduction amount]]></translation>
+      </item>
+      <item type="message" name="WhenNoCodeSetWillGenerateCode">
+        <translation language="nl"><![CDATA[Wanneer er geen code is ingesteld wordt er een code aangemaakt.]]></translation>
+        <translation language="en"><![CDATA[When no code set a new code will be generated.]]></translation>
+      </item>
+      <item type="label" name="Countries">
+        <translation language="nl"><![CDATA[landen]]></translation>
+        <translation language="en"><![CDATA[countries]]></translation>
+      </item>
+      <item type="label" name="IsoCode">
+        <translation language="nl"><![CDATA[ISO Code]]></translation>
+        <translation language="en"><![CDATA[ISO Code]]></translation>
+      </item>
+      <item type="label" name="AddCountry">
+        <translation language="nl"><![CDATA[land toevoegen]]></translation>
+        <translation language="en"><![CDATA[add country]]></translation>
+      </item>
+      <item type="label" name="Others">
+        <translation language="nl"><![CDATA[overigen]]></translation>
+        <translation language="en"><![CDATA[others]]></translation>
+      </item>
+      <item type="label" name="GoogleProductCategoriesUrl">
+        <translation language="nl"><![CDATA[google product categoriën url]]></translation>
+        <translation language="en"><![CDATA[google product categories url]]></translation>
+      </item>
+      <item type="message" name="GoogleProductCategoriesUrlHelp">
+        <translation language="nl"><![CDATA[De product categoriën url kan worden verkregen via Google. Een voorbeeld van een URL is <code>http://www.google.com/basepages/producttype/taxonomy-with-ids.nl-NL.txt</code>]]></translation>
+        <translation language="en"><![CDATA[A product categories url can by found via Google. An example of a URL is <code>http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt</code>]]></translation>
+      </item>
+      <item type="label" name="GoogleTaxonomyId">
+        <translation language="nl"><![CDATA[Google taxonomie id]]></translation>
+        <translation language="en"><![CDATA[Google taxonomy id]]></translation>
+      </item>
+      <item type="label" name="New">
+        <translation language="nl"><![CDATA[nieuw]]></translation>
+        <translation language="en"><![CDATA[new]]></translation>
+      </item>
+      <item type="label" name="ShopSettings">
+        <translation language="nl"><![CDATA[winkelinstellingen]]></translation>
+        <translation language="en"><![CDATA[shop settings]]></translation>
+      </item>
+    </Commerce>
+    <Core>
+      <item type="label" name="Commerce">
+        <translation language="nl"><![CDATA[commerceus]]></translation>
+        <translation language="en"><![CDATA[commerce]]></translation>
+      </item>
+      <item type="label" name="ShoppingCart">
+        <translation language="nl"><![CDATA[Winkelwagen]]></translation>
+        <translation language="en"><![CDATA[Shopping Cart]]></translation>
+      </item>
+      <item type="label" name="RecentProducts">
+        <translation language="nl"><![CDATA[Recente producten]]></translation>
+        <translation language="en"><![CDATA[Recent products]]></translation>
+      </item>
+      <item type="label" name="Cart">
+        <translation language="nl"><![CDATA[winkelwagen]]></translation>
+        <translation language="en"><![CDATA[cart]]></translation>
+      </item>
+      <item type="label" name="EditOrder">
+        <translation language="nl"><![CDATA[bewerk bestelling]]></translation>
+        <translation language="en"><![CDATA[edit order]]></translation>
+      </item>
+      <item type="label" name="GoogleSiteSearch">
+        <translation language="nl"><![CDATA[google site search]]></translation>
+        <translation language="en"><![CDATA[google site search]]></translation>
+      </item>
+      <item type="label" name="Order">
+        <translation language="nl"><![CDATA[bestelling]]></translation>
+        <translation language="en"><![CDATA[order]]></translation>
+      </item>
+      <item type="label" name="CreatedAt">
+        <translation language="nl"><![CDATA[aangemaakt op]]></translation>
+        <translation language="en"><![CDATA[created at]]></translation>
+      </item>
+      <item type="label" name="InvoiceNumber">
+        <translation language="nl"><![CDATA[factuur nummer]]></translation>
+        <translation language="en"><![CDATA[invoice number]]></translation>
+      </item>
+      <item type="label" name="PhoneNumber">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone number]]></translation>
+      </item>
+      <item type="label" name="ShipmentMethod">
+        <translation language="nl"><![CDATA[verzendmethode]]></translation>
+        <translation language="en"><![CDATA[shipment method]]></translation>
+      </item>
+      <item type="label" name="EAN13">
+        <translation language="nl"><![CDATA[EAN 13]]></translation>
+        <translation language="en"><![CDATA[EAN 13]]></translation>
+      </item>
+      <item type="label" name="ISBN">
+        <translation language="nl"><![CDATA[ISBN]]></translation>
+        <translation language="en"><![CDATA[ISBN]]></translation>
+      </item>
+      <item type="label" name="Notification">
+        <translation language="nl"><![CDATA[melding]]></translation>
+        <translation language="en"><![CDATA[notification]]></translation>
+      </item>
+      <item type="label" name="Orders">
+        <translation language="nl"><![CDATA[bestellingen]]></translation>
+        <translation language="en"><![CDATA[orders]]></translation>
+      </item>
+      <item type="label" name="CustomerOrders">
+        <translation language="nl"><![CDATA[klant orders]]></translation>
+        <translation language="en"><![CDATA[customer orders]]></translation>
+      </item>
+      <item type="label" name="CustomerAddresses">
+        <translation language="nl"><![CDATA[klant adressen]]></translation>
+        <translation language="en"><![CDATA[customer addresses]]></translation>
+      </item>
+      <item type="label" name="AttachInvoiceToEmail">
+        <translation language="nl"><![CDATA[factuur aan e-mail toevoegen als bijlage]]></translation>
+        <translation language="en"><![CDATA[attach invoice to email]]></translation>
+      </item>
+      <item type="label" name="AttachPackingSlipToEmail">
+        <translation language="nl"><![CDATA[pakbon aan e-mail toevoegen als bijlage]]></translation>
+        <translation language="en"><![CDATA[attach packing slip to email]]></translation>
+      </item>
+      <item type="label" name="OrderIsPaid">
+        <translation language="nl"><![CDATA[bestelling is betaald]]></translation>
+        <translation language="en"><![CDATA[order is paid]]></translation>
+      </item>
+      <item type="label" name="OrderIsShipped">
+        <translation language="nl"><![CDATA[bestelling is verzonden]]></translation>
+        <translation language="en"><![CDATA[order is shipped]]></translation>
+      </item>
+      <item type="label" name="AllowDownloadInvoice">
+        <translation language="nl"><![CDATA[toestaan factuur te downloaden]]></translation>
+        <translation language="en"><![CDATA[allow download invoice]]></translation>
+      </item>
+      <item type="label" name="SendEmail">
+        <translation language="nl"><![CDATA[verstuur e-mail naar klant]]></translation>
+        <translation language="en"><![CDATA[send email to customer]]></translation>
+      </item>
+      <item type="label" name="SendCompanyEmail">
+        <translation language="nl"><![CDATA[verstuur e-mail naar het bedrijf]]></translation>
+        <translation language="en"><![CDATA[send email to company]]></translation>
+      </item>
+      <item type="label" name="EmailTemplate">
+        <translation language="nl"><![CDATA[e-mail template]]></translation>
+        <translation language="en"><![CDATA[email template]]></translation>
+      </item>
+      <item type="label" name="CompanyEmailTemplate">
+        <translation language="nl"><![CDATA[e-mail template voor bedrijf]]></translation>
+        <translation language="en"><![CDATA[company email template]]></translation>
+      </item>
+      <item type="label" name="SelectATemplate">
+        <translation language="nl"><![CDATA[selecteer een template]]></translation>
+        <translation language="en"><![CDATA[select a template]]></translation>
+      </item>
+      <item type="label" name="MailSubject">
+        <translation language="nl"><![CDATA[e-mail onderwerp]]></translation>
+        <translation language="en"><![CDATA[mail subject]]></translation>
+      </item>
+      <item type="label" name="CompanyMailSubject">
+        <translation language="nl"><![CDATA[e-mail onderwerp voor bedrijf]]></translation>
+        <translation language="en"><![CDATA[company mail subject]]></translation>
+      </item>
+      <item type="label" name="Thanks">
+        <translation language="nl"><![CDATA[bedankt]]></translation>
+        <translation language="en"><![CDATA[thanks]]></translation>
+      </item>
+      <item type="label" name="ForYourOrder">
+        <translation language="nl"><![CDATA[voor je bestelling]]></translation>
+        <translation language="en"><![CDATA[for your order]]></translation>
+      </item>
+      <item type="label" name="GuestOrderTracking">
+        <translation language="nl"><![CDATA[volg bestelling als gast]]></translation>
+        <translation language="en"><![CDATA[guest order tracking]]></translation>
+      </item>
+    </Core>
+    <Pages>
+      <item type="label" name="Brands">
+        <translation language="nl"><![CDATA[merken]]></translation>
+        <translation language="en"><![CDATA[brands]]></translation>
+      </item>
+    </Pages>
+  </Backend>
+
+  <Frontend>
+    <Core>
+      <item type="label" name="ProductAdded">
+        <translation language="nl"><![CDATA[Het product is aan uw winkelwagen toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[The product has been added to your shopping cart.]]></translation>
+      </item>
+      <item type="label" name="ProductRemoved">
+        <translation language="nl"><![CDATA[Het product is uit uw winkelwagen verwijderd.]]></translation>
+        <translation language="en"><![CDATA[The product has been removed from your shopping cart.]]></translation>
+      </item>
+      <item type="label" name="Amount">
+        <translation language="nl"><![CDATA[aantal]]></translation>
+        <translation language="en"><![CDATA[amount]]></translation>
+      </item>
+      <item type="label" name="Specifications">
+        <translation language="nl"><![CDATA[specificaties]]></translation>
+        <translation language="en"><![CDATA[specifications]]></translation>
+      </item>
+      <item type="label" name="RelatedProducts">
+        <translation language="nl"><![CDATA[gerelateerde producten]]></translation>
+        <translation language="en"><![CDATA[related products]]></translation>
+      </item>
+      <item type="label" name="Images">
+        <translation language="nl"><![CDATA[afbeeldingen]]></translation>
+        <translation language="en"><![CDATA[images]]></translation>
+      </item>
+      <item type="label" name="Videos">
+        <translation language="nl"><![CDATA[video's]]></translation>
+        <translation language="en"><![CDATA[videos]]></translation>
+      </item>
+      <item type="label" name="Files">
+        <translation language="nl"><![CDATA[bestanden]]></translation>
+        <translation language="en"><![CDATA[files]]></translation>
+      </item>
+      <item type="label" name="Price">
+        <translation language="nl"><![CDATA[prijs]]></translation>
+        <translation language="en"><![CDATA[price]]></translation>
+      </item>
+      <item type="label" name="ArticleNumber">
+        <translation language="nl"><![CDATA[artikelnummer]]></translation>
+        <translation language="en"><![CDATA[article number]]></translation>
+      </item>
+      <item type="label" name="Product">
+        <translation language="nl"><![CDATA[product]]></translation>
+        <translation language="en"><![CDATA[product]]></translation>
+      </item>
+      <item type="label" name="Total">
+        <translation language="nl"><![CDATA[totaal]]></translation>
+        <translation language="en"><![CDATA[total]]></translation>
+      </item>
+      <item type="label" name="Delete">
+        <translation language="nl"><![CDATA[verwijderen]]></translation>
+        <translation language="en"><![CDATA[delete]]></translation>
+      </item>
+      <item type="label" name="RecentProducts">
+        <translation language="nl"><![CDATA[recente producten]]></translation>
+        <translation language="en"><![CDATA[recent products]]></translation>
+      </item>
+      <item type="label" name="GoToShoppingCartOverview">
+        <translation language="nl"><![CDATA[naar overzicht winkelwagen]]></translation>
+        <translation language="en"><![CDATA[to shopping cart overview]]></translation>
+      </item>
+      <item type="label" name="GoToPersonalData">
+        <translation language="nl"><![CDATA[naar persoonlijke gegevens]]></translation>
+        <translation language="en"><![CDATA[to personal data]]></translation>
+      </item>
+      <item type="label" name="ContinueShopping">
+        <translation language="nl"><![CDATA[verder winkelen]]></translation>
+        <translation language="en"><![CDATA[continue shopping]]></translation>
+      </item>
+      <item type="label" name="AddProductToShoppingCart">
+        <translation language="nl"><![CDATA[Plaats in winkelwagen]]></translation>
+        <translation language="en"><![CDATA[Add product to shopping cart]]></translation>
+      </item>
+      <item type="label" name="RecalculatePrice">
+        <translation language="nl"><![CDATA[Prijs herberekenen]]></translation>
+        <translation language="en"><![CDATA[Recalculate price]]></translation>
+      </item>
+      <item type="label" name="SubCategories">
+        <translation language="nl"><![CDATA[subcategorieën]]></translation>
+        <translation language="en"><![CDATA[subcategories]]></translation>
+      </item>
+      <item type="label" name="ShoppingCart">
+        <translation language="nl"><![CDATA[winkelwagen]]></translation>
+        <translation language="en"><![CDATA[shoppingcart]]></translation>
+      </item>
+      <item type="label" name="Checkout">
+        <translation language="nl"><![CDATA[afrekenen]]></translation>
+        <translation language="en"><![CDATA[checkout]]></translation>
+      </item>
+      <item type="label" name="Address">
+        <translation language="nl"><![CDATA[adres]]></translation>
+        <translation language="en"><![CDATA[address]]></translation>
+      </item>
+      <item type="label" name="AddressNumber">
+        <translation language="nl"><![CDATA[huisnummer]]></translation>
+        <translation language="en"><![CDATA[address number]]></translation>
+      </item>
+      <item type="label" name="PostalCode">
+        <translation language="nl"><![CDATA[Postcode]]></translation>
+        <translation language="en"><![CDATA[Postal code]]></translation>
+      </item>
+      <item type="label" name="SubmitOrder">
+        <translation language="nl"><![CDATA[plaats bestelling]]></translation>
+        <translation language="en"><![CDATA[submit order]]></translation>
+      </item>
+      <item type="label" name="PersonalData">
+        <translation language="nl"><![CDATA[persoonlijke gegevens]]></translation>
+        <translation language="en"><![CDATA[personal data]]></translation>
+      </item>
+      <item type="label" name="Thanks">
+        <translation language="nl"><![CDATA[bedankt]]></translation>
+        <translation language="en"><![CDATA[thanks]]></translation>
+      </item>
+      <item type="message" name="EnableCookies">
+        <translation language="nl"><![CDATA[Graag uw cookies toestaan]]></translation>
+        <translation language="en"><![CDATA[Please enable your cookies]]></translation>
+      </item>
+      <item type="message" name="CommerceNoComments">
+        <translation language="nl"><![CDATA[Reageer als eerste]]></translation>
+        <translation language="en"><![CDATA[Be the first to comment]]></translation>
+      </item>
+      <item type="message" name="CommerceOneComment">
+        <translation language="nl"><![CDATA[Al 1 reactie]]></translation>
+        <translation language="en"><![CDATA[Allready 1 comment]]></translation>
+      </item>
+      <item type="message" name="CommerceAllComments">
+        <translation language="nl"><![CDATA[Alle reacties op je product.]]></translation>
+        <translation language="en"><![CDATA[All comments on your product.]]></translation>
+      </item>
+      <item type="message" name="CommerceCommentInModeration">
+        <translation language="nl"><![CDATA[Je reactie wacht op goedkeuring.]]></translation>
+        <translation language="en"><![CDATA[Your comment is waiting for approval.]]></translation>
+      </item>
+      <item type="message" name="CommerceCommentIsAdded">
+        <translation language="nl"><![CDATA[Je reactie werd toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[Your comment is added.]]></translation>
+      </item>
+      <item type="message" name="CommerceCommentIsSpam">
+        <translation language="nl"><![CDATA[Je reactie werd gemarkeerd als spam.]]></translation>
+        <translation language="en"><![CDATA[Your comment is marked as spam]]></translation>
+      </item>
+      <item type="message" name="CommerceEmailNotificationsNewComment">
+        <translation language="nl"><![CDATA[%1$s reageerde op <a href="%2$s">%3$s</a>.]]></translation>
+        <translation language="en"><![CDATA[%1$s commented on <a href="%2$s">%3$s</a>.]]></translation>
+      </item>
+      <item type="message" name="CommerceEmailNotificationsNewCommentToModerate">
+        <translation language="nl">
+          <![CDATA[%1$s reageerde op <a href="%2$s">%3$s</a>. <a href="%4$s">Modereer</a> deze reactie om ze zichtbaar te maken op de website.]]></translation>
+        <translation language="en">
+          <![CDATA[%1$s commented on <a href="%2$s">%3$s</a>. <a href="%4$s">Moderate</a> this comment to make it visible on the website.]]></translation>
+      </item>
+      <item type="message" name="CommerceNoItems">
+        <translation language="nl"><![CDATA[Er zijn nog geen producten.]]></translation>
+        <translation language="en"><![CDATA[There are no products yet.]]></translation>
+      </item>
+      <item type="message" name="ToCommerceOverview">
+        <translation language="nl"><![CDATA[Terug naar overzicht]]></translation>
+        <translation language="en"><![CDATA[Back to overview]]></translation>
+      </item>
+      <item type="message" name="NoProductsInShoppingCart">
+        <translation language="nl"><![CDATA[Er zijn nog geen producten in de winkelwagen geplaatst.]]></translation>
+        <translation language="en"><![CDATA[There are no products added to the shopping cart yet.]]></translation>
+      </item>
+      <item type="message" name="NoCategories">
+        <translation language="nl"><![CDATA[Er zijn nog geen categorieën toegevoegd.]]></translation>
+        <translation language="en"><![CDATA[There are no categories added yet.]]></translation>
+      </item>
+      <item type="action" name="Checkout">
+        <translation language="nl"><![CDATA[afrekenen]]></translation>
+        <translation language="en"><![CDATA[checkout]]></translation>
+      </item>
+      <item type="action" name="PersonalData">
+        <translation language="nl"><![CDATA[persoonlijke-gegevens]]></translation>
+        <translation language="en"><![CDATA[personal-data]]></translation>
+      </item>
+      <item type="action" name="OrderReceived">
+        <translation language="nl"><![CDATA[bestelling-ontvangen]]></translation>
+        <translation language="en"><![CDATA[order-received]]></translation>
+      </item>
+      <item type="action" name="Brand">
+        <translation language="nl"><![CDATA[merk]]></translation>
+        <translation language="en"><![CDATA[brand]]></translation>
+      </item>
+      <item type="label" name="Brand">
+        <translation language="nl"><![CDATA[merk]]></translation>
+        <translation language="en"><![CDATA[brand]]></translation>
+      </item>
+      <item type="label" name="Brands">
+        <translation language="nl"><![CDATA[merken]]></translation>
+        <translation language="en"><![CDATA[brands]]></translation>
+      </item>
+      <item type="error" name="GivenAmountNotInStock">
+        <translation language="nl"><![CDATA[De opgegeven hoeveelheid is niet op voorraad]]></translation>
+        <translation language="en"><![CDATA[The given amount is not in stock]]></translation>
+      </item>
+      <item type="label" name="Cart">
+        <translation language="nl"><![CDATA[winkelwagen]]></translation>
+        <translation language="en"><![CDATA[cart]]></translation>
+      </item>
+      <item type="message" name="NoProductsInCart">
+        <translation language="nl"><![CDATA[Er bevinden zich geen producten in uw winkelwagen.]]></translation>
+        <translation language="en"><![CDATA[There are no products in your shopping cart.]]></translation>
+      </item>
+      <item type="label" name="Previous">
+        <translation language="nl"><![CDATA[vorige]]></translation>
+        <translation language="en"><![CDATA[previous]]></translation>
+      </item>
+      <item type="label" name="Next">
+        <translation language="nl"><![CDATA[volgende]]></translation>
+        <translation language="en"><![CDATA[next]]></translation>
+      </item>
+      <item type="label" name="ArticleNumberAbbreviation">
+        <translation language="nl"><![CDATA[art. nr.]]></translation>
+        <translation language="en"><![CDATA[sku nr.]]></translation>
+      </item>
+      <item type="label" name="Checkout">
+        <translation language="nl"><![CDATA[afrekenen]]></translation>
+        <translation language="en"><![CDATA[checkout]]></translation>
+      </item>
+      <item type="label" name="Step1HowToPay">
+        <translation language="nl"><![CDATA[stap 1: gewenste manier van afrekenen]]></translation>
+        <translation language="en"><![CDATA[step 1: required way to checkout]]></translation>
+      </item>
+      <item type="label" name="Step2Addresses">
+        <translation language="nl"><![CDATA[stap 2: adressen]]></translation>
+        <translation language="en"><![CDATA[step 2: addresses]]></translation>
+      </item>
+      <item type="label" name="Step4ShipmentMethod">
+        <translation language="nl"><![CDATA[stap 4: verzendmethode]]></translation>
+        <translation language="en"><![CDATA[step 4: shipment method]]></translation>
+      </item>
+      <item type="label" name="Step5PaymentMethod">
+        <translation language="nl"><![CDATA[stap 5: betaalmethode]]></translation>
+        <translation language="en"><![CDATA[step 5: payment method]]></translation>
+      </item>
+      <item type="label" name="Step6ConfirmOrder">
+        <translation language="nl"><![CDATA[stap 6: bevestig bestelling]]></translation>
+        <translation language="en"><![CDATA[step 6: confirm order]]></translation>
+      </item>
+      <item type="label" name="IAcceptTermsAndConditions">
+        <translation language="nl"><![CDATA[ik ga akkoord met de <a href="/algemene-voorwaarden" target="_blank">algemene voorwaarden</a>.]]></translation>
+        <translation language="en"><![CDATA[i accept the <a href="/terms-and-conditions" target="_blank">terms and conditions</a>.]]></translation>
+      </item>
+      <item type="label" name="NewCustomer">
+        <translation language="nl"><![CDATA[nieuwe klant]]></translation>
+        <translation language="en"><![CDATA[new customer]]></translation>
+      </item>
+      <item type="label" name="SignUp">
+        <translation language="nl"><![CDATA[registreren]]></translation>
+        <translation language="en"><![CDATA[sign up]]></translation>
+      </item>
+      <item type="label" name="DirectCheckout">
+        <translation language="nl"><![CDATA[direct afrekenen]]></translation>
+        <translation language="en"><![CDATA[direct checkout]]></translation>
+      </item>
+      <item type="message" name="HowWouldYouLikeToCheckout">
+        <translation language="nl"><![CDATA[Kies uw manier van afrekenen:]]></translation>
+        <translation language="en"><![CDATA[Choose a checkout type:]]></translation>
+      </item>
+      <item type="label" name="Continue">
+        <translation language="nl"><![CDATA[verder]]></translation>
+        <translation language="en"><![CDATA[continue]]></translation>
+      </item>
+      <item type="label" name="FirstName">
+        <translation language="nl"><![CDATA[voornaam]]></translation>
+        <translation language="en"><![CDATA[first name]]></translation>
+      </item>
+      <item type="label" name="LastName">
+        <translation language="nl"><![CDATA[achternaam]]></translation>
+        <translation language="en"><![CDATA[last name]]></translation>
+      </item>
+      <item type="label" name="EmailAddress">
+        <translation language="nl"><![CDATA[e-mailadres]]></translation>
+        <translation language="en"><![CDATA[email address]]></translation>
+      </item>
+      <item type="label" name="Phone">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone]]></translation>
+      </item>
+      <item type="label" name="Street">
+        <translation language="nl"><![CDATA[straat]]></translation>
+        <translation language="en"><![CDATA[street]]></translation>
+      </item>
+      <item type="label" name="HouseNumber">
+        <translation language="nl"><![CDATA[huisnummer]]></translation>
+        <translation language="en"><![CDATA[house number]]></translation>
+      </item>
+      <item type="label" name="HouseNumberAddition">
+        <translation language="nl"><![CDATA[huisnummer toevoeging]]></translation>
+        <translation language="en"><![CDATA[house number addition]]></translation>
+      </item>
+      <item type="label" name="City">
+        <translation language="nl"><![CDATA[plaats]]></translation>
+        <translation language="en"><![CDATA[city]]></translation>
+      </item>
+      <item type="label" name="ZipCode">
+        <translation language="nl"><![CDATA[postcode]]></translation>
+        <translation language="en"><![CDATA[zip code]]></translation>
+      </item>
+      <item type="label" name="InvoiceAndShipmentAddressAreTheSame">
+        <translation language="nl"><![CDATA[mijn factuur- en afleveradres zijn hetzelfde]]></translation>
+        <translation language="en"><![CDATA[my invoice and shipment address are the same]]></translation>
+      </item>
+      <item type="label" name="PaymentSuccessUrl">
+        <translation language="nl"><![CDATA[bestelling-geplaatst]]></translation>
+        <translation language="en"><![CDATA[order-created]]></translation>
+      </item>
+      <item type="label" name="PaymentCancelledUrl">
+        <translation language="nl"><![CDATA[bestelling-geannuleed]]></translation>
+        <translation language="en"><![CDATA[order-cancelled]]></translation>
+      </item>
+      <item type="label" name="NewOrderMailSubject">
+        <translation language="nl"><![CDATA[Bestelnummer %s]]></translation>
+        <translation language="en"><![CDATA[Ordernumber %s]]></translation>
+      </item>
+      <item type="label" name="UpdateOrderMailSubject">
+        <translation language="nl"><![CDATA[Uw bestelling %s]]></translation>
+        <translation language="en"><![CDATA[Your order %s]]></translation>
+      </item>
+      <item type="label" name="OrderGreeting">
+        <translation language="nl"><![CDATA[beste %s,]]></translation>
+        <translation language="en"><![CDATA[dear %s,]]></translation>
+      </item>
+      <item type="label" name="OrderDetails">
+        <translation language="nl"><![CDATA[bestelgegevens]]></translation>
+        <translation language="en"><![CDATA[order details]]></translation>
+      </item>
+      <item type="label" name="SubTotal">
+        <translation language="nl"><![CDATA[sub totaal]]></translation>
+        <translation language="en"><![CDATA[sub total]]></translation>
+      </item>
+      <item type="label" name="Total">
+        <translation language="nl"><![CDATA[totaal]]></translation>
+        <translation language="en"><![CDATA[total]]></translation>
+      </item>
+      <item type="label" name="OrderNumber">
+        <translation language="nl"><![CDATA[bestelnummer]]></translation>
+        <translation language="en"><![CDATA[order number]]></translation>
+      </item>
+      <item type="label" name="OrderCreatedAt">
+        <translation language="nl"><![CDATA[bestelling toegevoegd op]]></translation>
+        <translation language="en"><![CDATA[order created at]]></translation>
+      </item>
+      <item type="label" name="InvoiceAddress">
+        <translation language="nl"><![CDATA[factuuradres]]></translation>
+        <translation language="en"><![CDATA[invoice address]]></translation>
+      </item>
+      <item type="label" name="ShipmentAddress">
+        <translation language="nl"><![CDATA[verzendadres]]></translation>
+        <translation language="en"><![CDATA[shipment address]]></translation>
+      </item>
+      <item type="label" name="ShipmentMethod">
+        <translation language="nl"><![CDATA[verzendmethode]]></translation>
+        <translation language="en"><![CDATA[shipment method]]></translation>
+      </item>
+      <item type="label" name="OrderStatus">
+        <translation language="nl"><![CDATA[bestelstatus]]></translation>
+        <translation language="en"><![CDATA[order status]]></translation>
+      </item>
+      <item type="label" name="OrderInstruction">
+        <translation language="nl"><![CDATA[bestelinstructie]]></translation>
+        <translation language="en"><![CDATA[order instruction]]></translation>
+      </item>
+      <item type="label" name="ThankYouForYourOrder">
+        <translation language="nl"><![CDATA[bedankt voor uw bestelling]]></translation>
+        <translation language="en"><![CDATA[thank you for your order]]></translation>
+      </item>
+      <item type="label" name="OrderCancelled">
+        <translation language="nl"><![CDATA[bestelling geannuleerd]]></translation>
+        <translation language="en"><![CDATA[order cancelled]]></translation>
+      </item>
+      <item type="message" name="OrderThanksText">
+        <translation language="nl"><![CDATA[Bedankt voor uw bestelling. Hieronder vind u een overzicht van de bestelgegevens. Bij vragen kunt u altijd antwoorden op deze email of bel ons.]]></translation>
+        <translation language="en"><![CDATA[Thank you for your order. Below you will find the order details. If there are any questions, please reply to this e-mail or call us.]]></translation>
+      </item>
+      <item type="message" name="NewOrderCreated">
+        <translation language="nl"><![CDATA[Er is zojuist een nieuwe bestelling geplaatst.]]></translation>
+        <translation language="en"><![CDATA[A new order has been created.]]></translation>
+      </item>
+      <item type="message" name="OrderUpdated">
+        <translation language="nl"><![CDATA[Uw bestelling is zojuist bijgewerkt.]]></translation>
+        <translation language="en"><![CDATA[Your order has been updated.]]></translation>
+      </item>
+      <item type="label" name="KindRegards">
+        <translation language="nl"><![CDATA[Met vriendelijke groet,]]></translation>
+        <translation language="en"><![CDATA[Kind regards,]]></translation>
+      </item>
+      <item type="label" name="ChooseYourBank">
+        <translation language="nl"><![CDATA[selecteer uw bank]]></translation>
+        <translation language="en"><![CDATA[choose your bank]]></translation>
+      </item>
+      <item type="label" name="Page">
+        <translation language="nl"><![CDATA[pagina]]></translation>
+        <translation language="en"><![CDATA[page]]></translation>
+      </item>
+      <item type="label" name="RequestQuoteUrl">
+        <translation language="nl"><![CDATA[offerte-aanvragen]]></translation>
+        <translation language="en"><![CDATA[request-quote]]></translation>
+      </item>
+      <item type="label" name="RequestQuote">
+        <translation language="nl"><![CDATA[offerte aanvragen]]></translation>
+        <translation language="en"><![CDATA[request quote]]></translation>
+      </item>
+      <item type="label" name="Step1AddressDetails">
+        <translation language="nl"><![CDATA[stap 1: adresgegevens]]></translation>
+        <translation language="en"><![CDATA[step 1: address details]]></translation>
+      </item>
+      <item type="label" name="Step2YourQuoteRequest">
+        <translation language="nl"><![CDATA[stap 2: uw offerte aanvraag]]></translation>
+        <translation language="en"><![CDATA[step 2: your quote reqeust]]></translation>
+      </item>
+      <item type="label" name="YourQuoteRequestMailSubject">
+        <translation language="nl"><![CDATA[uw offerte aanvraag]]></translation>
+        <translation language="en"><![CDATA[your quote request]]></translation>
+      </item>
+      <item type="label" name="NewQuoteRequestMailSubject">
+        <translation language="nl"><![CDATA[nieuwe offerte aanvraag]]></translation>
+        <translation language="en"><![CDATA[new quote request]]></translation>
+      </item>
+      <item type="message" name="QuoteThanksText">
+        <translation language="nl"><![CDATA[Bedankt voor uw offerte aanvraag. Wij nemen spoedig contact met u op. Onderstaand vind u de gegevens van de offerte aanvraag.]]></translation>
+        <translation language="en"><![CDATA[Thank you for your quote request. We will contact you as soon as possible. Bellow you will find the quote request.]]></translation>
+      </item>
+      <item type="label" name="AddressDetails">
+        <translation language="nl"><![CDATA[adresgegevens]]></translation>
+        <translation language="en"><![CDATA[address details]]></translation>
+      </item>
+      <item type="label" name="QuoteDetails">
+        <translation language="nl"><![CDATA[offertegegevens]]></translation>
+        <translation language="en"><![CDATA[quote details]]></translation>
+      </item>
+      <item type="label" name="QuoteRequestedAt">
+        <translation language="nl"><![CDATA[offerte aangevraagd op]]></translation>
+        <translation language="en"><![CDATA[quote requested at]]></translation>
+      </item>
+      <item type="label" name="QuoteGreeting">
+        <translation language="nl"><![CDATA[beste %s,]]></translation>
+        <translation language="en"><![CDATA[dear %s,]]></translation>
+      </item>
+      <item type="message" name="NewQuoteRequested">
+        <translation language="nl"><![CDATA[Er is zojuist een nieuwe offerte aanvraag geplaatst.]]></translation>
+        <translation language="en"><![CDATA[A new quote request has been submitted.]]></translation>
+      </item>
+      <item type="label" name="ThankYouForYouQuote">
+        <translation language="nl"><![CDATA[bedankt voor uw aanvraag]]></translation>
+        <translation language="en"><![CDATA[thank you for your request]]></translation>
+      </item>
+      <item type="label" name="ShowMore">
+        <translation language="nl"><![CDATA[meer weergeven...]]></translation>
+        <translation language="en"><![CDATA[show more...]]></translation>
+      </item>
+      <item type="label" name="ShowLess">
+        <translation language="nl"><![CDATA[minder weergeven...]]></translation>
+        <translation language="en"><![CDATA[show less...]]></translation>
+      </item>
+      <item type="label" name="ContinueShopping">
+        <translation language="nl"><![CDATA[ga verder met winkelen]]></translation>
+        <translation language="en"><![CDATA[continue shopping]]></translation>
+      </item>
+      <item type="label" name="ProductAddedToQuote">
+        <translation language="nl"><![CDATA[product toegevoegd aan offerte]]></translation>
+        <translation language="en"><![CDATA[product added to quote]]></translation>
+      </item>
+      <item type="label" name="Weight">
+        <translation language="nl"><![CDATA[gewicht]]></translation>
+        <translation language="en"><![CDATA[weight]]></translation>
+      </item>
+      <item type="label" name="MakeYourChoice">
+        <translation language="nl"><![CDATA[maak direct een keuze]]></translation>
+        <translation language="en"><![CDATA[make your choice]]></translation>
+      </item>
+      <item type="label" name="FilesFor">
+        <translation language="nl"><![CDATA[bestanden voor %s]]></translation>
+        <translation language="en"><![CDATA[files for %s]]></translation>
+      </item>
+      <item type="label" name="Download">
+        <translation language="nl"><![CDATA[download]]></translation>
+        <translation language="en"><![CDATA[download]]></translation>
+      </item>
+      <item type="label" name="Search">
+        <translation language="nl"><![CDATA[zoeken]]></translation>
+        <translation language="en"><![CDATA[search]]></translation>
+      </item>
+      <item type="label" name="SearchFor">
+        <translation language="nl"><![CDATA[zoeken naar "%s"]]></translation>
+        <translation language="en"><![CDATA[search for "%s"]]></translation>
+      </item>
+      <item type="label" name="WhatDoYouWantToSearch">
+        <translation language="nl"><![CDATA[Waar bent u naar opzoek?]]></translation>
+        <translation language="en"><![CDATA[What are you looking for?]]></translation>
+      </item>
+      <item type="message" name="EnterSearchTerm">
+        <translation language="nl"><![CDATA[Vul een zoekterm in voordat er resultaten getoont kunnen worden.]]></translation>
+        <translation language="en"><![CDATA[Enter a search term before we can show any search results.]]></translation>
+      </item>
+      <item type="message" name="NoSearchResultsFor">
+        <translation language="nl"><![CDATA[Helaas hebben we niks kunnen voor de zoekopdracht "%s".]]></translation>
+        <translation language="en"><![CDATA[We can not find anything for the search term "%s".]]></translation>
+      </item>
+      <item type="label" name="PackingSlip">
+        <translation language="nl"><![CDATA[pakbon]]></translation>
+        <translation language="en"><![CDATA[packing slip]]></translation>
+      </item>
+      <item type="label" name="Invoice">
+        <translation language="nl"><![CDATA[factuur]]></translation>
+        <translation language="en"><![CDATA[invoice]]></translation>
+      </item>
+      <item type="label" name="Order">
+        <translation language="nl"><![CDATA[bestelling]]></translation>
+        <translation language="en"><![CDATA[order]]></translation>
+      </item>
+      <item type="label" name="CreatedAt">
+        <translation language="nl"><![CDATA[aangemaakt op]]></translation>
+        <translation language="en"><![CDATA[created at]]></translation>
+      </item>
+      <item type="label" name="InvoiceNumber">
+        <translation language="nl"><![CDATA[factuur nummer]]></translation>
+        <translation language="en"><![CDATA[invoice number]]></translation>
+      </item>
+      <item type="label" name="PhoneNumber">
+        <translation language="nl"><![CDATA[telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[phone number]]></translation>
+      </item>
+      <item type="label" name="CompanyName">
+        <translation language="nl"><![CDATA[bedrijfsnaam]]></translation>
+        <translation language="en"><![CDATA[company name]]></translation>
+      </item>
+      <item type="label" name="ProductsInCategory">
+        <translation language="nl"><![CDATA[producten voor %category%]]></translation>
+        <translation language="en"><![CDATA[products in %category%]]></translation>
+      </item>
+      <item type="label" name="OrderProduct">
+        <translation language="nl"><![CDATA[bestel product]]></translation>
+        <translation language="en"><![CDATA[order product]]></translation>
+      </item>
+      <item type="label" name="ViewProduct">
+        <translation language="nl"><![CDATA[bekijk product]]></translation>
+        <translation language="en"><![CDATA[view product]]></translation>
+      </item>
+      <item type="label" name="Width">
+        <translation language="nl"><![CDATA[breedte]]></translation>
+        <translation language="en"><![CDATA[width]]></translation>
+      </item>
+      <item type="label" name="Height">
+        <translation language="nl"><![CDATA[hoogte]]></translation>
+        <translation language="en"><![CDATA[height]]></translation>
+      </item>
+      <item type="label" name="CloseWindow">
+        <translation language="nl"><![CDATA[sluit scherm]]></translation>
+        <translation language="en"><![CDATA[close window]]></translation>
+      </item>
+      <item type="message" name="ProductAddedToCart">
+        <translation language="nl"><![CDATA[Het product is toegevoegd aan de winkelwagen. Maak hieronder uw keuze.]]></translation>
+        <translation language="en"><![CDATA[The product is added to the cart. Make your choice below.]]></translation>
+      </item>
+      <item type="label" name="CreateAccount">
+        <translation language="nl"><![CDATA[account aanmaken]]></translation>
+        <translation language="en"><![CDATA[create account]]></translation>
+      </item>
+      <item type="label" name="Select">
+        <translation language="nl"><![CDATA[selecteren]]></translation>
+        <translation language="en"><![CDATA[select]]></translation>
+      </item>
+      <item type="label" name="Dimensions">
+        <translation language="nl"><![CDATA[afmetingen]]></translation>
+        <translation language="en"><![CDATA[dimensions]]></translation>
+      </item>
+      <item type="label" name="Reset">
+        <translation language="nl"><![CDATA[opnieuw]]></translation>
+        <translation language="en"><![CDATA[reset]]></translation>
+      </item>
+      <item type="label" name="ReadMore">
+        <translation language="nl"><![CDATA[lees meer]]></translation>
+        <translation language="en"><![CDATA[read more]]></translation>
+      </item>
+      <item type="error" name="TheMinimalWidthIs">
+        <translation language="nl"><![CDATA[De minimale breedte is %sMM]]></translation>
+        <translation language="en"><![CDATA[The minimal width is %sMM]]></translation>
+      </item>
+      <item type="error" name="TheMinimalHeightIs">
+        <translation language="nl"><![CDATA[De minimale hoogte is %sMM]]></translation>
+        <translation language="en"><![CDATA[The minimal height is %sMM]]></translation>
+      </item>
+      <item type="error" name="TheMaximalWidthIs">
+        <translation language="nl"><![CDATA[De maximale breedte is %sMM]]></translation>
+        <translation language="en"><![CDATA[The maximale width is %sMM]]></translation>
+      </item>
+      <item type="error" name="TheMaximalHeightIs">
+        <translation language="nl"><![CDATA[De maximale hoogte is %sMM]]></translation>
+        <translation language="en"><![CDATA[The maximale height is %sMM]]></translation>
+      </item>
+      <item type="label" name="CreatAnAccount">
+        <translation language="nl"><![CDATA[maak een account]]></translation>
+        <translation language="en"><![CDATA[create an account]]></translation>
+      </item>
+      <item type="label" name="Optional">
+        <translation language="nl"><![CDATA[optioneel]]></translation>
+        <translation language="en"><![CDATA[optional]]></translation>
+      </item>
+      <item type="label" name="ContinueWithoutLogin">
+        <translation language="nl"><![CDATA[doorgaan zonder in te loggen]]></translation>
+        <translation language="en"><![CDATA[continue without login]]></translation>
+      </item>
+      <item type="label" name="ContinueWithoutLogin">
+        <translation language="nl"><![CDATA[doorgaan zonder in te loggen]]></translation>
+        <translation language="en"><![CDATA[continue without login]]></translation>
+      </item>
+      <item type="label" name="ChangeShipmentMethod">
+        <translation language="nl"><![CDATA[verander verzendmethode]]></translation>
+        <translation language="en"><![CDATA[change shipment method]]></translation>
+      </item>
+      <item type="label" name="ChangePaymentMethod">
+        <translation language="nl"><![CDATA[verander betaalmethode]]></translation>
+        <translation language="en"><![CDATA[change payment method]]></translation>
+      </item>
+      <item type="label" name="ChangeAddressData">
+        <translation language="nl"><![CDATA[verander adresgegevens]]></translation>
+        <translation language="en"><![CDATA[change address data]]></translation>
+      </item>
+      <item type="message" name="PaymentExpired">
+        <translation language="nl"><![CDATA[De betaling is verlopen, probeert u het nogmaals.]]></translation>
+        <translation language="en"><![CDATA[Payment is expired, please try again]]></translation>
+      </item>
+      <item type="message" name="PaymentCancelled">
+        <translation language="nl"><![CDATA[De betaling is geannuleerd, probeert u het nogmaals.]]></translation>
+        <translation language="en"><![CDATA[Payment is canceled, please try again]]></translation>
+      </item>
+      <item type="label" name="PaymentMethod">
+        <translation language="nl"><![CDATA[betaalmethode]]></translation>
+        <translation language="en"><![CDATA[payment method]]></translation>
+      </item>
+      <item type="label" name="Delivery">
+        <translation language="nl"><![CDATA[verzending]]></translation>
+        <translation language="en"><![CDATA[delivery]]></translation>
+      </item>
+      <item type="label" name="ConfirmOrder">
+        <translation language="nl"><![CDATA[bevestig bestelling]]></translation>
+        <translation language="en"><![CDATA[confirm order]]></translation>
+      </item>
+      <item type="label" name="Pay">
+        <translation language="nl"><![CDATA[betalen]]></translation>
+        <translation language="en"><![CDATA[pay]]></translation>
+      </item>
+      <item type="label" name="PayOrder">
+        <translation language="nl"><![CDATA[betaal bestelling]]></translation>
+        <translation language="en"><![CDATA[pay order]]></translation>
+      </item>
+      <item type="label" name="SameInvoiceAddress">
+        <translation language="nl"><![CDATA[zelfde factuur adres]]></translation>
+        <translation language="en"><![CDATA[same invoice address]]></translation>
+      </item>
+      <item type="label" name="ConfirmationOfYourOrder">
+        <translation language="nl"><![CDATA[bevestig van je bestelling: %s]]></translation>
+        <translation language="en"><![CDATA[confirm of your order: %s]]></translation>
+      </item>
+      <item type="label" name="Thanks">
+        <translation language="nl"><![CDATA[bedankt]]></translation>
+        <translation language="en"><![CDATA[thanks]]></translation>
+      </item>
+      <item type="label" name="ForYourOrder">
+        <translation language="nl"><![CDATA[voor je bestelling]]></translation>
+        <translation language="en"><![CDATA[for your order]]></translation>
+      </item>
+      <item type="label" name="OrderNr">
+        <translation language="nl"><![CDATA[Bestellingsnummer]]></translation>
+        <translation language="en"><![CDATA[Ordernumber]]></translation>
+      </item>
+      <item type="label" name="Summary">
+        <translation language="nl"><![CDATA[samenvatting]]></translation>
+        <translation language="en"><![CDATA[summary]]></translation>
+      </item>
+      <item type="label" name="AddAddress">
+        <translation language="nl"><![CDATA[adres toevoegen]]></translation>
+        <translation language="en"><![CDATA[add address]]></translation>
+      </item>
+      <item type="label" name="MyOrders">
+        <translation language="nl"><![CDATA[mijn bestellingen]]></translation>
+        <translation language="en"><![CDATA[my orders]]></translation>
+      </item>
+      <item type="message" name="MyOrdersDescription">
+        <translation language="nl"><![CDATA[Onderstaand vind je de bestellingen die je bij ons hebt geplaatst.]]></translation>
+        <translation language="en"><![CDATA[Bellow you will find the orders which you purchased.]]></translation>
+      </item>
+      <item type="message" name="NoOrdersPlaced">
+        <translation language="nl"><![CDATA[Er zijn nog een bestellingen geplaatst.]]></translation>
+        <translation language="en"><![CDATA[No orders are placed.]]></translation>
+      </item>
+      <item type="label" name="State">
+        <translation language="nl"><![CDATA[status]]></translation>
+        <translation language="en"><![CDATA[state]]></translation>
+      </item>
+      <item type="label" name="FollowYourOrder">
+        <translation language="nl"><![CDATA[volg je bestelling]]></translation>
+        <translation language="en"><![CDATA[follow your order]]></translation>
+      </item>
+      <item type="label" name="Information">
+        <translation language="nl"><![CDATA[informatie]]></translation>
+        <translation language="en"><![CDATA[information]]></translation>
+      </item>
+      <item type="label" name="View">
+        <translation language="nl"><![CDATA[bekijken]]></translation>
+        <translation language="en"><![CDATA[view]]></translation>
+      </item>
+      <item type="label" name="MyAddresses">
+        <translation language="nl"><![CDATA[mijn adressen]]></translation>
+        <translation language="en"><![CDATA[my addresses]]></translation>
+      </item>
+      <item type="message" name="NoAddressesAvailable">
+        <translation language="nl"><![CDATA[Geen adressen aanwezig.]]></translation>
+        <translation language="en"><![CDATA[No addresses available.]]></translation>
+      </item>
+      <item type="label" name="EditAddress">
+        <translation language="nl"><![CDATA[bewerk adres]]></translation>
+        <translation language="en"><![CDATA[edit address]]></translation>
+      </item>
+      <item type="label" name="AddAddress">
+        <translation language="nl"><![CDATA[adres toevoegen]]></translation>
+        <translation language="en"><![CDATA[add address]]></translation>
+      </item>
+      <item type="label" name="YourCompanyName">
+        <translation language="nl"><![CDATA[jouw bedrijfsnaam]]></translation>
+        <translation language="en"><![CDATA[your company name]]></translation>
+      </item>
+      <item type="label" name="YourFirstName">
+        <translation language="nl"><![CDATA[jouw voornaam]]></translation>
+        <translation language="en"><![CDATA[your first name]]></translation>
+      </item>
+      <item type="label" name="YourLastName">
+        <translation language="nl"><![CDATA[jouw achternaam]]></translation>
+        <translation language="en"><![CDATA[your last name]]></translation>
+      </item>
+      <item type="label" name="YourZipCode">
+        <translation language="nl"><![CDATA[jouw postcode]]></translation>
+        <translation language="en"><![CDATA[your zip code]]></translation>
+      </item>
+      <item type="label" name="YourHouseNumber">
+        <translation language="nl"><![CDATA[jouw huisnummer]]></translation>
+        <translation language="en"><![CDATA[your house number]]></translation>
+      </item>
+      <item type="label" name="YourHouseNumberAddition">
+        <translation language="nl"><![CDATA[jouw huisnummer toevoeging (optioneel)]]></translation>
+        <translation language="en"><![CDATA[your house number addition]]></translation>
+      </item>
+      <item type="label" name="YourStreet">
+        <translation language="nl"><![CDATA[jouw straatnaam]]></translation>
+        <translation language="en"><![CDATA[your street]]></translation>
+      </item>
+      <item type="label" name="YourCity">
+        <translation language="nl"><![CDATA[jouw plaatsnam]]></translation>
+        <translation language="en"><![CDATA[your city]]></translation>
+      </item>
+      <item type="label" name="YourEmailAddress">
+        <translation language="nl"><![CDATA[jouw e-mailadres]]></translation>
+        <translation language="en"><![CDATA[your e-mail address]]></translation>
+      </item>
+      <item type="label" name="YourPassword">
+        <translation language="nl"><![CDATA[jouw wachtwoord]]></translation>
+        <translation language="en"><![CDATA[your password]]></translation>
+      </item>
+      <item type="label" name="Description">
+        <translation language="nl"><![CDATA[omschrijving]]></translation>
+        <translation language="en"><![CDATA[description]]></translation>
+      </item>
+      <item type="label" name="PreviousStep">
+        <translation language="nl"><![CDATA[vorige stap]]></translation>
+        <translation language="en"><![CDATA[previous step]]></translation>
+      </item>
+      <item type="label" name="InvoiceDate">
+        <translation language="nl"><![CDATA[factuur datum]]></translation>
+        <translation language="en"><![CDATA[invoice date]]></translation>
+      </item>
+      <item type="label" name="DimensionInstructions">
+        <translation language="nl"><![CDATA[meet instructies]]></translation>
+        <translation language="en"><![CDATA[dimension instructions]]></translation>
+      </item>
+      <item type="label" name="EnterCustomValue">
+        <translation language="nl"><![CDATA[anders...]]></translation>
+        <translation language="en"><![CDATA[other...]]></translation>
+      </item>
+      <item type="label" name="OtherValue">
+        <translation language="nl"><![CDATA[andere waarde]]></translation>
+        <translation language="en"><![CDATA[other value]]></translation>
+      </item>
+      <item type="label" name="MakeAChoicePlaceholder">
+        <translation language="nl"><![CDATA[- maak een keuze -]]></translation>
+        <translation language="en"><![CDATA[- make a choice -]]></translation>
+      </item>
+      <item type="label" name="Edit">
+        <translation language="nl"><![CDATA[bewerken]]></translation>
+        <translation language="en"><![CDATA[edit]]></translation>
+      </item>
+      <item type="label" name="Add">
+        <translation language="nl"><![CDATA[toevoegen]]></translation>
+        <translation language="en"><![CDATA[add]]></translation>
+      </item>
+      <item type="label" name="GuestOrderTracking">
+        <translation language="nl"><![CDATA[volg bestelling als gast]]></translation>
+        <translation language="en"><![CDATA[guest order tracking]]></translation>
+      </item>
+      <item type="error" name="CantFindOrderWithGivenData">
+        <translation language="nl"><![CDATA[kan geen bestelling vinden met de opgegeven data]]></translation>
+        <translation language="en"><![CDATA[can't find order with given data]]></translation>
+      </item>
+      <item type="message" name="DimensionUnitTypeDescription">
+        <translation language="nl"><![CDATA[Gelieve alle maten in <strong class="text-danger">milimeters</strong> opgeven]]></translation>
+        <translation language="en"><![CDATA[Please enter all dimensions in <strong class="text-danger">milimeters</strong>]]></translation>
+      </item>
+      <item type="label" name="EnterAndOrder">
+        <translation language="nl"><![CDATA[invullen en bestellen]]></translation>
+        <translation language="en"><![CDATA[enter and order]]></translation>
+      </item>
+      <item type="message" name="EnterDimensionsAndOrder">
+        <translation language="nl"><![CDATA[Maten invullen en bestellen!]]></translation>
+        <translation language="en"><![CDATA[Enter dimensions and order!]]></translation>
+      </item>
+      <item type="error" name="CantFindProductWithGivenDimensions">
+        <translation language="nl"><![CDATA[Er is geen product met op de gegeven maten!]]></translation>
+        <translation language="en"><![CDATA[There is no product with the given dimensions!]]></translation>
+      </item>
+      <item type="label" name="OtherRALColor">
+        <translation language="nl"><![CDATA[andere RAL kleur]]></translation>
+        <translation language="en"><![CDATA[other RAL color]]></translation>
+      </item>
+      <item type="label" name="EnterYourOwnRALColor">
+        <translation language="nl"><![CDATA[vul hier je eigen RAL kleur in]]></translation>
+        <translation language="en"><![CDATA[enter here your own RAL color]]></translation>
+      </item>
+      <item type="label" name="OrderNow">
+        <translation language="nl"><![CDATA[nu bestellen]]></translation>
+        <translation language="en"><![CDATA[order now]]></translation>
+      </item>
+      <item type="label" name="ExistingCustomer">
+        <translation language="nl"><![CDATA[bestaande klant]]></translation>
+        <translation language="en"><![CDATA[existing customer]]></translation>
+      </item>
+      <item type="label" name="ProductionDimensions">
+        <translation language="nl"><![CDATA[productie afmetingen]]></translation>
+        <translation language="en"><![CDATA[production dimensions]]></translation>
+      </item>
+      <item type="label" name="YourPhoneNumber">
+        <translation language="nl"><![CDATA[jouw telefoonnummer]]></translation>
+        <translation language="en"><![CDATA[your phone number]]></translation>
+      </item>
+      <item type="label" name="AddCartRule">
+        <translation language="nl"><![CDATA[kortingscode toevoegen]]></translation>
+        <translation language="en"><![CDATA[add discount code]]></translation>
+      </item>
+      <item type="label" name="DiscountCode">
+        <translation language="nl"><![CDATA[kortingscode]]></translation>
+        <translation language="en"><![CDATA[discount code]]></translation>
+      </item>
+      <item type="label" name="AddDiscountCode">
+        <translation language="nl"><![CDATA[kortingscode toevoegen]]></translation>
+        <translation language="en"><![CDATA[add discount code]]></translation>
+      </item>
+      <item type="label" name="Discount">
+        <translation language="nl"><![CDATA[korting]]></translation>
+        <translation language="en"><![CDATA[discount]]></translation>
+      </item>
+      <item type="error" name="ThisCartRuleIsNotValid">
+        <translation language="nl"><![CDATA[Deze kortingscode is niet (meer) geldig]]></translation>
+        <translation language="en"><![CDATA[This discountcode is not valid]]></translation>
+      </item>
+      <item type="error" name="DiscountCodeNotFound">
+        <translation language="nl"><![CDATA[Kortingscode niet gevonden]]></translation>
+        <translation language="en"><![CDATA[Discount code not found]]></translation>
+      </item>
+      <item type="label" name="YourCountryPlaceholder">
+        <translation language="nl"><![CDATA[- jouw land -]]></translation>
+        <translation language="en"><![CDATA[- your country -]]></translation>
+      </item>
+      <item type="label" name="Submit">
+        <translation language="nl"><![CDATA[verzenden]]></translation>
+        <translation language="en"><![CDATA[submit]]></translation>
+      </item>
+      <item type="error" name="ThisValueIsInvalid">
+        <translation language="nl"><![CDATA[Geen geldige waarde opgegeven.]]></translation>
+        <translation language="en"><![CDATA[This value is invalid.]]></translation>
+      </item>
+      <item type="message" name="NewCustomerCheckoutDescription">
+        <translation language="nl"><![CDATA[Plaats uw bestelling als een nieuwe klant. Wilt u vaker bij ons bestellen? Maak dan direct een account aan zodat u sneller kunt afrekenen.]]></translation>
+        <translation language="en"><![CDATA[Place your order as a new customer. Would you like to order more? Create an account for a faster checkout.]]></translation>
+      </item>
+      <item type="label" name="ContactDetails">
+        <translation language="nl"><![CDATA[contactgegevens]]></translation>
+        <translation language="en"><![CDATA[contact details]]></translation>
+      </item>
+      <item type="label" name="RepeatPassword">
+        <translation language="nl"><![CDATA[herhaal wachtwoord]]></translation>
+        <translation language="en"><![CDATA[repeat password]]></translation>
+      </item>
+      <item type="label" name="RepeatYourPassword">
+        <translation language="nl"><![CDATA[herhaal jouw wachtwoord]]></translation>
+        <translation language="en"><![CDATA[repeat your password]]></translation>
+      </item>
+      <item type="error" name="NotMatchingPasswords">
+        <translation language="nl"><![CDATA[De wachtwoorden komen niet overeen]]></translation>
+        <translation language="en"><![CDATA[The password fields must match.]]></translation>
+      </item>
+    </Core>
+  </Frontend>
+</locale>

@@ -1,0 +1,175 @@
+doctrine:
+  dbal:
+    types:
+      commerce_category_image_type: Backend\Modules\Commerce\Domain\Category\ImageDBALType
+      commerce_brand_image_type: Backend\Modules\Commerce\Domain\Brand\ImageDBALType
+  orm:
+    mappings:
+      commerce_category:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Category"
+        alias: CommerceCategory
+        prefix: Backend\Modules\Commerce\Domain\Category
+      commerce_product:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Product"
+        alias: CommerceProduct
+        prefix: Backend\Modules\Commerce\Domain\Product
+      commerce_brand:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Brand"
+        alias: CommerceBrand
+        prefix: Backend\Modules\Commerce\Domain\Brand
+      commerce_order:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Order"
+        alias: CommerceOrder
+        prefix: Backend\Modules\Commerce\Domain\Order
+      commerce_order_address:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderAddress"
+        alias: CommerceOrderAddress
+        prefix: Backend\Modules\Commerce\Domain\OrderAddress
+      commerce_order_vat:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderVat"
+        alias: CommerceOrderVat
+        prefix: Backend\Modules\Commerce\Domain\OrderVat
+      commerce_order_product:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderProduct"
+        alias: CommerceOrderProduct
+        prefix: Backend\Modules\Commerce\Domain\OrderProduct
+      commerce_order_product_option:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderProductOption"
+        alias: CommerceOrderProductOption
+        prefix: Backend\Modules\Commerce\Domain\OrderProductOption
+      commerce_order_product_notification:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderProductNotification"
+        alias: CommerceOrderProductNotification
+        prefix: Backend\Modules\Commerce\Domain\OrderProductNotification
+      commerce_order_history:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderHistory"
+        alias: CommerceOrderHistory
+        prefix: Backend\Modules\Commerce\Domain\OrderHistory
+      commerce_order_status:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderStatus"
+        alias: CommerceOrderStatus
+        prefix: Backend\Modules\Commerce\Domain\OrderStatus
+      commerce_order_rule:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/OrderRule"
+        alias: CommerceOrderRule
+        prefix: Backend\Modules\Commerce\Domain\OrderRule
+      commerce_specification:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Specification"
+        alias: CommerceSpecification
+        prefix: Backend\Modules\Commerce\Domain\Specification
+      commerce_specification_value:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/SpecificationValue"
+        alias: CommerceSpecificationValue
+        prefix: Backend\Modules\Commerce\Domain\SpecificationValue
+      commerce_vat:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Vat"
+        alias: CommerceVat
+        prefix: Backend\Modules\Commerce\Domain\Vat
+      commerce_country:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Country"
+        alias: CommerceCountry
+        prefix: Backend\Modules\Commerce\Domain\Country
+      commerce_stock_status:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/StockStatus"
+        alias: CommerceStockStatus
+        prefix: Backend\Modules\Commerce\Domain\StockStatus
+      commerce_cart:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Cart"
+        alias: CommerceCart
+        prefix: Backend\Modules\Commerce\Domain\Cart
+      commerce_cart_rule:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/CartRule"
+        alias: CommerceCartRule
+        prefix: Backend\Modules\Commerce\Domain\CartRule
+      commerce_shipment_method:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ShipmentMethod"
+        alias: CommerceShipmentMethod
+        prefix: Backend\Modules\Commerce\Domain\ShipmentMethod
+      commerce_payment_method:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/PaymentMethod"
+        alias: CommercePaymentMethod
+        prefix: Backend\Modules\Commerce\Domain\PaymentMethod
+      commerce_product_dimension:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductDimension"
+        alias: CommerceProductDimension
+        prefix: Backend\Modules\Commerce\Domain\ProductDimension
+      commerce_product_dimension_notification:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductDimensionNotification"
+        alias: CommerceProductDimensionNotification
+        prefix: Backend\Modules\Commerce\Domain\ProductDimensionNotification
+      commerce_product_option:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductOption"
+        alias: CommerceProductOption
+        prefix: Backend\Modules\Commerce\Domain\ProductOption
+      commerce_product_option_value:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductOptionValue"
+        alias: CommerceProductOption
+        prefix: Backend\Modules\Commerce\Domain\ProductOptionValue
+      commerce_product_special:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/ProductSpecial"
+        alias: CommerceProductSpecial
+        prefix: Backend\Modules\Commerce\Domain\ProductSpecial
+      commerce_commerce_up_sell_product:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/UpSellProduct"
+        alias: CommerceUpSellProduct
+        prefix: Backend\Modules\Commerce\Domain\UpSellProduct
+      commerce_account:
+        type: annotation
+        is_bundle: false
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Account"
+        alias: CommerceAccount
+        prefix: Backend\Modules\Commerce\Domain\Account

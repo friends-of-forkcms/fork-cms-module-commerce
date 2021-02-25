@@ -1,0 +1,21 @@
+services:
+  commerce.handler.create_order_history:
+    class: Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistoryHandler
+    arguments:
+      - "@commerce.repository.order_history"
+      - "@fork.settings"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory,
+        }
+
+  commerce.handler.delete_order_history:
+    class: Backend\Modules\Commerce\Domain\OrderHistory\Command\DeleteOrderHistoryHandler
+    arguments:
+      - "@commerce.repository.order_history"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\OrderHistory\Command\DeleteOrderHistory,
+        }

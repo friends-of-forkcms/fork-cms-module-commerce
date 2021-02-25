@@ -1,0 +1,30 @@
+services:
+  commerce.handler.create_specification_value:
+    class: Backend\Modules\Commerce\Domain\SpecificationValue\Command\CreateSpecificationValueHandler
+    arguments:
+      - "@commerce.repository.specification_value"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\SpecificationValue\Command\CreateSpecificationValue,
+        }
+
+  commerce.handler.update_specification_value:
+    class: Backend\Modules\Commerce\Domain\SpecificationValue\Command\UpdateSpecificationValueHandler
+    arguments:
+      - "@commerce.repository.specification_value"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\SpecificationValue\Command\UpdateSpecificationValue,
+        }
+
+  commerce.handler.delete_specification_value:
+    class: Backend\Modules\Commerce\Domain\SpecificationValue\Command\DeleteSpecificationValueHandler
+    arguments:
+      - "@commerce.repository.specification_value"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\SpecificationValue\Command\DeleteSpecificationValue,
+        }

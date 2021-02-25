@@ -1,0 +1,60 @@
+{*
+  NOTE: To add more levels
+
+	variables that are available:
+	- {$widgetCommerceCategoriesFlat}: Flat array of all categories
+	- {$widgetCommerceCategoriesTree}: Tree array of all categories
+*}
+
+{* FLAT VIEW
+{option:widgetCommerceCategoriesFlat}
+	<section id="CommerceCategoriesWidget" class="mod">
+		<div class="inner">
+			<header class="hd">
+				<h3>{$lblCategories|ucfirst}</h3>
+			</header>
+			<div class="bd content">
+				<ul>
+					{iteration:widgetCommerceCategoriesFlat}
+						<li>
+							<a href="{$widgetCommerceCategoriesFlat.url}">
+								{$widgetCommerceCategoriesFlat.title}&nbsp;({$widgetCommerceCategoriesFlat.total})
+							</a>
+						</li>
+					{/iteration:widgetCommerceCategoriesFlat}
+				</ul>
+			</div>
+		</div>
+	</section>
+{/option:widgetCommerceCategoriesFlat}
+*}
+
+{* TREE VIEW *}
+{option:widgetCommerceCategoriesTree}
+ <h3>{$lblCategories|ucfirst}</h3>
+ <div class="bd content">
+ <ul>
+ {iteration:widgetCommerceCategoriesTree}
+  <li><a href="{$widgetCommerceCategoriesTree.full_url}" title="{$widgetCommerceCategoriesTree.title}">{$widgetCommerceCategoriesTree.title|ucfirst}&nbsp;({$widgetCommerceCategoriesTree.total})</a>
+
+  {option:widgetCommerceCategoriesTree.children}
+   <ul>
+   {iteration:widgetCommerceCategoriesTree.children}
+   <li><a href="{$widgetCommerceCategoriesTree.children.full_url}" title="{$widgetCommerceCategoriesTree.children.title}">{$widgetCommerceCategoriesTree.children.title|ucfirst}&nbsp;({$widgetCommerceCategoriesTree.children.total})</a>
+
+    {option:widgetCommerceCategoriesTree.children.children}
+     <ul>
+     {iteration:widgetCommerceCategoriesTree.children.children}
+      <li><a href="{$widgetCommerceCategoriesTree.children.children.full_url}" title="{$widgetCommerceCategoriesTree.children.children.title}">{$widgetCommerceCategoriesTree.children.children.title|ucfirst}&nbsp;({$widgetCommerceCategoriesTree.children.children.total})</a>
+     {/iteration:widgetCommerceCategoriesTree.children.children}
+     </li></ul>
+    {/option:widgetCommerceCategoriesTree.children.children}
+
+   {/iteration:widgetCommerceCategoriesTree.children}
+   </li></ul>
+  {/option:widgetCommerceCategoriesTree.children}
+
+ {/iteration:widgetCommerceCategoriesTree}
+  </li></ul>
+ </div>
+{/option:widgetCommerceCategoriesTree}

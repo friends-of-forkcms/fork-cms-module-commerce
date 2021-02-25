@@ -1,0 +1,30 @@
+services:
+  commerce.handler.create_country:
+    class: Backend\Modules\Commerce\Domain\Country\Command\CreateCountryHandler
+    arguments:
+      - "@commerce.repository.country"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Country\Command\CreateCountry,
+        }
+
+  commerce.handler.update_country:
+    class: Backend\Modules\Commerce\Domain\Country\Command\UpdateCountryHandler
+    arguments:
+      - "@commerce.repository.country"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Country\Command\UpdateCountry,
+        }
+
+  commerce.handler.delete_country:
+    class: Backend\Modules\Commerce\Domain\Country\Command\DeleteCountryHandler
+    arguments:
+      - "@commerce.repository.country"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\Country\Command\DeleteCountry,
+        }

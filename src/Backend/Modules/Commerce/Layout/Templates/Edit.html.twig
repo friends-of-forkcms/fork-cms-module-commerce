@@ -1,0 +1,280 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+{% form_theme form with ["Commerce/Layout/Templates/FormHelper.html.twig", "Commerce/Layout/Templates/Select2Entity.html.twig"] %}
+
+{% block actionbar %}
+
+{% endblock %}
+
+{% block content %}
+  {{ form_start(form) }}
+
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
+        {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#tabContent" aria-controls="tabContent" role="tab"
+               data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabRelations" aria-controls="tabRelations" role="tab"
+               data-toggle="tab">{{ 'lbl.Relations'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation"{% if not product.usesDimensions %} class="hidden"{% endif %}>
+            <a href="#tabDimensions" aria-controls="tabDimensions" role="tab"
+               data-toggle="tab">{{ 'lbl.Dimensions'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabOptions" aria-controls="tabOptions" role="tab"
+               data-toggle="tab">{{ 'lbl.Options'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabSpecifications" aria-controls="tabSpecifications" role="tab"
+               data-toggle="tab">{{ 'lbl.Specifications'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabProductSpecials" aria-controls="tabProductSpecials" role="tab"
+               data-toggle="tab">{{ 'lbl.Offer'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabMedia" aria-controls="tabMedia" role="tab"
+               data-toggle="tab">{{ 'lbl.Media'|trans|ucfirst }}</a>
+          </li>
+          <li class="pull-right" role="presentation">
+            <a href="#tabSEO" aria-controls="tabSEO" role="tab"
+               data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabContent">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="panel panel-default panel-editor">
+                  <div class="panel-heading">
+                    {{ form_label(form.summary) }}
+                  </div>
+                  <div class="panel-body">
+                    {{ form_widget(form.summary) }}
+                  </div>
+                  {{ form_errors(form.summary) }}
+                </div>
+                <div class="panel panel-default panel-editor">
+                  <div class="panel-heading">
+                    {{ form_label(form.text) }}
+                  </div>
+                  <div class="panel-body">
+                    {{ form_widget(form.text) }}
+                  </div>
+                  {{ form_errors(form.text) }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel form-group panel-default">
+                  <div class="panel-heading">{{ 'lbl.MetaData'|trans|ucfirst }}</div>
+                  <div class="panel-body">
+                    {{ form_row(form.sku) }}
+                    {{ form_row(form.ean13) }}
+                    {{ form_row(form.isbn) }}
+                    {{ form_row(form.category) }}
+                    {{ form_row(form.brand) }}
+                    {{ form_row(form.weight) }}
+                    {{ form_row(form.price) }}
+                    {{ form_row(form.vat) }}
+                    {{ form_row(form.order_quantity) }}
+                    {{ form_row(form.stock) }}
+                    {{ form_row(form.from_stock) }}
+                    {{ form_row(form.stock_status) }}
+                    {{ form_row(form.hidden) }}
+                    {{ form_row(form.type) }}
+                    {{ form_row(form.sequence) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabRelations">
+            {{ form_row(form.related_products) }}
+            {{ form_row(form.up_sell_products) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabDimensions">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      {{ form_label(form.min_width) }}
+                      <div class="input-group">
+                        {{ form_widget(form.min_width) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.min_height) }}
+                      <div class="input-group">
+                        {{ form_widget(form.min_height) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.max_width) }}
+                      <div class="input-group">
+                        {{ form_widget(form.max_width) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.max_height) }}
+                      <div class="input-group">
+                        {{ form_widget(form.max_height) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.extra_production_width) }}
+                      <div class="input-group">
+                        {{ form_widget(form.extra_production_width) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_label(form.extra_production_height) }}
+                      <div class="input-group">
+                        {{ form_widget(form.extra_production_height) }}
+                        <span class="input-group-addon">mm</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    {{ form_row(form.dimension_notifications) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ form_row(form.dimensions) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ form_row(form.dimension_instructions) }}
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabOptions">
+            <div class="row">
+              <div class="col-md-12">
+                {{ macro.dataGrid(productOptionsDataGrid) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ macro.buttonIcon( geturl('AddProductOption', null, '&product=' ~ product.id), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabSpecifications">
+            {{ form_row(form.specification_values) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabProductSpecials">
+            {{ form_row(form.specials) }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabMedia">
+            {{ form_row(form.images) }}
+            {{ form_row(form.downloads) }}
+          </div>
+          <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
+            {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-page-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-left" role="group">
+          {% if showCommerceDelete %}
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete">
+              <span class="fa fa-trash-o"></span>
+              {{ 'lbl.Delete'|trans|ucfirst }}
+            </button>
+          {% endif %}
+        </div>
+        <div class="btn-group pull-right" role="group">
+          {% if showCommerceCopy %}
+            {{ macro.buttonIcon('', 'copy', 'lbl.Copy'|trans|ucfirst, 'btn-default', {'data-toggle' : 'modal', 'data-target': '#confirmCopy'}) }}
+          {% endif %}
+          <button id="editButton" type="submit" name="edit" class="btn btn-primary">
+            <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form_end(form) }}
+
+  {% if showCommerceDelete %}
+    {{ form_start(deleteForm) }}
+    {{ form_row(deleteForm._token) }}
+    {{ form_row(deleteForm.id) }}
+    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="modal-title h4">{{ 'lbl.Delete'|trans|ucfirst }}</span>
+          </div>
+          <div class="modal-body">
+            <p>{{ 'msg.ConfirmDelete'|trans|format(product.title)|raw }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <span class="fa fa-times"></span>{{ 'lbl.Cancel'|trans|ucfirst }}
+            </button>
+            <button type="submit" class="btn btn-danger">
+              <span class="fa fa-trash"></span>{{ 'lbl.Delete'|trans|ucfirst }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(deleteForm) }}
+  {% endif %}
+
+  {% if showCommerceCopy %}
+    {{ form_start(copyForm) }}
+    {{ form_row(copyForm._token) }}
+    {{ form_row(copyForm.id) }}
+    <div class="modal fade" id="confirmCopy" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="modal-title h4">{{ 'lbl.Copy'|trans|ucfirst }}</span>
+          </div>
+          <div class="modal-body">
+            <p>{{ 'Weet je zeker dat je "%s" wilt kopieëren naar een nieuw product?'|trans|format(product.title)|raw }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <span class="fa fa-times"></span>{{ 'lbl.Cancel'|trans|ucfirst }}
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <span class="fa fa-copy"></span>{{ 'lbl.Copy'|trans|ucfirst }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(copyForm) }}
+  {% endif %}
+{% endblock %}

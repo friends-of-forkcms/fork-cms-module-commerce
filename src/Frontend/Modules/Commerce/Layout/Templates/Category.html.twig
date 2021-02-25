@@ -1,0 +1,134 @@
+<div class="col-md-12 no-gutter padding-bottom-small clearfix">
+  <h1 class="col-md-10 col-sm-10 col-xs-10 col-xs-push-2 col-sm-push-2 col-md-push-2">{{ category.title }}</h1>
+  {% if category.parent %}
+  <p class="col-md-2 col-sm-2 col-sm-pull-10 col-xs-2 col-xs-pull-10 col-md-pull-10"><a href="{{ category.parent.url }}"
+                                                                                        class="btn btn-default back-to">Terug
+      naar overzicht</a></p>
+  {% else %}
+    <p class="col-md-2 col-sm-2 col-sm-pull-10 col-xs-2 col-xs-pull-10 col-md-pull-10"><a href="{{ geturlforblock('Commerce', 'Index') }}"
+                                                                                          class="btn btn-default back-to">Terug
+        naar overzicht</a></p>
+  {% endif %}
+</div>
+
+{% if category.children.count > 0 %}
+    <div class="col-md-12 left">
+      {% include 'Commerce/Layout/Templates/IndexCategory.html.twig' with{'parentUrl' : category.url, 'categories' : category.children} %}
+    </div>
+{% endif %}
+
+<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 left-bar">
+  <div class="clearfix;">
+    <a class="btn btn-primary filter-btn" role="button" data-toggle="collapse" href="#collapseExample"
+       aria-expanded="false" aria-controls="collapseExample">
+      Filters
+    </a>
+    <div class="collapse" id="collapseExample">
+      {% for filter in filters %}
+        <div class="filter-option">
+          <div class="filter-box">
+            <h3>{{ filter.title }}</h3>
+            {% for specificationValue in filter.specificationValues|slice(0, filtersShowMoreCount) %}
+              <input type="checkbox" id="specification-value-{{ specificationValue.id }}"
+                     data-filter="{{ filter.meta.url }}" data-filter-value="{{ specificationValue.meta.url }}"
+                     value="{{ specificationValue.meta.url }}">
+              <label for="specification-value-{{ specificationValue.id }}">{{ specificationValue.value }}</label>
+            {% endfor %}
+
+            {% for specificationValue in filter.specificationValues|slice(filtersShowMoreCount) %}
+              {% if loop.first %}
+                <div class="show-more-block" id="show_more_{{ filter.id }}" style="display:none;">
+              {% endif %}
+              <input type="checkbox" id="specification-value-{{ specificationValue.id }}"
+                     data-filter="{{ filter.meta.url }}" data-filter-value="{{ specificationValue.meta.url }}"
+                     value="{{ specificationValue.meta.url }}">
+              <label for="specification-value-{{ specificationValue.id }}">{{ specificationValue.value }}</label>
+              {% if loop.last %}
+                </div>
+                <a class="show-more" href="#show_more_{{ filter.id }}" data-show-more="{{ 'lbl.ShowMore'|trans|ucfirst }}" data-show-less="{{ 'lbl.ShowLess'|trans|ucfirst }}">{{ 'lbl.ShowMore'|trans|ucfirst }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% if category.products.count > 0 %}
+  <div class="col-lg-6 col-md-7 col-sm-9 col-xs-12 product-overview" data-product-list="Category">
+    <div class="col-md-12 no-gutter overview-bar clearfix">
+      <div class="col-md-5 col-sm-5 col-xs-12 no-gutter overview-nav">
+        <ul>
+          {% if pagination.showPrevious %}
+            <li>
+              <a data-page="{{ pagination.previousNumber }}" href="{{ pagination.urlPrevious }}">Vorige</a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <a href="javascript:void(0);">Vorige</a>
+            </li>
+          {% endif %}
+          <li>
+            {{ pagination.currentPage }} / {{ pagination.pageCount }}
+          </li>
+          {% if pagination.showNext %}
+            <li>
+              <a data-page="{{ pagination.nextNumber }}" href="{{ pagination.urlNext }}">Volgende</a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <a href="javascript:void(0);">Volgende</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="col-md-7 col-sm-7 col-xs-12 no-gutter overview-bar-right">
+        <p class="col-md-5 col-sm-5 col-xs-5 text-right">Sorteer op:</p>
+        <div class="col-md-7 col-sm-7 col-xs-7 no-gutter">
+          <div class="select-style">
+            <select title="Sorteren" data-sort>
+              {% for key, sortOrder in sortOrders %}
+                <option value="{{ key }}"{% if sortOrder.selected %} selected{% endif %}>{{ sortOrder.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="overview">
+      {% if products %}
+        {% for product in products %}
+          {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {'product': product} %}
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="col-md-12 no-gutter overview-bar clearfix">
+      <div class="col-md-5 col-sm-5 no-gutter overview-nav">
+        <ul>
+          {% if pagination.showPrevious %}
+            <li>
+              <a data-page="{{ pagination.previousNumber }}" href="{{ pagination.urlPrevious }}">Vorige</a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <a href="javascript:void(0);">Vorige</a>
+            </li>
+          {% endif %}
+          <li>
+            {{ pagination.currentPage }} / {{ pagination.pageCount }}
+          </li>
+          {% if pagination.showNext %}
+            <li>
+              <a data-page="{{ pagination.nextNumber }}" href="{{ pagination.urlNext }}">Volgende</a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <a href="javascript:void(0);">Volgende</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endif %}

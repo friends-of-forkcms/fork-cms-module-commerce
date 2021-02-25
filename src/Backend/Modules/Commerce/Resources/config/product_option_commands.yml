@@ -1,0 +1,30 @@
+services:
+  commerce.handler.create_product_option:
+    class: Backend\Modules\Commerce\Domain\ProductOption\Command\CreateProductOptionHandler
+    arguments:
+      - "@commerce.repository.product_option"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\ProductOption\Command\CreateProductOption,
+        }
+
+  commerce.handler.update_product_option:
+    class: Backend\Modules\Commerce\Domain\ProductOption\Command\UpdateProductOptionHandler
+    arguments:
+      - "@commerce.repository.product_option"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\ProductOption\Command\UpdateProductOption,
+        }
+
+  commerce.handler.delete_product_option:
+    class: Backend\Modules\Commerce\Domain\ProductOption\Command\DeleteProductOptionHandler
+    arguments:
+      - "@commerce.repository.product_option"
+    tags:
+      - {
+          name: command_handler,
+          handles: Backend\Modules\Commerce\Domain\ProductOption\Command\DeleteProductOption,
+        }

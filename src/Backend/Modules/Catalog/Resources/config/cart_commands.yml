@@ -1,7 +1,0 @@
-services:
-    catalog.handler.delete_cart:
-        class: Backend\Modules\Catalog\Domain\Cart\Command\DeleteCartHandler
-        arguments:
-            - "@catalog.repository.cart"
-        tags:
-            - { name: command_handler, handles: Backend\Modules\Catalog\Domain\Cart\Command\DeleteCart }

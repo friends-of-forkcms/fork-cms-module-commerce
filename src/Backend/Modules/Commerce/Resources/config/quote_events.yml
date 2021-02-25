@@ -1,0 +1,12 @@
+services:
+  commerce.event.quote_created:
+    class: Backend\Modules\Commerce\Domain\Quote\EventListener\QuoteCreated
+    arguments:
+      - "@mailer"
+      - "@fork.settings"
+    tags:
+      - {
+          name: kernel.event_listener,
+          event: commerce.event.quote.created,
+          method: onQuoteCreated,
+        }

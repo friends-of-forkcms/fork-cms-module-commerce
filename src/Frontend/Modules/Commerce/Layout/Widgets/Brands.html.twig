@@ -1,0 +1,20 @@
+{#
+  NOTE: To add more levels
+
+	variables that are available:
+	- {$widgetCommerceCategoriesFlat}: Flat array of all categories
+	- {$widgetCommerceCategoriesTree}: Tree array of all categories
+#}
+
+{# TREE VIEW #}
+{% if brands %}
+    <h3>{{ 'lbl.Brands'|trans|ucfirst }}</h3>
+    <ul>
+        {% for brand in brands %}
+        <li>
+            <a href="{{ baseUrl }}/{{ brand.meta.url }}" title="{{ brand.title }}">{{ brand.title }}
+                &nbsp;({{ brand.productCount }})</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endif %}
