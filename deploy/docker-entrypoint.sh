@@ -8,7 +8,6 @@ MYSQL_PASSWORD=forkcms
 
 # MySQL
 cat /etc/mysql/conf.d/mysql.cnf
-cat /etc/apache2/ports.conf
 
 whoami
 cat /etc/passwd
