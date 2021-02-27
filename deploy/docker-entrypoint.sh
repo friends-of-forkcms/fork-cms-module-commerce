@@ -9,7 +9,6 @@ MYSQL_PASSWORD=forkcms
 # MySQL
 cat /etc/mysql/conf.d/mysql.cnf
 
-whoami
 cat /etc/passwd
 # ls -al /var/lib/mysql/ /var/run/mysqld /var/log/mysql
 which mysql
