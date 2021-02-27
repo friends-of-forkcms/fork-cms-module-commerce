@@ -1,10 +1,7 @@
 FROM php:7.4-apache
 
-# Configure Apache to listen to port 8080
-# TODO: Simplify to port 80 again
-ENV PORT=8080
-RUN a2enmod rewrite && \
-    sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
 # Install mysql and mysqladmin binaries
 RUN apt-get update && apt-get install -y --no-install-recommends mariadb-client
@@ -39,7 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
 
-# Install yq (a YAML processor)
+# Install yq (a YAML processor). We need this to configure our parameters.yml
 RUN apt-get update && apt-get install -y wget && \
     wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/1.15.0/yq_linux_amd64 && \
     chmod 777 /usr/local/bin/yq
@@ -76,7 +73,7 @@ RUN chown -R www-data:www-data /var/www/html
 
 # This specifies on which port the application will run. This is pure communicative and makes this 12 factor app compliant
 # (see https://12factor.net/port-binding).
-EXPOSE 8080 443
+EXPOSE 80 443
 
 # Define our entrypoint script that will setup the container when it boots up
 ENTRYPOINT ["deploy/docker-entrypoint.sh"]

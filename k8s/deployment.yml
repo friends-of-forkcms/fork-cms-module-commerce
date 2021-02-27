@@ -23,7 +23,7 @@ spec:
               memory: 256Mi
               cpu: 250m
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
             - name: DB_HOST
               value: 127.0.0.1
