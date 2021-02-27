@@ -16,7 +16,7 @@ services:
       - FORK_ENV=prod
       - FORK_DEBUG=1
     volumes:
-      - ./deploy/docker-entrypoint.sh:/var/www/html/deploy/docker-entrypoint.sh
+      - ./deploy:/var/www/html/deploy
 
   db:
     image: "mariadb:10"
