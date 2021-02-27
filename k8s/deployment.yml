@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fork-cms-module-commerce-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fork-cms-module-commerce-demo
+  template:
+    metadata:
+      labels:
+        app: fork-cms-module-commerce-demo
+    spec:
+      containers:
+        - name: app
+          image: okteto.dev/fork-cms-module-commerce-demo:latest
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+            requests:
+              memory: 256Mi
+              cpu: 250m
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: 127.0.0.1
+            - name: DB_NAME
+              value: forkcms
+            - name: DB_USER
+              value: forkcms
+            - name: DB_PASSWORD
+              value: forkcms
+
+        - name: db
+          image: mariadb:10
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+            requests:
+              memory: 256Mi
+              cpu: 250m
+          env:
+            - name: MYSQL_DATABASE
+              value: forkcms
+            - name: MYSQL_ROOT_PASSWORD
+              value: kingtriton
+            - name: MYSQL_USER
+              value: forkcms
+            - name: MYSQL_PASSWORD
+              value: forkcms
+          volumeMounts:
+            - name: db-data-persistent-storage
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: db-data-persistent-storage
+          persistentVolumeClaim:
+            claimName: db-data-pv-claim

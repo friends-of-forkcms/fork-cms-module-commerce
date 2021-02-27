@@ -1,0 +1,30 @@
+version: "3.5"
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=forkcms
+      - DB_USER=forkcms
+      - DB_PASSWORD=forkcms
+      - FORK_ENV=prod
+      - FORK_DEBUG=1
+    volumes:
+      - ./deploy/docker-entrypoint.sh:/var/www/html/deploy/docker-entrypoint.sh
+
+  db:
+    image: "mariadb:10"
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=forkcms
+      - MYSQL_ROOT_PASSWORD=kingtriton
+      - MYSQL_USER=forkcms
+      - MYSQL_PASSWORD=forkcms

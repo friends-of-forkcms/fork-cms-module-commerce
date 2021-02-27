@@ -1,36 +1,22 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Config
-MYSQL_DATABASE=forkcms
-MYSQL_USERNAME=forkcms
-MYSQL_PASSWORD=forkcms
-
-# MySQL
-cat /etc/mysql/conf.d/mysql.cnf
-
-cat /etc/passwd
-# ls -al /var/lib/mysql/ /var/run/mysqld /var/log/mysql
-which mysql
-which mysqld
-
-service mysql start
-#mysqld_safe
-ps aux
-mysql -u root -e "create database ${MYSQL_DATABASE};"
-mysql -u root -p=  ${MYSQL_DATABASE} < deploy/dump.sql
-mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-mysql -u root -e "FLUSH PRIVILEGES;"
-mysql -uforkcms -pforkcms -h127.0.0.1 -e "SELECT 1;" # Test connection
+# Prepare DB data
+while ! /usr/local/bin/mysqladmin ping -h"$DB_HOST" --silent; do
+    echo "Waiting for mysql db..."
+    sleep 1
+done
+echo "Importing demo SQL database..."
+mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/dump.sql
 
 # Prepare Fork CMS
-echo "Adding Fork CMS config/parameters.yml..."
+echo "Adding Fork CMS parameters.yml..."
 cp app/config/parameters.yml.test app/config/parameters.yml
-yq write --inplace app/config/parameters.yml 'parameters.[database.host]' '127.0.0.1'
-yq write --inplace app/config/parameters.yml 'parameters.[database.user]' "${MYSQL_USERNAME}"
-yq write --inplace app/config/parameters.yml 'parameters.[database.password]' "${MYSQL_PASSWORD}"
+yq write --inplace app/config/parameters.yml 'parameters.[database.host]' '%env(DB_HOST)%'
+yq write --inplace app/config/parameters.yml 'parameters.[database.name]' '%env(DB_NAME)%'
+yq write --inplace app/config/parameters.yml 'parameters.[database.user]' '%env(DB_USER)%'
+yq write --inplace app/config/parameters.yml 'parameters.[database.password]' '%env(DB_PASSWORD)%'
 
-# Apache
-a2enmod rewrite
-service apache2 start
-tail -f /var/log/apache2/access.log
+# Start up Apache webserver
+echo "Starting apache..."
+apache2-foreground

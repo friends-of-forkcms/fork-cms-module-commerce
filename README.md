@@ -1,4 +1,4 @@
-# Fork CMS Commerce
+# Fork CMS Commerce (WIP)
 
 This commerce module is inspired by the catalog module created by Webleads. [Jacob Van Dam](https://www.jvdict.nl) upgraded and improved this module massively.
 
@@ -98,7 +98,7 @@ liip_imagine:
                 auto_rotate: ~
                 strip: ~
                 scale: { dim: [ 100, 100 ] }
-````
+```
 
 ## Start selling
 
