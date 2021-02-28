@@ -27,8 +27,10 @@ jobs:
           name: fork-cms-module-commerce-demo
           timeout: 10m
 
-      # - name: Verify up and running
-      #   uses: srt32/uptime@v0.2
-      #   with:
-      #     url-to-hit: "https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/en"
-      #     expected-statuses: "200"
+      - name: Verify up and running
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/en"
+          responseCode: 200
+          timeout: 120000 # 2min
+          interval: 5000 # 5s

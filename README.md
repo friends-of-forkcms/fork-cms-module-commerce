@@ -4,7 +4,7 @@ This commerce module is inspired by the catalog module created by Webleads. [Jac
 
 ## Demo
 
-- Frontend:https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/
+- Frontend: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/
 - CMS: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/private
 
 Login with the following credentials:

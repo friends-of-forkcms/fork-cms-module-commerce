@@ -52,6 +52,8 @@ spec:
               value: forkcms
             - name: MYSQL_PASSWORD
               value: forkcms
+            - name: SITE_DOMAIN
+              value: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/en
           volumeMounts:
             - name: db-data-persistent-storage
               mountPath: /var/lib/mysql

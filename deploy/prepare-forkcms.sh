@@ -11,6 +11,7 @@ yq write --inplace app/config/parameters.yml 'parameters.[database.host]' '%env(
 yq write --inplace app/config/parameters.yml 'parameters.[database.name]' '%env(DB_NAME)%'
 yq write --inplace app/config/parameters.yml 'parameters.[database.user]' '%env(DB_USER)%'
 yq write --inplace app/config/parameters.yml 'parameters.[database.password]' '%env(DB_PASSWORD)%'
+yq write --inplace app/config/parameters.yml 'parameters.[site.domain]' '%env(SITE_DOMAIN)%'
 
 # Prepare a god avatar. The god avatar is normally installed during the installation process.
 echo "Restore the missing god avatar"
@@ -45,7 +46,7 @@ patch -p1 < deploy/prepare-forkcms-php.patch
 bin/console doctrine:fixtures:load --append --group=module-commerce
 
 # Generate thumbnails cache from LiipImagineBundle
-#bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/* || true
+bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/* || true
 
 # After modules were installed, we need to make sure the Apache user has ownership of the var directory.
 chown -R www-data:www-data /var/www/html/var/
