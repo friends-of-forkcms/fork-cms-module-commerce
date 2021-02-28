@@ -1,3 +1,45 @@
+############
+# Frontend #
+############
+# Use Node as the base image to build our frontend
+FROM node:lts AS frontend
+
+# Set THEME_NAME as build argument
+ARG THEME_NAME
+
+# Set the work directory to /usr/src/app so all subsequent commands in this file start from the /usr/src/app directory
+# Also set this work directory so everytime we use docker exec -it showpad/analytics-backend bash, we automatically end
+# up in this directory
+RUN mkdir -p /app/src/Frontend/Themes/$THEME_NAME
+WORKDIR /app/src/Frontend/Themes/$THEME_NAME
+
+# Copy the files needed to retrieve the dependencies. It's important to separate dependency retrieval from adding code.
+# Dependencies usually don't change a lot (at least not on every build). Therefore it's important to use Docker's layers
+# to automatically cache dependencies
+COPY src/Frontend/Themes/$THEME_NAME/.npmrc .
+COPY src/Frontend/Themes/$THEME_NAME/package.json .
+COPY src/Frontend/Themes/$THEME_NAME/package-lock.json .
+
+# Since npm 5.7.0, the new npm ci command is introduced that installs ONLY from the lock-file.
+# Beyond guaranteeing you that you'll only get what is in your lock-file it's also much faster (2x-10x!) than
+# npm install when you don't start with a node_modules. It is also more strict than a regular install, which can help
+# catch errors or inconsistencies caused by the incrementally-installed local environments of most npm users.
+RUN npm ci
+
+# Copy the code. Important here is that copying is done based on the rules defined in the .dockerignore file.
+# That files uses a DENY all strategy where by default no files/folders are part of the copy unless those specified in
+# the .dockerignore file. This allows builds to be light and prevents any files to be accidentally used as part of the
+# build e.g. secrets, log files, etc...
+COPY src/Frontend/Themes/$THEME_NAME .
+
+# Compile typescript to a dist folder. In production, we serve the compiled javascript from the dist folder.
+# Generate sourcemaps to send to Sentry for a better error stacktrace.
+RUN npm run build && ls -al dist/
+
+
+##################
+# Backend app    #
+##################
 FROM php:7.4-apache
 
 # Enable Apache mod_rewrite
@@ -57,7 +99,10 @@ RUN curl -sL https://github.com/jessedobbelaere/forkcms/archive/add-module-insta
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress
 
 # Copy our repository files into the container.
+ARG THEME_NAME
 COPY . /var/www/html
+COPY --from=frontend /app/src/Frontend/Themes/$THEME_NAME/dist ./src/Frontend/Themes/$THEME_NAME/dist
+COPY --from=frontend /app/src/Frontend/Themes/$THEME_NAME/Core ./src/Frontend/Themes/$THEME_NAME/Core
 
 # Give apache user write access
 RUN chown -R www-data:www-data /var/www/html

@@ -4,6 +4,8 @@ services:
   app:
     build:
       context: .
+      args:
+        THEME_NAME: CommerceDemo
     ports:
       - "80:80"
     depends_on:

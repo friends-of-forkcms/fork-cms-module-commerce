@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   push:
     branches: [master]
 
@@ -25,3 +26,9 @@ jobs:
         with:
           name: fork-cms-module-commerce-demo
           timeout: 8m
+
+      - name: Verify
+        uses: srt32/uptime@v0.2
+        with:
+          url-to-hit: "https://hello-actions-rberrelleza.cloud.okteto.net"
+          expected-statuses: "200"

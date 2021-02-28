@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Prepare Fork CMS configuration
+echo "Importing fresh Fork CMS database..."
+mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/fresh-forkcms-install.sql
+
+# Prepare Fork CMS parameters.yml
 echo "Adding Fork CMS parameters.yml..."
 cp app/config/parameters.yml.test app/config/parameters.yml
-# yq write --inplace app/config/parameters.yml 'parameters.[database.host]' 'db'
-# yq write --inplace app/config/parameters.yml 'parameters.[database.name]' 'forkcms'
-# yq write --inplace app/config/parameters.yml 'parameters.[database.user]' 'forkcms'
-# yq write --inplace app/config/parameters.yml 'parameters.[database.password]' 'forkcms'
 yq write --inplace app/config/parameters.yml 'parameters.[database.host]' '%env(DB_HOST)%'
 yq write --inplace app/config/parameters.yml 'parameters.[database.name]' '%env(DB_NAME)%'
 yq write --inplace app/config/parameters.yml 'parameters.[database.user]' '%env(DB_USER)%'
@@ -22,6 +21,7 @@ curl -sLo ./src/Frontend/Files/Users/avatars/32x32/god.png https://github.com/fo
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} -e 'UPDATE users_settings SET value = REPLACE(value, "god.jpg", "god.png") WHERE name = "avatar"'
 
 # Install the module's dependencies
+echo "Installing module composer dependencies..."
 composer require --no-scripts \
     'php:^7.4' \
     'tetranz/select2entity-bundle:v2.10.1' \
@@ -39,13 +39,19 @@ bin/console forkcms:install:module Sitemaps
 bin/console forkcms:install:module Commerce
 
 # Apply a patch to add our bundles to AppKernel and configure the config.yml
-patch -p1 < deploy/0001-Configure-ForkCMS.patch
+patch -p1 < deploy/prepare-forkcms-php.patch
 
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce
 
 # Generate thumbnails cache from LiipImagineBundle
-bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/* || true
+#bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/* || true
 
 # After modules were installed, we need to make sure the Apache user has ownership of the var directory.
 chown -R www-data:www-data /var/www/html/var/
+
+# Setup the CMS for our demo (create pages, add widgets, ...)
+mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
+
+# Final cache clear
+bin/console forkcms:cache:clear

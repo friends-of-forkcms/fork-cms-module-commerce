@@ -1,4 +1,4 @@
 icon: https://raw.githubusercontent.com/jessedobbelaere/fork-cms-module-commerce/master/deploy/icon.png
 deploy:
-  - okteto build -t okteto.dev/fork-cms-module-commerce-demo:latest
+  - okteto build --build-arg THEME_NAME=CommerceDemo -t okteto.dev/fork-cms-module-commerce-demo:latest
   - kubectl apply -f k8s
