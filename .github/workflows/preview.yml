@@ -32,5 +32,5 @@ jobs:
         with:
           url: "https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/en"
           responseCode: 200
-          timeout: 120000 # 2min
+          timeout: 600000 # 10min
           interval: 5000 # 5s

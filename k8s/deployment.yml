@@ -34,7 +34,7 @@ spec:
             - name: DB_PASSWORD
               value: forkcms
             - name: SITE_DOMAIN
-              value: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net
+              value: fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net
 
         - name: db
           image: mariadb:10
