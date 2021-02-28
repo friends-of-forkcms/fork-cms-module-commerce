@@ -2,16 +2,28 @@
 
 This commerce module is inspired by the catalog module created by Webleads. [Jacob Van Dam](https://www.jvdict.nl) upgraded and improved this module massively.
 
+## Demo
+
+- Frontend:https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/
+- CMS: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/private
+
+Login with the following credentials:
+
+```
+Admin username: demo@fork-cms.com
+Admin password: demo
+```
+
 ## Capabilities
 
 At the moment it is almost the same as the Webleads module, but we left out some code and are still working on this, our changes are:
+Improved the products by adding:
 
-- Improved the products by adding:
-  - Related products
-  - Special prices (sale prices)
-  - Added a article number
-  - Added VAT options
-  - Add product specifications on the flow. The user gets the option to create or select one while adding or editing a product
+- Related products
+- Special prices (sale prices)
+- Added a article number
+- Added VAT options
+- Add product specifications on the flow. The user gets the option to create or select one while adding or editing a product
 
 We also removed some components:
 
