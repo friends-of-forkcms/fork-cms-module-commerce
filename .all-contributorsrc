@@ -1,0 +1,24 @@
+{
+  "projectName": "fork-cms-module-commerce",
+  "projectOwner": "friends-of-forkcms",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "contributors": [
+    {
+      "login": "jacob-v-dam",
+      "name": "Jacob van Dam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/310526?v=4",
+      "profile": "https://github.com/jacob-v-dam",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
