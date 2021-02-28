@@ -50,23 +50,14 @@ RUN curl -sS https://getcomposer.org/installer | \
 WORKDIR /var/www/html
 
 # Download Fork CMS as base to test our module
-RUN curl -sL https://github.com/forkcms/forkcms/archive/5.9.2.tar.gz | tar xz --strip-components 1
+#RUN curl -sL https://github.com/forkcms/forkcms/archive/5.9.2.tar.gz | tar xz --strip-components 1
+RUN curl -sL https://github.com/jessedobbelaere/forkcms/archive/add-module-installation-command.tar.gz | tar xz --strip-components 1
 
 # Install the Fork CMS composer dependencies
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress
 
-# Add our module's custom composer dependencies
-RUN composer require --no-scripts php "^7.4" && \
-    composer require --no-scripts tetranz/select2entity-bundle "v2.10.1" && \
-    composer require --no-scripts knplabs/knp-snappy-bundle "v1.6.0" && \
-    composer require --no-scripts h4cc/wkhtmltopdf-amd64 "^0.12.4" && \
-    composer require --no-scripts gedmo/doctrine-extensions "^3.0" && \
-    composer require --no-scripts jeroendesloovere/sitemap-bundle "^2.0" && \
-    composer require --no-scripts --dev doctrine/doctrine-fixtures-bundle
-
-# Copy our module files into the container.
-COPY deploy /var/www/html/deploy
-# COPY . /var/www/html
+# Copy our repository files into the container.
+COPY . /var/www/html
 
 # Give apache user write access
 RUN chown -R www-data:www-data /var/www/html

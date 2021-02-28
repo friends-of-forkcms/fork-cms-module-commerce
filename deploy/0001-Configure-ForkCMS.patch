@@ -1,0 +1,80 @@
+From b7b0cc4706ff419716ca4a5a1625907ffd172651 Mon Sep 17 00:00:00 2001
+From: Jesse Dobbelaere <jesse@dobbelae.re>
+Date: Sun, 28 Feb 2021 14:04:19 +0100
+Subject: [PATCH] Test
+
+---
+ app/AppKernel.php     |  7 +++++++
+ app/config/config.yml | 22 ++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/app/AppKernel.php b/app/AppKernel.php
+index aa1171866..11b401318 100644
+--- a/app/AppKernel.php
++++ b/app/AppKernel.php
+@@ -33,11 +33,18 @@ class AppKernel extends Kernel
+             new \MailMotor\Bundle\MailChimpBundle\MailMotorMailChimpBundle(),
+             new \MailMotor\Bundle\CampaignMonitorBundle\MailMotorCampaignMonitorBundle(),
+             new \Liip\ImagineBundle\LiipImagineBundle(),
++
++            new \Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
++            new \Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
++            new \Backend\Modules\Sitemaps\Sitemaps(),
++            new \JeroenDesloovere\SitemapBundle\SitemapBundle(),
+         ];
+ 
+         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
+             $bundles[] = new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+             $bundles[] = new \Symfony\Bundle\DebugBundle\DebugBundle();
++
++            $bundles[] = new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+         }
+ 
+         return $bundles;
+diff --git a/app/config/config.yml b/app/config/config.yml
+index ef5e24c3d..8dd8c6450 100644
+--- a/app/config/config.yml
++++ b/app/config/config.yml
+@@ -28,6 +28,8 @@ framework:
+                 adapter: cache.app
+                 public: true
+                 default_lifetime: 3600
++    assets:
++        json_manifest_path: '%kernel.root_dir%/../src/Frontend/Themes/CommerceDemo/dist/manifest.json'
+ 
+ # Assetic Configuration
+ assetic:
+@@ -123,6 +125,21 @@ liip_imagine:
+                 strip: ~
+ 
+                 thumbnail: { size : [1600, 500], mode : inbound }
++        product_thumbnail:
++            filters:
++                auto_rotate: ~
++                strip: ~
++                scale: { dim: [ 300, 372 ] }
++        product_large:
++            filters:
++                auto_rotate: ~
++                strip: ~
++                scale: { dim: [ 680, 844 ] }
++        product_slider_thumbnail:
++            filters:
++                auto_rotate: ~
++                strip: ~
++                scale: { dim: [ 100, 100 ] }
+ 
+ services:
+     templating.name_parser.public:
+@@ -272,3 +289,8 @@ services:
+         arguments:
+             - "@fork.settings"
+             - "@fork.cookie"
++
++knp_snappy:
++    pdf:
++        enabled:    true
++        binary:     %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64
+-- 
+2.26.2
+
