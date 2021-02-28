@@ -17,6 +17,7 @@ services:
       - DB_PASSWORD=forkcms
       - FORK_ENV=prod
       - FORK_DEBUG=1
+      - SITE_DOMAIN=localhost
     volumes:
       - ./deploy:/var/www/html/deploy
 
