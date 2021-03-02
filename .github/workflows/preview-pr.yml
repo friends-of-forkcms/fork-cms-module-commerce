@@ -6,7 +6,7 @@ on:
 env:
   DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
 
-name: Deploy Preview Branch
+name: Deploy Preview PR
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
           timeout: 600000 # 10min
           interval: 5000 # 5s
 
-      - name: comment PR
+      - name: Comment PR
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
