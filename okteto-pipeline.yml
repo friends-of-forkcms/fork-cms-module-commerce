@@ -9,8 +9,10 @@ deploy:
   # Inject the name suffix
   - NAMESUFFIX=$(echo $NAME | sed "s/.*-pr-//" | awk '{print "-pr-"$1}')
   - echo "$NAMESUFFIX"
-  - if [[ $NAME == *"-pr-"* ]]; then echo "ok"; fi
-  - exit
+  - if [[ $NAME == *"-pr-"* ]]; then NAMESUFFIX=$(echo $NAME | sed "s/.*-pr-//" | awk '{print "-pr-"$1}') && cd k8s && kustomize edit set namesuffix -- "$NAMESUFFIX"; fi
+
+  # Debug
+  - cat k8s/kustomization.yml
 
   # Deploy Kubernetes manifest using Kustomize
   - kubectl apply -k k8s
