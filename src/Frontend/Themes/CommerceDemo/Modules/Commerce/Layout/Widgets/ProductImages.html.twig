@@ -1,0 +1,41 @@
+{#
+    Product image slider with thumbnails.
+    See js/components/carousel.ts and the vanilla-js Splide library
+#}
+
+{% if mediaItems %}
+    <div class="js-carousel">
+        <div class="js-product-slider splide">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    {% for mediaItem in mediaItems %}
+                        <li class="splide__slide">
+                            <a href="{{ mediaItem.getWebPath()|imagine_filter('product_large') }}"
+                                data-fancybox="group"
+                                data-caption="{{ mediaItem.title }}">
+                                <img src="{{ mediaItem.getWebPath()|imagine_filter('product_thumbnail') }}"
+                                    alt="{{ mediaItem.title }}"
+                                    title="{{ mediaItem.title }}" />
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        {# Thumbnail slider #}
+        <div class="js-product-slider-thumb splide">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    {% for mediaItem in mediaItems %}
+                        <li class="splide__slide">
+                            <img src="{{ mediaItem.getWebPath()|imagine_filter('product_slider_thumbnail') }}"
+                                alt="{{ mediaItem.title }}"
+                                title="{{ mediaItem.title }}" />
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}

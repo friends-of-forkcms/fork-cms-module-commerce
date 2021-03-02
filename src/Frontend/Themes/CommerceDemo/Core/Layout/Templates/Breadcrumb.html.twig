@@ -1,0 +1,19 @@
+<div class="container flex flex-wrap px-6 pt-0 pb-4 mx-auto text-xs">
+    <span class="sr-only">{{ 'lbl.YouAreHere'|trans|ucfirst }}:&nbsp;</span>
+    <ul class="flex flex-wrap breadcrumb list-reset" itemscope itemtype="https://schema.org/BreadcrumbList" role="navigation">
+        {% for breadcrumb in breadcrumb %}
+            <li class="mr-1 {% if loop.last %}active{% endif %}" itemprop="itemListElement" itemscope
+            itemtype="https://schema.org/ListItem">
+                {% if breadcrumb.url %}
+                    {# set the full url or the item link will not validate #}
+                    <a href="{{ SITE_URL }}{{ breadcrumb.url }}" class="underline {% if loop.last %}no-underline pointer-events-none{% endif %}" title="{{ breadcrumb.title }}" itemtype="http://schema.org/Thing"
+                    itemprop="item"><span itemprop="name">{{ breadcrumb.title }}</span></a>
+                    <span class="">{% if not loop.last %}›{% endif %}</span>
+                {% else %}
+                    <span itemprop="name">{{ breadcrumb.title }}</span>
+                {% endif %}
+                <meta itemprop="position" content="{{ loop.index }}" />
+            </li>
+        {% endfor %}
+    </ul>
+</div>

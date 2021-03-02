@@ -1,0 +1,225 @@
+{% set category_path = product.category.title %}
+{% set current_category = product.category %}
+{% for i in 0..5 %}
+    {% if current_category.parent %}
+        {% set category_path = current_category.title ~ '/' ~ category_path %}
+        {% set current_category = current_category.parent %}
+    {% endif %}
+{% endfor %}
+
+<div style="background-color: #eeeeee;">
+    <div class="container px-6 py-4 mx-auto">
+        <div class="flex">
+            {# Product images #}
+            <div class="product-images | flex-1">
+                {{ images|raw }}
+            </div>
+
+            <div class="product-quick-info | w-2/5 px-28">
+                <h1>
+                    {{ product.title }}
+                </h1>
+                <p>
+                    <span class="article-number">Artikelnummer: <strong>{{ product.sku }}</strong></span>
+                    Ons complete assortiment aanhangwagens kunt u vinden op deze website. <a href="{{ product.category.url }}">
+                        Ga hier naar het overzicht
+                    </a>.
+                </p>
+                <p>
+                    <a href="#" class="btn btn-default arrow addToQuote" data-id="{{ product.id }}">Offerte aanvragen</a>
+                    <a href="#specifications" class="btn btn-light scrollTo">Specificaties</a>
+                    <a href="#information" class="btn btn-light scrollTo">Informatie</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="product-information padding-top-small">
+            <h2 id="information">
+                Meer over {{ product.title }}
+            </h2>
+            <div id="productText">
+                {{ product.text|raw }}
+            </div>
+            {% if product.specificationValues.count > 0 %}
+                <h2 id="specifications">
+                    Specificaties {{ product.title }}
+                </h2>
+                <table class="table">
+                    <tbody>
+                        {% for specification in specifications %}
+                            {% for specificationValue in specification.specificationValues %}
+                                <tr>
+                                    <td>
+                                        {{ specification.title }}:
+                                    </td>
+                                    <td>
+                                        {{ specificationValue.value }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+            {# Product downloads #}
+            {{ downloads|raw }}
+        </div>
+        {% if product.relatedProducts.count > 0 %}
+            <div class="parts related-products padding-top-xsmall">
+                <div class="col-md-12 col-xs-12 no-gutter">
+                    <h2>
+                        Vergelijkbare producten
+                    </h2>
+                </div>
+                <div class="slider-inner col-md-12 col-xs-12 no-gutter">
+                    <div class="owl-carousel parts-small">
+                        {% for relatedProduct in product.relatedProducts %}
+                            <div class="bg-light clickable" data-url="{{ relatedProduct.url }}">
+                                <img src="{{ relatedProduct.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}"
+                                    alt="{{ relatedProduct.title }}" />
+                                <div class="inner-padding">
+                                    <h3>
+                                        {{ relatedProduct.title }}
+                                    </h3>
+                                    <div class="button-holder">
+                                        <p class="price">
+                                            € {{ relatedProduct.activePrice(false)|formatnumber(2) }}
+                                        </p>
+                                        <div class="btn-group">
+                                            <a href="{{ relatedProduct.url }}" class="btn btn-primary">Meer informatie</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="col-md-4 col-sm-5 col-xs-12 right">
+    <div class="widget bg-light inner-padding into-cart">
+        {% form_theme form with['Commerce/Layout/Templates/ProductForm.html.twig'] %}
+        {{ form_start(form) }}
+        <input type="hidden" name="fork[module]" value="Commerce" />
+        <input type="hidden" name="fork[action]" value="UpdateCart" />
+        <h3>
+            Voeg toe aan winkelwagen
+        </h3>
+        {% if product.inStock %}
+            <div class="price-box">
+                {% if product.hasActiveSpecialPrice %}
+                    <p class="price-old">
+                        <span>€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
+                    </p>
+                    <p class="price-new">
+                        <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+                    </p>
+                {% else %}
+                    <p class="price">
+                        <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+                    </p>
+                {% endif %}
+                <p class="price-btw">
+                    <span>
+                        Exclusief {{ product.vat.percentage|formatnumber(0) }}
+                        % BTW. (&euro; {{ product.activePrice(true)|number_format(2, ',', '.') }}
+                        incl. {{ product.vat.percentage|number_format(0, ',', '.') }}% BTW )
+                    </span>
+                </p>
+            </div>
+        {% else %}
+            <p class="stock-status">
+                {{ product.stockStatus.title }}
+            </p>
+        {% endif %}
+        {{ form_row(form.amount) }}
+        {{ form_rest(form) }}
+        <p>
+            {% if product.inStock %}
+                <a href="javascript:void(0);" class="btn btn-cart arrow addToCart" data-id="{{ product.id }}">Plaats in winkelwagen</a>
+            {% endif %}
+            <a href="javascript:void(0);" class="btn btn-default addToQuote" data-id="{{ product.id }}">Offerte aanvragen</a>
+        </p>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="bg-primary inner-padding widget">
+        <p>
+            Ons complete assortiment aanhangwagens kunt u vinden op deze website. <a class="text-white" href="{{ product.category.url }}">
+                <strong>Ga hier naar het overzicht</strong>
+            </a>.
+        </p>
+    </div>
+</div>
+
+{% include '/Modules/Commerce/Layout/Templates/Modals/ProductAdded.html.twig' %}
+
+<div id="productAddedQuoteModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    {{ 'lbl.ProductAddedToQuote'|trans|ucfirst }}
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'lbl.ContinueShopping'|trans|ucfirst }}</button>
+                <a href="{{ geturlforblock('Commerce', 'Cart') ~ '/' ~ ('lbl.RequestQuoteUrl'|trans) }}" class="btn btn-primary">
+                    {{ 'lbl.RequestQuote'|trans|ucfirst }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<span data-product-detail=""
+    data-url="{{ product.url }}"
+    data-sku="{{ product.sku }}"
+    data-name="{{ product.title }}"
+    data-brand="{{ product.brand.title }}"
+    data-category="{{ category_path }}">
+
+</span>
+
+{# prettier-ignore-start #}
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  {% if product.images.connectedMediaItems.count > 0 %}
+  "image": [
+      {% for image in product.images.connectedMediaItems %}
+        "{{ image.absoluteWebPath }}"{% if not loop.last %},{% endif %}
+      {% endfor %}
+   ],
+   {% endif %}
+  "description": "{{ product.text|raw|striptags }}",
+  "mpn": "{{ product.sku }}",
+  "brand": {
+    "@type": "Thing",
+    "name": "{{ product.brand.title }}"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "EUR",
+    "price": "{{ product.activePrice(false)|number_format(2,'.', '') }}",
+    "itemCondition": "http://schema.org/NewCondition",
+    {% if product.inStock %}
+    "availability": "http://schema.org/InStock",
+    {% else %}
+    "availability": "http://schema.org/OutOfStock",
+    {% endif %}
+    "seller": {
+      "@type": "Organization",
+      "name": "{{ siteTitle }}"
+    }
+  }
+}
+</script>
+{# prettier-ignore-end #}

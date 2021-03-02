@@ -1,7 +1,7 @@
-<div class="col-gap-3 col-count-2">
+<div class="col-gap-3 md:col-count-2">
     {% for category in categories %}
         <div class="mb-3">
-            <a class="relative flex group" href="{{ category.url }}">
+            <a class="relative block group" href="{{ category.url }}">
                 <span class="absolute transition-colors duration-300 bottom-8 left-8 group-hover:text-yellow-500">
                     {{ category.title }}
                 </span>

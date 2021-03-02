@@ -5,10 +5,10 @@
     </div>
 {% endif %} #}
 
-<div class="container flex px-6 py-3 mx-auto mb-12">
+<div class="container px-6 py-3 mx-auto mb-12 md:flex">
 
     {# Sidebar filters #}
-    <aside class="w-1/4 pr-12">
+    <aside class="pr-12 md:w-1/4">
         {% for filter in filters %}
             <ul class="filter-option">
                 <li class="pb-10 mb-10 border-b border-gray-200">
@@ -47,16 +47,16 @@
     </aside>
 
     {# Product grid #}
-    <main class="w-3/4 pl-6">
+    <main class="md:pl-6 md:w-3/4">
         {% if category.products.count > 0 %}
             <div class="product-overview" data-product-list="Category">
 
                 {# Overview bar #}
-                <div class="overview-bar | mb-10 flex">
-                    <div class="overview-bar-left | flex flex-1 items-center">
+                <div class="overview-bar | flex-col flex md:flex-row">
+                    <div class="overview-bar-left | mb-10 flex flex-1 items-center">
                         <h1 class="text-2xl">{{ category.title|ucfirst }}</h1>
                     </div>
-                    <div class="overview-bar-right | flex justify-end items-center space-x-4">
+                    <div class="overview-bar-right | mb-10 flex md:justify-end items-center space-x-4">
                         <p class="text-right">{{ 'lbl.SortOn'|trans|ucfirst }}:</p>
                         <div>
                             <div class="select-style">

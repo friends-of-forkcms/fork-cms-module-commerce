@@ -207,7 +207,7 @@ class Index extends FrontendBaseBlock
             'ProductImages',
             $product->getImages()->getId(),
             ucfirst(Language::lbl('Images')),
-            'Commerce'
+            $this->getModule()
         );
 
         $downloads = null;

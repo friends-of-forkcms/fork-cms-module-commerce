@@ -1,15 +1,15 @@
 <footer class="w-full py-8 text-sm text-gray-400 bg-gray-800">
-    <div class="container flex px-3 py-4 mx-auto">
+    <div class="container flex px-6 py-4 mx-auto">
         <div class="flex flex-wrap w-full">
-            <nav class="flex w-full lg:w-1/2">
-                <ul class="flex gap-4">
+            <nav class="flex flex-1">
+                <ul class="flex space-x-4">
                     {% for footerLink in footerLinks %}
                         <li><a class="transition-colors duration-300 ease-in-out hover:text-white" href="{{ footerLink.url }}" title="{{ footerLink.title }}" {% if footerLink.rel %} rel="{{ footerLink.rel }}"{% endif %}>{{ footerLink.navigation_title }}</a></li>
                     {% endfor %}
                     <li class="disabled"><a>© <span itemprop="copyrightYear">{{ now|date('Y') }}</span> By {{ siteTitle }}</a></li>
                 </ul>
             </nav>
-            <div class="flex w-full lg:w-1/2 lg:justify-end lg:text-right">
+            <div class="flex lg:justify-end lg:text-right">
                 <div class="flex">
                     <a href="#" class="text-white hover:text-gray-200">
                         <span class="sr-only">Facebook</span>

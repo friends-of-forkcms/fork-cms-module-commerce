@@ -21,7 +21,7 @@
                 </div>
 
                 {# Icon navigation right #}
-                <div class="flex items-center flex-1 order-2 gap-8 md:order-3 md:justify-end">
+                <div class="flex items-center flex-1 order-2 space-x-4 md:order-3 md:justify-end">
                     <a class="no-underline hover:text-black" href="#">
                         <svg class="hover:text-black"
                             width="18"
@@ -41,6 +41,11 @@
                 </div>
             </div>
         </header>
+    {% endblock %}
+
+    {# Breadcrumbs #}
+    {% block breadcrumb %}
+      {% include "Core/Layout/Templates/Breadcrumb.html.twig" %}
     {% endblock %}
 
     {# Main content #}

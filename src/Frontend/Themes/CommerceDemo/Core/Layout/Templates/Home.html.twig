@@ -1,5 +1,9 @@
 {% extends 'Core/Layout/Templates/Base.html.twig' %}
 
+{% block breadcrumb %}
+
+{% endblock %}
+
 {% block main %}
     {# Hero #}
     <section class="flex w-full pt-12 mx-auto mb-12 bg-right bg-cover bg-nordic-gray-light md:pt-0 md:items-center"
@@ -11,7 +15,7 @@
                 </h1>
                 <a class="inline-block text-xl leading-relaxed no-underline border-b border-gray-600 hover:text-black hover:border-black"
                     href="{{ geturlforblock('Commerce', 'Index') }}">
-                    products
+                    → Go to our products
                 </a>
             </div>
         </div>
