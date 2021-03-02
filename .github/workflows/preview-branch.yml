@@ -3,6 +3,9 @@ on:
     branches:
       - master
 
+env:
+  DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
+
 name: Deploy Preview Branch
 jobs:
   deploy-preview:
@@ -24,5 +27,20 @@ jobs:
       - name: Deploy Pipeline
         uses: okteto/pipeline@master
         with:
-          name: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
+          name: ${{ env.DEPLOY_NAME }}
           timeout: 10m
+
+      - name: Verify up and running
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net/en"
+          responseCode: 200
+          timeout: 600000 # 10min
+          interval: 5000 # 5s
+
+      - name: comment PR
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: "🚀 Preview environment available at https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net for the next 24 hours."
