@@ -6,4 +6,3 @@ commonLabels:
 resources:
   - deployment.yml
   - service.yml
-  - pvc-db-data.yml
