@@ -1,0 +1,28 @@
+on:
+  pull_request:
+    branches:
+      - master
+
+name: Deploy Preview Branch
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: Login
+        uses: okteto/login@master
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: Activate Namespace
+        uses: okteto/namespace@master
+        with:
+          namespace: jessedobbelaere
+
+      - name: Deploy Pipeline
+        uses: okteto/pipeline@master
+        with:
+          name: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
+          timeout: 10m
