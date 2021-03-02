@@ -54,11 +54,3 @@ spec:
               value: forkcms
             - name: MYSQL_PASSWORD
               value: forkcms
-          volumeMounts:
-            - name: db-data-persistent-storage
-              mountPath: /var/lib/mysql
-
-      volumes:
-        - name: db-data-persistent-storage
-          persistentVolumeClaim:
-            claimName: db-data-pv-claim
