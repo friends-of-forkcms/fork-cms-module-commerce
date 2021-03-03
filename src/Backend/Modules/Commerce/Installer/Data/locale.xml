@@ -2106,6 +2106,10 @@
         <translation language="nl"><![CDATA[nieuwst]]></translation>
         <translation language="en"><![CDATA[newest]]></translation>
       </item>
+      <item type="message" name="ExclusiveVatPricing">
+        <translation language="nl"><![CDATA[Exclusief %1$s&percnt; BTW. (€%2$s incl. %3$s&percnt; BTW)]]></translation>
+        <translation language="en"><![CDATA[Exclusive %1$s&percnt; VAT. (€%2$s incl. %3$s&percnt; VAT)]]></translation>
+      </item>
     </Core>
   </Frontend>
 </locale>

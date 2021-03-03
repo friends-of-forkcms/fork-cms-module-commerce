@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const carouselSelector = '.js-product-slider';
     if (document.querySelector(carouselSelector)) {
         import('./components/carousel').then((carousel) => carousel.default(carouselSelector));
+        import('./components/photoswipe').then((photoswipe) => photoswipe.default('.photoswipe-inner'));
     }
 });
 

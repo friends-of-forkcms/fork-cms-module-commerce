@@ -37,7 +37,9 @@
                         </svg>
                     </a>
                     <a class="no-underline hover:text-black" href="#">Sign In</a>
-                    <a class="no-underline hover:text-black" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}"">Cart</a>
+                    <a class="no-underline hover:text-black" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">
+                        Cart
+                    </a>
                 </div>
             </div>
         </header>
@@ -45,7 +47,7 @@
 
     {# Breadcrumbs #}
     {% block breadcrumb %}
-      {% include "Core/Layout/Templates/Breadcrumb.html.twig" %}
+        {% include 'Core/Layout/Templates/Breadcrumb.html.twig' %}
     {% endblock %}
 
     {# Main content #}

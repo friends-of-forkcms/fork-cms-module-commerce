@@ -13,6 +13,7 @@ export default (carouselSelector: string): void => {
         gap: 10,
         cover: true,
         isNavigation: true,
+        pagination: false,
         focus: 'center',
         breakpoints: {
             '600': {

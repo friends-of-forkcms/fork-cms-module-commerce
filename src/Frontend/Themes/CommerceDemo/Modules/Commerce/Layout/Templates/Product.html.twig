@@ -8,35 +8,89 @@
 {% endfor %}
 
 <div style="background-color: #eeeeee;">
-    <div class="container px-6 py-4 mx-auto">
+    <div class="container px-6 py-20 mx-auto">
         <div class="flex">
             {# Product images #}
             <div class="product-images | flex-1">
                 {{ images|raw }}
             </div>
 
-            <div class="product-quick-info | w-2/5 px-28">
-                <h1>
+            <div class="product-quick-info | w-2/5 px-24">
+                <h1 class="text-2xl text-gray-800">
                     {{ product.title }}
                 </h1>
                 <p>
-                    <span class="article-number">Artikelnummer: <strong>{{ product.sku }}</strong></span>
-                    Ons complete assortiment aanhangwagens kunt u vinden op deze website. <a href="{{ product.category.url }}">
-                        Ga hier naar het overzicht
-                    </a>.
+                    <span class="article-number">{{ 'lbl.ArticleNumber'|trans|ucfirst }}: <strong>{{ product.sku }}</strong></span>
                 </p>
-                <p>
-                    <a href="#" class="btn btn-default arrow addToQuote" data-id="{{ product.id }}">Offerte aanvragen</a>
-                    <a href="#specifications" class="btn btn-light scrollTo">Specificaties</a>
-                    <a href="#information" class="btn btn-light scrollTo">Informatie</a>
-                </p>
+
+                {# Add to cart #}
+                <div class="into-cart">
+                    {% form_theme form with['Commerce/Layout/Templates/ProductForm.html.twig'] %}
+                    {{ form_start(form) }}
+                    <input type="hidden" name="fork[module]" value="Commerce" />
+                    <input type="hidden" name="fork[action]" value="UpdateCart" />
+
+                    {% if product.inStock %}
+                        <div class="my-4 price-box">
+                            {% if product.hasActiveSpecialPrice %}
+                                <p class="price-old | line-through text-sm inline">
+                                    <span>€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
+                                </p>
+                                <p class="price-new | text-xl text-yellow-500 inline">
+                                    <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+                                </p>
+                            {% else %}
+                                <p class="price | text-xl text-yellow-500 inline">
+                                    <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+                                </p>
+                            {% endif %}
+                            <p class="price-btw">
+                                <span class="my-2 text-sm">
+                                    {{
+                                        'msg.ExclusiveVatPricing'
+                                            |trans
+                                            |format(
+                                                product.vat.percentage|formatnumber(0)|e,
+                                                product.activePrice(true)|number_format(2, ',', '.')|e,
+                                                product.vat.percentage|number_format(0, ',', '.')|e
+                                            )
+                                            |raw
+                                    }}
+                                </span>
+                            </p>
+                        </div>
+                    {% else %}
+                        <p class="stock-status">
+                            {{ product.stockStatus.title }}
+                        </p>
+                    {% endif %}
+
+                    <div class="text-gray-500 product-summary">
+                        {{ product.summary }}
+                    </div>
+
+                    <div class="my-8 add-to-cart">
+                        {{ form_widget(form.amount, {'attr': {'class': 'w-full flex border-gray-300 text-center'}}) }}
+                        {{ form_rest(form) }}
+
+                        {% if product.inStock %}
+                            <a href="javascript:void(0);"
+                                class="btn btn-cart addToCart | w-full bg-gray-800 flex py-4 items-center justify-center hover:bg-gray-600 text-white"
+                                data-id="{{ product.id }}">
+                                {{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}
+                            </a>
+                        {% endif %}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="product-information padding-top-small">
-            <h2 id="information">
-                Meer over {{ product.title }}
-            </h2>
+<div class="container px-6 py-20 mx-auto">
+    <div>
+        <div id="information" class="product-information">
             <div id="productText">
                 {{ product.text|raw }}
             </div>
@@ -97,62 +151,6 @@
                 </div>
             </div>
         {% endif %}
-    </div>
-</div>
-
-<div class="col-md-4 col-sm-5 col-xs-12 right">
-    <div class="widget bg-light inner-padding into-cart">
-        {% form_theme form with['Commerce/Layout/Templates/ProductForm.html.twig'] %}
-        {{ form_start(form) }}
-        <input type="hidden" name="fork[module]" value="Commerce" />
-        <input type="hidden" name="fork[action]" value="UpdateCart" />
-        <h3>
-            Voeg toe aan winkelwagen
-        </h3>
-        {% if product.inStock %}
-            <div class="price-box">
-                {% if product.hasActiveSpecialPrice %}
-                    <p class="price-old">
-                        <span>€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
-                    </p>
-                    <p class="price-new">
-                        <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
-                    </p>
-                {% else %}
-                    <p class="price">
-                        <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
-                    </p>
-                {% endif %}
-                <p class="price-btw">
-                    <span>
-                        Exclusief {{ product.vat.percentage|formatnumber(0) }}
-                        % BTW. (&euro; {{ product.activePrice(true)|number_format(2, ',', '.') }}
-                        incl. {{ product.vat.percentage|number_format(0, ',', '.') }}% BTW )
-                    </span>
-                </p>
-            </div>
-        {% else %}
-            <p class="stock-status">
-                {{ product.stockStatus.title }}
-            </p>
-        {% endif %}
-        {{ form_row(form.amount) }}
-        {{ form_rest(form) }}
-        <p>
-            {% if product.inStock %}
-                <a href="javascript:void(0);" class="btn btn-cart arrow addToCart" data-id="{{ product.id }}">Plaats in winkelwagen</a>
-            {% endif %}
-            <a href="javascript:void(0);" class="btn btn-default addToQuote" data-id="{{ product.id }}">Offerte aanvragen</a>
-        </p>
-        {{ form_end(form) }}
-    </div>
-
-    <div class="bg-primary inner-padding widget">
-        <p>
-            Ons complete assortiment aanhangwagens kunt u vinden op deze website. <a class="text-white" href="{{ product.category.url }}">
-                <strong>Ga hier naar het overzicht</strong>
-            </a>.
-        </p>
     </div>
 </div>
 
