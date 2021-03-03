@@ -34,7 +34,7 @@ spec:
             - name: DB_PASSWORD
               value: forkcms
             - name: SITE_DOMAIN
-              value: fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net
+              value: $NAME-jessedobbelaere.cloud.okteto.net
 
         - name: db
           image: mariadb:10
@@ -54,11 +54,3 @@ spec:
               value: forkcms
             - name: MYSQL_PASSWORD
               value: forkcms
-          volumeMounts:
-            - name: db-data-persistent-storage
-              mountPath: /var/lib/mysql
-
-      volumes:
-        - name: db-data-persistent-storage
-          persistentVolumeClaim:
-            claimName: db-data-pv-claim

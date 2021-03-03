@@ -1,4 +1,17 @@
 icon: https://raw.githubusercontent.com/friends-of-forkcms/fork-cms-module-commerce/master/deploy/icon.png
 deploy:
-  - okteto build --build-arg THEME_NAME=CommerceDemo -t okteto.dev/fork-cms-module-commerce-demo:latest
-  - kubectl apply -f k8s
+  # Build the container image
+  - okteto build --build-arg THEME_NAME=CommerceDemo  -t okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
+
+  # Inject the container image tag
+  - cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
+
+  # Inject the app label
+  - cd k8s && kustomize edit set label app:$NAME
+
+  # Inject the name suffix, e.g. fork-cms-module-commerce-demo-pr-1
+  - if [[ $NAME == *"-pr-"* ]]; then NAMESUFFIX=$(echo $NAME | sed "s/.*-pr-//" | awk '{print "-pr-"$1}') && cd k8s && kustomize edit set namesuffix -- "$NAMESUFFIX"; fi
+
+  # Deploy Kubernetes manifest using Kustomize.
+  # Use envsubst to replace env values, e.g. for injecting the SITE_DOMAIN.
+  - kustomize build ./k8s | envsubst | kubectl apply -f -

@@ -1,14 +1,12 @@
 on:
-  workflow_dispatch:
-  push:
-    branches: [master]
-  schedule:
-    - cron: "10 6 * * *"
+  pull_request:
+    branches:
+      - master
 
 env:
-  DEPLOY_NAME: fork-cms-module-commerce-demo
+  DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
 
-name: Deploy Preview
+name: Deploy Preview PR
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
@@ -39,3 +37,10 @@ jobs:
           responseCode: 200
           timeout: 600000 # 10min
           interval: 5000 # 5s
+
+      - name: Comment PR
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: "🚀 Preview environment available at https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net for the next 24 hours."
