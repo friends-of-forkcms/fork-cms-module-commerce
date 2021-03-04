@@ -1,5 +1,8 @@
 import Splide from '@splidejs/splide';
+import Video from '@splidejs/splide-extension-video';
+
 import '@splidejs/splide/dist/css/splide.min.css';
+import '@splidejs/splide-extension-video/dist/css/splide-extension-video.min.css';
 
 /**
  * Create a carousel, e.g. for viewing the product images.
@@ -37,5 +40,5 @@ export default (carouselSelector: string): void => {
     });
 
     // Connect the primary slider to the second one.
-    primarySlider.sync(thumbnailSlider).mount();
+    primarySlider.sync(thumbnailSlider).mount({ Video });
 };

@@ -43,23 +43,35 @@
             <div class="splide__track">
                 <ul class="splide__list photoswipe-inner">
                     {% for mediaItem in mediaItems %}
-                        <figure class="splide__slide | flex items-center justify-center"
-                            itemprop="associatedMedia"
-                            itemscope
-                            itemtype="http://schema.org/ImageObject">
-                            <a href="{{ mediaItem.getWebPath()|imagine_filter('product_large') }}"
-                                itemprop="contentUrl"
-                                data-size="{{ mediaItem.width }}x{{ mediaItem.height }}"
-                                data-med="{{ mediaItem.getWebPath()|imagine_filter('product_large') }}"
-                                data-caption="{{ mediaItem.title }}"
-                                class="cursor-zoom-in">
-                                <img src="{{ mediaItem.getWebPath()|imagine_filter('product_thumbnail') }}"
-                                    loading="lazy"
-                                    itemprop="thumbnail"
-                                    alt="{{ mediaItem.title }}"
-                                    title="{{ mediaItem.title }}" />
-                            </a>
-                        </figure>
+                        {% if mediaItem.type == 'image' %}
+                            <figure class="splide__slide | flex items-center justify-center"
+                                itemprop="associatedMedia"
+                                itemscope
+                                itemtype="http://schema.org/ImageObject">
+                                <a href="{{ mediaItem.getWebPath()|imagine_filter('product_large') }}"
+                                    itemprop="contentUrl"
+                                    data-size="{{ mediaItem.width }}x{{ mediaItem.height }}"
+                                    data-med="{{ mediaItem.getWebPath()|imagine_filter('product_large') }}"
+                                    data-caption="{{ mediaItem.title }}"
+                                    class="cursor-zoom-in">
+                                    <img src="{{ mediaItem.getWebPath()|imagine_filter('product_thumbnail') }}"
+                                        loading="lazy"
+                                        itemprop="thumbnail"
+                                        alt="{{ mediaItem.title }}"
+                                        title="{{ mediaItem.title }}" />
+                                </a>
+                            </figure>
+                        {% endif %}
+
+                        {% if mediaItem.type == 'movie' %}
+                            <li class="splide__slide | flex items-center justify-center"
+                                data-splide-html-video="{{ mediaItem.getWebPath() }}"
+                                itemprop="associatedMedia"
+                                itemscope
+                                itemtype="http://schema.org/ImageObject">
+
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -70,12 +82,18 @@
             <div class="splide__track">
                 <ul class="splide__list">
                     {% for mediaItem in mediaItems %}
-                        <li class="splide__slide">
-                            <img src="{{ mediaItem.getWebPath()|imagine_filter('product_slider_thumbnail') }}"
-                                loading="lazy"
-                                alt="{{ mediaItem.title }}"
-                                title="{{ mediaItem.title }}" />
-                        </li>
+                        {% if mediaItem.type == 'image' %}
+                            <li class="splide__slide">
+                                <img src="{{ mediaItem.getWebPath()|imagine_filter('product_slider_thumbnail') }}"
+                                    loading="lazy"
+                                    alt="{{ mediaItem.title }}"
+                                    title="{{ mediaItem.title }}" />
+                            </li>
+                        {% endif %}
+
+                        {% if mediaItem.type == 'movie' %}
+                            <li class="splide__slide"><div class="splide__video__play" style="display: flex;"></div></li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
