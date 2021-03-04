@@ -21,6 +21,7 @@ export default (carouselSelector: string): void => {
         focus: 'center',
         arrows: false,
         waitForTransition: false,
+        keyboard: false, // prevent double pages
         breakpoints: {
             '600': {
                 fixedWidth: 66,
