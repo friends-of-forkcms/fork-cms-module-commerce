@@ -94,71 +94,61 @@
     </div>
 </div>
 
-<div class="container px-6 py-20 mx-auto">
-    <div>
-        <div id="information" class="product-information">
-            <div id="productText">
-                {{ product.text|raw }}
-            </div>
-            {% if product.specificationValues.count > 0 %}
-                <h2 id="specifications">
-                    Specificaties {{ product.title }}
-                </h2>
-                <table class="table">
+
+{# Tabs menu #}
+<section class="container px-6 py-10 mx-auto">
+    <ul class="flex justify-center mb-8 space-x-8 text-base text-gray-400 tabs-menu js-tabs">
+        <li><a href="#description" class="pb-1 text-gray-800 border-b border-gray-200 active js-btn-tab">{{ 'lbl.Description'|trans|ucfirst }}</a></li>
+        {% if product.specificationValues.count > 0 %}<li><a href="#specifications" class="pb-1 border-b border-gray-200 js-btn-tab">{{ 'lbl.Specifications'|trans|ucfirst }}</a></li>{% endif %}
+        <li><a href="#downloads" class="pb-1 border-b border-gray-200 js-btn-tab">{{ 'lbl.Downloads'|trans|ucfirst }}</a></li>
+    </ul>
+
+    <div class="js-tab-content">
+        <div id="description" class="tab-pane">
+            {{ product.text|raw }}
+        </div>
+
+        {% if product.specificationValues.count > 0 %}
+            <div id="specifications" class="hidden tab-pane">
+                <table class="table w-full">
                     <tbody>
                         {% for specification in specifications %}
                             {% for specificationValue in specification.specificationValues %}
                                 <tr>
-                                    <td>
+                                    <th class="w-1/5 pr-3 font-normal text-left text-gray-800 align-top">
                                         {{ specification.title }}:
-                                    </td>
-                                    <td>
-                                        {{ specificationValue.value }}
+                                    </th>
+                                    <td class="w-4/5 text-left text-gray-400 align-top">
+                                        {{ specificationValue.value|ucfirst }}
                                     </td>
                                 </tr>
                             {% endfor %}
                         {% endfor %}
                     </tbody>
                 </table>
-            {% endif %}
-
-            {# Product downloads #}
-            {{ downloads|raw }}
-        </div>
-        {% if product.relatedProducts.count > 0 %}
-            <div class="parts related-products padding-top-xsmall">
-                <div class="col-md-12 col-xs-12 no-gutter">
-                    <h2>
-                        Vergelijkbare producten
-                    </h2>
-                </div>
-                <div class="slider-inner col-md-12 col-xs-12 no-gutter">
-                    <div class="owl-carousel parts-small">
-                        {% for relatedProduct in product.relatedProducts %}
-                            <div class="bg-light clickable" data-url="{{ relatedProduct.url }}">
-                                <img src="{{ relatedProduct.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}"
-                                    alt="{{ relatedProduct.title }}" />
-                                <div class="inner-padding">
-                                    <h3>
-                                        {{ relatedProduct.title }}
-                                    </h3>
-                                    <div class="button-holder">
-                                        <p class="price">
-                                            € {{ relatedProduct.activePrice(false)|formatnumber(2) }}
-                                        </p>
-                                        <div class="btn-group">
-                                            <a href="{{ relatedProduct.url }}" class="btn btn-primary">Meer informatie</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
             </div>
         {% endif %}
+
+        <div id="downloads" class="hidden tab-pane">
+            {{ downloads|raw }}
+        </div>
     </div>
-</div>
+</section>
+
+{% if product.relatedProducts.count > 0 %}
+    <section class="related-products | container px-6 py-20 mx-auto">
+        <h2 class="text-2xl text-gray-800">
+            {{ 'lbl.RelatedProducts'|trans|ucfirst }}
+        </h2>
+        <div class="grid grid-cols-2 gap-6 my-8 md:grid-cols-3 lg:grid-cols-4">
+            {% for product in product.relatedProducts %}
+                {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {
+                    product: product
+                } %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
 
 {% include '/Modules/Commerce/Layout/Templates/Modals/ProductAdded.html.twig' %}
 

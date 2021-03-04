@@ -1666,6 +1666,10 @@
         <translation language="nl"><![CDATA[download]]></translation>
         <translation language="en"><![CDATA[download]]></translation>
       </item>
+      <item type="label" name="Downloads">
+        <translation language="nl"><![CDATA[downloads]]></translation>
+        <translation language="en"><![CDATA[downloads]]></translation>
+      </item>
       <item type="label" name="Search">
         <translation language="nl"><![CDATA[zoeken]]></translation>
         <translation language="en"><![CDATA[search]]></translation>
