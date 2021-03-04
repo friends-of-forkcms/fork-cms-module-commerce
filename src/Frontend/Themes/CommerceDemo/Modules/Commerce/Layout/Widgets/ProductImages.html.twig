@@ -6,6 +6,40 @@
 {% if mediaItems %}
     <div class="js-carousel">
         <div class="js-product-slider splide">
+            <div class="splide__arrows">
+                {# https://tablericons.com/ #}
+                <button class="splide__arrow splide__arrow--prev">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-chevron-right"
+                        width="40"
+                        height="40"
+                        viewBox="0 0 24 24"
+                        stroke-width="1"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <polyline points="9 6 15 12 9 18" />
+                    </svg>
+                </button>
+                <button class="splide__arrow splide__arrow--next">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-chevron-right"
+                        width="40"
+                        height="40"
+                        viewBox="0 0 24 24"
+                        stroke-width="1"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <polyline points="9 6 15 12 9 18" />
+                    </svg>
+                </button>
+            </div>
+
             <div class="splide__track">
                 <ul class="splide__list photoswipe-inner">
                     {% for mediaItem in mediaItems %}
@@ -17,7 +51,8 @@
                                 itemprop="contentUrl"
                                 data-size="{{ mediaItem.width }}x{{ mediaItem.height }}"
                                 data-med="{{ mediaItem.getWebPath()|imagine_filter('product_large') }}"
-                                data-caption="{{ mediaItem.title }}">
+                                data-caption="{{ mediaItem.title }}"
+                                class="cursor-zoom-in">
                                 <img src="{{ mediaItem.getWebPath()|imagine_filter('product_thumbnail') }}"
                                     loading="lazy"
                                     itemprop="thumbnail"

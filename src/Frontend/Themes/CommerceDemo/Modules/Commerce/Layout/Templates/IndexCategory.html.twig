@@ -2,7 +2,7 @@
     {% for category in categories %}
         <div class="mb-3">
             <a class="relative block group" href="{{ category.url }}">
-                <span class="absolute transition-colors duration-300 bottom-8 left-8 group-hover:text-yellow-500">
+                <span class="absolute transition-colors duration-200 bottom-8 left-8 group-hover:text-yellow-500">
                     {{ category.title }}
                 </span>
                 <img src="{{ category.image.webPath('source') }}" alt="{{ category.title }}" />

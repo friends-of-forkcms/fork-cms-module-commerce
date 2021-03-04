@@ -4,7 +4,7 @@
             <nav class="flex flex-1">
                 <ul class="flex space-x-4">
                     {% for footerLink in footerLinks %}
-                        <li><a class="transition-colors duration-300 ease-in-out hover:text-white" href="{{ footerLink.url }}" title="{{ footerLink.title }}" {% if footerLink.rel %} rel="{{ footerLink.rel }}"{% endif %}>{{ footerLink.navigation_title }}</a></li>
+                        <li><a class="transition-colors duration-200 ease-in-out hover:text-white" href="{{ footerLink.url }}" title="{{ footerLink.title }}" {% if footerLink.rel %} rel="{{ footerLink.rel }}"{% endif %}>{{ footerLink.navigation_title }}</a></li>
                     {% endfor %}
                     <li class="disabled"><a>© <span itemprop="copyrightYear">{{ now|date('Y') }}</span> By {{ siteTitle }}</a></li>
                 </ul>

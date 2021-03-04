@@ -9,13 +9,13 @@
 
 <div style="background-color: #eeeeee;">
     <div class="container px-6 py-20 mx-auto">
-        <div class="flex">
+        <div class="flex flex-wrap">
             {# Product images #}
-            <div class="product-images | flex-1">
+            <div class="product-images | w-full lg:w-1/2 xl:w-3/5 lg:h-auto">
                 {{ images|raw }}
             </div>
 
-            <div class="product-quick-info | w-2/5 px-24">
+            <div class="product-quick-info | lg:w-1/2 xl:w-2/5 w-full lg:px-24 my-10 lg:my-0">
                 <h1 class="text-2xl text-gray-800">
                     {{ product.title }}
                 </h1>
@@ -80,6 +80,12 @@
                                 {{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}
                             </a>
                         {% endif %}
+                    </div>
+
+                    <div>
+                        <a href="#" class="block w-5 text-gray-400 transition-colors duration-200 hover:text-yellow-500">
+                            <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M20.84 4.61l1.9475e-07 1.94841e-07c-2.14738-2.14839-5.62979-2.14921-7.77817-.00182601 -.000608683.000608398-.00121722.00121694-.00182562.00182562l-1.06 1.06 -1.06-1.06 3.78705e-07 3.78706e-07c-2.14839-2.14839-5.63161-2.14839-7.78-7.57411e-07 -2.14839 2.14839-2.14839 5.63161-7.57411e-07 7.78 0 0 1.77636e-15 1.77636e-15 1.77636e-15 1.77636e-15l1.06 1.06 7.78 7.78 7.78-7.78 1.06-1.06 9.88459e-08-9.87995e-08c2.14839-2.14738 2.1492-5.62979.00182542-7.77817 -.000608398-.000608683-.00121694-.00121722-.00182562-.00182562Z" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="currentColor" stroke-linejoin="round"></path></svg>
+                        </a>
                     </div>
                     {{ form_end(form) }}
                 </div>

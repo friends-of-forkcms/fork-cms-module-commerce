@@ -18,6 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -62,11 +63,15 @@ class AddToCartType extends AbstractType
         if ($product->inStock()) {
             $builder->add(
                 'amount',
-                NumberType::class,
+                IntegerType::class,
                 [
                     'required' => true,
                     'label' => 'lbl.Amount',
                     'scale' => 0,
+                    'attr' => [
+                        'step' => 1,
+                        'min' => 1,
+                    ]
                 ]
             );
         } else {

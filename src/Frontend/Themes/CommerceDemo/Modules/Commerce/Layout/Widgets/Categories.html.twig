@@ -12,7 +12,7 @@ variables that are available:
         <ul class="flex flex-row gap-4">
             {% for category in widgetCommerceCategoriesFlat %}
                 <li>
-                    <a class="text-lg text-gray-500 transition-colors duration-300 hover:text-yellow-500" href="{{ category.url }}">
+                    <a class="text-lg text-gray-500 transition-colors duration-200 hover:text-yellow-500" href="{{ category.url }}">
                         {{ category.title }}&nbsp;({{ category.total }})
                     </a>
                     {% if not loop.last %}/{% endif %}

@@ -36,55 +36,34 @@
 /**
   * Our theme's custom CSS
   */
-.hover\:grow {
-    transition: all 0.3s;
-    transform: scale(1);
-}
-
-.hover\:grow:hover {
-    transform: scale(1.02);
-}
-
-.carousel-open:checked + .carousel-item {
-    position: static;
-    opacity: 100;
-}
-
-.carousel-item {
-    -webkit-transition: opacity 0.6s ease-out;
-    transition: opacity 0.6s ease-out;
-}
-
-#carousel-1:checked ~ .control-1,
-#carousel-2:checked ~ .control-2,
-#carousel-3:checked ~ .control-3 {
-    display: block;
-}
-
-.carousel-indicators {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    bottom: 2%;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 10;
-}
-
-#carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
-#carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
-#carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
-    color: #000;
-    /*Set to match the Tailwind colour you want the active one to be */
-}
-
-/* Default link */
+/* Add a default link to editor links */
 .editor a:not([class]) {
-    @apply text-yellow-500 transition-colors duration-300 hover:text-gray-900;
+    @apply text-yellow-500 transition-colors duration-200 hover:text-gray-900;
 }
 
 h3 {
     @apply mb-4 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline;
+}
+
+/* Override the Photoswipe modal overlay */
+.pswp__bg {
+    background: #fff !important;
+}
+
+/* Override the Splide carousel style */
+.splide__arrow {
+    opacity: 1 !important;
+    border-radius: inherit !important;
+    background: none !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    @apply transition-colors duration-200 hover:text-yellow-500;
+}
+.splide__arrow svg {
+    width: inherit !important;
+    height: inherit !important;
+}
+
+.splide--nav > .splide__track > .splide__list > .splide__slide.is-active {
+    @apply border-2 border-yellow-500 !important;
 }

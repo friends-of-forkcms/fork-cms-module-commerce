@@ -50,7 +50,7 @@ const initDOM = () => {
 
                         <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 
-                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                        <!-- <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button> -->
 
                         <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 

@@ -9,12 +9,15 @@ import '@splidejs/splide/dist/css/splide.min.css';
 export default (carouselSelector: string): void => {
     const thumbnailSlider = new Splide(`${carouselSelector}-thumb`, {
         fixedWidth: 100,
+        speed: 250,
         height: 60,
         gap: 10,
         cover: true,
         isNavigation: true,
         pagination: false,
         focus: 'center',
+        arrows: false,
+        waitForTransition: false,
         breakpoints: {
             '600': {
                 fixedWidth: 66,
@@ -27,8 +30,10 @@ export default (carouselSelector: string): void => {
         type: 'fade',
         heightRatio: 0.5,
         pagination: false,
-        arrows: false,
+        speed: 250,
+        arrows: true,
         cover: true,
+        waitForTransition: false,
     });
 
     // Connect the primary slider to the second one.

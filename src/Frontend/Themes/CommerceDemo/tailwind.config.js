@@ -54,7 +54,10 @@ module.exports = {
         },
         extend: {
             colors: {
-                gray: colors.trueGray,
+                gray: colors.trueGray, // Override our gray with trueGray
+            },
+            cursor: {
+                'zoom-in': 'zoom-in', // Add a zoom cursor for e.g. image to photoswipe
             },
         },
     },
