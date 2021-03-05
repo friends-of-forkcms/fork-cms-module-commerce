@@ -83,7 +83,7 @@
                     </div>
 
                     <div>
-                        <a href="#" class="block w-5 text-gray-400 transition-colors duration-200 hover:text-yellow-500">
+                        <a class="block w-5 text-gray-400 transition-colors duration-200 hover:text-yellow-500">
                             <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M20.84 4.61l1.9475e-07 1.94841e-07c-2.14738-2.14839-5.62979-2.14921-7.77817-.00182601 -.000608683.000608398-.00121722.00121694-.00182562.00182562l-1.06 1.06 -1.06-1.06 3.78705e-07 3.78706e-07c-2.14839-2.14839-5.63161-2.14839-7.78-7.57411e-07 -2.14839 2.14839-2.14839 5.63161-7.57411e-07 7.78 0 0 1.77636e-15 1.77636e-15 1.77636e-15 1.77636e-15l1.06 1.06 7.78 7.78 7.78-7.78 1.06-1.06 9.88459e-08-9.87995e-08c2.14839-2.14738 2.1492-5.62979.00182542-7.77817 -.000608398-.000608683-.00121694-.00121722-.00182562-.00182562Z" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="currentColor" stroke-linejoin="round"></path></svg>
                         </a>
                     </div>
@@ -96,20 +96,47 @@
 
 
 {# Tabs menu #}
-<section class="container px-6 py-10 mx-auto">
-    <ul class="flex justify-center mb-8 space-x-8 text-base text-gray-400 tabs-menu js-tabs">
-        <li><a href="#description" class="pb-1 text-gray-800 border-b border-gray-200 active js-btn-tab">{{ 'lbl.Description'|trans|ucfirst }}</a></li>
-        {% if product.specificationValues.count > 0 %}<li><a href="#specifications" class="pb-1 border-b border-gray-200 js-btn-tab">{{ 'lbl.Specifications'|trans|ucfirst }}</a></li>{% endif %}
-        <li><a href="#downloads" class="pb-1 border-b border-gray-200 js-btn-tab">{{ 'lbl.Downloads'|trans|ucfirst }}</a></li>
+<section class="container px-6 py-10 mx-auto" x-data="{ tab: 'description' }">
+    <ul class="flex justify-center mb-8 space-x-8 text-base text-gray-400 tabs-menu">
+        <li>
+            <button
+                class="pb-1 border-b border-gray-200"
+                :class="{ 'active text-gray-800': tab === 'description' }"
+                @click="tab = 'description'"
+            >
+                {{ 'lbl.Description'|trans|ucfirst }}
+            </button>
+        </li>
+
+        {% if product.specificationValues.count > 0 %}
+        <li>
+            <button
+                class="pb-1 border-b border-gray-200"
+                :class="{ 'active text-gray-800': tab === 'specifications' }"
+                @click="tab = 'specifications'"
+            >
+                {{ 'lbl.Specifications'|trans|ucfirst }}
+            </button>
+        </li>{% endif %}
+
+        <li>
+            <button
+                class="pb-1 border-b border-gray-200"
+                :class="{ 'active text-gray-800': tab === 'downloads' }"
+                @click="tab = 'downloads'"
+            >
+                {{ 'lbl.Downloads'|trans|ucfirst }}
+            </button>
+        </li>
     </ul>
 
-    <div class="js-tab-content">
-        <div id="description" class="tab-pane">
+    <div>
+        <div id="description" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'description'">
             {{ product.text|raw }}
         </div>
 
         {% if product.specificationValues.count > 0 %}
-            <div id="specifications" class="hidden tab-pane">
+            <div id="specifications" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'specifications'">
                 <table class="table w-full">
                     <tbody>
                         {% for specification in specifications %}
@@ -129,7 +156,7 @@
             </div>
         {% endif %}
 
-        <div id="downloads" class="hidden tab-pane">
+        <div id="downloads" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'downloads'">
             {{ downloads|raw }}
         </div>
     </div>
