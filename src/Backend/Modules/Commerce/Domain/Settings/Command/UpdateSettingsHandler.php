@@ -25,7 +25,9 @@ final class UpdateSettingsHandler
         $this->set('automatic_invoice_statuses', $updateSettings->automatic_invoice_statuses);
         $this->set('products_in_widget', $updateSettings->products_in_widget);
 
-        $this->loadGoogleMerchantCategories($updateSettings->google_product_categories);
+        if (!empty($updateSettings->google_product_categories)) {
+            $this->loadGoogleMerchantCategories($updateSettings->google_product_categories);
+        }
     }
 
     private function loadGoogleMerchantCategories(?string $url): void

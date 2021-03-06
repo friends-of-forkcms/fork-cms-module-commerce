@@ -159,6 +159,7 @@ class Index extends FrontendBaseBlock
         }
 
         // Assign to our template
+        $this->template->assign('categories', $this->getCategoryRepository()->findParents(Locale::frontendLanguage()));
         $this->template->assign('category', $category);
         $this->template->assign('products', $products);
         $this->template->assign('filters', $filters);

@@ -9,9 +9,42 @@
 
     {# Sidebar filters #}
     <aside class="js-product-filters | pr-12 md:w-1/4">
-        {% for filter in filters %}
-            <ul class="filter-option">
-                <li class="pb-10 mb-10 border-b border-gray-200" x-data="{ isCollapsed: false}">
+        <ul>
+            {# Categories #}
+            <li class="pb-10 mb-10 border-b border-gray-200" x-data="{ isCollapsed: false}" x-bind:style="isCollapsed ? 'padding: 0; margin-bottom: 16px;' : ''">
+                <h3 class="flex items-center justify-between text-base font-normal text-black capitalize cursor-pointer" @click="isCollapsed = !isCollapsed">
+                    {{ 'lbl.Categories'|trans|ucfirst }}
+
+                    <div class="w-4 h-5 icon-fold">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" x-show="isCollapsed">
+                            <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" x-show="!isCollapsed">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </h3>
+
+                <div
+                        class="filter-body | overflow-hidden transition-all duration-500"
+                        x-ref="filterBody"
+                        x-bind:style="!isCollapsed ? `max-height: ${ $refs.filterBody.scrollHeight }px` : 'max-height: 0px'"
+                    >
+                        <ul class="flex flex-col space-y-2">
+                            {% for categoryItem in categories %}
+                                <li class="text-sm">
+                                    {% set isActiveCategory = category.id == categoryItem.id %}
+                                    <a href="{{ categoryItem.url }}" class="transition-colors duration-200 hover:text-yellow-500 {{ isActiveCategory ? 'text-yellow-500' : '' }}">{{ categoryItem.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </li>
+
+
+            {# Dynamic filters from backend #}
+            {% for filter in filters %}
+                <li class="pb-10 mb-10 border-b border-gray-200" x-data="{ isCollapsed: false}" x-bind:style="isCollapsed ? 'padding: 0; margin-bottom: 16px;' : ''">
                     <h3 class="flex items-center justify-between text-base font-normal text-black capitalize cursor-pointer" @click="isCollapsed = !isCollapsed">
                         {{ filter.title }}
 
@@ -27,11 +60,11 @@
 
                     {# Filter values #}
                     <div
-                        class="filter-body | overflow-hidden transition-all duration-700"
+                        class="filter-body | overflow-hidden transition-all duration-500"
                         x-ref="filterBody"
                         x-bind:style="!isCollapsed ? `max-height: ${ $refs.filterBody.scrollHeight }px` : 'max-height: 0px'"
                     >
-                        <div class="flex-col filter-checkboxes">
+                        <div class="filter-checkboxes | flex flex-col">
                             {% for specificationValue in filter.specificationValues|slice(0, filtersShowMoreCount) %}
                                 <div>
                                     <label class="inline-flex items-center text-sm" for="specification-value-{{ specificationValue.id }}">
@@ -40,29 +73,48 @@
                                     </label>
                                 </div>
                             {% endfor %}
+
+                            {# Show more filter values #}
+                            <div class="show-more-filters" x-data="{ showMore: true }">
+                                <div
+                                    class="overflow-hidden transition-all duration-500"
+                                    x-ref="filterBodyShowMore"
+                                    x-bind:style="!showMore ? `max-height: ${ $refs.filterBodyShowMore.scrollHeight }px; visibility: visible;` : 'max-height: 0px; visibility: hidden;'"
+                                >
+                                    {% for specificationValue in filter.specificationValues|slice(filtersShowMoreCount) %}
+                                        <div>
+                                            <label class="inline-flex items-center text-sm" for="specification-value-{{ specificationValue.id }}">
+                                                <input id="specification-value-{{ specificationValue.id }}" type="checkbox" class="rounded" data-filter="{{ filter.meta.url }}" data-filter-value="{{ specificationValue.meta.url }}" value="{{ specificationValue.meta.url }}">
+                                                <span class="ml-2">{{ specificationValue.value|ucfirst }}</span>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                {% if filter.specificationValues|slice(filtersShowMoreCount) is not empty %}
+                                <a
+                                    class="flex items-center mt-2 text-sm text-gray-400 hover:text-yellow-500"
+                                    href="#show_more_{{ filter.id }}"
+                                    @click.prevent="showMore = !showMore"
+                                >
+                                    <span x-text="showMore ? 'Show more' : 'Show less'"></span>
+                                    <div class="w-4 h-5 pt-1 ml-1 icon-fold">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" x-show="!showMore">
+                                            <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" x-show="showMore">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </a>
+                                {% endif %}
+                            </div>
+
                         </div>
-
-                        {% for specificationValue in filter.specificationValues|slice(filtersShowMoreCount) %}
-                            {% if loop.first %}
-                                <div class="show-more-block" id="show_more_{{ filter.id }}" style="display:none;">
-                            {% endif %}
-
-                            <div>
-                                <label class="inline-flex items-center text-sm" for="specification-value-{{ specificationValue.id }}">
-                                    <input id="specification-value-{{ specificationValue.id }}" type="checkbox" class="rounded" data-filter="{{ filter.meta.url }}" data-filter-value="{{ specificationValue.meta.url }}" value="{{ specificationValue.meta.url }}">
-                                    <span class="ml-2">{{ specificationValue.value|ucfirst }}</span>
-                                </label>
-                            </div>
-
-                        {% if loop.last %}
-                            </div>
-                            <a class="block mt-2 text-sm text-gray-400 hover:text-yellow-500" href="#show_more_{{ filter.id }}" data-show-more="{{ 'lbl.ShowMore'|trans|ucfirst }}" data-show-less="{{ 'lbl.ShowLess'|trans|ucfirst }}">{{ 'lbl.ShowMore'|trans|ucfirst }}</a>
-                        {% endif %}
                     </div>
-                {% endfor %}
                 </li>
-            </ul>
-        {% endfor %}
+            {% endfor %}
+        </ul>
     </aside>
 
     {# Product grid #}

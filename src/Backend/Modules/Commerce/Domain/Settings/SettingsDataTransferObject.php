@@ -46,7 +46,7 @@ class SettingsDataTransferObject
     /**
      * @Assert\Url
      */
-    public string $google_product_categories;
+    public ?string $google_product_categories;
 
     public function __construct(ModulesSettings $modulesSettings)
     {
@@ -57,6 +57,7 @@ class SettingsDataTransferObject
         $this->next_invoice_number = $this->get('next_invoice_number', 1);
         $this->automatic_invoice_statuses = $this->get('automatic_invoice_statuses', []);
         $this->products_in_widget = $this->get('products_in_widget', 16);
+        $this->google_product_categories = null;
     }
 
     /**
