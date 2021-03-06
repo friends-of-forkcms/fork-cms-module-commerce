@@ -91,7 +91,7 @@ class Search extends FrontendBaseBlock
 
         // Define the sort orders
         $sortOrders = [
-            Product::SORT_RANDOM => [
+            Product::SORT_STANDARD => [
                 'label' => 'Willekeurig',
                 'selected' => false,
             ],
@@ -109,7 +109,7 @@ class Search extends FrontendBaseBlock
             ],
         ];
 
-        $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
+        $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_STANDARD);
         if (array_key_exists($currentSortOrder, $sortOrders)) {
             $sortOrders[$currentSortOrder]['selected'] = true;
         }

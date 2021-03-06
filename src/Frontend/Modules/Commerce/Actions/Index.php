@@ -127,7 +127,7 @@ class Index extends FrontendBaseBlock
 
         // Define the sort orders
         $sortOrders = ProductSorting::getAll();
-        $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
+        $currentSortOrder = $this->getRequest()->get('sort', Product::SORT_STANDARD);
         if (array_key_exists($currentSortOrder, $sortOrders)) {
             $sortOrders[$currentSortOrder]['selected'] = true;
         }

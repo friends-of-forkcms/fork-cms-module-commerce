@@ -272,7 +272,7 @@ class ProductRepository extends EntityRepository
      *
      * @return Product[]
      */
-    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, string $sorting = Product::SORT_RANDOM)
+    public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, string $sorting = Product::SORT_STANDARD)
     {
         $sql = 'SELECT p.* FROM commerce_products p WHERE p.category_id = :category AND p.hidden = :hidden';
         $parameters = [
@@ -480,7 +480,7 @@ class ProductRepository extends EntityRepository
     private function setProductSorting(string &$query, string $sorting): void
     {
         switch ($sorting) {
-            case Product::SORT_RANDOM:
+            case Product::SORT_STANDARD:
             default:
                 $query .= ' ORDER BY p.sequence ASC, p.id DESC';
                 break;

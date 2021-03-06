@@ -14,7 +14,7 @@ class ProductSorting
     public static function getAll(): array
     {
         return [
-            Product::SORT_RANDOM => [
+            Product::SORT_STANDARD => [
                 'label' => Language::getLabel('SortRandom'),
                 'selected' => false,
             ],

@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
     // Define the sort orders
-    public const SORT_RANDOM = 'random';
+    public const SORT_STANDARD = 'standard';
     public const SORT_PRICE_ASC = 'price-asc';
     public const SORT_PRICE_DESC = 'price-desc';
     public const SORT_CREATED_AT = 'created-at';

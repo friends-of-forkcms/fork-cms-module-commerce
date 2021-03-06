@@ -26,7 +26,7 @@ class FilterProducts extends FrontendBaseAJAXAction
         $itemsPerPage = $this->get('fork.settings')->get('Commerce', 'overview_num_items', 10);
         $currentPage = $this->getRequest()->get('page', 1);
         $productOffset = ($currentPage - 1) * $itemsPerPage;
-        $sortOrder = $this->getRequest()->get('sort', Product::SORT_RANDOM);
+        $sortOrder = $this->getRequest()->get('sort', Product::SORT_STANDARD);
 
         // Category or search term must be set
         if (!$this->getRequest()->request->has('category') && !$this->getRequest()->request->has('searchTerm')) {
