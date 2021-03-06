@@ -32,7 +32,7 @@ class Product
     public const SORT_RANDOM = 'random';
     public const SORT_PRICE_ASC = 'price-asc';
     public const SORT_PRICE_DESC = 'price-desc';
-    public const SORT_CREATED_AT = 'create-at';
+    public const SORT_CREATED_AT = 'created-at';
 
     // Define product types
     public const TYPE_DEFAULT = 1;
