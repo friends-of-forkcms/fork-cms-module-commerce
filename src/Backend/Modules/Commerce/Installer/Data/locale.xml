@@ -1635,8 +1635,8 @@
         <translation language="en"><![CDATA[thank you for your request]]></translation>
       </item>
       <item type="label" name="ShowMore">
-        <translation language="nl"><![CDATA[meer weergeven...]]></translation>
-        <translation language="en"><![CDATA[show more...]]></translation>
+        <translation language="nl"><![CDATA[meer weergeven]]></translation>
+        <translation language="en"><![CDATA[show more]]></translation>
       </item>
       <item type="label" name="ShowLess">
         <translation language="nl"><![CDATA[minder weergeven...]]></translation>

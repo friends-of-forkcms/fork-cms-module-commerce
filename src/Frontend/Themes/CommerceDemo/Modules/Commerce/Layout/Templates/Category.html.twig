@@ -71,11 +71,13 @@
                 </div>
 
                 {# Products #}
-                <div class="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div>
                     {% if products %}
-                        {% for product in products %}
-                            {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {'product': product} %}
-                        {% endfor %}
+                        <ul class="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {% for product in products %}
+                                {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {'product': product} %}
+                            {% endfor %}
+                        </ul>
                     {% endif %}
                 </div>
 

@@ -167,12 +167,14 @@
         <h2 class="text-2xl text-gray-800">
             {{ 'lbl.RelatedProducts'|trans|ucfirst }}
         </h2>
-        <div class="grid grid-cols-2 gap-6 my-8 md:grid-cols-3 lg:grid-cols-4">
-            {% for product in product.relatedProducts %}
-                {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {
-                    product: product
-                } %}
-            {% endfor %}
+        <div>
+            <ul class="grid grid-cols-2 gap-6 my-8 md:grid-cols-3 lg:grid-cols-4">
+                {% for product in product.relatedProducts %}
+                    {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {
+                        product: product
+                    } %}
+                {% endfor %}
+            </ul>
         </div>
     </section>
 {% endif %}
