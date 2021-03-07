@@ -1,7 +1,7 @@
 icon: https://raw.githubusercontent.com/friends-of-forkcms/fork-cms-module-commerce/master/deploy/icon.png
 deploy:
   # Build the container image
-  - okteto build --build-arg THEME_NAME=CommerceDemo  -t okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
+  - okteto build --build-arg THEME_NAME=CommerceDemo -t okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
 
   # Inject the container image tag
   - cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
