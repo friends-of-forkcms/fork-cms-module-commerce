@@ -1,15 +1,13 @@
-/* purgecss start ignore */
 /**
  * This injects Tailwind's base styles, which is a combination of
  * Normalize.css and some additional base styles.
  */
-@tailwind base;
+@import 'tailwindcss/base';
 
 /**
   * This injects any component classes registered by plugins.
   */
-@tailwind components;
-/* purgecss end ignore */
+@import 'tailwindcss/components';
 
 /**
   * Here you would add any of your custom component classes; stuff that you'd
@@ -26,44 +24,10 @@
   * @import "components/buttons";
   * @import "components/forms";
   */
+@import './custom.css';
 
 /**
   * This injects all of Tailwind's utility classes, generated based on your
   * config file.
   */
-@tailwind utilities;
-
-/**
-  * Our theme's custom CSS
-  */
-/* Add a default link to editor links */
-.editor a:not([class]) {
-    @apply text-yellow-500 transition-colors duration-200 hover:text-gray-900;
-}
-
-h3 {
-    @apply mb-4 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline;
-}
-
-/* Override the Photoswipe modal overlay */
-.pswp__bg {
-    background: #fff !important;
-}
-
-/* Override the Splide carousel style */
-.splide__arrow {
-    opacity: 1 !important;
-    border-radius: inherit !important;
-    background: none !important;
-    width: 2.5rem !important;
-    height: 2.5rem !important;
-    @apply transition-colors duration-200 hover:text-yellow-500;
-}
-.splide__arrow svg {
-    width: inherit !important;
-    height: inherit !important;
-}
-
-.splide--nav > .splide__track > .splide__list > .splide__slide.is-active {
-    @apply border-2 border-yellow-500 !important;
-}
+@import 'tailwindcss/utilities';
