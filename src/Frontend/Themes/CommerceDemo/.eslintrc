@@ -7,14 +7,10 @@
         "es6": true,
         "jest": true
     },
-    "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-        "prettier/@typescript-eslint"
-    ],
+    "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended", "prettier/@typescript-eslint"],
     "plugins": ["prettier"],
     "parserOptions": {
-        "ecmaVersion": 2018, // Allows for the parsing of modern ECMAScript features
+        "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
         "sourceType": "module", // Allows for the use of imports
         "ecmaFeatures": {
             "jsx": true // Allows for the parsing of JSX
@@ -23,7 +19,8 @@
     "rules": {
         "linebreak-style": ["error", "unix"],
         "prettier/prettier": ["warn"],
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     },
     "globals": {
         "process": true

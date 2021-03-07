@@ -36,5 +36,5 @@
         // Support JSX language in .tsx files.
         "jsx": "react"
     },
-    "include": ["Core/Js"]
+    "include": ["Core/Js/**/*"]
 }

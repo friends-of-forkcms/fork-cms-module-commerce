@@ -1,13 +1,10 @@
-declare global {
-    const jsData: any;
-}
-
 // Selectors
 const sortDropdownSelector = '.js-product-sort';
 const filtersSelector = '.js-product-filters';
 
 /**
- * This file implements basic webshop filtering logic. It parses the filters and sort dropdown and updates the url.
+ * This file implements basic webshop filtering logic. It parses the checked filter checkboxes and sort dropdown
+ * and updates the url accordingly.
  */
 export default (): void => {
     // Early return if we do not have filters or sorting on this page.
@@ -64,7 +61,7 @@ function onUpdateFilters(): void {
  * Transform the sort and filter values into a URL querystring and reload the page
  */
 function updateUrl(filters: Map<string, string[]>, sort: string): void {
-    const baseUrl = jsData['Commerce']['filterUrl'];
+    const baseUrl = window.jsData['Commerce']['filterUrl'];
     const urlParams = new URLSearchParams();
 
     // Add the query parameters for sorting and filters

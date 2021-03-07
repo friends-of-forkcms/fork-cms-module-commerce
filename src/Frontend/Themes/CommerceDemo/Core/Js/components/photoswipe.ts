@@ -1,10 +1,14 @@
-// @ts-nocheck
 import PhotoSwipe from 'photoswipe';
 import 'photoswipe/dist/photoswipe.css';
 import 'photoswipe/dist/default-skin/default-skin.css';
 import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default.js';
 
-export default (gallerySelector: string = '.photoswipe-inner') => {
+/**
+ * Create a lightbox, e.g. for viewing the product image fullscreen.
+ * We use Photoswipe, a javascript gallery without dependencies.
+ * @see https://photoswipe.com/
+ */
+export default (gallerySelector = '.photoswipe-inner'): void => {
     if (!document.querySelector(gallerySelector)) {
         return;
     }
@@ -14,6 +18,8 @@ export default (gallerySelector: string = '.photoswipe-inner') => {
     lazyLoadAndFadeInPhotos(gallerySelector);
 };
 
+// @ts-nocheck
+// eslint-disable
 /**
  * Add the photoswipe modal to the DOM.
  * See: http://photoswipe.com/documentation/getting-started.html
@@ -85,7 +91,7 @@ const initDOM = () => {
     `;
 
     const appendHtml = (el, str) => {
-        var div = document.createElement('div');
+        const div = document.createElement('div');
         div.innerHTML = str;
         while (div.children.length > 0) {
             el.appendChild(div.children[0]);
@@ -101,8 +107,8 @@ const initDOM = () => {
 const initPhotoswipeFromDOM = (gallerySelector: string) => {
     // parse slide data (url, title, size ...) from DOM elements
     // (children of gallerySelector)
-    var parseThumbnailElements = function (el) {
-        var thumbElements = el.childNodes,
+    const parseThumbnailElements = function (el) {
+        let thumbElements = el.childNodes,
             numNodes = thumbElements.length,
             items = [],
             figureEl,
@@ -110,7 +116,7 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
             size,
             item;
 
-        for (var i = 0; i < numNodes; i++) {
+        for (let i = 0; i < numNodes; i++) {
             figureEl = thumbElements[i]; // <figure> element
             if (figureEl.tagName !== 'FIGURE') {
                 continue;
@@ -153,19 +159,19 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
     };
 
     // find nearest parent element
-    var closest = function closest(el, fn) {
+    const closest = function closest(el, fn) {
         return el && (fn(el) ? el : closest(el.parentNode, fn));
     };
 
     // triggers when user clicks on thumbnail
-    var onThumbnailsClick = function (e) {
+    const onThumbnailsClick = function (e) {
         e = e || window.event;
         e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
-        var eTarget = e.target || e.srcElement;
+        const eTarget = e.target || e.srcElement;
 
         // find root element of slide
-        var clickedListItem = closest(eTarget, function (el) {
+        const clickedListItem = closest(eTarget, function (el) {
             return el.tagName && el.tagName.toUpperCase() === 'FIGURE';
         });
 
@@ -175,13 +181,13 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
 
         // find index of clicked item by looping through all child nodes
         // alternatively, you may define index via data- attribute
-        var clickedGallery = clickedListItem.parentNode,
+        let clickedGallery = clickedListItem.parentNode,
             childNodes = clickedListItem.parentNode.childNodes,
             numChildNodes = childNodes.length,
             nodeIndex = 0,
             index;
 
-        for (var i = 0; i < numChildNodes; i++) {
+        for (let i = 0; i < numChildNodes; i++) {
             if (childNodes[i].nodeType !== 1) {
                 continue;
             }
@@ -201,20 +207,20 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
     };
 
     // parse picture index and gallery index from URL (#&pid=1&gid=2)
-    var photoswipeParseHash = function () {
-        var hash = window.location.hash.substring(1),
+    const photoswipeParseHash = function () {
+        const hash = window.location.hash.substring(1),
             params = {};
 
         if (hash.length < 5) {
             return params;
         }
 
-        var vars = hash.split('&');
-        for (var i = 0; i < vars.length; i++) {
+        const vars = hash.split('&');
+        for (let i = 0; i < vars.length; i++) {
             if (!vars[i]) {
                 continue;
             }
-            var pair = vars[i].split('=');
+            const pair = vars[i].split('=');
             if (pair.length < 2) {
                 continue;
             }
@@ -229,7 +235,7 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
     };
 
     var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
-        var pswpElement = document.querySelectorAll('.pswp')[0],
+        let pswpElement = document.querySelectorAll('.pswp')[0],
             gallery,
             options,
             items;
@@ -246,7 +252,7 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
 
             getThumbBoundsFn: function (index) {
                 // See Options -> getThumbBoundsFn section of documentation for more info
-                var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+                const thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
                     pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
                     rect = thumbnail.getBoundingClientRect();
 
@@ -259,7 +265,7 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
             if (options.galleryPIDs) {
                 // parse real index when custom PIDs are used
                 // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
-                for (var j = 0; j < items.length; j++) {
+                for (let j = 0; j < items.length; j++) {
                     if (items[j].pid == index) {
                         options.index = j;
                         break;
@@ -288,9 +294,9 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
     };
 
     // loop through all gallery elements and bind events
-    var galleryElements = document.querySelectorAll(gallerySelector);
+    const galleryElements = document.querySelectorAll(gallerySelector);
 
-    for (var i = 0, l = galleryElements.length; i < l; i++) {
+    for (let i = 0, l = galleryElements.length; i < l; i++) {
         galleryElements[i].setAttribute('data-pswp-uid', i + 1);
         galleryElements[i].onclick = onThumbnailsClick;
     }
@@ -303,7 +309,7 @@ const initPhotoswipeFromDOM = (gallerySelector: string) => {
 };
 
 function lazyLoadAndFadeInPhotos(gallerySelector: string) {
-    const images: HTMLImageElement[] = document.querySelectorAll(`${gallerySelector} img[loading]`);
+    const images = document.querySelectorAll<HTMLImageElement>(`${gallerySelector} img[loading]`);
 
     for (const [index, img] of images.entries()) {
         img.style.transitionDelay = `${0.15 * index}s`; // Don't fade in all at the same time
