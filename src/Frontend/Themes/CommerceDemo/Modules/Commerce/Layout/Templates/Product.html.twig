@@ -175,7 +175,7 @@
         <div>
             <ul class="grid grid-cols-2 gap-6 my-8 md:grid-cols-3 lg:grid-cols-4">
                 {% for product in product.relatedProducts %}
-                    {% include 'Commerce/Layout/Templates/ProductItem.html.twig' with {
+                    {% include 'Commerce/Layout/Templates/Components/ProductItem.html.twig' with {
                         product: product
                     } %}
                 {% endfor %}
