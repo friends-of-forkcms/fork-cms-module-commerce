@@ -212,7 +212,7 @@ class Index extends FrontendBaseBlock
         );
 
         $downloads = null;
-        if ($product->getDownloads()) {
+        if ($product->getDownloads()->hasConnectedItems()) {
             $downloads = $this->get('media_library.helper.frontend')->parseWidget(
                 'ProductDownloads',
                 $product->getDownloads()->getId(),

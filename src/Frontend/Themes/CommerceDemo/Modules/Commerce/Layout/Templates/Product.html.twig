@@ -117,8 +117,10 @@
             >
                 {{ 'lbl.Specifications'|trans|ucfirst }}
             </button>
-        </li>{% endif %}
+        </li>
+        {% endif %}
 
+        {% if downloads %}
         <li>
             <button
                 class="pb-1 border-b border-gray-200"
@@ -128,6 +130,7 @@
                 {{ 'lbl.Downloads'|trans|ucfirst }}
             </button>
         </li>
+        {% endif %}
     </ul>
 
     <div>
@@ -156,9 +159,11 @@
             </div>
         {% endif %}
 
+        {% if downloads %}
         <div id="downloads" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'downloads'">
             {{ downloads|raw }}
         </div>
+        {% endif %}
     </div>
 </section>
 
