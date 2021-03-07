@@ -78,10 +78,7 @@ function updateUrl(filters: Map<string, string[]>, sort: string): void {
 function setFiltersOnPageLoad(): void {
     const params = new URLSearchParams(window.location.search);
     params.forEach((filterValues, filterName) => {
-        console.log(filterName, filterValues);
-
         filterValues.split(',').forEach((filterValue) => {
-            console.log(`[data-filter="${filterName}"][data-filter-value="${filterValue}"]`);
             const filterElement = document.querySelector<HTMLInputElement>(
                 `[data-filter="${filterName}"][data-filter-value="${filterValue}"]`,
             );
