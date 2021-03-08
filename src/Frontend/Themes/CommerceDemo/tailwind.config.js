@@ -33,6 +33,7 @@ module.exports = {
         // Also add the .content and .editor prefixed css classes we define to use in the Fork CMS editor styles.
         options: {
             safelist: {
+                standard: [/^pswp|^notyf/],
                 deep: [/^content|^editor/],
             },
         },
