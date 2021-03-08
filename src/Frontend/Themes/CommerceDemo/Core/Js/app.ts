@@ -6,9 +6,11 @@ import 'alpinejs';
 
 // Components
 import filters from './components/filters';
+import cart from './components/cart';
 
 document.addEventListener('DOMContentLoaded', () => {
     filters();
+    cart('.js-add-to-cart-btn');
 
     // Dynamic imports with code splitting for lazy loading
     // Lazy, or "on demand", loading is a great way to optimize your site or application. This practice essentially involves splitting your

@@ -232,7 +232,7 @@ class CartValue
      */
     public function prePersist(): void
     {
-        if (!$this->id) {
+        if (!isset($this->id)) {
             $this->date = new DateTime();
         }
     }

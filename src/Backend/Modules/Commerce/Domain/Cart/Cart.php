@@ -312,7 +312,7 @@ class Cart
     {
         $this->editedOn = new DateTime();
 
-        if (!$this->id) {
+        if (!isset($this->id)) {
             $this->createdOn = $this->editedOn;
         }
     }
@@ -423,7 +423,7 @@ class Cart
         $this->calculateCartRules();
 
         // Store the shipment data
-        if ($this->shipment_method) {
+        if (isset($this->shipment_method)) {
             $shipmentMethodData = $this->getShipmentMethodData();
             $this->total += $shipmentMethodData['price'] + $shipmentMethodData['vat']['price'];
             $this->addVat($shipmentMethodData['vat']['id'], $shipmentMethodData['vat']['price']);

@@ -74,8 +74,9 @@
                         {{ form_rest(form) }}
 
                         {% if product.inStock %}
+                            <script>window.lblProductAdded = "{{ 'lbl.ProductAdded'|trans|ucfirst }}";</script>
                             <a href="javascript:void(0);"
-                                class="btn btn-cart addToCart | w-full bg-gray-800 flex py-4 items-center justify-center hover:bg-gray-600 text-white"
+                                class="btn btn-cart js-add-to-cart-btn | w-full bg-gray-800 flex py-4 items-center justify-center hover:bg-gray-600 text-white"
                                 data-id="{{ product.id }}">
                                 {{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}
                             </a>
@@ -184,34 +185,12 @@
     </section>
 {% endif %}
 
-{% include '/Modules/Commerce/Layout/Templates/Modals/ProductAdded.html.twig' %}
-
-<div id="productAddedQuoteModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    {{ 'lbl.ProductAddedToQuote'|trans|ucfirst }}
-                </h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'lbl.ContinueShopping'|trans|ucfirst }}</button>
-                <a href="{{ geturlforblock('Commerce', 'Cart') ~ '/' ~ ('lbl.RequestQuoteUrl'|trans) }}" class="btn btn-primary">
-                    {{ 'lbl.RequestQuote'|trans|ucfirst }}
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <span data-product-detail=""
     data-url="{{ product.url }}"
     data-sku="{{ product.sku }}"
     data-name="{{ product.title }}"
     data-brand="{{ product.brand.title }}"
     data-category="{{ category_path }}">
-
 </span>
 
 {# prettier-ignore-start #}

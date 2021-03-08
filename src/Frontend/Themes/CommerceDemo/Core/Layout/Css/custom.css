@@ -32,3 +32,33 @@ h3 {
 .splide--nav > .splide__track > .splide__list > .splide__slide.is-active {
     @apply border-2 border-yellow-500 !important;
 }
+
+/* Animation when submitting */
+form.is-submitting button[type='submit'],
+a.is-submitting {
+    position: relative;
+    overflow: hidden;
+    @apply bg-gray-600;
+    outline: 0;
+}
+
+form.is-submitting button[type='submit']::before,
+a.is-submitting::before {
+    position: absolute;
+    content: '';
+    height: 0.2em;
+    left: 0;
+    right: 0;
+    top: 0;
+    animation: move 1s linear infinite;
+    @apply bg-yellow-500;
+}
+
+@keyframes move {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}

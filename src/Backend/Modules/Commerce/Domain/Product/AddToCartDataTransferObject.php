@@ -30,8 +30,8 @@ class AddToCartDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"Dimensions"})
      */
     public ?float $height = 0.00;
-    public bool $quote;
-    public bool $overwrite;
+    public ?bool $quote;
+    public ?bool $overwrite;
 
     /**
      * @var Product[]
