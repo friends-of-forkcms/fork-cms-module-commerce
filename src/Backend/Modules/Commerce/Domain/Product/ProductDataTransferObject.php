@@ -100,12 +100,12 @@ class ProductDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?Brand $brand;
+    public ?Brand $brand = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?Vat $vat;
+    public ?Vat $vat = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -147,10 +147,10 @@ class ProductDataTransferObject
      */
     public int $sequence;
 
-    public function __construct(Product $product = null)
+    public function __construct(Product $product = null, Locale $locale)
     {
         // Set some default values
-        $this->locale = Locale::workingLocale();
+        $this->locale = $locale;
         $this->productEntity = $product;
         $this->specification_values = new ArrayCollection();
         $this->remove_specification_values = new ArrayCollection();

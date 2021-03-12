@@ -31,21 +31,24 @@
                     <input type="hidden" name="fork[action]" value="UpdateCart" />
 
                     {% if product.inStock %}
-                        <div class="my-4 price-box">
+                        <div class="block my-6 price-box">
+                            {# Discounts #}
                             {% if product.hasActiveSpecialPrice %}
-                                <p class="price-old | line-through text-sm inline">
-                                    <span>€ {{ product.oldPrice(false)|formatnumber(2) }}</span>
+                                <p class="price-old | line-through text-sm inline align-top">
+                                    <del>€ {{ product.oldPrice(false)|formatnumber(2) }}</del>
                                 </p>
-                                <p class="price-new | text-xl text-yellow-500 inline">
+                                <p class="price-new | text-xl text-yellow-500 font-semibold inline">
                                     <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
                                 </p>
+
+                                <div class="inline-block px-2 py-1 ml-2 text-xs text-gray-500 align-top border border-gray-500 rounded-full">{{ product.discountPercentage }}</div>
                             {% else %}
-                                <p class="price | text-xl text-yellow-500 inline">
+                                <p class="price | text-xl text-yellow-500 font-semibold inline">
                                     <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
                                 </p>
                             {% endif %}
                             <p class="price-btw">
-                                <span class="my-2 text-sm">
+                                <span class="block my-3 text-sm">
                                     {{
                                         'msg.ExclusiveVatPricing'
                                             |trans

@@ -307,7 +307,7 @@ class Product
         Meta $meta,
         Category $category,
         ?Brand $brand,
-        Vat $vat,
+        ?Vat $vat,
         StockStatus $stock_status,
         Locale $locale,
         bool $hidden,
@@ -379,7 +379,7 @@ class Product
         $this->dimension_notifications = $dimension_notifications;
     }
 
-    public static function fromDataTransferObject(ProductDataTransferObject $dataTransferObject)
+    public static function fromDataTransferObject(ProductDataTransferObject $dataTransferObject): Product
     {
         if ($dataTransferObject->hasExistingProduct()) {
             return self::update($dataTransferObject);
@@ -777,7 +777,7 @@ class Product
 
     public function getDataTransferObject(): ProductDataTransferObject
     {
-        return new ProductDataTransferObject($this);
+        return new ProductDataTransferObject($this, \Backend\Core\Language\Locale::workingLocale());
     }
 
     /**
@@ -831,6 +831,20 @@ class Product
     }
 
     /**
+     * Calculate a percentage between the old price and the new price, so we can display "-11%" in the shop.
+     */
+    public function getDiscountPercentage(): string
+    {
+        $oldPrice = $this->getOldPrice(false);
+        $activePrice = $this->getActivePrice(false);
+
+        $percentage = (($oldPrice - $activePrice) / $oldPrice) * 100;
+        $trendSymbol = $activePrice >= $oldPrice ? '+' : '-';
+
+        return $trendSymbol . abs(round($percentage)) . '%';
+    }
+
+    /**
      * Get the vat price only.
      *
      * @return float
@@ -841,11 +855,9 @@ class Product
     }
 
     /**
-     * Check if product has a special price going on.
-     *
-     * @return bool
+     * Check if product has a special price going on at the moment.
      */
-    public function hasActiveSpecialPrice()
+    public function hasActiveSpecialPrice(): bool
     {
         $this->calculateActivePrice();
 

@@ -32,7 +32,7 @@ composer require --no-scripts \
     'h4cc/wkhtmltopdf-amd64:^0.12.4' \
     'gedmo/doctrine-extensions:^3.0' \
     'jeroendesloovere/sitemap-bundle:^2.0'
-composer require --no-scripts --dev doctrine/doctrine-fixtures-bundle
+composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
 
 # Install the sitemap module which is a module dependency at the moment
 curl -sL https://github.com/friends-of-forkcms/fork-cms-module-sitemaps/archive/master.tar.gz | tar xz --strip-components 1
