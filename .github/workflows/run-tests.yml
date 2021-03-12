@@ -1,0 +1,52 @@
+name: run-tests
+
+on: [push, pull_request]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4]
+    name: PHPUnit - (PHP ${{ matrix.php }})
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP with coverage
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, intl, gd, exif, iconv, imagick
+          coverage: PCOV
+
+      - name: Install latest Fork CMS
+        run: |
+          curl -sL https://github.com/forkcms/forkcms/archive/master.tar.gz | tar xz --strip-components 1
+
+      - name: Prepare test env
+        run: |
+          cp app/config/parameters.yml.test app/config/parameters.yml
+
+      - name: Install dependencies
+        env:
+          FORK_ENV: test
+        run: composer install -o
+
+      - name: Execute backend tests
+        run: bin/simple-phpunit --coverage-clover=backend.clover src/Backend/Modules/Commerce
+
+      - name: Execute frontend tests
+        run: bin/simple-phpunit --coverage-clover=frontend.clover src/Frontend/Modules/Commerce
+
+      - name: Display error logs on failure
+        if: ${{ failure() }}
+        run: cat var/logs/test.log
