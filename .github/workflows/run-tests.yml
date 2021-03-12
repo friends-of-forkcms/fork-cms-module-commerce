@@ -1,0 +1,73 @@
+name: run-tests
+
+on: [push, pull_request]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4]
+    name: PHPUnit - (PHP ${{ matrix.php }})
+    env:
+      DB_HOST: 127.0.0.1
+      DB_NAME: forkcms
+      DB_USER: forkcms
+      DB_PASSWORD: forkcms
+      DB_ROOT_PASSWORD: kingtriton
+      SITE_DOMAIN: "fork-cms-module-commerce.test"
+
+    services:
+      mysql:
+        image: mariadb:10
+        env:
+          MYSQL_DATABASE: "${{ env.DB_NAME }}"
+          MYSQL_ROOT_PASSWORD: "${{ env.DB_ROOT_PASSWORD }}"
+          MYSQL_USER: "${{ env.DB_USER }}"
+          MYSQL_PASSWORD: "${{ env.DB_PASSWORD }}"
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP with coverage
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, intl, gd, exif, iconv, imagick
+          coverage: PCOV
+
+      - name: Install latest Fork CMS
+        run: |
+          curl -sL https://github.com/forkcms/forkcms/archive/master.tar.gz | tar xz --strip-components 1
+
+      - name: Prepare test env
+        run: |
+          printenv
+          bash ./deploy/prepare-forkcms.sh
+#          mysql -h 127.0.0.1 -uroot -p"${{ env.DB_ROOT_PASSWORD }}" -e 'create database forkcms_test'
+#          mysql -h 127.0.0.1 -uroot -p"${{ env.DB_ROOT_PASSWORD }}" forkcms_test < tests/data/test_db.sql
+#          cp app/config/parameters.yml.test app/config/parameters.yml
+
+      - name: Install dependencies
+        env:
+          FORK_ENV: test
+        run: composer install -o
+
+      # Filter to only run tests from namespaces that match \Modules\Commerce\
+      - name: Execute tests
+        run: bin/simple-phpunit --coverage-clover=coverage.clover --filter '\\Modules\\Commerce\\'
+
+      - name: Display error logs on failure
+        if: failure()
+        run: cat var/logs/test.log

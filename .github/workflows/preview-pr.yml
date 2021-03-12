@@ -5,6 +5,7 @@ on:
 
 env:
   DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
+  PREVIEW_URL: "https://fork-cms-module-commerce-demo-pr-${{ github.event.number }}-jessedobbelaere.cloud.okteto.net/en"
 
 concurrency:
   group: preview-pr-${{ github.head_ref }}
@@ -17,6 +18,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
+
+      - uses: chrnorm/deployment-action@releases/v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          target_url: "${{ env.PREVIEW_URL }}"
+          environment: development
 
       - name: Login
         uses: okteto/login@master
@@ -43,8 +52,27 @@ jobs:
           interval: 5000 # 5s
 
       - name: Comment PR
+        if: success()
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: "🚀 Preview environment available at https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net for the next 24 hours."
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: "${{ env.PREVIEW_URL }}"
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: "${{ env.PREVIEW_URL }}"
+          state: "failure"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
