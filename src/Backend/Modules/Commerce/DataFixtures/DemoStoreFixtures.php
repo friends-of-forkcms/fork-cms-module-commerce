@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Commerce\DataFixtures;
 
+use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Brand\Command\CreateBrand;
 use Backend\Modules\Commerce\Domain\Brand\Image as BrandImage;
 use Backend\Modules\Commerce\Domain\Category\Command\CreateCategory;
@@ -200,7 +201,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         $products = $this->readCsv(__DIR__.'/data/products.csv');
 
         foreach ($products as $product) {
-            $createProduct = new CreateProduct();
+            $createProduct = new CreateProduct(null, Locale::fromString('en'));
             $createProduct->title = $product['title'];
             $createProduct->sku = $product['sku'];
             $createProduct->weight = $product['weight'];
@@ -282,7 +283,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
                 // Also add the option as a specification
                 $specificationReferenceKey = 'specification_'.strtolower($optionName).'_'.strtolower($value);
                 if ($this->hasReference(md5($specificationReferenceKey))) {
-                    $updateProduct = new UpdateProduct($product);
+                    $updateProduct = new UpdateProduct($product, Locale::fromString('en'));
                     $updateProduct->addSpecificationValue($this->getReference(md5($specificationReferenceKey)));
                     $this->commandBus->handle($updateProduct);
                 }
