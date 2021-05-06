@@ -93,7 +93,7 @@ class Add extends BackendBaseActionAdd
     {
         $form = $this->createForm(
             ProductType::class,
-            new CreateProduct(),
+            new CreateProduct(null, Locale::workingLocale()),
             [
                 'categories' => $this->get('commerce.repository.category')->getTree(Locale::workingLocale()),
             ]

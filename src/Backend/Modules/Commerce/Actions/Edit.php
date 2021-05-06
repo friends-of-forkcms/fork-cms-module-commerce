@@ -129,7 +129,7 @@ class Edit extends BackendBaseActionEdit
     {
         $form = $this->createForm(
             ProductType::class,
-            new UpdateProduct($product),
+            new UpdateProduct($product, Locale::workingLocale()),
             [
                 'categories' => $this->get('commerce.repository.category')->getTree(Locale::workingLocale()),
                 'product' => $product,
