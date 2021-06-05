@@ -16,6 +16,7 @@ const colors = require('tailwindcss/colors');
 
 // See defaults: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
 module.exports = {
+    mode: 'jit',
     purge: {
         // We use the plugin "tailwindcss-forms" which adds reset styles for form elements. However, since purgecss cannot find
         // any html input fields in our Twig templates (form directives), it strips the styles. Therefore, we don't allow purging the
@@ -25,18 +26,10 @@ module.exports = {
         // Purge our generated CSS and only leave the css classes found in these files.
         content: [
             'Core/Layout/Templates/**/*.{twig,html}',
+            './Core/Layout/EditorTemplates/**/*.{twig,html}',
             'Core/Js/**/*.{js,jsx,ts,tsx}',
             'Modules/*/Layout/{Templates,Widgets}/**/*.{twig,html}',
         ],
-
-        // https://github.com/FullHuman/purgecss-docs/blob/master/whitelisting.md
-        // Also add the .content and .editor prefixed css classes we define to use in the Fork CMS editor styles.
-        options: {
-            safelist: {
-                standard: [/^pswp|^notyf/],
-                deep: [/^content|^editor/],
-            },
-        },
     },
     theme: {
         screens: {

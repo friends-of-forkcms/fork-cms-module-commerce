@@ -49,6 +49,7 @@ module.exports = {
         before(app, server) {
             chokidar
                 .watch([
+                    './Core/Layout/Css/**/*.css',
                     './Core/Layout/Templates/**/*.html.twig',
                     './Core/Layout/Templates/**/*.html',
                     './Modules/**/*.html.twig',

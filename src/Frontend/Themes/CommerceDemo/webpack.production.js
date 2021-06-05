@@ -79,9 +79,6 @@ module.exports = {
             },
         },
 
-        // Ignore all locale files of moment.js to save on bundlesize
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
         // Pre-compress our static resources into .gz files so we can serve them up pre-compressed
         new CompressionPlugin(),
     ],
