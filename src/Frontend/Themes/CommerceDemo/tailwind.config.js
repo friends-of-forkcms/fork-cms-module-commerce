@@ -25,10 +25,10 @@ module.exports = {
 
         // Purge our generated CSS and only leave the css classes found in these files.
         content: [
-            'Core/Layout/Templates/**/*.{twig,html}',
+            './Core/Layout/Templates/**/*.{twig,html}',
             './Core/Layout/EditorTemplates/**/*.{twig,html}',
-            'Core/Js/**/*.{js,jsx,ts,tsx}',
-            'Modules/*/Layout/{Templates,Widgets}/**/*.{twig,html}',
+            './Core/Js/**/*.{js,jsx,ts,tsx}',
+            './Modules/*/Layout/{Templates,Widgets}/**/*.{twig,html}',
         ],
     },
     theme: {

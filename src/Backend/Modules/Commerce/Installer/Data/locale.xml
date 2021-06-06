@@ -1189,8 +1189,8 @@
   <Frontend>
     <Core>
       <item type="label" name="ProductAdded">
-        <translation language="nl"><![CDATA[Het product is aan uw winkelwagen toegevoegd.]]></translation>
-        <translation language="en"><![CDATA[The product has been added to your shopping cart.]]></translation>
+        <translation language="nl"><![CDATA[Dit product werd toegevoegd aan je winkelmandje!]]></translation>
+        <translation language="en"><![CDATA[This product has been added to your shopping cart!]]></translation>
       </item>
       <item type="label" name="ProductRemoved">
         <translation language="nl"><![CDATA[Het product is uit uw winkelwagen verwijderd.]]></translation>
@@ -1270,7 +1270,11 @@
       </item>
       <item type="label" name="ShoppingCart">
         <translation language="nl"><![CDATA[winkelwagen]]></translation>
-        <translation language="en"><![CDATA[shoppingcart]]></translation>
+        <translation language="en"><![CDATA[shopping cart]]></translation>
+      </item>
+      <item type="label" name="ViewShoppingCart">
+        <translation language="nl"><![CDATA[Bekijk je winkelwagen]]></translation>
+        <translation language="en"><![CDATA[View your shopping cart]]></translation>
       </item>
       <item type="label" name="Checkout">
         <translation language="nl"><![CDATA[afrekenen]]></translation>

@@ -65,6 +65,7 @@ module.exports = {
                 target: 'https://fork-cms-module-commerce-demo.test/',
                 secure: false,
                 changeOrigin: true, // Needed for images by LiipImagineBundle to work.
+                cookieDomainRewrite: 'localhost',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'X-Webpack-Dev-Server': 'true',

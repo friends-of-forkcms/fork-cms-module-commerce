@@ -77,7 +77,6 @@
                         {{ form_rest(form) }}
 
                         {% if product.inStock %}
-                            <script>window.lblProductAdded = "{{ 'lbl.ProductAdded'|trans|ucfirst }}";</script>
                             <a href="javascript:void(0);"
                                 class="btn btn-cart js-add-to-cart-btn | w-full bg-gray-800 flex py-4 items-center justify-center hover:bg-gray-600 text-white"
                                 data-id="{{ product.id }}">
