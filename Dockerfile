@@ -34,8 +34,10 @@ COPY src/Frontend/Themes/$THEME_NAME .
 
 # Compile typescript to a dist folder. In production, we serve the compiled javascript from the dist folder.
 # Generate sourcemaps to send to Sentry for a better error stacktrace.
-RUN npm run build && ls -al dist/
+RUN npm run build
 
+# Make sure to copy the CSS to a Core/Layout/Css/screen.css file. This gets autoloaded in the CMS by CKEditor.
+RUN mkdir -p Core/Layout/Css && cp dist/assets/app.*.css Core/Layout/Css/screen.css
 
 ##################
 # Backend app    #
@@ -92,8 +94,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 WORKDIR /var/www/html
 
 # Download Fork CMS as base to test our module
-#RUN curl -sL https://github.com/forkcms/forkcms/archive/5.9.2.tar.gz | tar xz --strip-components 1
-RUN curl -sL https://github.com/jessedobbelaere/forkcms/archive/add-module-installation-command.tar.gz | tar xz --strip-components 1
+RUN curl -sL https://github.com/forkcms/forkcms/archive/5.10.0.tar.gz | tar xz --strip-components 1
 
 # Install the Fork CMS composer dependencies
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress

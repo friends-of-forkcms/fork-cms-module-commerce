@@ -21,3 +21,6 @@ package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.tf
+Core/Layout/EditorTemplates/*.js
+Core/Layout/Templates/Mails/*.html.twig

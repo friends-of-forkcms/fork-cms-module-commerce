@@ -25,6 +25,7 @@ use Frontend\Modules\Commerce\CheckoutStep\PaymentMethod as PaymentMethodStep;
 use Frontend\Modules\Commerce\CheckoutStep\PayOrder as PayOrderStep;
 use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethod as ShipmentMethodStep;
 use Frontend\Modules\Profiles\Engine\Authentication;
+use Backend\Modules\Commerce\Domain\Cart\Cart as CartEntity;
 
 /**
  * This is the cart-action, it will display the cart.
@@ -33,7 +34,7 @@ use Frontend\Modules\Profiles\Engine\Authentication;
  */
 class Cart extends FrontendBaseBlock
 {
-    private ?Cart $cart;
+    private ?CartEntity $cart;
 
     public function execute(): void
     {

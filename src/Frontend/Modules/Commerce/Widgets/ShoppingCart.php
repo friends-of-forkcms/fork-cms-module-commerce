@@ -15,14 +15,8 @@ use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
  */
 class ShoppingCart extends FrontendBaseWidget
 {
-    /**
-     * @var Cookie
-     */
-    private $cookie;
+    private Cookie $cookie;
 
-    /**
-     * Execute the extra.
-     */
     public function execute(): void
     {
         parent::execute();
@@ -47,9 +41,6 @@ class ShoppingCart extends FrontendBaseWidget
         return $cartRepository->findBySessionId($cartHash, $this->getRequest()->getClientIp());
     }
 
-    /**
-     * Get the cart repository.
-     */
     private function getCartRepository(): CartRepository
     {
         return $this->get('commerce.repository.cart');

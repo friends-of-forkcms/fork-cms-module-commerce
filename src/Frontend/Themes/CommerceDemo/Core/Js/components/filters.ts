@@ -20,8 +20,9 @@ export default (): void => {
     // When we change the sorting or filter values, trigger an update.
     // We use Event Delegation here, so we don't need to bind/unbind event listeners when the DOM changes.
     document.addEventListener('input', (event) => {
-        const sortingElement = event.target.closest(sortDropdownSelector);
-        const filterElement = event.target.closest(`${filtersSelector} input`);
+        const target = event.target as HTMLInputElement;
+        const sortingElement = target.closest(sortDropdownSelector);
+        const filterElement = target.closest(`${filtersSelector} input`);
 
         if (sortingElement || filterElement) {
             onUpdateFilters();

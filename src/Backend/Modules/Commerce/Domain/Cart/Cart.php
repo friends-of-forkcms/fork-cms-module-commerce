@@ -333,7 +333,7 @@ class Cart
 
     public function getSubTotal(): float
     {
-        if (!$this->subTotal) {
+        if (!isset($this->subTotal)) {
             $this->calculateTotals();
         }
 
@@ -468,7 +468,7 @@ class Cart
      */
     public function isProductsInStock(): bool
     {
-        if ($this->allProductsInStock === null) {
+        if (!isset($this->allProductsInStock)) {
             $inStock = true;
 
             foreach ($this->getValues() as $value) {

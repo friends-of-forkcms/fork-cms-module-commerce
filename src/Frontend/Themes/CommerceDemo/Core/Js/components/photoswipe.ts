@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PhotoSwipe from 'photoswipe';
 import 'photoswipe/dist/photoswipe.css';
 import 'photoswipe/dist/default-skin/default-skin.css';
@@ -18,8 +19,6 @@ export default (gallerySelector = '.photoswipe-inner'): void => {
     lazyLoadAndFadeInPhotos(gallerySelector);
 };
 
-// @ts-nocheck
-// eslint-disable
 /**
  * Add the photoswipe modal to the DOM.
  * See: http://photoswipe.com/documentation/getting-started.html

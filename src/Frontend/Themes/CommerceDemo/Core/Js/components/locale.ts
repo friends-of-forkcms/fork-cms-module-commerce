@@ -30,7 +30,6 @@ async function init(): Promise<void> {
 export async function get(type: LocaleType, key: string): Promise<string> {
     // initialize  if needed
     if (!initialized && !initializing) {
-        console.log('calling init');
         await init();
     }
 

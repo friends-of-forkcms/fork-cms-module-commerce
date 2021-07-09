@@ -137,12 +137,12 @@
     </ul>
 
     <div>
-        <div id="description" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'description'">
+        <div id="description" class="tab-pane" x-show="tab === 'description'" x-transition.opacity:enter.duration.300ms>
             {{ product.text|raw }}
         </div>
 
         {% if product.specificationValues.count > 0 %}
-            <div id="specifications" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'specifications'">
+            <div id="specifications" class="tab-pane" x-show="tab === 'specifications'" x-transition.opacity:enter.duration.300ms>
                 <table class="table w-full">
                     <tbody>
                         {% for specification in specifications %}
@@ -163,7 +163,7 @@
         {% endif %}
 
         {% if downloads %}
-        <div id="downloads" class="tab-pane" x-show.transition.opacity.in.duration.300ms="tab === 'downloads'">
+        <div id="downloads" class="tab-pane" x-show="tab === 'downloads'" x-transition.opacity:enter.duration.300ms>
             {{ downloads|raw }}
         </div>
         {% endif %}

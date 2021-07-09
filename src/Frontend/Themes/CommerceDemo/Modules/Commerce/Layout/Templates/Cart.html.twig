@@ -1,0 +1,156 @@
+<div class="container px-6 py-3 mx-auto mb-12">
+    <h1 class="block mb-10 text-2xl text-black">
+        {{ 'lbl.Cart'|trans|ucfirst }}
+    </h1>
+
+    {% if cart and cart.values.count > 0 %}
+        {% if not cart.productsInStock %}
+            <div class="alert alert-warning">
+                <strong>Bestellen niet mogelijk!</strong> Omdat niet alle producten van uw bestelling op voorraad zijn is het niet mogelijk om
+                een bestelling te plaatsen. U kunt wel een offerte aanvragen.
+            </div>
+        {% endif %}
+
+        <div class="shopping-cart">
+            <table class="w-full mt-6">
+                <thead class="text-left uppercase">
+                    <tr>
+                        <th colspan="5" class="py-4">
+                            {{ 'lbl.Description'|trans|ucfirst }}
+                        </th>
+                        <th class="py-4">
+                            {{ 'lbl.Price'|trans|ucfirst }}
+                        </th>
+                        <th class="py-4">
+                            {{ 'lbl.Amount'|trans|ucfirst }}
+                        </th>
+                        <th class="py-4 text-right">
+                            {{ 'lbl.Total'|trans|ucfirst }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for value in cart.values %}
+                        <tr>
+                            {# Thumbnail #}
+                            <td class="td-thumb | py-3 pr-3 w-20">
+                                <a class="thumb" href="{{ value.product.url }}" title="{{ value.product.title }}">
+                                    <img class="w-20" loading="lazy" src="{{ value.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}" alt="{{ value.product.title }}">
+                                </a>
+                            </td>
+
+                            {# Product name and description #}
+                            <td class="td-product" colspan="4">
+                                <a href="{{ value.product.url }}" title="{{ value.product.title }}">
+                                    {{ value.product.title }}
+                                </a>
+                                <div class="text-xs">
+                                    <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span>: {{ value.product.sku }}
+                                </div>
+                                <button class="" type="button" title="Dit product verwijderen?">Verwijderen</button
+                            </td>
+
+                            {# Price #}
+                            <td>
+                                &euro; {% if value.product.hasActiveSpecialPrice %}
+                                    {{ value.product.activePrice(false)|formatnumber(2) }}
+                                {% else %}
+                                    {{ value.product.activePrice(false)|formatnumber(2) }}
+                                {% endif %}
+                            </td>
+
+                            {# Amount #}
+                            <td>
+                                <label for="a107" class="sr-only">
+                                    [{ 'lbl.Amount'|trans|ucfirst }]
+                                </label>
+                                <input type="number"
+                                    value="{{ value.quantity }}"
+                                    data-product="{{ value.product.id }}"
+                                    name="product[{{ value.product.id }}][amount]" />
+                            </td>
+
+                            {# Total #}
+                            <td class="text-right" data-total="{{ value.product.id }}">
+                                &euro; {{ value.total|formatnumber(2) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {# {% for value in cart.values %}
+                {% for valueOption in value.cartValueOptions %}
+                    <div class="shopping-cart-row bg-light">
+                        <div class="col-md-5 shopping-cart-details">
+                            {{ valueOption.productOptionValue.title }}
+                            <input type="hidden"
+                                value="{{ valueOption.productOptionValue.id }}"
+                                data-option="option_{{ valueOption.productOptionValue.productOption.id }}"
+                                name="product[{{ value.product.id }}][option_{{ valueOption.productOptionValue.productOption.id }}]" />
+                        </div>
+                        <div class="col-md-7 shopping-cart-actions">
+                            <div class="col-md-4"></div>
+                            <div class="text-right col-md-3">
+                                &euro; {{ valueOption.productOptionValue.price|formatnumber(2) }}
+                            </div>
+                            <div class="text-right col-md-3">
+                                <strong data-total="{{ value.product.id }}_option_{{ valueOption.productOptionValue.id }}">
+                                    € {{ valueOption.total|formatnumber(2) }}
+                                </strong>
+                            </div>
+                            <div class="text-right col-md-2"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %} #}
+        </div>
+
+        <div class="shopping-cart-total | w-full flex flex-row justify-end">
+            <table class="block w-1/2">
+                <tbody class="w-full">
+                    {# Total discount #}
+
+                    {# Subtotal #}
+                    <tr>
+                        <td>{{ 'lbl.SubTotal'|trans|ucfirst }}</td>
+                        <td class="text-right">&euro; {{ cart.subTotal|formatnumber(2) }}</td>
+                    </tr>
+
+                    {# VAT #}
+                    {% for key, vat in cart.vats %}
+                        <tr>
+                            <td>{{ vat.title }}</td>
+                            <td class="text-right">&euro; {{ vat.total|formatnumber(2) }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    {# Total #}
+                    <tr>
+                        <td>{{ 'lbl.Total'|trans|ucfirst }}</td>
+                        <td class="text-right"><strong>&euro; {{ cart.total|formatnumber(2) }}</strong></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12 no-gutter steps">
+            <p>
+                {% if cart.productsInStock %}
+                    <a class="btn btn-primary arrow pull-right" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">
+                        {{ 'lbl.Checkout'|trans|ucfirst }}
+                    </a>
+                {% endif %}
+                <a class="btn btn-primary arrow pull-right"
+                    href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.RequestQuoteUrl'|trans }}">
+                    {{ 'lbl.RequestQuote'|trans|ucfirst }}
+                </a>
+            </p>
+        </div>
+    {% else %}
+        <p>
+            {{ 'msg.NoProductsInCart'|trans }}
+        </p>
+    {% endif %}
+</div>

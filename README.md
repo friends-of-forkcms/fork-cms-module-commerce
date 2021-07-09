@@ -16,29 +16,22 @@ Admin password: demo
 
 ## Capabilities
 
-At the moment it is almost the same as the Webleads module, but we left out some code and are still working on this, our changes are:
-Improved the products by adding:
-
 - Related products
 - Special prices (sale prices)
 - Added a article number
 - Added VAT options
 - Add product specifications on the flow. The user gets the option to create or select one while adding or editing a product
-
-We also removed some components:
-
-- The media manager has been removed in favour of the default Fork media manager
-- Removed comments on products (may return in the future)
+- Demo frontend theme `CommerceDemo` for the [demo website](#demo), built using an opiniated, modern stack of [Vite.js](https://vitejs.dev), [Tailwind CSS](https://tailwindcss.com/), with a sprinkle of [AlpineJS](https://alpinejs.dev/) and Typescript.
 
 ## How to install
 
 ### 1. Upload the module
 
-Upload this module as usual, by copying the `Commerce` folder from the `Backend` and `Frontend` folders.
+Install this module as usual, by copying the `Commerce` folder from the `Backend` and `Frontend` folders to your project.
 
 ### 2. Install dependencies
 
-This module requires extra dependencies, you can install these by running:
+This module requires extra Composer dependencies, you can install these by running:
 
 ```bash
 composer require tetranz/select2entity-bundle "v2.10.1"
@@ -110,6 +103,34 @@ liip_imagine:
                 auto_rotate: ~
                 strip: ~
                 scale: { dim: [ 100, 100 ] }
+```
+
+### 4. Add a Twig extension to parse script/link tags
+
+The frontend theme builds assets to a dist/ folder. To include these assets, Twig can use a manifest.json file. The included `ViteAssetExtension.php` should help do that.
+However, a theme cannot register Symfony services (yet), so we have to add it manually to `config.yml`.
+
+```yaml
+services:
+    ...
+
+    # Configure the twig extension for ViteJS to easily switch between dev and prod script tags
+    Frontend\Themes\CommerceDemo\ViteAssetExtension:
+        autowire: true
+        arguments:
+            $basePublicPath: '/src/Frontend/Themes/CommerceDemo/dist/'
+            $manifest: '%kernel.project_dir%/src/Frontend/Themes/CommerceDemo/dist/manifest.json'
+            $devServerPublic: 'http://localhost:3000/src/Frontend/Themes/CommerceDemo/'
+            $environment: '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+```
+
+Now simply build the frontend:
+
+```bash
+cd src/Frontend/Themes/CommerceDemo
+npm run build # or npm run dev
 ```
 
 ## Start selling

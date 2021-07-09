@@ -239,7 +239,7 @@ class CartValue
 
     public function isInStock(): bool
     {
-        if ($this->isInStock === null) {
+        if (!isset($this->isInStock)) {
             $inStock = true;
 
             if (!$this->getProduct()->inStock()) {

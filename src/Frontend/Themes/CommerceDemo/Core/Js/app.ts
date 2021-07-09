@@ -1,8 +1,12 @@
+import 'vite/dynamic-import-polyfill';
+
 // Styles
 import '../Layout/Css/app.css';
 
 // Enable AlpineJS, a minimal framework for adding "just enough" JS behavior to our HTML.
-import 'alpinejs';
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
 
 // Components
 import filters from './components/filters';
@@ -22,8 +26,3 @@ document.addEventListener('DOMContentLoaded', () => {
         import('./components/photoswipe').then((photoswipe) => photoswipe.default('.photoswipe-inner'));
     }
 });
-
-// Check if HMR is enabled, then accept itself.
-if (module.hot) {
-    module.hot.accept();
-}

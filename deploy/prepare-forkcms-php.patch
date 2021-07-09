@@ -32,19 +32,9 @@ index aa1171866..11b401318 100644
  
          return $bundles;
 diff --git a/app/config/config.yml b/app/config/config.yml
-index ef5e24c3d..8dd8c6450 100644
 --- a/app/config/config.yml
 +++ b/app/config/config.yml
-@@ -28,6 +28,8 @@ framework:
-                 adapter: cache.app
-                 public: true
-                 default_lifetime: 3600
-+    assets:
-+        json_manifest_path: '%kernel.root_dir%/../src/Frontend/Themes/CommerceDemo/dist/manifest.json'
- 
- # Assetic Configuration
- assetic:
-@@ -123,6 +125,21 @@ liip_imagine:
+@@ -123,6 +123,21 @@ liip_imagine:
                  strip: ~
  
                  thumbnail: { size : [1600, 500], mode : inbound }
@@ -66,10 +56,21 @@ index ef5e24c3d..8dd8c6450 100644
  
  services:
      templating.name_parser.public:
-@@ -272,3 +289,8 @@ services:
+@@ -272,3 +287,19 @@ services:
          arguments:
              - "@fork.settings"
              - "@fork.cookie"
++
++   # Configure the twig extension for ViteJS to easily switch between dev and prod script tags
++    Frontend\Themes\CommerceDemo\ViteAssetExtension:
++        autowire: true
++        arguments:
++            $basePublicPath: '/src/Frontend/Themes/CommerceDemo/dist/'
++            $manifest: '%kernel.project_dir%/src/Frontend/Themes/CommerceDemo/dist/manifest.json'
++            $devServerPublic: 'http://localhost:3000/src/Frontend/Themes/CommerceDemo/'
++            $environment: '%kernel.environment%'
++        tags:
++            - { name: twig.extension }
 +
 +knp_snappy:
 +    pdf:

@@ -42,7 +42,6 @@ async function addToCartHandler(event: MouseEvent) {
     // Show notification
     const notyf = new Notyf({
         duration: 5000,
-        ripple: false,
         position: { x: 'right', y: 'top' },
         dismissible: true,
     });

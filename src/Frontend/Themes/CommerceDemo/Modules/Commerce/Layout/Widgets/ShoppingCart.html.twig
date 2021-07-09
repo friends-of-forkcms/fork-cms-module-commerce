@@ -1,14 +1,11 @@
 <a href="{{ geturlforblock('Commerce', 'Cart') }}" class="js-cart-nav-button | flex flex-row" title="Shopping Cart" >
-    <svg class="c-cart-button-widget__icon | h-6 w-6"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+    <svg class="c-cart-button-widget__icon | h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
+
     <span class="sr-only">{{ 'lbl.Cart'|trans|ucfirst }}</span>
         <span
-            class="c-cart-button-widget__badge | {% if cart.totalQuantity == 0 %}hidden{% endif %} bg-yellow-500 leading-none text-center inline-flex min-w-[24px] min-h-[24px] rounded-full text-sm font-bold justify-center items-center ml-2 px-1"
+            class="c-cart-button-widget__badge | {% if cart.totalQuantity == 0 %}hidden{% endif %} bg-yellow-500 leading-none text-center inline-flex min-w-[24px] min-h-[24px] rounded-full text-sm font-bold justify-center items-center ml-1 px-1"
             data-cart-total-quantity
         >
             {{ cart.totalQuantity }}
