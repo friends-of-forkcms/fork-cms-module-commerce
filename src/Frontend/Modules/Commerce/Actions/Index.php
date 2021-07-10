@@ -83,10 +83,6 @@ class Index extends FrontendBaseBlock
         // add css
         $this->addCSS('Commerce.css');
 
-        // add noty js
-        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
-        $this->addJS('EnhancedEcommerce.js');
-
         $this->template->assign('categories', $this->getCategoryRepository()->findParents(Locale::frontendLanguage()));
         $this->template->assign('categoriesBaseUrl', FrontendNavigation::getURLForBlock('Commerce'));
     }
@@ -119,8 +115,6 @@ class Index extends FrontendBaseBlock
         $this->addJSData('filterUrl', $baseUrl);
         $this->addJSData('category', $category->getId());
         $this->addJS('Filter.js');
-        $this->addJS('EnhancedEcommerce.js');
-        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
 
         // Add categories to breadcrumbs
         $this->categoryToBreadcrumb($category);

@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\Product\Command;
 use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
+use Backend\Modules\Search\Engine\Model as BackendSearchModel;
 
 final class UpdateProductHandler
 {
@@ -79,7 +80,22 @@ final class UpdateProductHandler
 
         // store the product
         $this->productRepository->add($product);
-
         $updateProduct->setProductEntity($product);
+
+        // add search index
+        if (!$product->isHidden()) {
+            BackendSearchModel::saveIndex(
+                'Commerce',
+                $product->getId(),
+                array_filter([
+                    'title' => $product->getTitle(),
+                    'text' => $product->getText(),
+                    'sku' => $product->getSku(),
+                    'ean13' => $product->getEan13(),
+                    'isbn' => $product->getIsbn(),
+                    'brand' => $product->getBrand() ? $product->getBrand()->getTitle() : null,
+                ])
+            );
+        }
     }
 }

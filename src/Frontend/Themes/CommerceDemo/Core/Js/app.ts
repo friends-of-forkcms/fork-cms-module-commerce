@@ -11,10 +11,12 @@ Alpine.start();
 // Components
 import filters from './components/filters';
 import cart from './components/cart';
+import { search } from './components/search';
 
 document.addEventListener('DOMContentLoaded', () => {
     filters();
     cart('.js-add-to-cart-btn');
+    search();
 
     // Dynamic imports with code splitting for lazy loading
     // Lazy, or "on demand", loading is a great way to optimize your site or application. This practice essentially involves splitting your

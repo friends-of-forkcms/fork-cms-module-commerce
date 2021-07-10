@@ -61,9 +61,6 @@ class Detail extends FrontendBaseBlock
         // add css
         $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
 
-        // add noty js
-        $this->header->addJS('/src/Frontend/Modules/'.$this->getModule().'/Js/noty/packaged/jquery.noty.packaged.min.js');
-
         // add into breadcrumb
         $this->breadcrumb->addElement($this->product->getTitle());
 

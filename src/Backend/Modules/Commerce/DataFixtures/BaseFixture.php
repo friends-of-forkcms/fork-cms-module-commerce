@@ -3,6 +3,7 @@
 namespace Backend\Modules\Commerce\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use PhpOffice\PhpSpreadsheet\Reader\Csv as CsvReader;
 use SimpleBus\Message\Bus\MessageBus;
@@ -25,13 +26,17 @@ abstract class BaseFixture extends Fixture
     protected function cleanup(ObjectManager $manager): void
     {
         // Cleanup tables
+        /** @var Connection $connection */
         $connection = $manager->getConnection();
         $platform = $connection->getDatabasePlatform();
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
         foreach ($this->tableNames as $name) {
-            $connection->executeUpdate($platform->getTruncateTableSQL($name, false));
+            $connection->executeStatement($platform->getTruncateTableSQL($name, false));
         }
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
+
+        // Cleanup search index
+        $connection->executeStatement('DELETE FROM search_index WHERE module = :module', ['module' => 'Commerce']);
 
         // Cleanup uploads
         $fs = new Filesystem();

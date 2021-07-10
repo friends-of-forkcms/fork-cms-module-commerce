@@ -49,11 +49,11 @@ class Installer extends ModuleInstaller
         $this->configureEntities();
         $this->addModule('Commerce');
         $this->importLocale(__DIR__.'/Data/locale.xml');
-        $this->makeSearchable($this->getModule());
         $this->addBackendNavigation();
         $this->addModulePermissions();
         $this->addModuleSettings();
         $this->addFrontendExtras();
+        $this->makeSearchable($this->getModule());
     }
 
     private function configureEntities(): void
@@ -339,12 +339,10 @@ class Installer extends ModuleInstaller
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Commerce', 'Cart');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Brand', 'Brand');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');
-        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Search', 'Search');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Register', 'Register');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerOrders', 'CustomerOrders');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerAddresses', 'CustomerAddresses');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'GuestOrderTracking', 'GuestOrderTracking');
-        $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'Search', 'Search');
         $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'GoogleSiteSearch', 'GoogleSiteSearch');
         $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'Categories', 'Categories');
         $this->insertExtra($this->getModule(), ModuleExtraType::widget(), 'ShoppingCart', 'ShoppingCart');

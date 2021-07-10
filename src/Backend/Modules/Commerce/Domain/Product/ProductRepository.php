@@ -9,10 +9,15 @@ use Backend\Modules\Commerce\Domain\Specification\Specification;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Frontend\Core\Engine\Model as FrontendModel;
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use PDO;
 
 class ProductRepository extends EntityRepository
 {
@@ -571,4 +576,46 @@ class ProductRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * After searching the search_index, we need to decorate the search results and return the search objects.
+     * We use a raw query for performance reasons.
+     * @param int[] $ids
+     * @return Product[]
+     */
+    public function search(array $ids): array
+    {
+        /** @var EntityManager $em */
+        $em = FrontendModel::getContainer()->get('doctrine.orm.entity_manager');
+        $items = $em->getConnection()->executeQuery('
+            SELECT
+                p.id,
+                p.title,
+                p.text,
+                p.price,
+                m.url AS url,
+                CONCAT(:detailUrl, "/", m.url) AS full_url,
+                MIN(mgmi.mediaItemId) AS media_item_id
+            FROM commerce_products AS p
+            INNER JOIN meta AS m ON m.id = p.meta_id
+            LEFT JOIN MediaGroupMediaItem AS mgmi ON mgmi.mediaGroupId = p.imageGroupId AND mgmi.sequence = 0
+            WHERE
+                p.hidden = 0
+                AND p.id IN (:ids)
+            GROUP BY 1',
+            ['detailUrl' => FrontendNavigation::getUrlForBlock('Commerce', 'Detail'), 'ids' => $ids],
+            ['detailUrl' => PDO::PARAM_STR, 'ids' => Connection::PARAM_INT_ARRAY]
+        )->fetchAllAssociativeIndexed();
+
+        // Fetch image preview thumb
+        foreach ($items as &$item) {
+            if (!empty($item['media_item_id'])) {
+                $item['preview_image_url'] = FrontendModel::get('media_library.repository.item')
+                    ->findOneById($item['media_item_id'])
+                    ->getThumbnail('product_slider_thumbnail');
+            }
+        }
+
+        // Note: array must have the ID as key, else search breaks!
+        return $items;
+    }
 }

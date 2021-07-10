@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\Product\Command;
 use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
+use Backend\Modules\Search\Engine\Model as BackendSearchModel;
 use Common\ModuleExtraType;
 
 final class CreateProductHandler
@@ -19,12 +20,6 @@ final class CreateProductHandler
     public function handle(CreateProduct $createProduct): void
     {
         $createProduct->extraId = $this->getNewExtraId();
-
-        /**
-         * @var Product $product
-         *
-         * create our product
-         */
         $product = Product::fromDataTransferObject($createProduct);
 
         // save the dimensions
@@ -58,8 +53,27 @@ final class CreateProductHandler
 
         // add our product to the database
         $this->productRepository->add($product);
-
         $createProduct->setProductEntity($product);
+
+        // Flush because we need to reference the product ID (switch to uuid?)
+        $entityManager = Model::get('doctrine.orm.entity_manager');
+        $entityManager->flush();
+
+        // add search index
+        if (!$product->isHidden()) {
+            BackendSearchModel::saveIndex(
+                'Commerce',
+                $product->getId(),
+                array_filter([
+                    'title' => $product->getTitle(),
+                    'text' => $product->getText(),
+                    'sku' => $product->getSku(),
+                    'ean13' => $product->getEan13(),
+                    'isbn' => $product->getIsbn(),
+                    'brand' => $product->getBrand() ? $product->getBrand()->getTitle() : null,
+                ])
+            );
+        }
     }
 
     private function getNewExtraId(): int

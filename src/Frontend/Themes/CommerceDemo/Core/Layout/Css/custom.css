@@ -62,3 +62,47 @@ a.is-submitting::before {
         transform: translateX(100%);
     }
 }
+
+
+/**
+    Algolia
+    @see https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-theme-classic/
+*/
+.js-search-button .aa-DetachedSearchButtonIcon {
+    color: theme('colors.gray.600') !important;
+    width: auto !important;
+
+    &:hover {
+         @apply hover:text-yellow-500;
+     }
+}
+.aa-DetachedSearchButtonIcon .aa-SubmitIcon {
+    width: 24px !important;
+    height: 24px !important;
+    transform: scale(0.9);
+}
+
+:root {
+    --aa-primary-color-rgb: 217, 119, 6 !important;
+}
+
+/** Safari on iOS will zoom in when input field text size is <16px **/
+@screen lg {
+    :root {
+        --aa-font-size: 15px !important;
+    }
+}
+
+.aa-ItemIcon--picture {
+    height: 75px !important;
+    width: 75px !important;
+}
+
+.aa-ItemIcon--picture img {
+    padding: 0 !important;
+    object-fit: cover !important;
+    max-height: inherit !important;
+    max-width: inherit !important;
+}
+
+
