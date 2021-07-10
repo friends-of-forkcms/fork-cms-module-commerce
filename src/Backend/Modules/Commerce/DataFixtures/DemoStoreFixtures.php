@@ -87,7 +87,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         foreach ($categories as ['title' => $title, 'image' => $imageSrc]) {
             $createCategory = new CreateCategory();
             $createCategory->title = $title;
-            $createCategory->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, SEOFollow::none(), SEOIndex::none());
+            $createCategory->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, false, null, SEOFollow::none(), SEOIndex::none());
             $createCategory->image = CategoryImage::fromUploadedFile($this->fakeUploadImage(__DIR__."/assets/$imageSrc"));
             $this->commandBus->handle($createCategory);
 
@@ -103,7 +103,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         foreach ($brands as ['title' => $title, 'image' => $imageSrc]) {
             $createBrand = new CreateBrand();
             $createBrand->title = $title;
-            $createBrand->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, SEOFollow::none(), SEOIndex::none());
+            $createBrand->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, false, null, SEOFollow::none(), SEOIndex::none());
             $createBrand->image = BrandImage::fromUploadedFile($this->fakeUploadImage(__DIR__."/assets/$imageSrc"));
             $this->commandBus->handle($createBrand);
 
@@ -177,7 +177,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
             $createSpecification = new CreateSpecification();
             $createSpecification->title = $title;
             $createSpecification->filter = true;
-            $createSpecification->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, SEOFollow::none(), SEOIndex::none());
+            $createSpecification->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, false, null, SEOFollow::none(), SEOIndex::none());
             $this->commandBus->handle($createSpecification);
 
             $sequence = 1;
@@ -185,7 +185,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
                 $createSpecificationValue = new CreateSpecificationValue();
                 $createSpecificationValue->value = $value;
                 $createSpecificationValue->specification = $createSpecification->getSpecificationEntity();
-                $createSpecificationValue->meta = new Meta($value, false, $value, false, $value, false, Uri::getUrl($value), false, null, SEOFollow::none(), SEOIndex::none());
+                $createSpecificationValue->meta = new Meta($value, false, $value, false, $value, false, Uri::getUrl($value), false, null, false, null, SEOFollow::none(), SEOIndex::none());
                 $createSpecificationValue->sequence = $sequence++;
                 $this->commandBus->handle($createSpecificationValue);
 
@@ -209,7 +209,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
             $createProduct->stock = $product['stock'];
             $createProduct->summary = $product['summary'];
             $createProduct->text = $product['text'];
-            $createProduct->meta = new Meta($product['title'], false, $product['title'], false, $product['title'], false, Uri::getUrl($product['title']), false, null, SEOFollow::none(), SEOIndex::none());
+            $createProduct->meta = new Meta($product['title'], false, $product['title'], false, $product['title'], false, Uri::getUrl($product['title']), false, null, false, null, SEOFollow::none(), SEOIndex::none());
             $createProduct->category = $this->getReference(md5('category_'.strtolower($product['category'])));
             $createProduct->brand = $this->getReference(md5('brand_'.strtolower($product['brand'])));
             $createProduct->vat = $this->getReference(md5('vat_'.strtolower($product['vat'])));
