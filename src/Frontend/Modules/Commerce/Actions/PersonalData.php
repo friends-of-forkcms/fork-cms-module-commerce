@@ -52,7 +52,7 @@ class PersonalData extends FrontendBaseBlock
         $this->cookieOrderId = $this->get('fork.cookie')->get('order_id');
 
         // set checkout url
-        $this->checkoutUrl = FrontendNavigation::getURLForBlock('Commerce', 'Checkout');
+        $this->checkoutUrl = FrontendNavigation::getURLForBlock($this->getModule(), 'Checkout');
     }
 
     /**
@@ -138,7 +138,7 @@ class PersonalData extends FrontendBaseBlock
                 // trigger event
                 FrontendModel::triggerEvent('Commerce', 'after_add_order', ['order' => $order]);
 
-                $url = FrontendNavigation::getURLForBlock('Commerce', 'OrderReceived');
+                $url = FrontendNavigation::getURLForBlock($this->getModule(), 'OrderReceived');
                 $this->redirect($url);
             }
         }

@@ -100,8 +100,8 @@ class UpdateCart extends DimensionCalculator
                     'options' => $this->getCartValueOptionTotals($cartValue),
                 ],
                 'urls' => [
-                    'cart' => Navigation::getUrlForBlock('Commerce', 'Cart'),
-                    'request_quote' => Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('RequestQuoteUrl'),
+                    'cart' => Navigation::getUrlForBlock($this->getModule(), 'Cart'),
+                    'request_quote' => Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('RequestQuoteUrl'),
                 ],
             ]
         );

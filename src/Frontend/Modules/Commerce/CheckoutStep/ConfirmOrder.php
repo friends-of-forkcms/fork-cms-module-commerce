@@ -25,8 +25,6 @@ class ConfirmOrder extends Step
      */
     public function execute(): void
     {
-        $this->addJsFile('ConfirmOrder.js');
-
         $this->form = $this->handleForm($this->getForm());
 
         if ($this->form->isSubmitted()) {

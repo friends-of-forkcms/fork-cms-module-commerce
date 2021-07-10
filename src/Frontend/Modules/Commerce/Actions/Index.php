@@ -84,7 +84,7 @@ class Index extends FrontendBaseBlock
         $this->addCSS('Commerce.css');
 
         $this->template->assign('categories', $this->getCategoryRepository()->findParents(Locale::frontendLanguage()));
-        $this->template->assign('categoriesBaseUrl', FrontendNavigation::getURLForBlock('Commerce'));
+        $this->template->assign('categoriesBaseUrl', FrontendNavigation::getURLForBlock($this->getModule()));
     }
 
     /**
@@ -114,7 +114,6 @@ class Index extends FrontendBaseBlock
         // Add JS
         $this->addJSData('filterUrl', $baseUrl);
         $this->addJSData('category', $category->getId());
-        $this->addJS('Filter.js');
 
         // Add categories to breadcrumbs
         $this->categoryToBreadcrumb($category);
@@ -179,19 +178,10 @@ class Index extends FrontendBaseBlock
         $this->categoryToBreadcrumb($product->getCategory());
         $this->breadcrumb->addElement($product->getTitle(), $product->getUrl());
 
-        // Add js
-        $this->addJS('jquery.sudoSlider.min.js');
-        $this->addJS('jquery.fancybox.min.js');
-        $this->addJS('owl.carousel.min.js');
-        $this->addJs('Product.js');
-        $this->addJS('EnhancedEcommerce.js');
-
         // Add js data
         $this->addJSData('isProductDetail', true);
 
         // Add css
-        $this->addCSS('jquery.fancybox.min.css');
-        $this->addCSS('owl.carousel.min.css');
         $this->addCSS('Commerce.css');
 
         // build the form

@@ -86,7 +86,6 @@ class Cart extends FrontendBaseBlock
         $this->template->assign('cart', $this->cart);
 
         $this->addJSData('isQuote', $this->cart ? !$this->cart->isProductsInStock() : false);
-        $this->addJS('EnhancedEcommerce.js');
     }
 
     /**
@@ -97,17 +96,14 @@ class Cart extends FrontendBaseBlock
     private function checkout(): void
     {
         $this->loadTemplate('Commerce/Layout/Templates/Checkout.html.twig');
-
-        $this->addJS('Checkout.js');
-        $this->addJS('EnhancedEcommerce.js');
         $this->header->setPageTitle(ucfirst(Language::lbl('Checkout')));
 
         $this->breadcrumb->addElement(
             ucfirst(Language::lbl('Checkout')),
-            Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('Checkout')
+            Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('Checkout')
         );
 
-        $baseUrl = Navigation::getUrlForBlock('Commerce', 'Cart');
+        $baseUrl = Navigation::getUrlForBlock($this->getModule(), 'Cart');
 
         $checkoutProgress = new CheckoutProgress();
 
@@ -180,7 +176,7 @@ class Cart extends FrontendBaseBlock
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->breadcrumb->addElement(
                 ucfirst(Language::lbl('RequestQuote')),
-                Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('RequestQuoteUrl')
+                Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('RequestQuoteUrl')
             );
 
             if ($this->getRequest()->get('submitted')) {
@@ -208,7 +204,7 @@ class Cart extends FrontendBaseBlock
         );
 
         $this->redirect(
-            Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('RequestQuoteUrl').'?submitted=1'
+            Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('RequestQuoteUrl').'?submitted=1'
         );
     }
 
@@ -267,7 +263,7 @@ class Cart extends FrontendBaseBlock
     private function isAllowedToCheckout(): void
     {
         if (!$this->cart || !$this->cart->isProductsInStock()) {
-            $this->redirect(Navigation::getUrlForBlock('Commerce', 'Cart'));
+            $this->redirect(Navigation::getUrlForBlock($this->getModule(), 'Cart'));
         }
     }
 }

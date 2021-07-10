@@ -35,7 +35,7 @@ abstract class BaseFixture extends Fixture
         }
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
 
-        // Cleanup search index
+        // Cleanup tables
         $connection->executeStatement('DELETE FROM search_index WHERE module = :module', ['module' => 'Commerce']);
 
         // Cleanup uploads

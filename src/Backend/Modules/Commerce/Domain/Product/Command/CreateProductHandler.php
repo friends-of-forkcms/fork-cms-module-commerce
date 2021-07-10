@@ -19,7 +19,6 @@ final class CreateProductHandler
 
     public function handle(CreateProduct $createProduct): void
     {
-        $createProduct->extraId = $this->getNewExtraId();
         $product = Product::fromDataTransferObject($createProduct);
 
         // save the dimensions
@@ -74,14 +73,5 @@ final class CreateProductHandler
                 ])
             );
         }
-    }
-
-    private function getNewExtraId(): int
-    {
-        return Model::insertExtra(
-            ModuleExtraType::widget(),
-            'Commerce',
-            'Product'
-        );
     }
 }

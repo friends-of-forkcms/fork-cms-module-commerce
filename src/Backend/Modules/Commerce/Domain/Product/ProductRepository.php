@@ -590,19 +590,22 @@ class ProductRepository extends EntityRepository
             SELECT
                 p.id,
                 p.title,
+                p.category_id,
                 p.text,
                 p.price,
                 m.url AS url,
-                CONCAT(:detailUrl, "/", m.url) AS full_url,
+                CONCAT(:detailUrl, "/", m2.url, "/", m.url) AS full_url,
                 MIN(mgmi.mediaItemId) AS media_item_id
             FROM commerce_products AS p
             INNER JOIN meta AS m ON m.id = p.meta_id
+            LEFT JOIN commerce_categories AS cc ON cc.id = p.category_id
+            LEFT JOIN meta AS m2 ON m2.id = cc.meta_id
             LEFT JOIN MediaGroupMediaItem AS mgmi ON mgmi.mediaGroupId = p.imageGroupId AND mgmi.sequence = 0
             WHERE
                 p.hidden = 0
                 AND p.id IN (:ids)
             GROUP BY 1',
-            ['detailUrl' => FrontendNavigation::getUrlForBlock('Commerce', 'Detail'), 'ids' => $ids],
+            ['detailUrl' => FrontendNavigation::getUrlForBlock('Commerce'), 'ids' => $ids],
             ['detailUrl' => PDO::PARAM_STR, 'ids' => Connection::PARAM_INT_ARRAY]
         )->fetchAllAssociativeIndexed();
 
@@ -614,6 +617,11 @@ class ProductRepository extends EntityRepository
                     ->getThumbnail('product_slider_thumbnail');
             }
         }
+
+//        // Fetch categories
+//        $categories = $this->getEntityManager()
+//            ->getRepository('commerce.repository.category')
+//            ->findBy(['id' => array_map(fn ($item) => $item['category_id'], $items)]);
 
         // Note: array must have the ID as key, else search breaks!
         return $items;

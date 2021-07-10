@@ -335,7 +335,7 @@ class Installer extends ModuleInstaller
 
     private function addFrontendExtras(): void
     {
-        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Commerce', 'Index');
+        $this->insertExtra($this->getModule(), ModuleExtraType::block(), "Commerce");
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Commerce', 'Cart');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Brand', 'Brand');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');

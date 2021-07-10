@@ -37,7 +37,7 @@ class OrderReceived extends FrontendBaseBlock
         $cookie = FrontendModel::getContainer()->get('fork.cookie');
 
         $this->firstName = $cookie->get('fname', '');
-        $this->commerceUrl = FrontendNavigation::getURLForBlock('Commerce');
+        $this->commerceUrl = FrontendNavigation::getURLForBlock($this->getModule());
     }
 
     protected function parse(): void

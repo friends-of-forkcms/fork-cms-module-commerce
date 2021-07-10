@@ -81,7 +81,7 @@ class ViteAssetExtension extends AbstractExtension
         $html = '';
         foreach($css as $cssFile) {
             $html .= <<<HTML
-<link href="{$this->basePublicPath}{$cssFile}" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="{$this->basePublicPath}{$cssFile}" rel="stylesheet">
 HTML;
         }
 
