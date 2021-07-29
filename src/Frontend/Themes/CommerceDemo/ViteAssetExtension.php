@@ -17,7 +17,7 @@ use Twig\TwigFunction;
  */
 class ViteAssetExtension extends AbstractExtension
 {
-    private const VITE_CLIENT = '@vite/client.js';
+    private const VITE_CLIENT = '@vite/client.mjs';
     private const LEGACY_POLYFILLS = 'vite/legacy-polyfills';
 
     private ?array $manifestData = null;
