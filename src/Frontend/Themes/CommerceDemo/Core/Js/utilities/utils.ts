@@ -11,3 +11,7 @@ export const memoize = (fn: any): any => {
         }
     };
 };
+
+export const ucfirst = (word: string) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}

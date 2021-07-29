@@ -2,8 +2,9 @@
 import { html } from 'htm/preact';
 import { autocomplete, VNode } from '@algolia/autocomplete-js';
 import { requestAjax } from '../api/ForkAPI';
-import { memoize } from '../utilities/utils';
+import { memoize, ucfirst } from "../utilities/utils";
 import '@algolia/autocomplete-theme-classic/dist/theme.css';
+import { lbl, msg } from "./locale";
 
 type ForkSearchItem = {
     id: string;
@@ -26,16 +27,22 @@ type AutocompleteItem = ForkSearchItem | ForkProductItem;
  * This file adds Algolia Autocomplete support to any search button, using the
  * Fork CMS search API.
  */
-export function search(): void {
+export async function search(): Promise<void> {
     if (document.querySelector('.aa-Autocomplete')) {
         return;
     }
 
+    // Init the abortcontroller (cancel previous requests)
     let abortController = new AbortController();
+
+    // Fetch locale strings
+    const lblProducts = ucfirst(await lbl('Products'));
+    const msgNoResults = ucfirst(await msg('NoSearchResults'));
+    const msgSearchPlaceholder = ucfirst(await msg('SearchPlaceholder'));
 
     const { setIsOpen } = autocomplete<AutocompleteItem>({
         container: '.js-search-button',
-        placeholder: 'Zoek op product, merk, id...',
+        placeholder: msgSearchPlaceholder,
         openOnFocus: true,
         detachedMediaQuery: '', // Use detached mode on all breakpoints, it shows a modal instead
         classNames: {
@@ -63,7 +70,7 @@ export function search(): void {
                     },
                     templates: {
                         noResults() {
-                            return 'Er zijn geen resultaten';
+                            return msgNoResults;
                         },
                         item({ item }) {
                             return renderPageResult(item);
@@ -97,7 +104,7 @@ export function search(): void {
 
                             return html`
                                 <div>
-                                    <span className="aa-SourceHeaderTitle">Artikelen</span>
+                                    <span className="aa-SourceHeaderTitle">${lblProducts}</span>
                                     <div className="aa-SourceHeaderLine" />
                                 </div>
                             `;

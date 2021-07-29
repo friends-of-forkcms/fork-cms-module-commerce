@@ -1232,6 +1232,10 @@
         <translation language="nl"><![CDATA[product]]></translation>
         <translation language="en"><![CDATA[product]]></translation>
       </item>
+      <item type="label" name="Products">
+        <translation language="nl"><![CDATA[producten]]></translation>
+        <translation language="en"><![CDATA[products]]></translation>
+      </item>
       <item type="label" name="Total">
         <translation language="nl"><![CDATA[totaal]]></translation>
         <translation language="en"><![CDATA[total]]></translation>
@@ -2117,6 +2121,14 @@
       <item type="message" name="ExclusiveVatPricing">
         <translation language="nl"><![CDATA[Exclusief %1$s&percnt; BTW. (€%2$s incl. %3$s&percnt; BTW)]]></translation>
         <translation language="en"><![CDATA[Exclusive %1$s&percnt; VAT. (€%2$s incl. %3$s&percnt; VAT)]]></translation>
+      </item>
+      <item type="message" name="NoSearchResults">
+        <translation language="nl"><![CDATA[Er zijn geen resultaten.]]></translation>
+        <translation language="en"><![CDATA[There are no results.]]></translation>
+      </item>
+      <item type="message" name="SearchPlaceholder">
+        <translation language="nl"><![CDATA[Zoek op product, merk, id...]]></translation>
+        <translation language="en"><![CDATA[Search by product, brand, id...]]></translation>
       </item>
     </Core>
   </Frontend>
