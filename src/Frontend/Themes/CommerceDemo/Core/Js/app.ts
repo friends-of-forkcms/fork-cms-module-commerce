@@ -6,7 +6,6 @@ import '../Layout/Css/app.css';
 // Enable AlpineJS, a minimal framework for adding "just enough" JS behavior to our HTML.
 import Alpine from 'alpinejs';
 window.Alpine = Alpine;
-Alpine.start();
 
 // Components
 import filters from './components/filters';
@@ -15,7 +14,7 @@ import { search } from './components/search';
 
 document.addEventListener('DOMContentLoaded', () => {
     filters();
-    cart('.js-add-to-cart-btn');
+    cart();
     search();
 
     // Dynamic imports with code splitting for lazy loading
@@ -27,4 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         import('./components/carousel').then((carousel) => carousel.default(carouselSelector));
         import('./components/photoswipe').then((photoswipe) => photoswipe.default('.photoswipe-inner'));
     }
+
+    // Start Alpine after the components have loaded
+    // @see https://alpinejs.dev/globals/alpine-data#registering-from-a-bundle
+    Alpine.start();
 });

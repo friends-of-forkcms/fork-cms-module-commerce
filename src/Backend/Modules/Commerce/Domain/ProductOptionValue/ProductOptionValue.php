@@ -10,6 +10,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_product_option_values")
@@ -48,7 +49,7 @@ class ProductOptionValue
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", cascade={"remove", "persist"})
      * @ORM\JoinTable(name="commerce_product_option_values_dependencies",
      *     joinColumns={@ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="roduct_option_value_dependency_id", referencedColumnName="id")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_option_value_dependency_id", referencedColumnName="id")}
      * )
      */
     private Collection $dependencies;
@@ -100,9 +101,9 @@ class ProductOptionValue
     private ?string $sku;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=1)
@@ -159,7 +160,7 @@ class ProductOptionValue
         ?int $end,
         ?string $sub_title,
         ?string $sku,
-        ?float $price,
+        ?Money $price,
         ?float $percentage,
         ?int $width,
         ?int $height,
@@ -177,7 +178,7 @@ class ProductOptionValue
         $this->end = $end;
         $this->sub_title = $sub_title;
         $this->sku = $sku;
-        $this->price = $price;
+        $this->price = $price ?? Money::EUR(0);
         $this->percentage = $percentage;
         $this->width = $width;
         $this->height = $height;
@@ -216,7 +217,7 @@ class ProductOptionValue
     }
 
     /**
-     * @return Collection|ProductOptionValue[]
+     * @return Collection<int, ProductOptionValue>|ProductOptionValue[]
      */
     public function getDependencies(): ?Collection
     {
@@ -248,7 +249,7 @@ class ProductOptionValue
         return $this->sku;
     }
 
-    public function getPrice(): float
+    public function getPrice(): Money
     {
         return $this->price;
     }
@@ -390,12 +391,9 @@ class ProductOptionValue
         return new ProductOptionValueDataTransferObject($this);
     }
 
-    /**
-     * Get the vat price only.
-     */
-    public function getVatPrice(): float
+    public function getVatPrice(): Money
     {
-        return $this->getPrice() * $this->vat->getAsPercentage();
+        return $this->getPrice()->multiply($this->vat->getAsPercentage());
     }
 
     /**

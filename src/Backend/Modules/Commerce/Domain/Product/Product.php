@@ -18,8 +18,10 @@ use Common\Locale;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_products")
@@ -97,14 +99,13 @@ class Product
     private $specification_values;
 
     /**
-     * @var ProductSpecial[]
-     *
+     * @var Collection<int, ProductSpecial>
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial", mappedBy="product", cascade={"remove", "persist"})
      */
     private $specials;
 
     /**
-     * @var ProductDimension[]
+     * @var Collection<int, ProductDimension>
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension", mappedBy="product", cascade={"remove", "persist"})
      * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
@@ -112,7 +113,7 @@ class Product
     private $dimensions;
 
     /**
-     * @var ProductDimensionNotification[]
+     * @var Collection<int, ProductDimensionNotification>
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="product", cascade={"remove", "persist"})
      * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
@@ -122,7 +123,7 @@ class Product
     /**
      * Many Products may have many related products.
      *
-     * @var Product[]
+     * @var Collection<Product>
      *
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(name="commerce_related_products",
@@ -140,7 +141,7 @@ class Product
     protected $up_sell_products;
 
     /**
-     * @var CartValue[]
+     * @var Collection<CartValue>
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValue", mappedBy="product", cascade={"remove", "persist"})
      */
@@ -217,9 +218,9 @@ class Product
     private ?float $weight;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
      * @ORM\Column(type="integer")
@@ -299,7 +300,7 @@ class Product
     /**
      * Current object active price.
      */
-    private float $activePrice;
+    private Money $activePrice;
 
     private bool $hasActiveSpecialPrice = false;
 
@@ -320,7 +321,7 @@ class Product
         int $extra_production_height,
         string $title,
         float $weight,
-        float $price,
+        Money $price,
         int $stock,
         int $order_quantity,
         bool $from_stock,
@@ -463,9 +464,9 @@ class Product
     }
 
     /**
-     * @return ProductOption[]
+     * @return Collection<int, ProductOption>|ProductOption[]
      */
-    public function getProductOptions()
+    public function getProductOptions(): Collection
     {
         $criteria = Criteria::create();
         $criteria->where(Criteria::expr()->isNull('parent_product_option_value'));
@@ -474,9 +475,9 @@ class Product
     }
 
     /**
-     * @return ProductOption[]
+     * @return Collection<int, ProductOption>|ProductOption[]
      */
-    public function getProductOptionsWithSubOptions()
+    public function getProductOptionsWithSubOptions(): Collection
     {
         return $this->product_options;
     }
@@ -539,7 +540,7 @@ class Product
         return $this->weight;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): Money
     {
         return $this->price;
     }
@@ -672,7 +673,7 @@ class Product
     /**
      * @return ProductDimensionNotification[]
      */
-    public function getDimensionNotifications()
+    public function getDimensionNotifications(): Collection
     {
         $expr = Criteria::expr();
         $criteria = Criteria::create()->where($expr->isNull('product_option'));
@@ -803,14 +804,14 @@ class Product
     /**
      * Get the active price if is special or the current price.
      */
-    public function getActivePrice(bool $includeVat = true): float
+    public function getActivePrice(bool $includeVat = true): Money
     {
         $this->calculateActivePrice();
 
         $price = $this->activePrice;
 
         if ($includeVat) {
-            $price += $price * $this->vat->getAsPercentage();
+            return $this->vat->calculateInclusiveAmountFor($price);
         }
 
         return $price;
@@ -819,12 +820,12 @@ class Product
     /**
      * Get the old price.
      */
-    public function getOldPrice(bool $includeVat = true): float
+    public function getOldPrice(bool $includeVat = true): Money
     {
         $price = $this->price;
 
         if ($includeVat) {
-            $price += $price * $this->vat->getAsPercentage();
+            return $this->vat->calculateInclusiveAmountFor($price);
         }
 
         return $price;
@@ -833,25 +834,20 @@ class Product
     /**
      * Calculate a percentage between the old price and the new price, so we can display "-11%" in the shop.
      */
-    public function getDiscountPercentage(): string
+    public function getDiscountPercentageFormatted(): string
     {
         $oldPrice = $this->getOldPrice(false);
         $activePrice = $this->getActivePrice(false);
 
-        $percentage = (($oldPrice - $activePrice) / $oldPrice) * 100;
-        $trendSymbol = $activePrice >= $oldPrice ? '+' : '-';
+        $percentage = $oldPrice->subtract($activePrice)->ratioOf($oldPrice) * 100;
+        $trendSymbol = $activePrice->greaterThanOrEqual($oldPrice) ? '+' : '-';
 
         return $trendSymbol . abs(round($percentage)) . '%';
     }
 
-    /**
-     * Get the vat price only.
-     *
-     * @return float
-     */
-    public function getVatPrice()
+    public function getVatPrice(): Money
     {
-        return $this->getActivePrice(false) * $this->vat->getAsPercentage();
+        return $this->getActivePrice(false)->multiply($this->vat->getAsPercentage());
     }
 
     /**
@@ -917,6 +913,7 @@ class Product
             )
         )->setMaxResults(1);
 
+        /** @var Collection<int, ProductSpecial> $specialPrices */
         $specialPrices = $this->specials->matching($criteria);
 
         if ($specialPrice = $specialPrices->first()) {
@@ -929,7 +926,7 @@ class Product
 
     public function usesDimensions(): bool
     {
-        return $this->type == self::TYPE_DIMENSIONS;
+        return $this->type === self::TYPE_DIMENSIONS;
     }
 
     public function getDimensionNotificationByDimension(int $width, int $height): ?ProductDimensionNotification

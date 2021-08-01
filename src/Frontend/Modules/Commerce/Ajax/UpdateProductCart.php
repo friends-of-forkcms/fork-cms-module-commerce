@@ -11,6 +11,8 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\TemplateModifiers;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +43,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
 
         $this->cookie = $this->get('fork.cookie');
         $this->cart = $this->getActiveCart();
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         // Cart id must be set
         if (!$this->getRequest()->request->has('cartValueId')) {
@@ -56,7 +59,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
             return;
         }
 
-        // Failed to update product, does not exists?
+        // Failed to update product, does not exist?
         if (!$cartValue = $this->updateProductCart()) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
 
@@ -70,8 +73,8 @@ class UpdateProductCart extends FrontendBaseAJAXAction
             [
                 'cart' => [
                     'totalQuantity' => $this->cart->getTotalQuantity(),
-                    'subTotal' => TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
-                    'total' => TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
+                    'subTotal' => $moneyFormatter->format($this->cart->getSubTotal()),
+                    'total' => $moneyFormatter->format($this->cart->getTotal()),
                     'vats' => $this->getFormattedVats(),
                 ],
                 'product' => [
@@ -80,7 +83,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
                     'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
                     'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
                     'quantity' => $cartValue->getQuantity(),
-                    'total' => TemplateModifiers::formatNumber($cartValue->getTotal(), 2),
+                    'total' => $moneyFormatter->format($cartValue->getTotal()),
                 ],
             ]
         );
@@ -133,7 +136,7 @@ class UpdateProductCart extends FrontendBaseAJAXAction
         }
 
         $cartValue->setQuantity($amount);
-        $cartValue->setTotal($cartValue->getPrice() * $amount);
+        $cartValue->setTotal($cartValue->getPrice()->multiply($amount));
 //        $cartValueRepository->
 
 //        $cartValue->save
@@ -162,22 +165,15 @@ class UpdateProductCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Get the product repository.
-     */
-    private function getProductRepository(): ProductRepository
-    {
-        return $this->get('commerce.repository.product');
-    }
-
-    /**
      * Format the vats in an array with the required number format.
      */
     private function getFormattedVats(): array
     {
         $vats = $this->cart->getVats();
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($vats as $key => $vat) {
-            $vats[$key]['total'] = TemplateModifiers::formatNumber($vat['total'], 2);
+            $vats[$key]['total'] = $moneyFormatter->format($vat['total']);
         }
 
         return $vats;

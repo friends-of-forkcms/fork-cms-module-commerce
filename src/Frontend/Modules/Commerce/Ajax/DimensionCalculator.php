@@ -9,61 +9,44 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Backend\Modules\Commerce\Domain\ProductDimension\ProductDimensionRepository;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
+use Doctrine\Common\Collections\Collection;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
+use Money\Money;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class DimensionCalculator extends FrontendBaseAJAXAction
 {
-    /**
-     * @var AddToCartDataTransferObject
-     */
-    protected $data;
+    protected AddToCartDataTransferObject $data;
 
-    /**
-     * @var int
-     */
-    private $width = 0;
+    private int $width = 0;
+    private int $height = 0;
+    private Money $basePrice;
+    private Money $total;
 
-    /**
-     * @var int
-     */
-    private $height = 0;
+    public function __construct(KernelInterface $kernel, string $action, string $module)
+    {
+        parent::__construct($kernel, $action, $module);
+        $this->basePrice = Money::EUR(0);
+        $this->total = Money::EUR(0);
+    }
 
-    /**
-     * @var float
-     */
-    private $basePrice = 0;
-
-    /**
-     * @var int
-     */
-    private $total = 0;
-
-    /**
-     * @param $basePrice
-     */
-    protected function setBasePrice(float $basePrice): void
+    protected function setBasePrice(Money $basePrice): void
     {
         $this->basePrice = $basePrice;
     }
 
-    /**
-     * @return int
-     */
-    protected function getBasePrice(): float
+    protected function getBasePrice(): Money
     {
         return $this->basePrice;
     }
 
-    /**
-     * @param $total
-     */
-    protected function addTotalPrice(float $total): void
+    protected function addTotalPrice(Money $total): void
     {
-        $this->total += $total;
+        $this->total = $this->total->add($total);
     }
 
-    protected function getTotalPrice(): float
+    protected function getTotalPrice(): Money
     {
         return $this->total;
     }
@@ -73,10 +56,7 @@ class DimensionCalculator extends FrontendBaseAJAXAction
         return $this->width;
     }
 
-    /**
-     * @param int $width
-     */
-    protected function addWidth(?int $width): void
+    protected function addWidth(int $width): void
     {
         $this->width += $width;
     }
@@ -86,10 +66,7 @@ class DimensionCalculator extends FrontendBaseAJAXAction
         return $this->height;
     }
 
-    /**
-     * @param int $height
-     */
-    protected function addHeight(?int $height): void
+    protected function addHeight(int $height): void
     {
         $this->height += $height;
     }
@@ -109,9 +86,9 @@ class DimensionCalculator extends FrontendBaseAJAXAction
     }
 
     /**
-     * @param ProductOption[] $productOptions
+     * @param Collection<int, ProductOption>|ProductOption[] $productOptions
      */
-    protected function parseProductOptionsDimension($productOptions): void
+    protected function parseProductOptionsDimension(Collection $productOptions): void
     {
         foreach ($productOptions as $option) {
             $propertyName = 'option_'.$option->getId();
@@ -121,9 +98,7 @@ class DimensionCalculator extends FrontendBaseAJAXAction
                 continue;
             }
 
-            /**
-             * @var ProductOptionValue $optionValue
-             */
+            /** @var ProductOptionValue $optionValue */
             $optionValue = $this->data->{$propertyName};
 
             if ($option->isCustomValueAllowed() && $this->data->{$propertyNameCustomValue}) {
@@ -143,17 +118,11 @@ class DimensionCalculator extends FrontendBaseAJAXAction
         }
     }
 
-    /**
-     * Get the product dimension repository.
-     */
     protected function getProductDimensionRepository(): ProductDimensionRepository
     {
         return $this->get('commerce.repository.product_dimension');
     }
 
-    /**
-     * Get the product repository.
-     */
     protected function getProductRepository(): ProductRepository
     {
         return $this->get('commerce.repository.product');

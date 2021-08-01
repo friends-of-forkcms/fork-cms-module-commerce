@@ -490,10 +490,10 @@ class ProductRepository extends EntityRepository
                 $query .= ' ORDER BY p.sequence ASC, p.id DESC';
                 break;
             case Product::SORT_PRICE_ASC:
-                $query .= ' ORDER BY p.price ASC';
+                $query .= ' ORDER BY p.price_amount ASC';
                 break;
             case Product::SORT_PRICE_DESC:
-                $query .= ' ORDER BY p.price DESC';
+                $query .= ' ORDER BY p.price_amount DESC';
                 break;
             case Product::SORT_CREATED_AT:
                 $query .= ' ORDER BY p.created_on DESC';
@@ -592,7 +592,7 @@ class ProductRepository extends EntityRepository
                 p.title,
                 p.category_id,
                 p.text,
-                p.price,
+                p.price_amount,
                 m.url AS url,
                 CONCAT(:detailUrl, "/", m2.url, "/", m.url) AS full_url,
                 MIN(mgmi.mediaItemId) AS media_item_id

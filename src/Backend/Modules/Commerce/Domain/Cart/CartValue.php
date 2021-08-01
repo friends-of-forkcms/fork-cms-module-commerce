@@ -9,6 +9,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_cart_values")
@@ -31,7 +32,7 @@ class CartValue
     private Cart $cart;
 
     /**
-     * @var Collection|CartValueOption[]
+     * @var Collection<int, CartValueOption>
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="cart_value", orphanRemoval=true, cascade={"persist", "remove"})
      */
@@ -75,21 +76,22 @@ class CartValue
     private int $quantity = 0;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private int $total = 0;
+    private Money $total;
 
     /**
      * @ORM\Column(type="datetime", name="date")
      */
     private DateTimeInterface $date;
 
-    private ?float $price;
+    private ?Money $price;
     private bool $isInStock;
 
     public function __construct()
     {
         $this->cart_value_options = new ArrayCollection();
+        $this->total = Money::EUR(0);
     }
 
     public function getId(): ?int
@@ -108,19 +110,11 @@ class CartValue
     }
 
     /**
-     * @return Collection|CartValueOption[]
+     * @return Collection<int, CartValueOption>|CartValueOption[]
      */
     public function getCartValueOptions(): Collection
     {
         return $this->cart_value_options;
-    }
-
-    /**
-     * @param Collection|CartValueOption[] $cart_value_options
-     */
-    public function setCartValueOptions(Collection $cart_value_options): void
-    {
-        $this->cart_value_options = $cart_value_options;
     }
 
     public function addCartValueOption(CartValueOption $cartValueOption): void
@@ -207,12 +201,12 @@ class CartValue
         $this->quantity = $quantity;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         return $this->total;
     }
 
-    public function setTotal(float $total): void
+    public function setTotal(Money $total): void
     {
         $this->total = $total;
     }
@@ -256,9 +250,9 @@ class CartValue
         return $this->isInStock;
     }
 
-    public function getPrice(): float
+    public function getPrice(): Money
     {
-        if ($this->price) {
+        if (isset($this->price)) {
             return $this->price;
         }
 
@@ -270,9 +264,9 @@ class CartValue
 
         foreach ($this->getCartValueOptions() as $option) {
             if ($option->isImpactTypeAdd()) {
-                $this->price += $option->getPrice();
-            } else {
-                $this->price -= $option->getPrice();
+                $this->price = $this->price->add($option->getPrice());
+            } else if($option->isImpactTypeSubtract()) {
+                $this->price = $this->price->subtract($option->getPrice());
             }
         }
 
@@ -282,7 +276,7 @@ class CartValue
     /**
      * Get the vat price of a single product in this row.
      */
-    public function getVatPrice(): float
+    public function getVatPrice(): Money
     {
         if ($this->product->usesDimensions()) {
             return $this->product_dimension->getVatPrice();

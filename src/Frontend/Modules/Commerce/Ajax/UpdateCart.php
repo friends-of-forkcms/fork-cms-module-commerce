@@ -17,6 +17,8 @@ use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
@@ -81,13 +83,14 @@ class UpdateCart extends DimensionCalculator
         // Force update of cart totals
         $this->cart->calculateTotals();
 
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
         $this->output(
             Response::HTTP_OK,
             [
                 'cart' => [
                     'totalQuantity' => $this->cart->getTotalQuantity(),
-                    'subTotal' => TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
-                    'total' => TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
+                    'subTotal' => $moneyFormatter->format($this->cart->getSubTotal()),
+                    'total' => $moneyFormatter->format($this->cart->getTotal()),
                     'vats' => $this->getFormattedVats(),
                 ],
                 'product' => [
@@ -96,7 +99,7 @@ class UpdateCart extends DimensionCalculator
                     'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
                     'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
                     'quantity' => $cartValue->getQuantity(),
-                    'total' => TemplateModifiers::formatNumber($cartValue->getTotal(), 2),
+                    'total' => $moneyFormatter->format($cartValue->getTotal()),
                     'options' => $this->getCartValueOptionTotals($cartValue),
                 ],
                 'urls' => [
@@ -266,7 +269,7 @@ class UpdateCart extends DimensionCalculator
         // Add the product options to the cart
         $this->addProductOptionsToCart($product, $cartValue);
 
-        $cartValue->setTotal($cartValue->getQuantity() * $this->getTotalPrice());
+        $cartValue->setTotal($this->getTotalPrice()->multiply($cartValue->getQuantity()));
 
         // Add our product to the cart
         $this->cart->addValue($cartValue);
@@ -301,7 +304,7 @@ class UpdateCart extends DimensionCalculator
 
             // Set the values
             $cartValue->setQuantity($cartValue->getQuantity() + $product->getOrderQuantity());
-            $cartValue->setTotal($cartValue->getQuantity() * $product->getActivePrice(false));
+            $cartValue->setTotal($product->getActivePrice(false)->multiply($cartValue->getQuantity()));
 
             // Add our product to the cart
             $this->cart->addValue($cartValue);
@@ -318,9 +321,10 @@ class UpdateCart extends DimensionCalculator
     private function getFormattedVats(): array
     {
         $vats = $this->cart->getVats();
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($vats as $key => $vat) {
-            $vats[$key]['total'] = TemplateModifiers::formatNumber($vat['total'], 2);
+            $vats[$key]['total'] = $moneyFormatter->format($vat['total']);
         }
 
         return $vats;
@@ -361,7 +365,7 @@ class UpdateCart extends DimensionCalculator
                         $cartValueOption->setValue($this->data->{$customValueFieldName});
                         $cartValueOption->setPrice($productOption->getCustomValuePrice());
                         $cartValueOption->setVat($product->getVat());
-                        $cartValueOption->setVatPrice($productOption->getCustomValuePrice() * $product->getVat()->getAsPercentage());
+                        $cartValueOption->setVatPrice($productOption->getCustomValuePrice()->multiply($product->getVat()->getAsPercentage()));
                     } else {
                         switch ($productOption->getType()) {
                             case ProductOption::DISPLAY_TYPE_TEXT:
@@ -384,9 +388,9 @@ class UpdateCart extends DimensionCalculator
                             $cartValueOption->setVat($productOptionValue->getVat());
 
                             if ($productOptionValue->getPercentage() > 0) {
-                                $productOptionValuePrice = $this->getBasePrice() * ($productOptionValue->getPercentage() / 100);
+                                $productOptionValuePrice = $this->getBasePrice()->multiply(($productOptionValue->getPercentage() / 100));
                                 $cartValueOption->setPrice($productOptionValuePrice);
-                                $cartValueOption->setVatPrice($productOptionValuePrice * $productOptionValue->getVat()->getAsPercentage());
+                                $cartValueOption->setVatPrice($productOptionValuePrice->multiply($productOptionValue->getVat()->getAsPercentage()));
                             } else {
                                 $cartValueOption->setPrice($productOptionValue->getPrice());
                                 $cartValueOption->setVatPrice($productOptionValue->getVatPrice());
@@ -399,8 +403,8 @@ class UpdateCart extends DimensionCalculator
                         // @TODO assumed unit is given in MM
                         $square = ceil(($this->getWidth() / 100) * ($this->getHeight() / 100));
 
-                        $cartValueOption->setPrice($cartValueOption->getPrice() * $square);
-                        $cartValueOption->setVatPrice($cartValueOption->getVatPrice() * $square);
+                        $cartValueOption->setPrice($cartValueOption->getPrice()->multiply($square));
+                        $cartValueOption->setVatPrice($cartValueOption->getVatPrice()->multiply($square));
                     }
 
                     $cartValue->addCartValueOption($cartValueOption);
@@ -423,9 +427,10 @@ class UpdateCart extends DimensionCalculator
     private function getCartValueOptionTotals(CartValue $cartValue): array
     {
         $totals = [];
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($cartValue->getCartValueOptions() as $cartValueOption) {
-            $totals[$cartValueOption->getId()] = TemplateModifiers::formatNumber($cartValueOption->getTotal(), 2);
+            $totals[$cartValueOption->getId()] = $moneyFormatter->format($cartValueOption->getTotal());
         }
 
         return $totals;

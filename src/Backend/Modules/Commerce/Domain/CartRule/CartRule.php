@@ -5,6 +5,9 @@ namespace Backend\Modules\Commerce\Domain\CartRule;
 use Common\Locale;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_cart_rules")
@@ -56,9 +59,14 @@ class CartRule
     private string $code;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
-    private ?float $minimum_amount;
+    private ?int $minimum_price_amount;
+
+    /**
+     * @ORM\Column(type="string", length=3, nullable=true, options={"collation":"utf8mb4_unicode_ci", "charset":"utf8mb4"})
+     */
+    private ?string $minimum_price_currency_code;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=1, nullable=true)
@@ -66,9 +74,14 @@ class CartRule
     private ?float $reduction_percentage;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
-    private ?float $reduction_amount;
+    private ?int $reduction_price_amount;
+
+    /**
+     * @ORM\Column(type="string", length=3, nullable=true, options={"collation":"utf8mb4_unicode_ci", "charset":"utf8mb4"})
+     */
+    private ?string $reduction_price_currency_code;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -83,9 +96,9 @@ class CartRule
         int $quantity,
         ?int $quantity_per_user,
         string $code,
-        ?float $minimum_amount,
+        ?Money $minimum_price,
         ?float $reduction_percentage,
-        ?float $reduction_amount,
+        ?Money $reduction_price,
         bool $hidden
     ) {
         $this->locale = $locale;
@@ -95,10 +108,18 @@ class CartRule
         $this->quantity = $quantity;
         $this->quantity_per_user = $quantity_per_user;
         $this->code = $code;
-        $this->minimum_amount = $minimum_amount;
         $this->reduction_percentage = $reduction_percentage;
-        $this->reduction_amount = $reduction_amount;
         $this->hidden = $hidden;
+
+        if ($minimum_price !== null) {
+            $this->minimum_price_amount = $minimum_price->getAmount();
+            $this->minimum_price_currency_code = 'EUR';
+        }
+
+        if ($reduction_price !== null) {
+            $this->reduction_price_amount = $reduction_price->getAmount();
+            $this->reduction_price_currency_code = 'EUR';
+        }
     }
 
     public static function fromDataTransferObject(CartRuleDataTransferObject $dataTransferObject): CartRule
@@ -120,9 +141,9 @@ class CartRule
             $dataTransferObject->quantity,
             $dataTransferObject->quantity_per_user,
             $dataTransferObject->code,
-            $dataTransferObject->minimum_amount,
+            $dataTransferObject->minimum_price,
             $dataTransferObject->reduction_percentage,
-            $dataTransferObject->reduction_amount,
+            $dataTransferObject->reduction_price,
             $dataTransferObject->hidden
         );
     }
@@ -138,10 +159,18 @@ class CartRule
         $cartRule->quantity = $dataTransferObject->quantity;
         $cartRule->quantity_per_user = $dataTransferObject->quantity_per_user;
         $cartRule->code = $dataTransferObject->code;
-        $cartRule->minimum_amount = $dataTransferObject->minimum_amount;
         $cartRule->reduction_percentage = $dataTransferObject->reduction_percentage;
-        $cartRule->reduction_amount = $dataTransferObject->reduction_amount;
         $cartRule->hidden = $dataTransferObject->hidden;
+
+        if ($dataTransferObject->minimum_price !== null) {
+            $cartRule->minimum_price_amount = $dataTransferObject->minimum_price->getAmount();
+            $cartRule->minimum_price_currency_code = 'EUR';
+        }
+
+        if ($dataTransferObject->reduction_price !== null) {
+            $cartRule->reduction_price_amount = $dataTransferObject->reduction_price->getAmount();
+            $cartRule->reduction_price_currency_code = 'EUR';
+        }
 
         return $cartRule;
     }
@@ -191,9 +220,17 @@ class CartRule
         return $this->code;
     }
 
-    public function getMinimumAmount(): ?float
+    /**
+     * Doctrine does not have nullable embeddables (Money type). We have to define the fields manually and turn them
+     * into the embeddable object manually: https://stackoverflow.com/a/45262491/1409047
+     */
+    public function getMinimumPrice(): ?Money
     {
-        return $this->minimum_amount;
+        if ($this->minimum_price_amount === null || $this->minimum_price_currency_code === null) {
+            return null;
+        }
+
+        return new Money($this->minimum_price_amount, new Currency($this->minimum_price_currency_code));
     }
 
     public function getReductionPercentage(): ?float
@@ -201,9 +238,17 @@ class CartRule
         return $this->reduction_percentage;
     }
 
-    public function getReductionAmount(): ?float
+    /**
+     * Doctrine does not have nullable embeddables (Money type). We have to define the fields manually and turn them
+     * into the embeddable object manually: https://stackoverflow.com/a/45262491/1409047
+     */
+    public function getReductionPrice(): ?Money
     {
-        return $this->reduction_amount;
+        if ($this->reduction_price_amount === null || $this->reduction_price_currency_code === null) {
+            return null;
+        }
+
+        return new Money($this->reduction_price_amount, new Currency($this->reduction_price_currency_code));
     }
 
     public function isHidden(): bool

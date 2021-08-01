@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\ProductDimension;
 
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,9 +28,9 @@ class ProductDimension
     private ?Product $product;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
      * @ORM\Column(type="integer")
@@ -64,12 +65,12 @@ class ProductDimension
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public function getPrice(): float
+    public function getPrice(): Money
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): void
+    public function setPrice(Money $price): void
     {
         $this->price = $price;
     }
@@ -77,9 +78,9 @@ class ProductDimension
     /**
      * Get the vat price only.
      */
-    public function getVatPrice(): float
+    public function getVatPrice(): Money
     {
-        return $this->getPrice() * $this->product->getVat()->getAsPercentage();
+        return $this->getPrice()->multiply($this->product->getVat()->getAsPercentage());
     }
 
     /**

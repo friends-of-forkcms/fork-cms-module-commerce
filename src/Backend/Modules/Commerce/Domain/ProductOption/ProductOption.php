@@ -11,6 +11,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_product_options")
@@ -91,9 +92,9 @@ class ProductOption
     private bool $custom_value_allowed;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default": 0.0})
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $custom_value_price;
+    private Money $custom_value_price;
 
     /**
      * @ORM\Column(type="integer")
@@ -137,7 +138,7 @@ class ProductOption
         ?string $text,
         bool $required,
         bool $custom_value_allowed,
-        float $custom_value_price,
+        Money $custom_value_price,
         int $type,
         int $sequence,
         ?string $placeholder,
@@ -268,7 +269,7 @@ class ProductOption
         return $this->custom_value_allowed;
     }
 
-    public function getCustomValuePrice(): float
+    public function getCustomValuePrice(): Money
     {
         return $this->custom_value_price;
     }

@@ -1,3 +1,27 @@
+{# Prepare a dataset for Alpine.js #}
+{% set cartValues = [] %}
+{% for item in cart.values %}
+    {% set cartValues = cartValues|merge([{
+        id: item.id,
+        url: item.product.url,
+        title: item.product.title,
+        sku: item.product.sku,
+        thumbnail: item.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail'),
+        quantity: item.quantity,
+        price: item.product.activePrice(false)|format_money_decimal(),
+        total: item.total,
+    }]) %}
+{% endfor %}
+
+{% set vatItems = [] %}
+{% for key, item in cart.vats %}
+    {% set vatItems = vatItems|merge([{
+        id: key,
+        title: item.title,
+        total: item.total|format_money_decimal(),
+    }]) %}
+{% endfor %}
+
 <div class="container px-6 py-3 mx-auto mb-12">
     <h1 class="block mb-10 text-2xl text-black">
         {{ 'lbl.Cart'|trans|ucfirst }}
@@ -11,71 +35,86 @@
             </div>
         {% endif %}
 
-        <div class="shopping-cart">
-            <table class="w-full mt-6">
+        {# The main shopping cart component #}
+        {# Note: this strongly uses an Alpine.js component (see cart.ts) #}
+        <div
+            class="shopping-cart"
+            x-data="cart"
+            x-init="
+                items = {{ cartValues|json_encode }};
+                subTotal = {{ cart.subTotal|format_money_decimal() }};
+                vatItems = {{ vatItems|json_encode }};
+                cartTotal = {{ cart.total|format_money_decimal() }};
+            "
+        >
+            <table class="w-full mt-6 border-b border-gray-300">
                 <thead class="text-left uppercase">
-                    <tr>
-                        <th colspan="5" class="py-4">
+                    <tr class="text-sm tracking-wider text-black border-b-2 border-gray-200">
+                        <th colspan="3" class="py-3 pr-3">
                             {{ 'lbl.Description'|trans|ucfirst }}
                         </th>
-                        <th class="py-4">
+                        <th class="p-3">
                             {{ 'lbl.Price'|trans|ucfirst }}
                         </th>
-                        <th class="py-4">
+                        <th class="p-3">
                             {{ 'lbl.Amount'|trans|ucfirst }}
                         </th>
-                        <th class="py-4 text-right">
+                        <th class="py-3 pl-3 text-right">
                             {{ 'lbl.Total'|trans|ucfirst }}
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for value in cart.values %}
+                    <template x-cloak x-for="cartValue in items" :key="cartValue.id">
                         <tr>
                             {# Thumbnail #}
-                            <td class="td-thumb | py-3 pr-3 w-20">
-                                <a class="thumb" href="{{ value.product.url }}" title="{{ value.product.title }}">
-                                    <img class="w-20" loading="lazy" src="{{ value.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}" alt="{{ value.product.title }}">
+                            <td class="td-thumb | py-3 pr-3 w-20 border-t border-gray-300 align-middle">
+                                <a class="thumb" x-bind:href="cartValue.url" x-bind:title="cartValue.title">
+                                    <img class="w-20" loading="lazy" x-bind:src="cartValue.thumbnail" x-bind:alt="cartValue.title">
                                 </a>
                             </td>
 
-                            {# Product name and description #}
-                            <td class="td-product" colspan="4">
-                                <a href="{{ value.product.url }}" title="{{ value.product.title }}">
-                                    {{ value.product.title }}
-                                </a>
-                                <div class="text-xs">
-                                    <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span>: {{ value.product.sku }}
+                            {# Product name #}
+                            <td class="td-product | p-3 border-t border-gray-300 align-middle" colspan="2">
+                                <a x-bind:href="cartValue.url" x-bind:title="cartValue.title" x-text="cartValue.title"></a>
+                                <div class="hidden text-xs">
+                                    <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span>:
+                                    <span x-text="cartValue.sku"></span>
                                 </div>
-                                <button class="" type="button" title="Dit product verwijderen?">Verwijderen</button
+                                <button
+                                    class="block my-2 text-xs text-gray-400 hover:text-red-600"
+                                    type="button"
+                                    title="{{ 'msg.ConfirmDelete'|trans|format(value.product.title|e) }}"
+                                    @click="removeItemFromCart(cartValue.id)"
+                                >
+                                    {{ 'lbl.Delete'|trans|ucfirst }}
+                                </button>
                             </td>
 
                             {# Price #}
-                            <td>
-                                &euro; {% if value.product.hasActiveSpecialPrice %}
-                                    {{ value.product.activePrice(false)|formatnumber(2) }}
-                                {% else %}
-                                    {{ value.product.activePrice(false)|formatnumber(2) }}
-                                {% endif %}
+                            <td class="p-3 align-middle border-t border-gray-300 tabular-nums">
+                                <span x-text="formatNumber(cartValue.price)"></span>
                             </td>
 
-                            {# Amount #}
-                            <td>
-                                <label for="a107" class="sr-only">
-                                    [{ 'lbl.Amount'|trans|ucfirst }]
-                                </label>
-                                <input type="number"
-                                    value="{{ value.quantity }}"
-                                    data-product="{{ value.product.id }}"
-                                    name="product[{{ value.product.id }}][amount]" />
+                            {#  Amount #}
+                            <td class="p-3 align-middle border-t border-gray-300">
+                                <label class="sr-only" x-bind:for="'amount-' + cartValue.id">{{ 'lbl.Amount'|trans|ucfirst }}</label>
+                                <input
+                                    class="inline-block w-20"
+                                    x-bind:id="'amount-' + cartValue.id"
+                                    type="number"
+                                    min="1"
+                                    x-model="cartValue.quantity"
+                                    x-on:change="updateProductQuantity(cartValue.id, cartValue.quantity)"
+                                />
                             </td>
 
                             {# Total #}
-                            <td class="text-right" data-total="{{ value.product.id }}">
-                                &euro; {{ value.total|formatnumber(2) }}
+                            <td class="py-3 pl-3 text-right align-middle border-t border-gray-300 whitespace-nowrap tabular-nums">
+                                <span x-text="formatNumber(cartValue.price * cartValue.quantity)"></span>
                             </td>
                         </tr>
-                    {% endfor %}
+                    </template>
                 </tbody>
             </table>
 
@@ -104,49 +143,57 @@
                     </div>
                 {% endfor %}
             {% endfor %} #}
-        </div>
 
-        <div class="shopping-cart-total | w-full flex flex-row justify-end">
-            <table class="block w-1/2">
-                <tbody class="w-full">
-                    {# Total discount #}
+            <div class="shopping-cart-overview-summary | w-full flex flex-row justify-end mt-16">
+                <div class="block w-1/6"></div>
+                <div class="block w-5/12">
+                    <table class="w-full max-w-full text-black">
+                        <tbody class="w-full">
+                            {# Total discount #}
 
-                    {# Subtotal #}
-                    <tr>
-                        <td>{{ 'lbl.SubTotal'|trans|ucfirst }}</td>
-                        <td class="text-right">&euro; {{ cart.subTotal|formatnumber(2) }}</td>
-                    </tr>
+                            {# Subtotal #}
+                            <tr>
+                                <td class="px-3 py-1">{{ 'lbl.SubTotal'|trans|ucfirst }}</td>
+                                <td class="px-3 py-1 text-right tabular-nums">
+                                    <span x-text="formatNumber(subTotal)"></span>
+                                </td>
+                            </tr>
 
-                    {# VAT #}
-                    {% for key, vat in cart.vats %}
-                        <tr>
-                            <td>{{ vat.title }}</td>
-                            <td class="text-right">&euro; {{ vat.total|formatnumber(2) }}</td>
-                        </tr>
-                    {% endfor %}
+                            {# VAT #}
+                            <template x-for="vat in vatItems" :key="vat.id">
+                                <tr>
+                                    <td class="px-3 py-1" x-text="vat.title + ' {{ 'lbl.Vat'|trans }}'"></td>
+                                    <td class="px-3 py-1 text-right tabular-nums" x-text="formatNumber(vat.total)"></td>
+                                </tr>
+                            </template>
 
-                    {# Total #}
-                    <tr>
-                        <td>{{ 'lbl.Total'|trans|ucfirst }}</td>
-                        <td class="text-right"><strong>&euro; {{ cart.total|formatnumber(2) }}</strong></td>
-                    </tr>
+                            {# Total #}
+                            <tr>
+                                <td class="px-3 py-1">{{ 'lbl.Total'|trans|ucfirst }}</td>
+                                <td class="px-3 py-1 text-right tabular-nums">
+                                    <strong x-text="formatNumber(cartTotal)"></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                </tbody>
-            </table>
-        </div>
-
-        <div class="col-md-12 no-gutter steps">
-            <p>
-                {% if cart.productsInStock %}
-                    <a class="btn btn-primary arrow pull-right" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">
-                        {{ 'lbl.Checkout'|trans|ucfirst }}
-                    </a>
-                {% endif %}
-                <a class="btn btn-primary arrow pull-right"
-                    href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.RequestQuoteUrl'|trans }}">
-                    {{ 'lbl.RequestQuote'|trans|ucfirst }}
-                </a>
-            </p>
+            <div class="cart-pager-bottom | py-10 my-20 border-t border-gray-300">
+                <ul class="flex justify-end">
+                    {% if cart.productsInStock %}
+                        <li>
+                            <a class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">
+                                {{ 'lbl.Checkout'|trans|ucfirst }}
+                            </a>
+                        </li>
+                    {% endif %}
+{#                    <a class="btn btn-primary arrow pull-right"#}
+{#                        href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.RequestQuoteUrl'|trans }}">#}
+{#                        {{ 'lbl.RequestQuote'|trans|ucfirst }}#}
+{#                    </a>#}
+                </ul>
+            </div>
         </div>
     {% else %}
         <p>

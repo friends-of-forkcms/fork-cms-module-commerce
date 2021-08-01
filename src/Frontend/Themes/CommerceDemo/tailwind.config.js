@@ -27,7 +27,7 @@ module.exports = {
             './Core/Layout/Templates/**/*.{twig,html}',
             './Core/Layout/EditorTemplates/**/*.{twig,html}',
             './Core/Js/**/*.{js,jsx,ts,tsx}',
-            './Modules/*/Layout/{Templates,Widgets}/**/*.{twig,html}',
+            './Modules/**/Layout/{Templates,Widgets}/**/*.{twig,html}',
         ],
     },
     theme: {

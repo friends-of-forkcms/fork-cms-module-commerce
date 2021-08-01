@@ -8,6 +8,8 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\ModulesSettings;
 use DOMDocument;
 use DOMElement;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,6 +51,7 @@ class GenerateMerchantFeed extends Command
         $domLink->setAttribute('href', SITE_URL);
         $domFeed->appendChild($domLink);
         $domFeed->appendChild($this->domDocument->createElement('updated', date('Y-m-d\TH:i:s\Z')));
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($this->settings->get('Core', 'active_languages') as $activeLanguage) {
             $locale = Locale::fromString($activeLanguage);
@@ -98,7 +101,7 @@ class GenerateMerchantFeed extends Command
                 if ($product->hasActiveSpecialPrice()) {
                     $item->appendChild($this->domDocument->createElement(
                         'g:sale_price',
-                        number_format($product->getActivePrice(false), 2, '.', '').' EUR'
+                        $moneyFormatter->format($product->getActivePrice(false)) . ' EUR'
                     ));
                 }
 

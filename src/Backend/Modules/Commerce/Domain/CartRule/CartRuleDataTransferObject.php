@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\CartRule;
 use Backend\Core\Language\Locale;
 use DateTime;
 use DateTimeInterface;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CartRuleDataTransferObject
@@ -36,11 +37,10 @@ class CartRuleDataTransferObject
      */
     public string $code;
 
-    public ?float $minimum_amount = null;
+    public ?Money $minimum_price = null;
 
     public ?float $reduction_percentage = null;
-
-    public ?float $reduction_amount = null;
+    public ?Money $reduction_price = null;
 
     public bool $hidden;
 
@@ -66,9 +66,9 @@ class CartRuleDataTransferObject
         $this->quantity = $this->cartRuleEntity->getQuantity();
         $this->quantity_per_user = $this->cartRuleEntity->getQuantityPerUser();
         $this->code = $this->cartRuleEntity->getCode();
-        $this->minimum_amount = $this->cartRuleEntity->getMinimumAmount();
+        $this->minimum_price = $this->cartRuleEntity->getMinimumPrice();
         $this->reduction_percentage = $this->cartRuleEntity->getReductionPercentage();
-        $this->reduction_amount = $this->cartRuleEntity->getReductionAmount();
+        $this->reduction_price = $this->cartRuleEntity->getReductionPrice();
         $this->hidden = $this->cartRuleEntity->isHidden();
     }
 

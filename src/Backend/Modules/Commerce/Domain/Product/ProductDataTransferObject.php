@@ -20,6 +20,7 @@ use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Common\Doctrine\Entity\Meta;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductDataTransferObject
@@ -70,7 +71,7 @@ class ProductDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public ?string $price = null;
+    public ?Money $price = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")

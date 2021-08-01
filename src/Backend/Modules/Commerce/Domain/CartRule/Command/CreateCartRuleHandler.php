@@ -16,7 +16,7 @@ final class CreateCartRuleHandler
 
     public function handle(CreateCartRule $createCartRule): void
     {
-        if (!$createCartRule->code) {
+        if (isset($createCartRule->code)) {
             $createCartRule->code = $this->generateToken();
         }
 

@@ -25,9 +25,9 @@ export default ({ command }) => ({
             targets: ['defaults', 'not IE 11'],
         }),
 
-        // Restart the Vite server when our (twig) templates changed
+        // Reload the Vite server when our (twig) templates changed
         ViteRestart({
-            reload: ['./Core/Layout/Templates/**/*', './Modules/**/*'],
+            reload: ['Core/Layout/Templates/**/*', 'Modules/**/*'],
         }),
     ],
 

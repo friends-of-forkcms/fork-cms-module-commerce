@@ -350,7 +350,7 @@ class Category
             if ($this->parent) {
                 $this->urlPrefix = $this->parent->getUrl();
             } else {
-                $this->urlPrefix = Navigation::getUrlForBlock('Commerce', 'Index', $this->locale->getLocale());
+                $this->urlPrefix = Navigation::getUrlForBlock('Commerce', null, $this->locale->getLocale());
             }
         }
 

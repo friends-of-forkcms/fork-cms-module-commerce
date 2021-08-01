@@ -11,6 +11,8 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\TemplateModifiers;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +43,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
 
         $this->cookie = $this->get('fork.cookie');
         $this->cart = $this->getActiveCart();
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         // Product must be set
         if (!$this->getRequest()->request->has('cart')) {
@@ -63,8 +66,8 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
             [
                 'cart' => [
                     'totalQuantity' => $this->cart->getTotalQuantity(),
-                    'subTotal' => TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
-                    'total' => TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
+                    'subTotal' => $moneyFormatter->format($this->cart->getSubTotal()),
+                    'total' => $moneyFormatter->format($this->cart->getTotal()),
                     'vats' => $this->getFormattedVats(),
                 ],
                 'product' => [
@@ -73,7 +76,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
                     'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
                     'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
                     'quantity' => $cartValue->getQuantity(),
-                    'total' => TemplateModifiers::formatNumber($cartValue->getTotal(), 2),
+                    'total' => $moneyFormatter->format($cartValue->getTotal()),
                 ],
             ]
         );
@@ -162,9 +165,10 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     private function getFormattedVats(): array
     {
         $vats = $this->cart->getVats();
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($vats as $key => $vat) {
-            $vats[$key]['total'] = TemplateModifiers::formatNumber($vat['total'], 2);
+            $vats[$key]['total'] = $moneyFormatter->format($vat['total']);
         }
 
         return $vats;

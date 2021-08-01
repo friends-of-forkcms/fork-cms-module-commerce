@@ -22,3 +22,4 @@ imports:
   - { resource: product_option_value_commands.yml }
   - { resource: commands.yml }
   - { resource: sitemap_providers.yml }
+  - { resource: twig.yml }

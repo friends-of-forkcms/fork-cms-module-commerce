@@ -31,7 +31,8 @@ composer require --no-scripts \
     'knplabs/knp-snappy-bundle:v1.6.0' \
     'h4cc/wkhtmltopdf-amd64:^0.12.4' \
     'gedmo/doctrine-extensions:^3.0' \
-    'jeroendesloovere/sitemap-bundle:^2.0'
+    'jeroendesloovere/sitemap-bundle:^2.0' \
+    'moneyphp/money:v3.3.1'
 composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
 
 # Install the sitemap module which is a module dependency at the moment

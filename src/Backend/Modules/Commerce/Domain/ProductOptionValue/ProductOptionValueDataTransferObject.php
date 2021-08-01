@@ -10,6 +10,7 @@ use Backend\Modules\MediaLibrary\Domain\MediaGroup\Type as MediaGroupType;
 use Common\Doctrine\Entity\Meta;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductOptionValueDataTransferObject
@@ -43,7 +44,7 @@ class ProductOptionValueDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public float $price = 0.00;
+    public Money $price;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -73,6 +74,7 @@ class ProductOptionValueDataTransferObject
         $this->default_value = false;
         $this->image = MediaGroup::create(MediaGroupType::fromString(MediaGroupType::IMAGE));
         $this->dependencies = new ArrayCollection();
+        $this->price = Money::EUR(0);
 
         if (!$this->hasExistingProductOptionValue()) {
             return;

@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\ProductOptionValue;
 
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
@@ -43,12 +44,15 @@ class ProductOptionValueType extends AbstractType
                 'label' => 'lbl.ArticleNumber',
             ]
         )->add(
-            'price',
-            MoneyType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.Price',
-            ]
+            $builder->create(
+                'price',
+                MoneyType::class,
+                [
+                    'required' => false,
+                    'label' => 'lbl.Price',
+                ]
+            )
+            ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         )->add(
             'percentage',
             NumberType::class,

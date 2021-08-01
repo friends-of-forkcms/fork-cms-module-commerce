@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\OrderProductOption;
 
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_order_product_options")
@@ -41,14 +42,14 @@ class OrderProductOption
     private string $value;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $total;
+    private Money $total;
 
     public function getDataTransferObject(): OrderProductOptionDataTransferObject
     {
@@ -100,22 +101,22 @@ class OrderProductOption
         $this->value = $value;
     }
 
-    public function getPrice(): float
+    public function getPrice(): Money
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): void
+    public function setPrice(Money $price): void
     {
         $this->price = $price;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         return $this->total;
     }
 
-    public function setTotal(float $total): void
+    public function setTotal(Money $total): void
     {
         $this->total = $total;
     }

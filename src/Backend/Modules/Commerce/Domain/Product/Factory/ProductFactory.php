@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Commerce\Factory;
+namespace Backend\Modules\Commerce\Domain\Product\Factory;
 
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Category\Category;
@@ -19,6 +19,8 @@ use Common\Doctrine\ValueObject\SEOIndex;
 use Common\Uri;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Money\Money;
+use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Zenstruck\Foundry\ModelFactory;
 
 class ProductFactory extends ModelFactory
@@ -69,10 +71,10 @@ class ProductFactory extends ModelFactory
         $category->sequence = 1;
         $category->extraId = 1;
         $category->image = Image::fromString('');
-        $category->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, SEOFollow::none(), SEOIndex::none());
+        $category->meta = new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, false, null, SEOFollow::none(), SEOIndex::none());
 
         return [
-            'meta' => new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, SEOFollow::none(), SEOIndex::none()),
+            'meta' => new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, false, null, SEOFollow::none(), SEOIndex::none()),
             'category' => Category::fromDataTransferObject($category),
             'brand' => null,
             'vat' => null,
@@ -81,7 +83,7 @@ class ProductFactory extends ModelFactory
             'type' => Product::TYPE_DEFAULT,
             'title' => $title,
             'weight' => self::faker()->randomFloat(null, 0.5, 200),
-            'price' => self::faker()->randomFloat(null, 1, 1000),
+            'price' => Money::EUR((string) self::faker()->randomFloat(2, 1, 1000) * 100),
             'stock' => self::faker()->randomNumber(),
             'sku' => (string) self::faker()->randomNumber(),
             'ean13' => self::faker()->ean13,
@@ -97,9 +99,10 @@ class ProductFactory extends ModelFactory
         return Product::class;
     }
 
-    public function withPrice(float $price): self
+    public function withPrice(string $price): self
     {
-        return $this->addState(['price' => $price]);
+        $moneyTransformer = new MoneyToLocalizedStringTransformer(2, true, null, 100);
+        return $this->addState(['price' => Money::EUR($moneyTransformer->reverseTransform($price))]);
     }
 
     public function withVat(float $percentage): self
@@ -114,13 +117,15 @@ class ProductFactory extends ModelFactory
     }
 
     public function withNewSpecial(
-        float $newPrice,
+        string $newPrice,
         DateTimeInterface $startDate,
         DateTimeInterface $endDate = null
     ): self {
+        $moneyTransformer = new MoneyToLocalizedStringTransformer(2, true, null, 100);
+
         $specials = new ArrayCollection();
         $special = new ProductSpecial();
-        $special->setPrice($newPrice);
+        $special->setPrice(Money::EUR($moneyTransformer->reverseTransform($newPrice)));
         $special->setStartDate($startDate);
         $special->setEndDate($endDate);
         $specials->add($special);

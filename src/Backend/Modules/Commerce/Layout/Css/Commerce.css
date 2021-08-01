@@ -7,3 +7,12 @@ Give it a width so select2 does not override it with width: auto */
 .select2-container {
     width: 100% !important;
 }
+
+
+/** Fix a bad vertical alignment in the datepicker */
+input[type="date"].form-control,
+input[type="time"].form-control,
+input[type="datetime-local"].form-control,
+input[type="month"].form-control {
+    line-height: normal !important;
+}

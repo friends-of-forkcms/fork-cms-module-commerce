@@ -9,6 +9,8 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Locale;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,8 +126,9 @@ class ProductPrice extends DimensionCalculator
         }
 
         // Store all information
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
         $returnData['options'] = $this->getProductOptions();
-        $returnData['total_price'] = TemplateModifiers::formatNumber($this->getTotalPrice() * $this->data->amount, 2);
+        $returnData['total_price'] = $moneyFormatter->format($this->getTotalPrice()->multiply($this->data->amount));
         $returnData['notifications'] = $this->notifications;
 
         $this->output(Response::HTTP_OK, $returnData);
@@ -147,7 +150,7 @@ class ProductPrice extends DimensionCalculator
 
         if ($option->isCustomValueAllowed() && isset($this->data->{$propertyNameCustomValue})) {
             $price = $option->getCustomValuePrice();
-            $vatPrice = $option->getCustomValuePrice() * $product->getVat()->getAsPercentage();
+            $vatPrice = $option->getCustomValuePrice()->multiply($product->getVat()->getAsPercentage());
             $value = $option->getPrefix().$this->data->{$propertyNameCustomValue}.$option->getSuffix();
         } else {
             /**
@@ -157,8 +160,8 @@ class ProductPrice extends DimensionCalculator
             if ($optionValue) {
                 if (!$option->isTextType()) {
                     if ($optionValue->getPercentage() > 0) {
-                        $price = $this->getBasePrice() * ($optionValue->getPercentage() / 100);
-                        $vatPrice = $price * $optionValue->getVat()->getAsPercentage();
+                        $price = $this->getBasePrice()->multiply(($optionValue->getPercentage() / 100));
+                        $vatPrice = $price->multiply($optionValue->getVat()->getAsPercentage());
                     } else {
                         $price = $optionValue->getPrice();
                         $vatPrice = $optionValue->getVatPrice();
@@ -194,8 +197,8 @@ class ProductPrice extends DimensionCalculator
             // @TODO assumed unit is given in MM
             $square = ceil(($this->getWidth() / 100) * ($this->getHeight() / 100));
 
-            $price = $price * $square;
-            $vatPrice = $vatPrice * $square;
+            $price = $price->multiply($square);
+            $vatPrice = $vatPrice->multiply($square);
         }
 
         // Update the totals

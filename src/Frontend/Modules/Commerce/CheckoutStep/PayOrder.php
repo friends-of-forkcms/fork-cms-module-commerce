@@ -225,7 +225,7 @@ class PayOrder extends Step
             if ($cartRule->getReductionPercentage()) {
                 $createOrderRule->value = $cartRule->getReductionPercentage().'% '.Language::lbl('Discount');
             } else {
-                $createOrderRule->value = '&euro; -'.number_format($cartRule->getReductionAmount(), 2, ',', '.');
+                $createOrderRule->value = '&euro; -'.number_format($cartRule->getReductionPrice(), 2, ',', '.');
             }
             $createOrderRule->total = $this->cart->getCartRuleTotal($cartRule);
 

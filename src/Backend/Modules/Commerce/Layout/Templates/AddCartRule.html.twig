@@ -16,35 +16,48 @@
       <div role="tabpanel">
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="active">
-            <a href="#tabContent" aria-controls="tabContent" role="tab"
-               data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+            <a href="#tabDiscountCode" aria-controls="tabDiscountCode" role="tab" data-toggle="tab">{{ 'lbl.DiscountCode'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabConditions" aria-controls="tabConditions" role="tab" data-toggle="tab">{{ 'lbl.Conditions'|trans|ucfirst }}</a>
           </li>
         </ul>
+
+        {# Coupon tab #}
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="tabContent">
+          <div role="tabpanel" class="tab-pane active" id="tabDiscountCode">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   {{ form_label(form.code) }}
                   {{ form_widget(form.code) }}
                   {{ form_errors(form.code) }}
-                  <p class="text-warning small">{{ 'msg.WhenNoCodeSetWillGenerateCode'|trans }}</p>
+                  <p class="help-block">{{ 'msg.HelpDiscountCode'|trans|raw }}. {{ 'msg.WhenNoCodeSetWillGenerateCode'|trans }}</p>
                 </div>
-                {{ form_row(form.quantity) }}
-                {{ form_row(form.from) }}
-                {{ form_row(form.till) }}
               </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="tabConditions">
+            <div class="row">
               <div class="col-md-6">
-                {{ form_row(form.minimum_amount) }}
-                {{ form_row(form.reduction_percentage) }}
-                {{ form_row(form.reduction_amount) }}
+                <div class="form-group">
+                  {{ form_row(form.quantity) }}
+                  {{ form_row(form.from) }}
+                  {{ form_row(form.till) }}
+                  {{ form_row(form.minimum_price) }}
+                  {{ form_row(form.reduction_percentage) }}
+                  {{ form_row(form.reduction_price) }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+
     </div>
   </div>
+
+
   <div class="row fork-module-actions">
     <div class="col-md-12">
       <div class="btn-toolbar">

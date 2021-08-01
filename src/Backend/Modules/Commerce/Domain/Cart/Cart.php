@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Language\Locale;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_carts")
@@ -48,14 +49,13 @@ class Cart
     private ?OrderAddress $invoice_address;
 
     /**
-     * @var Collection|CartValue[]
+     * @var Collection<int, CartValue>
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValue", mappedBy="cart", cascade={"remove", "persist"})
      */
     private Collection $values;
 
     /**
-     * @var Collection|CartRule[]
-     *
+     * @var Collection<int, CartRule>|CartRule[]
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\CartRule\CartRule")
      * @ORM\JoinTable(name="commerce_cart_cart_rules",
      *     joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
@@ -114,12 +114,12 @@ class Cart
      */
     private ?Order $order;
 
-    private float $vatTotals;
-    private int $total;
-    private int $subTotal;
+    private Money $vatTotal;
+    private Money $total;
+    private Money $subTotal;
     private array $vats = [];
     private bool $allProductsInStock;
-    private int $totalWeight;
+    private float $totalWeight;
     private array $cartRuleTotals = [];
 
     public function __construct()
@@ -169,7 +169,7 @@ class Cart
     }
 
     /**
-     * @return Collection|CartValue[]
+     * @return Collection<int, CartValue>
      */
     public function getValues(): Collection
     {
@@ -195,7 +195,7 @@ class Cart
     }
 
     /**
-     * @return Collection|CartRule[]
+     * @return Collection<int, CartRule>|CartRule[]
      */
     public function getCartRules(): Collection
     {
@@ -300,11 +300,6 @@ class Cart
         return $this->editedOn;
     }
 
-    public function setEditedOn(DateTimeInterface $editedOn): void
-    {
-        $this->editedOn = $editedOn;
-    }
-
     /**
      * @ORM\PrePersist
      */
@@ -322,7 +317,7 @@ class Cart
         return $this->order;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         if (!$this->total) {
             $this->calculateTotals();
@@ -331,7 +326,7 @@ class Cart
         return $this->total;
     }
 
-    public function getSubTotal(): float
+    public function getSubTotal(): Money
     {
         if (!isset($this->subTotal)) {
             $this->calculateTotals();
@@ -349,17 +344,17 @@ class Cart
         return $this->vats;
     }
 
-    public function getVatTotals(): ?float
+    public function getVatTotal(): ?Money
     {
-        if (!$this->vatTotals) {
+        if (!$this->vatTotal) {
             $this->calculateTotals();
 
             foreach ($this->vats as $vat) {
-                $this->vatTotals += $vat['total'];
+                $this->vatTotal->add($vat['total']);
             }
         }
 
-        return $this->vatTotals;
+        return $this->vatTotal;
     }
 
     public function getTotalWeight(): float
@@ -377,24 +372,25 @@ class Cart
     public function calculateTotals(): void
     {
         // Reset the values
-        $this->subTotal = 0;
-        $this->total = 0;
+        $this->subTotal = Money::EUR(0);
+        $this->total = Money::EUR(0);
         $this->vats = [];
         $this->totalWeight = 0;
 
         // Store new values
+        /** @var CartValue $value */
         foreach ($this->values as $value) {
             // Update the product totals
             $product = $value->getProduct();
             $vat = $product->getVat();
-            $vatPrice = $value->getVatPrice() * $value->getQuantity();
+            $vatPrice = $value->getVatPrice()->multiply($value->getQuantity());
 
             if ($product->getWeight() !== null) {
                 $this->totalWeight += $product->getWeight() * $value->getQuantity();
             }
 
-            $this->subTotal += $value->getTotal();
-            $this->total += $value->getTotal() + $vatPrice;
+            $this->subTotal = $this->subTotal->add($value->getTotal());
+            $this->total = $this->total->add($value->getTotal())->add($vatPrice);
             $this->addVat($vat, $vatPrice);
 
             // Update the product option totals
@@ -404,18 +400,18 @@ class Cart
                 if (!array_key_exists($vat->getId(), $this->vats)) {
                     $this->vats[$vat->getId()] = [
                         'title' => $vat->getTitle(),
-                        'total' => 0,
+                        'total' => Money::EUR(0),
                     ];
                 }
 
-                $vatPrice = $valueOption->getVatPrice() * $value->getQuantity();
+                $vatPrice = $valueOption->getVatPrice()->multiply($value->getQuantity());
 
                 if ($valueOption->isImpactTypeAdd()) {
                     $this->addVat($vat, $vatPrice);
-                    $this->total += $vatPrice;
-                } else {
+                    $this->total = $this->total->add($vatPrice);
+                } else if ($valueOption->isImpactTypeSubtract()) {
                     $this->addVat($vat, $vatPrice, true);
-                    $this->total -= $vatPrice;
+                    $this->total = $this->total->subtract($vatPrice);
                 }
             }
         }
@@ -425,12 +421,12 @@ class Cart
         // Store the shipment data
         if (isset($this->shipment_method)) {
             $shipmentMethodData = $this->getShipmentMethodData();
-            $this->total += $shipmentMethodData['price'] + $shipmentMethodData['vat']['price'];
+            $this->total = $this->total->add($shipmentMethodData['price'] + $shipmentMethodData['vat']['price']);
             $this->addVat($shipmentMethodData['vat']['id'], $shipmentMethodData['vat']['price']);
         }
     }
 
-    private function addVat($vat, ?float $price, $subtractVat = false): void
+    private function addVat($vat, ?Money $price, $subtractVat = false): void
     {
         if (is_int($vat)) {
             /** @var VatRepository $vatRepository */
@@ -441,14 +437,14 @@ class Cart
         if (!array_key_exists($vat->getId(), $this->vats)) {
             $this->vats[$vat->getId()] = [
                 'title' => $vat->getTitle(),
-                'total' => 0,
+                'total' => Money::EUR(0),
             ];
         }
 
         if ($subtractVat) {
-            $this->vats[$vat->getId()]['total'] -= $price;
+            $this->vats[$vat->getId()]['total'] = $this->vats[$vat->getId()]['total']->subtract($price);
         } else {
-            $this->vats[$vat->getId()]['total'] += $price;
+            $this->vats[$vat->getId()]['total'] = $this->vats[$vat->getId()]['total']->add($price);
         }
     }
 
@@ -492,35 +488,35 @@ class Cart
                 $this->setCartRuleTotal($cartRule, $total);
             }
 
-            if ($cartRule->getReductionAmount()) {
-                $total = $this->applyPercentageDiscount($cartRule->getReductionAmount() / $this->total);
+            if ($cartRule->getReductionPrice()) {
+                $total = $this->applyPercentageDiscount($cartRule->getReductionPrice() / $this->total);
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
         }
     }
 
-    private function applyPercentageDiscount($percentage)
+    private function applyPercentageDiscount(float $percentage): Money
     {
-        $this->subTotal -= $this->subTotal * $percentage;
+        $this->subTotal = $this->subTotal->subtract($this->subTotal->multiply($percentage));
 
         foreach ($this->vats as $key => $vat) {
-            $this->vats[$key]['total'] -= $vat['total'] * $percentage;
+            $this->vats[$key]['total'] = $this->vats[$key]['total']->subtract($vat['total']->multiply($percentage));
         }
 
-        $total = $this->total * $percentage;
+        $total = $this->total->multiply($percentage);
 
-        $this->total -= $total;
+        $this->total = $this->total->subtract($total);
 
         return $total;
     }
 
-    public function getCartRuleTotal(CartRule $cartRule): ?float
+    public function getCartRuleTotal(CartRule $cartRule): ?Money
     {
         return $this->cartRuleTotals[$cartRule->getId()] ?? null;
     }
 
-    private function setCartRuleTotal(CartRule $cartRule, float $total): void
+    private function setCartRuleTotal(CartRule $cartRule, Money $total): void
     {
         $this->cartRuleTotals[$cartRule->getId()] = $total;
     }

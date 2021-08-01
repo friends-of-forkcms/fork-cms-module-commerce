@@ -6,6 +6,7 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_cart_value_options")
@@ -46,9 +47,9 @@ class CartValueOption
     private ?Vat $vat;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
      * @ORM\Column(type="integer")
@@ -56,9 +57,9 @@ class CartValueOption
     private int $impact_type;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $vat_price;
+    private Money $vat_price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -105,12 +106,12 @@ class CartValueOption
         $this->product_option_value = $product_option_value;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): Money
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): void
+    public function setPrice(Money $price): void
     {
         $this->price = $price;
     }
@@ -149,12 +150,12 @@ class CartValueOption
         $this->vat = $vat;
     }
 
-    public function getVatPrice(): float
+    public function getVatPrice(): Money
     {
         return $this->vat_price;
     }
 
-    public function setVatPrice(float $vat_price): void
+    public function setVatPrice(Money $vat_price): void
     {
         $this->vat_price = $vat_price;
     }
@@ -179,8 +180,8 @@ class CartValueOption
         $this->value = $value;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
-        return $this->cart_value->getQuantity() * $this->getPrice();
+        return $this->getPrice()->multiply($this->cart_value->getQuantity());
     }
 }

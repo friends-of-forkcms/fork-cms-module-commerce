@@ -10,6 +10,9 @@ h3 {
     @apply mb-4 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline;
 }
 
+/** AlpineJS */
+[x-cloak] { display: none !important; }
+
 /* Override the Photoswipe modal overlay */
 .pswp__bg {
     background: #fff !important;

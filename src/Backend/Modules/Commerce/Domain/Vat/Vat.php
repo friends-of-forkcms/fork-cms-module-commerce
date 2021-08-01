@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\Vat;
 
 use Common\Locale;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_vats")
@@ -96,6 +97,20 @@ class Vat
     public function getAsPercentage(): float
     {
         return $this->percentage / 100;
+    }
+
+    public function calculateVatFor(Money $amount): Money
+    {
+        if ($this->percentage === 0.0 || $amount->isZero()) {
+            return new Money(0, $amount->getCurrency());
+        }
+
+        return $amount->multiply($this->percentage / 100, Money::ROUND_HALF_DOWN);
+    }
+
+    public function calculateInclusiveAmountFor(Money $amount): money
+    {
+        return $amount->add($this->calculateVatFor($amount));
     }
 
     public function getSequence(): int

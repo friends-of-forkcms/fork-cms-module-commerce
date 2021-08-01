@@ -9,6 +9,8 @@ use Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\TemplateModifiers;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,11 +84,12 @@ class RemoveCartRule extends FrontendBaseAJAXAction
         $shippingMethod = $this->cart->getShipmentMethodData();
         $vats = [];
         $cartRules = [];
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($this->cart->getVats() as $vat) {
             $vats[] = [
                 'title' => $vat['title'],
-                'total' => TemplateModifiers::formatNumber($vat['total'], 2),
+                'total' => $moneyFormatter->format($vat['total']),
             ];
         }
 
@@ -99,13 +102,13 @@ class RemoveCartRule extends FrontendBaseAJAXAction
         }
 
         return [
-            'sub_total' => TemplateModifiers::formatNumber($this->cart->getSubTotal(), 2),
+            'sub_total' => $moneyFormatter->format($this->cart->getSubTotal()),
             'vats' => $vats,
             'shipping_method' => [
                 'name' => $shippingMethod['name'],
-                'price' => TemplateModifiers::formatNumber($shippingMethod['price'], 2),
+                'price' => $moneyFormatter->format($shippingMethod['price']),
             ],
-            'total' => TemplateModifiers::formatNumber($this->cart->getTotal(), 2),
+            'total' => $moneyFormatter->format($this->cart->getTotal()),
             'cart_rules' => $cartRules,
         ];
     }

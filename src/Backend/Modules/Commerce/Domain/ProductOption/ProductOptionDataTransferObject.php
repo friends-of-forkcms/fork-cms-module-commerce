@@ -7,6 +7,7 @@ use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensio
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductOptionDataTransferObject
@@ -29,7 +30,7 @@ class ProductOptionDataTransferObject
     public ?string $text = null;
     public bool $required;
     public bool $custom_value_allowed;
-    public float $custom_value_price = 0.00;
+    public Money $custom_value_price;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -47,6 +48,7 @@ class ProductOptionDataTransferObject
         $this->required = false;
         $this->dimension_notifications = new ArrayCollection();
         $this->remove_dimension_notifications = new ArrayCollection();
+        $this->custom_value_price = Money::EUR(0);
 
         if (!$this->hasExistingProductOption()) {
             return;

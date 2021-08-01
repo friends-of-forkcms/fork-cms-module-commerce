@@ -35,16 +35,16 @@
                             {# Discounts #}
                             {% if product.hasActiveSpecialPrice %}
                                 <p class="price-old | line-through text-sm inline align-top">
-                                    <del>€ {{ product.oldPrice(false)|formatnumber(2) }}</del>
+                                    <del>{{ product.oldPrice(false)|format_money() }}</del>
                                 </p>
                                 <p class="price-new | text-xl text-yellow-500 font-semibold inline">
-                                    <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+                                    <span>{{ product.activePrice(false)|format_money() }}</span>
                                 </p>
 
-                                <div class="inline-block px-2 py-1 ml-2 text-xs text-gray-500 align-top border border-gray-500 rounded-full">{{ product.discountPercentage }}</div>
+                                <div class="inline-block px-2 py-1 ml-2 text-xs text-gray-500 align-top border border-gray-500 rounded-full">{{ product.discountPercentageFormatted }}</div>
                             {% else %}
                                 <p class="price | text-xl text-yellow-500 font-semibold inline">
-                                    <span>€ {{ product.activePrice(false)|formatnumber(2) }}</span>
+                                    <span>{{ product.activePrice(false)|format_money() }}</span>
                                 </p>
                             {% endif %}
                             <p class="price-btw">
@@ -54,7 +54,7 @@
                                             |trans
                                             |format(
                                                 product.vat.percentage|formatnumber(0)|e,
-                                                product.activePrice(true)|number_format(2, ',', '.')|e,
+                                                product.activePrice(true)|format_money|e,
                                                 product.vat.percentage|number_format(0, ',', '.')|e
                                             )
                                             |raw
@@ -72,16 +72,17 @@
                         {{ product.summary }}
                     </div>
 
-                    <div class="my-8 add-to-cart">
+                    <div class="my-8 add-to-cart" x-data="cart">
                         {{ form_widget(form.amount, {'attr': {'class': 'w-full flex border-gray-300 text-center'}}) }}
                         {{ form_rest(form) }}
 
                         {% if product.inStock %}
-                            <a href="javascript:void(0);"
-                                class="btn btn-cart js-add-to-cart-btn | w-full bg-gray-800 flex py-4 items-center justify-center hover:bg-gray-600 text-white"
-                                data-id="{{ product.id }}">
+                            <button
+                                class="btn-cart | w-full bg-gray-800 flex py-2 items-center justify-center hover:bg-gray-600 text-white"
+                                @click.prevent="addItemToCart($event.target, {{ product.id }})"
+                            >
                                 {{ 'lbl.AddProductToShoppingCart'|trans|ucfirst }}
-                            </a>
+                            </button>
                         {% endif %}
                     </div>
 
@@ -217,7 +218,7 @@
   "offers": {
     "@type": "Offer",
     "priceCurrency": "EUR",
-    "price": "{{ product.activePrice(false)|number_format(2,'.', '') }}",
+    "price": "{{ product.activePrice(false)|format_money_decimal() }}",
     "itemCondition": "http://schema.org/NewCondition",
     {% if product.inStock %}
     "availability": "http://schema.org/InStock",

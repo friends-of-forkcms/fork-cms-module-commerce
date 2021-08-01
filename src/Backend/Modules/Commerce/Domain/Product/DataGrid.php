@@ -9,6 +9,11 @@ use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\DecimalMoneyFormatter;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
@@ -23,11 +28,11 @@ class DataGrid extends DataGridDatabase
                     i.sku, 
                     i.category_id, 
                     b.title AS brand, 
-                    i.price, 
+                    i.price_amount AS price, 
+                    i.price_currency_code,
                     i.stock, 
                     i.sequence, 
-                    i.hidden, 
-                    i.sequence as `sort_order`
+                    i.hidden
                 FROM commerce_products AS i
                 LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
                 WHERE i.language = :language';
@@ -43,11 +48,11 @@ class DataGrid extends DataGridDatabase
                         i.sku, 
                         i.category_id,
                         b.title AS brand, 
-                        i.price,
+                        i.price_amount AS price,
+                        i.price_currency_code,
                         i.stock, 
                         i.sequence, 
-                        i.hidden, 
-                        i.sequence as `sort_order`
+                        i.hidden
                     FROM commerce_products AS i
                     LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
                     WHERE i.language = :language AND i.category_id = :category';
@@ -73,15 +78,17 @@ class DataGrid extends DataGridDatabase
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
-        $this->setColumnsHidden(['sequence']);
+        $this->setColumnsHidden(['sequence', 'price_currency_code']);
         $this->setColumnFunction([self::class, 'categoryName'], ['[category_id]'], 'category_id');
         $this->setHeaderLabels(
             [
                 'category_id' => ucfirst(Language::lbl('Category')),
                 'sku' => ucfirst(Language::lbl('ArticleNumber')),
-                'sort_order' => ucfirst(Language::lbl('Sequence')),
             ]
         );
+
+        // Format price column properly
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[price_currency_code]'], 'price', true);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('Edit')) {
@@ -128,5 +135,16 @@ class DataGrid extends DataGridDatabase
         }
 
         return $name;
+    }
+
+    public static function getFormattedMoney(int $amount, string $currencyCode): string
+    {
+        $money = new Money($amount, new Currency($currencyCode));
+        $currencies = new ISOCurrencies();
+
+        $numberFormatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+
+        return $moneyFormatter->format($money);
     }
 }

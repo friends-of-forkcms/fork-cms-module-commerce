@@ -16,6 +16,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\ProductSpecificationValue
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProductType;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
@@ -66,12 +67,16 @@ class ProductType extends AbstractType
                 'label' => 'lbl.Weight',
             ]
         )->add(
-            'price',
-            MoneyType::class,
-            [
-                'required' => true,
-                'label' => 'lbl.Price',
-            ]
+            $builder
+                ->create(
+                    'price',
+                    MoneyType::class,
+                    [
+                        'required' => true,
+                        'label' => 'lbl.Price',
+                    ]
+                )
+                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         )->add(
             'order_quantity',
             NumberType::class,

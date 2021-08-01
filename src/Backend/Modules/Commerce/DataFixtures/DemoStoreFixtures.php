@@ -30,6 +30,7 @@ use Common\Uri;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Money\Money;
 
 /**
  * Load data to populate a demo store
@@ -205,7 +206,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
             $createProduct->title = $product['title'];
             $createProduct->sku = $product['sku'];
             $createProduct->weight = $product['weight'];
-            $createProduct->price = $product['price'];
+            $createProduct->price = Money::EUR((string) ($product['price'] * 100));
             $createProduct->stock = $product['stock'];
             $createProduct->summary = $product['summary'];
             $createProduct->text = $product['text'];
@@ -217,7 +218,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
 
             if (!empty($product['offer'])) {
                 $productSpecial = new ProductSpecial();
-                $productSpecial->setPrice($product['offer']);
+                $productSpecial->setPrice(Money::EUR((string) ($product['offer'] * 100)));
                 $productSpecial->setStartDate(new DateTime());
                 $createProduct->addSpecial($productSpecial);
             }

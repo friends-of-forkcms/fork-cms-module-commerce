@@ -27,7 +27,7 @@
             </a>
             <div class="checkbox-right">
               <h4><a href="{{ choice.data.upSellProduct.url }}" target="_blank">{{ choice.data.upSellProduct.title }}</a></h4>
-              <p class="price">€ {{ choice.data.upSellProduct.activePrice(false)|formatnumber(2) }}</p>
+              <p class="price">{{ choice.data.upSellProduct.activePrice(false)|format_money }}</p>
             </div>
           </label>
         </div>

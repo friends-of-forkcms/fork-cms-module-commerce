@@ -173,3 +173,7 @@ doctrine:
         dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Domain/Account"
         alias: CommerceAccount
         prefix: Backend\Modules\Commerce\Domain\Account
+      Money:
+        type: yml
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Resources/config"
+        prefix: Money

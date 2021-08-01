@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\ProductOption;
 use Backend\Form\Type\EditorType;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotificationType;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
+use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -52,12 +53,15 @@ class ProductOptionType extends AbstractType
                 'label' => 'lbl.CustomValueAllowed',
             ]
         )->add(
-            'custom_value_price',
-            MoneyType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.CustomValuePrice',
-            ]
+            $builder->create(
+                'custom_value_price',
+                MoneyType::class,
+                [
+                    'required' => false,
+                    'label' => 'lbl.CustomValuePrice',
+                ]
+            )
+            ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         )->add(
             'placeholder',
             TextType::class,

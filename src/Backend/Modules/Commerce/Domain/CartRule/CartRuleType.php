@@ -2,7 +2,9 @@
 
 namespace Backend\Modules\Commerce\Domain\CartRule;
 
+use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -23,17 +25,21 @@ class CartRuleType extends AbstractType
             ]
         )->add(
             'from',
-            DateType::class,
+            DateTimeType::class,
             [
                 'required' => true,
                 'label' => 'lbl.From',
+                'date_widget' => 'single_text',
+                'html5' => true,
             ]
         )->add(
             'till',
-            DateType::class,
+            DateTimeType::class,
             [
                 'required' => false,
                 'label' => 'lbl.Till',
+                'date_widget' => 'single_text',
+                'html5' => true,
             ]
         )->add(
             'quantity',
@@ -51,12 +57,16 @@ class CartRuleType extends AbstractType
                 'label' => 'lbl.DiscountCode',
             ]
         )->add(
-            'minimum_amount',
-            MoneyType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.MinimumAmount',
-            ]
+            $builder
+                ->create(
+                    'minimum_price',
+                    MoneyType::class,
+                    [
+                        'required' => false,
+                        'label' => 'lbl.MinimumAmount',
+                    ]
+                )
+                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         )->add(
             'reduction_percentage',
             NumberType::class,
@@ -65,12 +75,16 @@ class CartRuleType extends AbstractType
                 'label' => 'lbl.ReductionPercentage',
             ]
         )->add(
-            'reduction_amount',
-            MoneyType::class,
-            [
-                'required' => false,
-                'label' => 'lbl.ReductionAmount',
-            ]
+            $builder
+                ->create(
+                    'reduction_price',
+                    MoneyType::class,
+                    [
+                        'required' => false,
+                        'label' => 'lbl.ReductionAmount',
+                    ]
+                )
+                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         );
     }
 

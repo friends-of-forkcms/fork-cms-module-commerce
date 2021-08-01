@@ -17,7 +17,7 @@ class DataGridProducts extends DataGridDatabase
      */
     public function __construct(Order $order)
     {
-        $query = 'SELECT i.id, i.title as product, i.sku as article_number, i.amount, i.price, i.total
+        $query = 'SELECT i.id, i.title as product, i.sku as article_number, i.amount, i.price_amount AS price, i.total
                     FROM commerce_order_products i WHERE i.order_id = ? ORDER BY i.id ASC';
 
         parent::__construct($query, [$order->getId()]);
@@ -50,7 +50,7 @@ class DataGridProducts extends DataGridDatabase
         $titleString = [];
 
         // Check if the dimensions should be displayed
-        if ($orderProduct->getType() == Product::TYPE_DIMENSIONS) {
+        if ($orderProduct->getType() === Product::TYPE_DIMENSIONS) {
             $titleString[] = '<h5 class="mt-0" style="margin-top:0;">'.$title.' - '.$orderProduct->getWidth().'mm x '.$orderProduct->getHeight().'mm</h5>';
             $titleString[] = '<i><strong>'.ucfirst(Language::lbl('ProductionDimensions')).'</strong> '.$orderProduct->getOrderWidth().'mm x '.$orderProduct->getOrderHeight().'mm</i>';
         } else {

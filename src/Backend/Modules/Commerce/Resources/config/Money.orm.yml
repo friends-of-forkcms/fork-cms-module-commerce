@@ -1,0 +1,8 @@
+Money\Money:
+  type: embeddable
+  fields:
+    amount:
+      type: bigint
+  embedded:
+    currency:
+      class: Money\Currency

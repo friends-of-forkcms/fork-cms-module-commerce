@@ -987,6 +987,14 @@
         <translation language="nl"><![CDATA[kortingscode]]></translation>
         <translation language="en"><![CDATA[discount code]]></translation>
       </item>
+      <item type="message" name="HelpDiscountCode">
+        <translation language="nl"><![CDATA[Een gebruiker zal deze code in moeten voeren om deze korting te activeren.]]></translation>
+        <translation language="en"><![CDATA[A user will need to enter this code to active the discount.]]></translation>
+      </item>
+      <item type="label" name="Conditions">
+        <translation language="nl"><![CDATA[voorwaarden]]></translation>
+        <translation language="en"><![CDATA[conditions]]></translation>
+      </item>
       <item type="label" name="Quantity">
         <translation language="nl"><![CDATA[aantal]]></translation>
         <translation language="en"><![CDATA[quantity]]></translation>
@@ -1004,8 +1012,8 @@
         <translation language="en"><![CDATA[reduction amount]]></translation>
       </item>
       <item type="message" name="WhenNoCodeSetWillGenerateCode">
-        <translation language="nl"><![CDATA[Wanneer er geen code is ingesteld wordt er een code aangemaakt.]]></translation>
-        <translation language="en"><![CDATA[When no code set a new code will be generated.]]></translation>
+        <translation language="nl"><![CDATA[Wanneer er geen code is ingesteld, wordt er een unieke code aangemaakt.]]></translation>
+        <translation language="en"><![CDATA[When no code is set, a unique code will be generated.]]></translation>
       </item>
       <item type="label" name="Countries">
         <translation language="nl"><![CDATA[landen]]></translation>
@@ -1243,6 +1251,10 @@
       <item type="label" name="Delete">
         <translation language="nl"><![CDATA[verwijderen]]></translation>
         <translation language="en"><![CDATA[delete]]></translation>
+      </item>
+      <item type="message" name="ConfirmDelete">
+        <translation language="nl"><![CDATA[Weet je zeker dat je het item "%1$s" wilt verwijderen?]]></translation>
+        <translation language="en"><![CDATA[Are you sure you want to remove "%1$s"?]]></translation>
       </item>
       <item type="label" name="RecentProducts">
         <translation language="nl"><![CDATA[recente producten]]></translation>
@@ -2118,9 +2130,13 @@
         <translation language="nl"><![CDATA[nieuwst]]></translation>
         <translation language="en"><![CDATA[newest]]></translation>
       </item>
+      <item type="label" name="Vat">
+        <translation language="nl"><![CDATA[BTW]]></translation>
+        <translation language="en"><![CDATA[VAT]]></translation>
+      </item>
       <item type="message" name="ExclusiveVatPricing">
-        <translation language="nl"><![CDATA[Exclusief %1$s&percnt; BTW. (€%2$s incl. %3$s&percnt; BTW)]]></translation>
-        <translation language="en"><![CDATA[Exclusive %1$s&percnt; VAT. (€%2$s incl. %3$s&percnt; VAT)]]></translation>
+        <translation language="nl"><![CDATA[Exclusief %1$s&percnt; BTW. (%2$s incl. %3$s&percnt; BTW)]]></translation>
+        <translation language="en"><![CDATA[Exclusive %1$s&percnt; VAT. (%2$s incl. %3$s&percnt; VAT)]]></translation>
       </item>
       <item type="message" name="NoSearchResults">
         <translation language="nl"><![CDATA[Er zijn geen resultaten.]]></translation>

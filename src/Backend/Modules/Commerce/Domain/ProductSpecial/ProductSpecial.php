@@ -6,6 +6,7 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -31,9 +32,9 @@ class ProductSpecial
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
      * @ORM\Column(type="datetime", name="start_date")
@@ -73,12 +74,12 @@ class ProductSpecial
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public function getPrice(): ?float
+    public function getPrice(): ?Money
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): void
+    public function setPrice(Money $price): void
     {
         $this->price = $price;
     }

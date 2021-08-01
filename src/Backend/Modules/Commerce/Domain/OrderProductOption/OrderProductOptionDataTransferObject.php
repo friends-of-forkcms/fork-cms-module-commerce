@@ -3,6 +3,7 @@
 namespace Backend\Modules\Commerce\Domain\OrderProductOption;
 
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
+use Money\Money;
 
 class OrderProductOptionDataTransferObject
 {
@@ -13,8 +14,8 @@ class OrderProductOptionDataTransferObject
     public ?string $sku = null;
     public string $title;
     public string $value;
-    public float $price;
-    public float $total;
+    public Money $price;
+    public Money $total;
 
     public function __construct(OrderProductOption $orderProductOption = null)
     {
