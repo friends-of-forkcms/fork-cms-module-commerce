@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Installer;
 
 use Backend\Core\Engine\Model;
 use Backend\Core\Installer\ModuleInstaller;
+use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\Brand\Brand;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
@@ -44,6 +45,9 @@ use Common\ModuleExtraType;
  */
 class Installer extends ModuleInstaller
 {
+    private int $commerceBlockId;
+    private int $commerceCartBlockId;
+
     public function install(): void
     {
         $this->configureEntities();
@@ -54,6 +58,7 @@ class Installer extends ModuleInstaller
         $this->addModuleSettings();
         $this->addFrontendExtras();
         $this->makeSearchable($this->getModule());
+        $this->configureFrontendPages();
     }
 
     private function configureEntities(): void
@@ -335,8 +340,8 @@ class Installer extends ModuleInstaller
 
     private function addFrontendExtras(): void
     {
-        $this->insertExtra($this->getModule(), ModuleExtraType::block(), "Commerce");
-        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Commerce', 'Cart');
+        $this->commerceBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), "Commerce");
+        $this->commerceCartBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Commerce', 'Cart');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Brand', 'Brand');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Register', 'Register');
@@ -355,5 +360,42 @@ class Installer extends ModuleInstaller
         $this->setSetting($this->getModule(), 'overview_num_items', 10);
         $this->setSetting($this->getModule(), 'filters_show_more_num_items', 5);
         $this->setSetting($this->getModule(), 'next_invoice_number', (int) date('Y').'0001');
+    }
+
+    private function configureFrontendPages(): void
+    {
+        // loop languages
+        foreach ($this->getLanguages() as $language) {
+            // check if a page with the commerce block already exists in this language
+            if (!$this->hasPageWithBlockOrWidget($language, $this->commerceBlockId)) {
+                $this->insertPage(
+                    ['title' => Language::lbl('Shop', $this->getModule()), 'language' => $language],
+                    null,
+                    ['extra_id' => $this->commerceBlockId, 'position' => 'main'],
+                );
+            }
+
+            // check if a page with the cart block already exists in this language
+            if (!$this->hasPageWithBlockOrWidget($language, $this->commerceCartBlockId)) {
+                $this->insertPage(
+                    ['title' => Language::lbl('Cart', $this->getModule()), 'language' => $language],
+                    null,
+                    ['extra_id' => $this->commerceCartBlockId, 'position' => 'main'],
+                );
+            }
+        }
+    }
+
+    private function hasPageWithBlockOrWidget(string $language, int $extraId): bool
+    {
+        // @todo: Replace with a PageRepository method when it exists.
+        return (bool) $this->getDatabase()->getVar(
+            'SELECT 1
+             FROM pages AS p
+             INNER JOIN pages_blocks AS b ON b.revision_id = p.revision_id
+             WHERE b.extra_id = ? AND p.language = ?
+             LIMIT 1',
+            [$extraId, $language]
+        );
     }
 }

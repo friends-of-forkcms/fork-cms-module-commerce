@@ -42,6 +42,9 @@ bin/console forkcms:install:module Sitemaps
 # Install the Commerce module
 bin/console forkcms:install:module Commerce
 
+# Setup the CMS for our demo (install demo theme, add widgets, ...)
+mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
+
 # Apply a patch to add our bundles to AppKernel and configure the config.yml
 patch -p1 < deploy/prepare-forkcms-php.patch
 
@@ -49,13 +52,11 @@ patch -p1 < deploy/prepare-forkcms-php.patch
 bin/console doctrine:fixtures:load --append --group=module-commerce
 
 # Generate thumbnails cache from LiipImagineBundle
+# Disabled because too slow on preview env
 # bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/* || true
 
 # After modules were installed, we need to make sure the Apache user has ownership of the var directory.
 chown -R www-data:www-data /var/www/html/var/
-
-# Setup the CMS for our demo (create pages, add widgets, ...)
-mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
 
 # Final cache clear
 bin/console forkcms:cache:clear
