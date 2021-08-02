@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BrandDataTransferObject
 {
     protected ?Brand $brandEntity = null;
-    public int $id;
+    public ?int $id = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
