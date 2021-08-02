@@ -170,9 +170,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/jacob-v-dam"><img src="https://avatars.githubusercontent.com/u/310526?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jacob van Dam</b></sub></a><br /><a href="https://github.com/friends-of-forkcms/fork-cms-module-commerce/commits?author=jacob-v-dam" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/wolfie90"><img src="https://media-exp1.licdn.com/dms/image/C4E03AQEbw6iOOzJySA/profile-displayphoto-shrink_800_800/0/1539623620018?e=1620259200&v=beta&t=Z8Rcs1enc9IfbeUskq8olG6g6GsknlzlndKhzK9Vo0g" width="100px;" alt=""/><br /><sub><b>wolfie</b></sub></a><br /><a href="https://github.com/friends-of-forkcms/fork-cms-module-commerce/commits?author=wolfie90" title="Code">💻</a></td>
-    <td align="center"><a href="https://jessedobbelae.re/"><img src="https://avatars.githubusercontent.com/u/1352979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jesse Dobbelaere</b></sub></a><br /><a href="https://github.com/friends-of-forkcms/fork-cms-module-commerce/commits?author=jessedobbelaere" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jacob-v-dam"><img src="https://avatars.githubusercontent.com/u/310526?s=100" width="100px;" alt=""/><br /><sub><b>Jacob van Dam</b></sub></a><br /><a href="https://github.com/friends-of-forkcms/fork-cms-module-commerce/commits?author=jacob-v-dam" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/wolfie90"><img src="https://avatars.githubusercontent.com/u/5946741?s=100" width="100px;" alt=""/><br /><sub><b>wolfie</b></sub></a><br /><a href="https://github.com/friends-of-forkcms/fork-cms-module-commerce/commits?author=wolfie90" title="Code">💻</a></td>
+    <td align="center"><a href="https://jessedobbelae.re/"><img src="https://avatars.githubusercontent.com/u/1352979?s=100" width="100px;" alt=""/><br /><sub><b>Jesse Dobbelaere</b></sub></a><br /><a href="https://github.com/friends-of-forkcms/fork-cms-module-commerce/commits?author=jessedobbelaere" title="Code">💻</a></td>
   </tr>
 </table>
 
