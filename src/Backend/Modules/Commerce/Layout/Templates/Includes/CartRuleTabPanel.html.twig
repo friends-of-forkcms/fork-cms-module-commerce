@@ -1,0 +1,89 @@
+<div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#tabDiscountCode" aria-controls="tabDiscountCode" role="tab" data-toggle="tab">{{ 'lbl.DiscountCode'|trans|ucfirst }}</a>
+        </li>
+        <li role="presentation">
+            <a href="#tabConditions" aria-controls="tabConditions" role="tab" data-toggle="tab">{{ 'lbl.Conditions'|trans|ucfirst }}</a>
+        </li>
+        <li role="presentation">
+            <a href="#tabActions" aria-controls="tabActions" role="tab" data-toggle="tab">{{ 'lbl.Actions'|trans|ucfirst }}</a>
+        </li>
+    </ul>
+
+    {# Coupon tab #}
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="tabDiscountCode">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.code) }}
+                        <p class="help-block">{{ 'msg.HelpDiscountCode'|trans|raw }} {{ 'msg.WhenNoCodeSetWillGenerateCode'|trans }}</p>
+                        {{ form_widget(form.code) }}
+                        {{ form_errors(form.code) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="tabConditions">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.quantity) }}
+                        <p class="help-block">{{ 'msg.HelpDiscountQuantity'|trans|ucfirst }}</p>
+                        {{ form_widget(form.quantity) }}
+                        {{ form_errors(form.quantity) }}
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        {{ form_label(form.from) }}
+                        <p class="help-block">{{ 'msg.HelpDiscountStartDate'|trans|ucfirst }}</p>
+                        {{ form_widget(form.from) }}
+                        {{ form_errors(form.from) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.till) }}
+                        <p class="help-block">{{ 'msg.HelpDiscountEndDate'|trans|ucfirst }}</p>
+                        {{ form_widget(form.till) }}
+                        {{ form_errors(form.till) }}
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        {{ form_label(form.minimum_price) }}
+                        <p class="help-block">{{ 'msg.HelpMinimumAmount'|trans|ucfirst }}</p>
+                        <div style="max-width: 130px;">{{ form_widget(form.minimum_price) }}</div>
+                        {{ form_errors(form.minimum_price) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="tabActions">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-group">
+                            {{ form_label(form.reduction_percentage) }}
+                        <p class="help-block">{{ 'msg.HelpReductionPercentage'|trans|ucfirst }}</p>
+                            <div style="max-width: 130px;">{{ form_widget(form.reduction_percentage) }}</div>
+                            {{ form_errors(form.reduction_percentage) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.reduction_price) }}
+                            <p class="help-block">{{ 'msg.HelpReductionAmount'|trans|ucfirst }}</p>
+                            <div style="max-width: 130px;">{{ form_widget(form.reduction_price) }}</div>
+                            {{ form_errors(form.reduction_price) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

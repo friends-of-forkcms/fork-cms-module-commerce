@@ -2,6 +2,7 @@
 
 {% block content %}
   {{ form_start(form) }}
+
   <div class="row fork-module-content">
     <div class="col-md-12">
       <div class="form-group">
@@ -13,47 +14,7 @@
 
   <div class="row fork-module-content">
     <div class="col-md-12">
-      <div role="tabpanel">
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active">
-            <a href="#tabDiscountCode" aria-controls="tabDiscountCode" role="tab" data-toggle="tab">{{ 'lbl.DiscountCode'|trans|ucfirst }}</a>
-          </li>
-          <li role="presentation">
-            <a href="#tabConditions" aria-controls="tabConditions" role="tab" data-toggle="tab">{{ 'lbl.Conditions'|trans|ucfirst }}</a>
-          </li>
-        </ul>
-
-        {# Coupon tab #}
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="tabDiscountCode">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  {{ form_label(form.code) }}
-                  {{ form_widget(form.code) }}
-                  {{ form_errors(form.code) }}
-                  <p class="help-block">{{ 'msg.HelpDiscountCode'|trans|raw }}. {{ 'msg.WhenNoCodeSetWillGenerateCode'|trans }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div role="tabpanel" class="tab-pane" id="tabConditions">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  {{ form_row(form.quantity) }}
-                  {{ form_row(form.from) }}
-                  {{ form_row(form.till) }}
-                  {{ form_row(form.minimum_price) }}
-                  {{ form_row(form.reduction_percentage) }}
-                  {{ form_row(form.reduction_price) }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      {% include 'Commerce/Layout/Templates/Includes/CartRuleTabPanel.html.twig' %}
     </div>
   </div>
 

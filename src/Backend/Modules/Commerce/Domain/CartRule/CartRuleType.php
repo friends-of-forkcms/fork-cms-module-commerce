@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,25 +29,27 @@ class CartRuleType extends AbstractType
             DateTimeType::class,
             [
                 'required' => true,
-                'label' => 'lbl.From',
+                'label' => 'lbl.StartDate',
                 'date_widget' => 'single_text',
-                'html5' => true,
+                'html5' => false,
+                'date_format' => 'dd/MM/yyyy', // For consistency with the data-mask and JS datepicker
             ]
         )->add(
             'till',
             DateTimeType::class,
             [
                 'required' => false,
-                'label' => 'lbl.Till',
+                'label' => 'lbl.EndDate',
                 'date_widget' => 'single_text',
-                'html5' => true,
+                'html5' => false,
+                'date_format' => 'dd/MM/yyyy', // For consistency with the data-mask and JS datepicker
             ]
         )->add(
             'quantity',
             NumberType::class,
             [
                 'required' => true,
-                'label' => 'lbl.Quantity',
+                'label' => 'lbl.DiscountQuantity',
                 'scale' => 0,
             ]
         )->add(
@@ -69,7 +72,7 @@ class CartRuleType extends AbstractType
                 ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         )->add(
             'reduction_percentage',
-            NumberType::class,
+            PercentType::class,
             [
                 'required' => false,
                 'label' => 'lbl.ReductionPercentage',

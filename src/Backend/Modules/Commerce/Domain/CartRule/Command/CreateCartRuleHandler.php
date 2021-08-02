@@ -16,7 +16,7 @@ final class CreateCartRuleHandler
 
     public function handle(CreateCartRule $createCartRule): void
     {
-        if (isset($createCartRule->code)) {
+        if (!isset($createCartRule->code)) {
             $createCartRule->code = $this->generateToken();
         }
 
@@ -26,7 +26,7 @@ final class CreateCartRuleHandler
         $createCartRule->setCartRuleEntity($cartRule);
     }
 
-    public function generateToken()
+    public function generateToken(): string
     {
         return strtoupper(rtrim(strtr(base64_encode(random_bytes(5)), '+/', '-_'), '='));
     }

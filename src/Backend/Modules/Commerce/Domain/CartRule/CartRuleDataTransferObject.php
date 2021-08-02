@@ -35,7 +35,7 @@ class CartRuleDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired", groups={"Edit"})
      */
-    public string $code;
+    public ?string $code;
 
     public ?Money $minimum_price = null;
 
@@ -53,6 +53,9 @@ class CartRuleDataTransferObject
         $this->hidden = false;
         $this->from = new DateTime();
         $this->quantity = 0;
+        $this->minimum_price = Money::EUR(0);
+        $this->reduction_price = Money::EUR(0);
+        $this->reduction_percentage = 0;
 
         if (!$this->hasExistingCartRule()) {
             return;

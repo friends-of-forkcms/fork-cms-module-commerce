@@ -783,6 +783,10 @@
         <translation language="nl"><![CDATA[volgorde moet gelijk aan of hoger zijn dan 1]]></translation>
         <translation language="en"><![CDATA[sequence must be greater than or equal to 1]]></translation>
       </item>
+      <item type="label" name="Shop">
+        <translation language="nl"><![CDATA[webshop]]></translation>
+        <translation language="en"><![CDATA[shop]]></translation>
+      </item>
       <item type="label" name="ProductWithDimensions">
         <translation language="nl"><![CDATA[product met afmetingen]]></translation>
         <translation language="en"><![CDATA[product with dimensions]]></translation>
@@ -991,6 +995,14 @@
         <translation language="nl"><![CDATA[Een gebruiker zal deze code in moeten voeren om deze korting te activeren.]]></translation>
         <translation language="en"><![CDATA[A user will need to enter this code to active the discount.]]></translation>
       </item>
+      <item type="message" name="HelpDiscountStartDate">
+        <translation language="nl"><![CDATA[Datum vanaf wanneer de korting actief zal zijn. Laat leeg voor onbeperkte startdatum.]]></translation>
+        <translation language="en"><![CDATA[Date from which the discount will be active. Leave blank for unlimited start date.]]></translation>
+      </item>
+      <item type="message" name="HelpDiscountEndDate">
+        <translation language="nl"><![CDATA[Datum waarop de korting zal stoppen. Laat leeg voor onbeperkte einddatum.]]></translation>
+        <translation language="en"><![CDATA[Date when the discount will be finished. Leave blank for unlimited end date.]]></translation>
+      </item>
       <item type="label" name="Conditions">
         <translation language="nl"><![CDATA[voorwaarden]]></translation>
         <translation language="en"><![CDATA[conditions]]></translation>
@@ -999,17 +1011,41 @@
         <translation language="nl"><![CDATA[aantal]]></translation>
         <translation language="en"><![CDATA[quantity]]></translation>
       </item>
+      <item type="label" name="DiscountQuantity">
+        <translation language="nl"><![CDATA[totale gebruikslimiet korting]]></translation>
+        <translation language="en"><![CDATA[total discount use limit]]></translation>
+      </item>
+      <item type="message" name="HelpDiscountQuantity">
+        <translation language="nl"><![CDATA[Hoe vaak deze korting in totaal kan worden gebruikt door gasten of ingelogde gebruikers. Voer een nul in voor onbeperkt gebruik.]]></translation>
+        <translation language="en"><![CDATA[How many times this discount can be used in total by guests or logged in users. Set zero for unlimited use.]]></translation>
+      </item>
       <item type="label" name="MinimumAmount">
         <translation language="nl"><![CDATA[minimum bestelbedrag]]></translation>
         <translation language="en"><![CDATA[minimum amount]]></translation>
       </item>
+      <item type="message" name="HelpMinimumAmount">
+        <translation language="nl"><![CDATA[Beperk de korting tot de bestellingen waarbij de klant een minimum aantal waarde aan items heeft gekocht.]]></translation>
+        <translation language="en"><![CDATA[Restrict the discount to only those orders where the customer has purchased a minimum total value of items.]]></translation>
+      </item>
       <item type="label" name="ReductionPercentage">
-        <translation language="nl"><![CDATA[kortingspercentage]]></translation>
-        <translation language="en"><![CDATA[reduction percentage]]></translation>
+        <translation language="nl"><![CDATA[kortingspercentage voor bestelling]]></translation>
+        <translation language="en"><![CDATA[percentage off order]]></translation>
+      </item>
+      <item type="message" name="HelpReductionPercentage">
+        <translation language="nl"><![CDATA[het kortingspercentage dat wordt toegepast op de hele bestelling.]]></translation>
+        <translation language="en"><![CDATA[the discount percentage that is applied to the whole order.]]></translation>
       </item>
       <item type="label" name="ReductionAmount">
-        <translation language="nl"><![CDATA[kortingsbedrag]]></translation>
-        <translation language="en"><![CDATA[reduction amount]]></translation>
+        <translation language="nl"><![CDATA[vast kortingbedrag voor bestelling]]></translation>
+        <translation language="en"><![CDATA[flat amount off order]]></translation>
+      </item>
+      <item type="message" name="HelpReductionAmount">
+        <translation language="nl"><![CDATA[Het kortingbedrag dat wordt toegepast op de hele bestelling.]]></translation>
+        <translation language="en"><![CDATA[The amount of discount that is applied to the whole order.]]></translation>
+      </item>
+      <item type="label" name="Actions">
+        <translation language="nl"><![CDATA[acties]]></translation>
+        <translation language="en"><![CDATA[actions]]></translation>
       </item>
       <item type="message" name="WhenNoCodeSetWillGenerateCode">
         <translation language="nl"><![CDATA[Wanneer er geen code is ingesteld, wordt er een unieke code aangemaakt.]]></translation>
