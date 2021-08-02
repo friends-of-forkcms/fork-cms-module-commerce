@@ -35,6 +35,7 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Locale\Engine\Model as BackendLocaleModel;
 use Common\ModuleExtraType;
 
 /**
@@ -341,9 +342,8 @@ class Installer extends ModuleInstaller
     private function addFrontendExtras(): void
     {
         $this->commerceBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), "Commerce");
-        $this->commerceCartBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Commerce', 'Cart');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Brand', 'Brand');
-        $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');
+        $this->commerceCartBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Register', 'Register');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerOrders', 'CustomerOrders');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerAddresses', 'CustomerAddresses');
@@ -366,6 +366,10 @@ class Installer extends ModuleInstaller
     {
         // loop languages
         foreach ($this->getLanguages() as $language) {
+            // We must regenerate the cache and define the locale we want to insert the page into
+            BackendLocaleModel::buildCache($language, 'Backend');
+            Language::setLocale($language);
+
             // check if a page with the commerce block already exists in this language
             if (!$this->hasPageWithBlockOrWidget($language, $this->commerceBlockId)) {
                 $this->insertPage(
@@ -378,7 +382,7 @@ class Installer extends ModuleInstaller
             // check if a page with the cart block already exists in this language
             if (!$this->hasPageWithBlockOrWidget($language, $this->commerceCartBlockId)) {
                 $this->insertPage(
-                    ['title' => Language::lbl('Cart', $this->getModule()), 'language' => $language],
+                    ['title' => Language::lbl('Cart', $this->getModule()), 'language' => $language, 'parent_id' => 3],
                     null,
                     ['extra_id' => $this->commerceCartBlockId, 'position' => 'main'],
                 );
