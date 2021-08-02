@@ -373,7 +373,7 @@ class Installer extends ModuleInstaller
             // check if a page with the commerce block already exists in this language
             if (!$this->hasPageWithBlockOrWidget($language, $this->commerceBlockId)) {
                 $this->insertPage(
-                    ['title' => Language::lbl('Shop', $this->getModule()), 'language' => $language],
+                    ['title' => ucfirst(Language::lbl('Shop', $this->getModule())), 'language' => $language],
                     null,
                     ['extra_id' => $this->commerceBlockId, 'position' => 'main'],
                 );
@@ -382,7 +382,7 @@ class Installer extends ModuleInstaller
             // check if a page with the cart block already exists in this language
             if (!$this->hasPageWithBlockOrWidget($language, $this->commerceCartBlockId)) {
                 $this->insertPage(
-                    ['title' => Language::lbl('Cart', $this->getModule()), 'language' => $language, 'parent_id' => 3],
+                    ['title' => ucfirst(Language::lbl('Cart', $this->getModule())), 'language' => $language, 'parent_id' => 3],
                     null,
                     ['extra_id' => $this->commerceCartBlockId, 'position' => 'main'],
                 );
