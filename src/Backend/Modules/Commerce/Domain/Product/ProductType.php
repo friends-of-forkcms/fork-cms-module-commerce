@@ -124,13 +124,6 @@ class ProductType extends AbstractType
                 'label' => 'lbl.ISBN',
             ]
         )->add(
-            'sequence',
-            NumberType::class,
-            [
-                'required' => true,
-                'label' => 'lbl.Sequence',
-            ]
-        )->add(
             'type',
             ChoiceType::class,
             [
