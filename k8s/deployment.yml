@@ -35,6 +35,13 @@ spec:
               value: forkcms
             - name: SITE_DOMAIN
               value: $NAME-jessedobbelaere.cloud.okteto.net
+          # Because the container loads fixtures and prepares Fork CMS, we don't
+          # want to serve traffic until that's done
+          readinessProbe:
+            initialDelaySeconds: 90 # Wait 90s before first probe
+            periodSeconds: 30 # Check every 30s
+            tcpSocket:
+              port: 80
 
         - name: db
           image: mariadb:10
