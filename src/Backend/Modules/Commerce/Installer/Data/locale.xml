@@ -1043,6 +1043,10 @@
         <translation language="nl"><![CDATA[Het kortingbedrag dat wordt toegepast op de hele bestelling.]]></translation>
         <translation language="en"><![CDATA[The amount of discount that is applied to the whole order.]]></translation>
       </item>
+      <item type="error" name="ValidateOneOfReductionDiscountsNeeded">
+        <translation language="nl"><![CDATA[Vul ofwel een kortingspercentage of vast kortingsbedrag in.]]></translation>
+        <translation language="en"><![CDATA[Either a reduction percentage or reduction price is required.]]></translation>
+      </item>
       <item type="label" name="Actions">
         <translation language="nl"><![CDATA[acties]]></translation>
         <translation language="en"><![CDATA[actions]]></translation>
@@ -1398,7 +1402,7 @@
         <translation language="nl"><![CDATA[Er zijn nog geen producten.]]></translation>
         <translation language="en"><![CDATA[There are no products yet.]]></translation>
       </item>
-      <item type="message" name="ToCommerceOverview">
+      <item type="label" name="BackToOverview">
         <translation language="nl"><![CDATA[Terug naar overzicht]]></translation>
         <translation language="en"><![CDATA[Back to overview]]></translation>
       </item>
@@ -1571,8 +1575,8 @@
         <translation language="en"><![CDATA[order details]]></translation>
       </item>
       <item type="label" name="SubTotal">
-        <translation language="nl"><![CDATA[sub totaal]]></translation>
-        <translation language="en"><![CDATA[sub total]]></translation>
+        <translation language="nl"><![CDATA[subtotaal]]></translation>
+        <translation language="en"><![CDATA[subtotal]]></translation>
       </item>
       <item type="label" name="Total">
         <translation language="nl"><![CDATA[totaal]]></translation>
@@ -2110,9 +2114,17 @@
         <translation language="nl"><![CDATA[Deze kortingscode is niet (meer) geldig]]></translation>
         <translation language="en"><![CDATA[This discountcode is not valid]]></translation>
       </item>
+      <item type="message" name="DoYouHaveADiscountCode">
+        <translation language="nl"><![CDATA[Heb je een kortingscode?]]></translation>
+        <translation language="en"><![CDATA[Do you have a discount code?]]></translation>
+      </item>
       <item type="error" name="DiscountCodeNotFound">
         <translation language="nl"><![CDATA[Kortingscode niet gevonden]]></translation>
         <translation language="en"><![CDATA[Discount code not found]]></translation>
+      </item>
+      <item type="error" name="CartRuleAlreadyUsed">
+        <translation language="nl"><![CDATA[Deze kortingscode is reeds gebruikt]]></translation>
+        <translation language="en"><![CDATA[This discountcode is already used]]></translation>
       </item>
       <item type="label" name="YourCountryPlaceholder">
         <translation language="nl"><![CDATA[- jouw land -]]></translation>
@@ -2169,6 +2181,22 @@
       <item type="label" name="Vat">
         <translation language="nl"><![CDATA[BTW]]></translation>
         <translation language="en"><![CDATA[VAT]]></translation>
+      </item>
+      <item type="label" name="IncludingVAT">
+        <translation language="nl"><![CDATA[incl. BTW]]></translation>
+        <translation language="en"><![CDATA[incl. VAT]]></translation>
+      </item>
+      <item type="label" name="ExcludingVAT">
+        <translation language="nl"><![CDATA[excl. BTW]]></translation>
+        <translation language="en"><![CDATA[excl. VAT]]></translation>
+      </item>
+      <item type="label" name="Validate">
+        <translation language="nl"><![CDATA[valideer]]></translation>
+        <translation language="en"><![CDATA[validate]]></translation>
+      </item>
+      <item type="error" name="DiscountCodeIsInvalid">
+        <translation language="nl"><![CDATA[De ingevoerde code is ongeldig]]></translation>
+        <translation language="en"><![CDATA[The entered code is not valid]]></translation>
       </item>
       <item type="message" name="ExclusiveVatPricing">
         <translation language="nl"><![CDATA[Exclusief %1$s&percnt; BTW. (%2$s incl. %3$s&percnt; BTW)]]></translation>

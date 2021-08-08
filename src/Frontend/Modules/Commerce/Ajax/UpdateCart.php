@@ -24,17 +24,13 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * E.g. adding a product to the shopping cart triggers this action
+ */
 class UpdateCart extends DimensionCalculator
 {
-    /**
-     * @var Cookie
-     */
-    private $cookie;
-
-    /**
-     * @var Cart
-     */
-    private $cart;
+    private Cookie $cookie;
+    private Cart $cart;
 
     /**
      * @var int
@@ -51,11 +47,6 @@ class UpdateCart extends DimensionCalculator
      */
     private $form;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Exception
-     */
     public function execute(): void
     {
         parent::execute();
@@ -83,37 +74,11 @@ class UpdateCart extends DimensionCalculator
         // Force update of cart totals
         $this->cart->calculateTotals();
 
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
-        $this->output(
-            Response::HTTP_OK,
-            [
-                'cart' => [
-                    'totalQuantity' => $this->cart->getTotalQuantity(),
-                    'subTotal' => $moneyFormatter->format($this->cart->getSubTotal()),
-                    'total' => $moneyFormatter->format($this->cart->getTotal()),
-                    'vats' => $this->getFormattedVats(),
-                ],
-                'product' => [
-                    'sku' => $cartValue->getProduct()->getSku(),
-                    'title' => $cartValue->getProduct()->getTitle(),
-                    'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
-                    'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
-                    'quantity' => $cartValue->getQuantity(),
-                    'total' => $moneyFormatter->format($cartValue->getTotal()),
-                    'options' => $this->getCartValueOptionTotals($cartValue),
-                ],
-                'urls' => [
-                    'cart' => Navigation::getUrlForBlock($this->getModule(), 'Cart'),
-                    'request_quote' => Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('RequestQuoteUrl'),
-                ],
-            ]
-        );
+        $this->output(Response::HTTP_OK, ['cart' => $this->cart]);
     }
 
     /**
      * Get the active cart from the session.
-     *
-     * @throws \Exception
      */
     private function getActiveCart(): Cart
     {
@@ -316,21 +281,6 @@ class UpdateCart extends DimensionCalculator
     }
 
     /**
-     * Format the vats in an array with the required number format.
-     */
-    private function getFormattedVats(): array
-    {
-        $vats = $this->cart->getVats();
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
-
-        foreach ($vats as $key => $vat) {
-            $vats[$key]['total'] = $moneyFormatter->format($vat['total']);
-        }
-
-        return $vats;
-    }
-
-    /**
      * Add the product options to the cart.
      */
     private function addProductOptionsToCart(Product $product, CartValue $cartValue): void
@@ -436,35 +386,11 @@ class UpdateCart extends DimensionCalculator
         return $totals;
     }
 
-    /**
-     * Build the ecommerce category in required format.
-     *
-     * @return string
-     */
-    private function buildEcommerceCategory(Product $product)
-    {
-        $categories = [];
-        $category = $product->getCategory();
-
-        while ($category) {
-            array_unshift($categories, $category->getTitle());
-            $category = $category->getParent();
-        }
-
-        return implode('/', $categories);
-    }
-
-    /**
-     * Get the cart repository.
-     */
     private function getCartRepository(): CartRepository
     {
         return $this->get('commerce.repository.cart');
     }
 
-    /**
-     * Get the cart value repository.
-     */
     private function getCartValueRepository(): CartValueRepository
     {
         return $this->get('commerce.repository.cart_value');

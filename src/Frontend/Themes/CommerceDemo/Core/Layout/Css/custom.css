@@ -36,25 +36,18 @@ h3 {
     @apply border-2 border-yellow-500 !important;
 }
 
-/* Animation when submitting */
+/* Button animation when submitting a form to prevent double clicks */
 form.is-submitting button[type='submit'],
-a.is-submitting {
-    position: relative;
-    overflow: hidden;
-    @apply bg-gray-600;
-    outline: 0;
+button.is-submitting {
+    @apply opacity-25 cursor-not-allowed outline-none overflow-hidden relative;
 }
 
 form.is-submitting button[type='submit']::before,
-a.is-submitting::before {
-    position: absolute;
+button.is-submitting::before {
     content: '';
     height: 0.2em;
-    left: 0;
-    right: 0;
-    top: 0;
     animation: move 1s linear infinite;
-    @apply bg-yellow-500;
+    @apply absolute left-0 right-0 top-0 bg-yellow-500;
 }
 
 @keyframes move {

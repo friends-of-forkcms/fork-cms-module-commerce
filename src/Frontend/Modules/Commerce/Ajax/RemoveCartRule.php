@@ -9,6 +9,7 @@ use Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
 use Frontend\Core\Engine\TemplateModifiers;
+use Frontend\Core\Language\Language;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
@@ -17,53 +18,34 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RemoveCartRule extends FrontendBaseAJAXAction
 {
-    /**
-     * @var Cookie
-     */
-    private $cookie;
+    private Cookie $cookie;
+    private Cart $cart;
+    private ?CartRule $cartRule;
 
-    /**
-     * @var Cart
-     */
-    private $cart;
-
-    /**
-     * @var CartRule
-     */
-    private $cartRule;
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute(): void
     {
         parent::execute();
 
         $this->cookie = $this->get('fork.cookie');
         $this->cart = $this->getActiveCart();
-        $code = $this->getRequest()->request->get('code');
+        $cartRuleId = $this->getRequest()->request->get('cartRuleId');
 
-        // Cart rule code must be set
-        if (!$this->getRequest()->request->has('code') || empty($code)) {
-            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, 'Geen waarde opgegeven');
-
+        // Cart rule id must be set
+        if (!$this->getRequest()->request->has('cartRuleId') || empty($cartRuleId)) {
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('FieldIsRequired'));
             return;
         }
 
-        if (!$this->cartRule = $this->getCartRuleRepository()->findByCode($code)) {
-            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, 'Kortingscode niet gevonden');
-
+        // Find the cart rule in the DB
+        if (!$this->cartRule = $this->getCartRuleRepository()->findOneById($cartRuleId)) {
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('DiscountCodeNotFound'));
             return;
         }
 
-        // Only add the cart rule when it doesn't exists
-        $cartRuleExists = $this->cart->getCartRules()->exists(function ($key, $value) {
-            return $value->getId() == $this->cartRule->getId();
-        });
-
+        // Only remove the cart rule when it exists
+        $cartRuleExists = $this->cart->getCartRules()->exists(fn ($key, $value) => $value->getId() === $this->cartRule->getId());
         if (!$cartRuleExists) {
-            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, 'Kortingscode niet gevonden');
-
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('DiscountCodeNotFound'));
             return;
         }
 
@@ -71,46 +53,7 @@ class RemoveCartRule extends FrontendBaseAJAXAction
         $this->getCartRepository()->save($this->cart);
 
         // Return everything
-        $this->output(
-            Response::HTTP_OK,
-            [
-                'totals' => $this->getCartTotals(),
-            ]
-        );
-    }
-
-    private function getCartTotals()
-    {
-        $shippingMethod = $this->cart->getShipmentMethodData();
-        $vats = [];
-        $cartRules = [];
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
-
-        foreach ($this->cart->getVats() as $vat) {
-            $vats[] = [
-                'title' => $vat['title'],
-                'total' => $moneyFormatter->format($vat['total']),
-            ];
-        }
-
-        foreach ($this->cart->getCartRules() as $cartRule) {
-            $cartRules[] = [
-                'id' => $cartRule->getId(),
-                'title' => $cartRule->getTitle(),
-                'total' => TemplateModifiers::formatNumber(10, 2),
-            ];
-        }
-
-        return [
-            'sub_total' => $moneyFormatter->format($this->cart->getSubTotal()),
-            'vats' => $vats,
-            'shipping_method' => [
-                'name' => $shippingMethod['name'],
-                'price' => $moneyFormatter->format($shippingMethod['price']),
-            ],
-            'total' => $moneyFormatter->format($this->cart->getTotal()),
-            'cart_rules' => $cartRules,
-        ];
+        $this->output(Response::HTTP_OK, ['cart' => $this->cart]);
     }
 
     /**

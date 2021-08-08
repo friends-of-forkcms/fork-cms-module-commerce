@@ -364,4 +364,17 @@ class Category
 
         return $this->products->matching($criteria);
     }
+
+    public function getFullCategoryPath(): string
+    {
+        $categories = [];
+        $category = $this;
+
+        while ($category) {
+            array_unshift($categories, $category->getTitle());
+            $category = $category->getParent();
+        }
+
+        return implode('/', $categories);
+    }
 }

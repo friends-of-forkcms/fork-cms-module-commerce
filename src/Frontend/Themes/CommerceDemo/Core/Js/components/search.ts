@@ -36,9 +36,9 @@ export async function search(): Promise<void> {
     let abortController = new AbortController();
 
     // Fetch locale strings
-    const lblProducts = ucfirst(await lbl('Products'));
-    const msgNoResults = ucfirst(await msg('NoSearchResults'));
-    const msgSearchPlaceholder = ucfirst(await msg('SearchPlaceholder'));
+    const lblProducts = ucfirst(lbl('Products'));
+    const msgNoResults = ucfirst(msg('NoSearchResults'));
+    const msgSearchPlaceholder = ucfirst(msg('SearchPlaceholder'));
 
     const { setIsOpen } = autocomplete<AutocompleteItem>({
         container: '.js-search-button',

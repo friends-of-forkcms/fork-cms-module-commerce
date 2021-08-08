@@ -13,9 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FilterProducts extends FrontendBaseAJAXAction
 {
-    /**
-     * {@inheritdoc}
-     */
     public function execute(): void
     {
         parent::execute();

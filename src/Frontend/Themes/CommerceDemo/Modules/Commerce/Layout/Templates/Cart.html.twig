@@ -1,27 +1,3 @@
-{# Prepare a dataset for Alpine.js #}
-{% set cartValues = [] %}
-{% for item in cart.values %}
-    {% set cartValues = cartValues|merge([{
-        id: item.id,
-        url: item.product.url,
-        title: item.product.title,
-        sku: item.product.sku,
-        thumbnail: item.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail'),
-        quantity: item.quantity,
-        price: item.product.activePrice(false)|format_money_decimal(),
-        total: item.total,
-    }]) %}
-{% endfor %}
-
-{% set vatItems = [] %}
-{% for key, item in cart.vats %}
-    {% set vatItems = vatItems|merge([{
-        id: key,
-        title: item.title,
-        total: item.total|format_money_decimal(),
-    }]) %}
-{% endfor %}
-
 <div class="container px-6 py-3 mx-auto mb-12">
     <h1 class="block mb-10 text-2xl text-black">
         {{ 'lbl.Cart'|trans|ucfirst }}
@@ -35,19 +11,17 @@
             </div>
         {% endif %}
 
-        {# The main shopping cart component #}
-        {# Note: this strongly uses an Alpine.js component (see cart.ts) #}
+        {#
+            The main shopping cart component
+            Note: this strongly uses an Alpine.js component (see cart.ts)
+            We inject the cart state as JSON into the Alpine component
+        #}
         <div
             class="shopping-cart"
             x-data="cart"
-            x-init="
-                items = {{ cartValues|json_encode }};
-                subTotal = {{ cart.subTotal|format_money_decimal() }};
-                vatItems = {{ vatItems|json_encode }};
-                cartTotal = {{ cart.total|format_money_decimal() }};
-            "
+            x-init="data = {{ cart|json_encode }}"
         >
-            <table class="w-full mt-6 border-b border-gray-300">
+            <table class="w-full mt-6 border-b border-gray-200">
                 <thead class="text-left uppercase">
                     <tr class="text-sm tracking-wider text-black border-b-2 border-gray-200">
                         <th colspan="3" class="py-3 pr-3">
@@ -65,18 +39,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template x-cloak x-for="cartValue in items" :key="cartValue.id">
+                    <template x-cloak x-for="cartValue in data.items" :key="cartValue.id">
                         <tr>
-                            {# Thumbnail #}
-                            <td class="td-thumb | py-3 pr-3 w-20 border-t border-gray-300 align-middle">
+                            <!-- Thumbnail -->
+                            <td class="td-thumb | py-3 pr-3 w-20 border-t border-gray-200 align-middle">
                                 <a class="thumb" x-bind:href="cartValue.url" x-bind:title="cartValue.title">
                                     <img class="w-20" loading="lazy" x-bind:src="cartValue.thumbnail" x-bind:alt="cartValue.title">
                                 </a>
                             </td>
 
-                            {# Product name #}
-                            <td class="td-product | p-3 border-t border-gray-300 align-middle" colspan="2">
-                                <a x-bind:href="cartValue.url" x-bind:title="cartValue.title" x-text="cartValue.title"></a>
+                            <!-- Product name -->
+                            <td class="td-product | p-3 border-t border-gray-200 align-middle" colspan="2">
+                                <a x-bind:href="cartValue.url" x-bind:title="cartValue.name" x-text="cartValue.name"></a>
                                 <div class="hidden text-xs">
                                     <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span>:
                                     <span x-text="cartValue.sku"></span>
@@ -91,13 +65,13 @@
                                 </button>
                             </td>
 
-                            {# Price #}
-                            <td class="p-3 align-middle border-t border-gray-300 tabular-nums">
-                                <span x-text="formatNumber(cartValue.price)"></span>
+                            <!-- Price -->
+                            <td class="p-3 align-middle border-t border-gray-200 tabular-nums">
+                                <span x-text="formatCurrency(cartValue.price)"></span>
                             </td>
 
-                            {#  Amount #}
-                            <td class="p-3 align-middle border-t border-gray-300">
+                            <!-- Quantity -->
+                            <td class="p-3 align-middle border-t border-gray-200">
                                 <label class="sr-only" x-bind:for="'amount-' + cartValue.id">{{ 'lbl.Amount'|trans|ucfirst }}</label>
                                 <input
                                     class="inline-block w-20"
@@ -109,69 +83,104 @@
                                 />
                             </td>
 
-                            {# Total #}
-                            <td class="py-3 pl-3 text-right align-middle border-t border-gray-300 whitespace-nowrap tabular-nums">
-                                <span x-text="formatNumber(cartValue.price * cartValue.quantity)"></span>
+                            <!-- Total -->
+                            <td class="py-3 pl-3 text-right align-middle border-t border-gray-200 whitespace-nowrap tabular-nums">
+                                <span x-text="formatCurrency(cartValue.total)"></span>
                             </td>
                         </tr>
                     </template>
                 </tbody>
             </table>
 
-            {# {% for value in cart.values %}
-                {% for valueOption in value.cartValueOptions %}
-                    <div class="shopping-cart-row bg-light">
-                        <div class="col-md-5 shopping-cart-details">
-                            {{ valueOption.productOptionValue.title }}
-                            <input type="hidden"
-                                value="{{ valueOption.productOptionValue.id }}"
-                                data-option="option_{{ valueOption.productOptionValue.productOption.id }}"
-                                name="product[{{ value.product.id }}][option_{{ valueOption.productOptionValue.productOption.id }}]" />
-                        </div>
-                        <div class="col-md-7 shopping-cart-actions">
-                            <div class="col-md-4"></div>
-                            <div class="text-right col-md-3">
-                                &euro; {{ valueOption.productOptionValue.price|formatnumber(2) }}
-                            </div>
-                            <div class="text-right col-md-3">
-                                <strong data-total="{{ value.product.id }}_option_{{ valueOption.productOptionValue.id }}">
-                                    € {{ valueOption.total|formatnumber(2) }}
-                                </strong>
-                            </div>
-                            <div class="text-right col-md-2"></div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endfor %} #}
+            <div class="shopping-cart-overview-summary | w-full flex flex-row justify-between mt-16">
 
-            <div class="shopping-cart-overview-summary | w-full flex flex-row justify-end mt-16">
-                <div class="block w-1/6"></div>
-                <div class="block w-5/12">
+                <!-- Discount code -->
+                <div class="panel-discount | block w-4/12 border border-gray-200 rounded">
+                    <div class="panel-heading | text-gray-600 bg-gray-100 px-4 py-2 text-md border-gray-200 border-b">{{ 'msg.DoYouHaveADiscountCode'|trans }}</div>
+                    <div class="panel-body">
+                        <form action="#" method="POST" @submit.prevent="submitDiscountCode">
+                            <template x-if="discountValidationMessage !== null">
+                                <div class="p-4">
+                                    <div class="alert | px-4 py-2 border border-red-200 bg-red-100 text-red-400">
+                                        <span x-text="discountValidationMessage"></span>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <div class="flex p-4">
+                                <div class="form-field | flex-grow">
+                                    <label for="discount-code" class="sr-only">Code</label>
+                                    <input
+                                        id="discount-code"
+                                        class="h-14 w-full"
+                                        type="text"
+                                        name="discount-code"
+                                        placeholder="Code"
+                                        x-model="discountCode"
+                                    >
+                                </div>
+                                <button
+                                    class="bg-gray-800 text-white px-4 hover:bg-gray-600 disabled:cursor-not-allowed"
+                                    type="submit"
+                                    x-text="discountButtonLabel"
+                                    :class="{ 'is-submitting': discountFormLoading }"
+                                    :disabled="discountFormLoading"
+                                ></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Cart summary -->
+                <div class="w-5/12">
                     <table class="w-full max-w-full text-black">
                         <tbody class="w-full">
-                            {# Total discount #}
 
-                            {# Subtotal #}
-                            <tr>
-                                <td class="px-3 py-1">{{ 'lbl.SubTotal'|trans|ucfirst }}</td>
-                                <td class="px-3 py-1 text-right tabular-nums">
-                                    <span x-text="formatNumber(subTotal)"></span>
-                                </td>
-                            </tr>
-
-                            {# VAT #}
-                            <template x-for="vat in vatItems" :key="vat.id">
+                            <!-- Discounts -->
+                            <template x-for="cartRule in data.cartRules" :key="cartRule.id">
                                 <tr>
-                                    <td class="px-3 py-1" x-text="vat.title + ' {{ 'lbl.Vat'|trans }}'"></td>
-                                    <td class="px-3 py-1 text-right tabular-nums" x-text="formatNumber(vat.total)"></td>
+                                    <td class="px-3 py-1">
+                                        <span class="font-bold">{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>: <span x-text="cartRule.code"></span>
+                                        <button
+                                            class="font-bold text-red-500 hover:text-red-400"
+                                            type="button"
+                                            title="{{ 'msg.ConfirmDelete'|trans|format('discount code'|e) }}"
+                                            @click="removeDiscountCodeFromCart(cartRule.id)"
+                                        >&times;</button>
+                                    </td>
+                                    <td class="px-3 py-1 text-right tabular-nums">
+                                        <span x-text="'- ' + formatCurrency(cartRule.total)"></span>
+                                    </td>
                                 </tr>
                             </template>
 
-                            {# Total #}
+                            <!-- Subtotal -->
                             <tr>
-                                <td class="px-3 py-1">{{ 'lbl.Total'|trans|ucfirst }}</td>
+                                <td class="px-3 py-1">
+                                    <span class="font-bold">{{ 'lbl.SubTotal'|trans|ucfirst }}</span>
+                                    <span class="text-xs text-gray-400">({{ 'lbl.ExcludingVAT'|trans }})</span>
+                                </td>
                                 <td class="px-3 py-1 text-right tabular-nums">
-                                    <strong x-text="formatNumber(cartTotal)"></strong>
+                                    <span x-text="formatCurrency(data.subTotal)"></span>
+                                </td>
+                            </tr>
+
+                            <!-- VAT -->
+                            <template x-for="vat in data.vats" :key="vat.id">
+                                <tr>
+                                    <td class="px-3 py-1 font-bold" x-text="'{{ 'lbl.Vat'|trans }} ' + vat.title"></td>
+                                    <td class="px-3 py-1 text-right tabular-nums" x-text="formatCurrency(vat.total)"></td>
+                                </tr>
+                            </template>
+
+                            <!-- Total -->
+                            <tr>
+                                <td class="px-3 py-1">
+                                    <span class="font-bold">{{ 'lbl.Total'|trans|ucfirst }}</span>
+                                    <span class="text-xs text-gray-400">({{ 'lbl.IncludingVAT'|trans }})</span>
+                                </td>
+                                <td class="px-3 py-1 text-right tabular-nums">
+                                    <strong x-text="formatCurrency(data.total)"></strong>
                                 </td>
                             </tr>
                         </tbody>
@@ -179,19 +188,17 @@
                 </div>
             </div>
 
-            <div class="cart-pager-bottom | py-10 my-20 border-t border-gray-300">
-                <ul class="flex justify-end">
-                    {% if cart.productsInStock %}
-                        <li>
-                            <a class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">
-                                {{ 'lbl.Checkout'|trans|ucfirst }}
-                            </a>
-                        </li>
-                    {% endif %}
-{#                    <a class="btn btn-primary arrow pull-right"#}
-{#                        href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.RequestQuoteUrl'|trans }}">#}
-{#                        {{ 'lbl.RequestQuote'|trans|ucfirst }}#}
-{#                    </a>#}
+            <div class="cart-pager-bottom | py-10 my-20 border-t border-gray-200">
+                <ul class="flex justify-between">
+                    <li>
+                        <a href="{{ geturlforblock('Commerce') }}">&larr; {{ 'lbl.BackToOverview'|trans|ucfirst }}</a>
+                    </li>
+{#                    {% if cart.productsInStock %}{% endif %}#}
+                    <li>
+                        <a class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600" href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">
+                            {{ 'lbl.Checkout'|trans|ucfirst }}
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

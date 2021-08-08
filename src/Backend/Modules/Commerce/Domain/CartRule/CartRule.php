@@ -238,6 +238,14 @@ class CartRule
         return $this->reduction_percentage;
     }
 
+    public function getHumanReadableReductionPercentage(): ?string
+    {
+        if ($this->reduction_percentage === null) {
+            return null;
+        }
+        return $this->getReductionPercentage() * 100 . '%';
+    }
+
     /**
      * Doctrine does not have nullable embeddables (Money type). We have to define the fields manually and turn them
      * into the embeddable object manually: https://stackoverflow.com/a/45262491/1409047

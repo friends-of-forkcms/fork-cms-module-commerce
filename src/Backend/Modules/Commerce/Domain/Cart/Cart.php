@@ -7,6 +7,7 @@ use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use DateTime;
 use DateTimeInterface;
@@ -14,6 +15,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Language\Locale;
+use JsonSerializable;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 
 /**
@@ -21,7 +25,7 @@ use Money\Money;
  * @ORM\Entity(repositoryClass="CartRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Cart
+class Cart implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -181,8 +185,7 @@ class Cart
         $this->values->add($value);
 
         // Recalculate
-        $this->calculateTotalQuantity();
-        $this->calculateTotals();
+        $this->recalculateCart();
     }
 
     public function removeValue(CartValue $value): void
@@ -190,8 +193,7 @@ class Cart
         $this->values->removeElement($value);
 
         // Recalculate
-        $this->calculateTotalQuantity();
-        $this->calculateTotals();
+        $this->recalculateCart();
     }
 
     /**
@@ -207,8 +209,7 @@ class Cart
         $this->cart_rules->add($cartRule);
 
         // Recalculate
-        $this->calculateTotalQuantity();
-        $this->calculateTotals();
+        $this->recalculateCart();
     }
 
     public function removeCartRule(CartRule $cartRule): void
@@ -216,8 +217,7 @@ class Cart
         $this->cart_rules->removeElement($cartRule);
 
         // Recalculate
-        $this->calculateTotalQuantity();
-        $this->calculateTotals();
+        $this->recalculateCart();
     }
 
     public function getTotalQuantity(): int
@@ -399,6 +399,7 @@ class Cart
 
                 if (!array_key_exists($vat->getId(), $this->vats)) {
                     $this->vats[$vat->getId()] = [
+                        'id' => $vat->getId(),
                         'title' => $vat->getTitle(),
                         'total' => Money::EUR(0),
                     ];
@@ -426,6 +427,12 @@ class Cart
         }
     }
 
+    private function recalculateCart(): void
+    {
+        $this->calculateTotalQuantity();
+        $this->calculateTotals();
+    }
+
     private function addVat($vat, ?Money $price, $subtractVat = false): void
     {
         if (is_int($vat)) {
@@ -436,6 +443,7 @@ class Cart
 
         if (!array_key_exists($vat->getId(), $this->vats)) {
             $this->vats[$vat->getId()] = [
+                'id' => $vat->getId(),
                 'title' => $vat->getTitle(),
                 'total' => Money::EUR(0),
             ];
@@ -482,13 +490,13 @@ class Cart
     private function calculateCartRules(): void
     {
         foreach ($this->cart_rules as $cartRule) {
-            if ($cartRule->getReductionPercentage()) {
-                $total = $this->applyPercentageDiscount($cartRule->getReductionPercentage() / 100);
+            if ($cartRule->getReductionPercentage() !== null) {
+                $total = $this->applyPercentageDiscount($cartRule->getReductionPercentage());
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
 
-            if ($cartRule->getReductionPrice()) {
+            if ($cartRule->getReductionPrice() !== null) {
                 $total = $this->applyPercentageDiscount($cartRule->getReductionPrice() / $this->total);
 
                 $this->setCartRuleTotal($cartRule, $total);
@@ -498,17 +506,16 @@ class Cart
 
     private function applyPercentageDiscount(float $percentage): Money
     {
-        $this->subTotal = $this->subTotal->subtract($this->subTotal->multiply($percentage));
+        $discount = $this->subTotal->multiply($percentage);
+        $this->subTotal = $this->subTotal->subtract($discount);
 
         foreach ($this->vats as $key => $vat) {
             $this->vats[$key]['total'] = $this->vats[$key]['total']->subtract($vat['total']->multiply($percentage));
         }
 
-        $total = $this->total->multiply($percentage);
+        $this->total = $this->total->subtract($this->total->multiply($percentage));
 
-        $this->total = $this->total->subtract($total);
-
-        return $total;
+        return $discount;
     }
 
     public function getCartRuleTotal(CartRule $cartRule): ?Money
@@ -519,5 +526,49 @@ class Cart
     private function setCartRuleTotal(CartRule $cartRule, Money $total): void
     {
         $this->cartRuleTotals[$cartRule->getId()] = $total;
+    }
+
+    /**
+     * Convert the cart information to JSON. This helps to make Ajax responses easier.
+     */
+    public function jsonSerialize(): array
+    {
+        $this->recalculateCart();
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
+
+        return [
+            'totalQuantity' => $this->getTotalQuantity(),
+            'cartRules' => array_map(function (CartRule $item) use ($moneyFormatter) {
+                return [
+                    'id' => $item->getId(),
+                    'title' => $item->getTitle(),
+                    'code' => $item->getCode(),
+                    'total' => $this->getCartRuleTotal($item) !== null ? (float) $moneyFormatter->format($this->getCartRuleTotal($item)) : null,
+                ];
+            }, $this->getCartRules()->toArray()),
+            'subTotal' => (float) $moneyFormatter->format($this->getSubTotal()),
+            'vats' => array_map(function ($item) use ($moneyFormatter) {
+                return [
+                    'id' => $item['id'],
+                    'title' => $item['title'],
+                    'total' => (float) $moneyFormatter->format($item['total']), // Convert Money to plain string
+                ];
+            }, array_values($this->getVats())),
+            'total' => (float) $moneyFormatter->format($this->getTotal()),
+            'items' => array_map(function (CartValue $cartValue) use ($moneyFormatter) {
+                return [
+                    'id' => $cartValue->getId(),
+                    'sku' => $cartValue->getProduct()->getSku(),
+                    'name' => $cartValue->getProduct()->getTitle(),
+                    'url' => $cartValue->getProduct()->getUrl(),
+                    'thumbnail' => $cartValue->getProduct()->getThumbnail()->getWebPath('product_thumbnail'),
+                    'category' => $cartValue->getProduct()->getCategory()->getFullCategoryPath(),
+                    'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
+                    'price' => (float) $moneyFormatter->format($cartValue->getProduct()->getActivePrice(false)),
+                    'quantity' => $cartValue->getQuantity(),
+                    'total' => (float) $moneyFormatter->format($cartValue->getTotal()),
+                ];
+            }, $this->getValues()->toArray())
+        ];
     }
 }

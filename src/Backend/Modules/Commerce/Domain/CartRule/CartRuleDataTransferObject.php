@@ -7,6 +7,7 @@ use DateTime;
 use DateTimeInterface;
 use Money\Money;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CartRuleDataTransferObject
 {
@@ -54,8 +55,6 @@ class CartRuleDataTransferObject
         $this->from = new DateTime();
         $this->quantity = 0;
         $this->minimum_price = Money::EUR(0);
-        $this->reduction_price = Money::EUR(0);
-        $this->reduction_percentage = 0;
 
         if (!$this->hasExistingCartRule()) {
             return;
@@ -88,5 +87,23 @@ class CartRuleDataTransferObject
     public function hasExistingCartRule(): bool
     {
         return $this->cartRuleEntity instanceof CartRule;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context): void
+    {
+        $isEmptyReductionPercentage = empty($this->reduction_percentage);
+        $isEmptyReductionPrice = $this->reduction_price === null || $this->reduction_price->isZero();
+
+        $isBothEmptyOrBothFilledIn = ($isEmptyReductionPercentage && $isEmptyReductionPrice)
+            || (!$isEmptyReductionPercentage && !$isEmptyReductionPrice);
+
+        if ($isBothEmptyOrBothFilledIn) {
+            $context->buildViolation('err.ValidateOneOfReductionDiscountsNeeded')
+                ->atPath('reduction_percentage')
+                ->addViolation();
+        }
     }
 }

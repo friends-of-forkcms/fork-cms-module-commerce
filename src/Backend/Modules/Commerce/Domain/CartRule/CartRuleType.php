@@ -3,7 +3,9 @@
 namespace Backend\Modules\Commerce\Domain\CartRule;
 
 use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
+use Money\Money;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -88,6 +90,11 @@ class CartRuleType extends AbstractType
                     ]
                 )
                 ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+                ->addModelTransformer(new CallbackTransformer(
+                    // Store an 0 euro object as NULL in the DTO
+                    fn ($value): ?string => $value,
+                    fn ($value): ?Money => $value instanceof Money && $value->isZero() ? null : $value
+                ))
         );
     }
 

@@ -18,24 +18,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddCartRule extends FrontendBaseAJAXAction
 {
-    /**
-     * @var Cookie
-     */
-    private $cookie;
+    private Cookie $cookie;
+    private Cart $cart;
+    private ?CartRule $cartRule;
 
-    /**
-     * @var Cart
-     */
-    private $cart;
-
-    /**
-     * @var CartRule
-     */
-    private $cartRule;
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute(): void
     {
         parent::execute();
@@ -47,79 +33,31 @@ class AddCartRule extends FrontendBaseAJAXAction
         // Cart rule code must be set
         if (!$this->getRequest()->request->has('code') || empty($code)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('FieldIsRequired'));
-
             return;
         }
 
+        // Discount code must exist
         if (!$this->cartRule = $this->getCartRuleRepository()->findValidByCode($code)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('DiscountCodeNotFound'));
-
             return;
         }
 
         if ($this->cartRule->getQuantity() < 1) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('ThisCartRuleIsNotValid'));
-
             return;
         }
 
-        // Only add the cart rule when it doesn't exists
-        $cartRuleExists = $this->cart->getCartRules()->exists(function ($key, $value) {
-            return $value->getId() == $this->cartRule->getId();
-        });
-
-        if (!$cartRuleExists) {
-            $this->cart->addCartRule($this->cartRule);
-            $this->getCartRepository()->save($this->cart);
+        // Only add the cart rule when it does not exist yet
+        $cartRuleExists = $this->cart->getCartRules()->exists(fn ($key, $value) => $value->getId() === $this->cartRule->getId());
+        if ($cartRuleExists) {
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('CartRuleAlreadyUsed'));
+            return;
         }
 
-        // Return everything
-        $this->output(
-            Response::HTTP_OK,
-            [
-                'totals' => $this->getCartTotals(),
-            ]
-        );
-    }
+        $this->cart->addCartRule($this->cartRule);
+        $this->getCartRepository()->save($this->cart);
 
-    private function getCartTotals()
-    {
-        $shippingMethod = $this->cart->getShipmentMethodData();
-        $vats = [];
-        $cartRules = [];
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
-
-        foreach ($this->cart->getVats() as $vat) {
-            $vats[] = [
-                'title' => $vat['title'],
-                'total' => $moneyFormatter->format($vat['total']),
-            ];
-        }
-
-        foreach ($this->cart->getCartRules() as $cartRule) {
-            if ($cartRule->getReductionPercentage()) {
-                $total = $cartRule->getReductionPercentage().'% '.Language::lbl('discount');
-            } else {
-                $total = '- &euro;' . $moneyFormatter->format($cartRule->getReductionPrice());
-            }
-
-            $cartRules[] = [
-                'code' => $cartRule->getCode(),
-                'title' => $cartRule->getTitle(),
-                'total' => $total,
-            ];
-        }
-
-        return [
-            'sub_total' => $moneyFormatter->format($this->cart->getSubTotal()),
-            'vats' => $vats,
-            'shipping_method' => [
-                'name' => $shippingMethod['name'],
-                'price' => $moneyFormatter->format($shippingMethod['price']),
-            ],
-            'total' => $moneyFormatter->format($this->cart->getTotal()),
-            'cart_rules' => $cartRules,
-        ];
+        $this->output(Response::HTTP_OK, ['cart' => $this->cart]);
     }
 
     /**

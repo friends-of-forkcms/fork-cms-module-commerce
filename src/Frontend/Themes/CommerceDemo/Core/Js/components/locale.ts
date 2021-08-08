@@ -9,8 +9,12 @@ type LocaleData = {
     };
 };
 
-async function init(): Promise<void> {
+export async function init(): Promise<void> {
     if (typeof window.jsData.LANGUAGE === 'undefined') {
+        return;
+    }
+
+    if (initialized || initializing) {
         return;
     }
 
@@ -27,12 +31,7 @@ async function init(): Promise<void> {
     }
 }
 
-export async function get(type: LocaleType, key: string): Promise<string> {
-    // initialize  if needed
-    if (!initialized && !initializing) {
-        await init();
-    }
-
+export function get(type: LocaleType, key: string): string {
     if (typeof data[type] === 'undefined' || typeof data[type][key] === 'undefined') {
         return '{$' + type + key + '}';
     }
@@ -40,22 +39,22 @@ export async function get(type: LocaleType, key: string): Promise<string> {
     return data[type][key];
 }
 
-export function act(key: string): Promise<string> {
+export function act(key: string): string {
     return get('act', key);
 }
 
-export function err(key: string): Promise<string> {
+export function err(key: string): string {
     return get('err', key);
 }
 
-export function lbl(key: string): Promise<string> {
+export function lbl(key: string): string {
     return get('lbl', key);
 }
 
-export function loc(key: string): Promise<string> {
+export function loc(key: string): string {
     return get('loc', key);
 }
 
-export function msg(key: string): Promise<string> {
+export function msg(key: string): string {
     return get('msg', key);
 }

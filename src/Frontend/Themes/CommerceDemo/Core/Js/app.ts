@@ -11,8 +11,11 @@ window.Alpine = Alpine;
 import filters from './components/filters';
 import cart from './components/cart';
 import { search } from './components/search';
+import { init as initLocale } from "./components/locale";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load the Fork CMS locale before other components load
+    await initLocale();
     filters();
     cart();
     search();

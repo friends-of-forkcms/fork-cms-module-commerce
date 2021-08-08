@@ -19,67 +19,31 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RemoveProductFromCart extends FrontendBaseAJAXAction
 {
-    /**
-     * @var Cookie
-     */
-    private $cookie;
+    private Cookie $cookie;
+    private Cart $cart;
 
-    /**
-     * @var Cart
-     */
-    private $cart;
-
-    /**
-     * @var string
-     */
-    private $error;
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute(): void
     {
         parent::execute();
 
         $this->cookie = $this->get('fork.cookie');
         $this->cart = $this->getActiveCart();
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         // Product must be set
         if (!$this->getRequest()->request->has('cart')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
-
             return;
         }
 
-        // Failed to update product, does not exists?
+        // Failed to update product, it does not exist in the cart
         if (!$cartValue = $this->removeCartValue()) {
-            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, ['error' => $this->error]);
-
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
             return;
         }
 
         $this->getCartRepository()->save($this->cart);
 
-        $this->output(
-            Response::HTTP_OK,
-            [
-                'cart' => [
-                    'totalQuantity' => $this->cart->getTotalQuantity(),
-                    'subTotal' => $moneyFormatter->format($this->cart->getSubTotal()),
-                    'total' => $moneyFormatter->format($this->cart->getTotal()),
-                    'vats' => $this->getFormattedVats(),
-                ],
-                'product' => [
-                    'sku' => $cartValue->getProduct()->getSku(),
-                    'name' => $cartValue->getProduct()->getTitle(),
-                    'category' => $this->buildEcommerceCategory($cartValue->getProduct()),
-                    'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
-                    'quantity' => $cartValue->getQuantity(),
-                    'total' => $moneyFormatter->format($cartValue->getTotal()),
-                ],
-            ]
-        );
+        $this->output(Response::HTTP_OK, ['cart' => $this->cart]);
     }
 
     /**
@@ -108,7 +72,7 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
     }
 
     /**
-     * Add or update the product in our cart.
+     * Remove the product in our cart.
      */
     private function removeCartValue(): ?CartValue
     {
@@ -135,60 +99,13 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         return $cartValue;
     }
 
-    /**
-     * Get the cart repository.
-     */
     private function getCartRepository(): CartRepository
     {
         return $this->get('commerce.repository.cart');
     }
 
-    /**
-     * Get the cart value repository.
-     */
     private function getCartValueRepository(): CartValueRepository
     {
         return $this->get('commerce.repository.cart_value');
-    }
-
-    /**
-     * Get the product repository.
-     */
-    private function getProductRepository(): ProductRepository
-    {
-        return $this->get('commerce.repository.product');
-    }
-
-    /**
-     * Format the vats in an array with the required number format.
-     */
-    private function getFormattedVats(): array
-    {
-        $vats = $this->cart->getVats();
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
-
-        foreach ($vats as $key => $vat) {
-            $vats[$key]['total'] = $moneyFormatter->format($vat['total']);
-        }
-
-        return $vats;
-    }
-
-    /**
-     * Build the ecommerce category in required format.
-     *
-     * @return string
-     */
-    private function buildEcommerceCategory(Product $product)
-    {
-        $categories = [];
-        $category = $product->getCategory();
-
-        while ($category) {
-            array_unshift($categories, $category->getTitle());
-            $category = $category->getParent();
-        }
-
-        return implode('/', $categories);
     }
 }
