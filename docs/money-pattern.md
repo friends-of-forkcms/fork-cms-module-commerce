@@ -10,12 +10,11 @@ It also defines all the mathematical operations on the value with respect to the
 
 In the Fork CMS commerce module we use the [moneyphp/money](https://github.com/moneyphp/money/) library that implements this pattern. Some advantages are:
 
-* Money objects are **immutable**
-* Easy to use as Doctrine embeddable: `@ORM\Embedded(class="\Money\Money")`
-* Easy Money formatting (including intl formatter)
+-   Money objects are **immutable**
+-   Easy to use as Doctrine embeddable: `@ORM\Embedded(class="\Money\Money")`
+-   Easy Money formatting (including intl formatter)
 
 As a consequence, monetary values in the MySQL database are stored in cents instead of a decimal number. A database column is added for the `price_amount` and `price_currency_code`. This is similar to how other libraries work, e.g. [Stripe](https://stripe.com/docs/api/charges/create?lang=php) describes an amount as "A positive integer representing how much to charge in the smallest currency unit (e.g., 100 cents to charge $1".
-
 
 ## Examples
 
@@ -25,6 +24,7 @@ $tenEuro = $fiveEur->add($fiveEur);
 ```
 
 In a Doctrine entity:
+
 ```php
 // Product.php
 // This will create a MySQL column `price_amount` and `price_currency_code`
@@ -36,17 +36,19 @@ private Money $price;
 ```
 
 Or using our Twig helper function to render values:
+
 ```twig
 {{ cart.subTotal|format_money_decimal() }}    // 5.00
 {{ cart.subTotal|format_money() }}            // €5.00
 ```
 
-⚠️ Currently the Commerce module only supports a single currency: EURO
+!!! warning
 
+    Currently the Commerce module only supports a single currency: EURO
 
 ## Read more
 
-* http://martinfowler.com/eaaCatalog/money.html
-* https://verraes.net/2011/04/fowler-money-pattern-in-php/
-* https://github.com/moneyphp/money/
-* https://www.slideshare.net/PiotrHorzycki/how-to-count-money-using-php-and-not-lose-money
+-   http://martinfowler.com/eaaCatalog/money.html
+-   https://verraes.net/2011/04/fowler-money-pattern-in-php/
+-   https://github.com/moneyphp/money/
+-   https://www.slideshare.net/PiotrHorzycki/how-to-count-money-using-php-and-not-lose-money

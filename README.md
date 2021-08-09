@@ -14,6 +14,10 @@ Admin username: demo@fork-cms.com
 Admin password: demo
 ```
 
+## Documentation
+
+You can find the detailed installation and usage instructions on [the documentation site](https://friends-of-forkcms.github.io/fork-cms-module-commerce/)
+
 ## Capabilities
 
 - Related products

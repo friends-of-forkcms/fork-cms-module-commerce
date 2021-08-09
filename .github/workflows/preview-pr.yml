@@ -6,6 +6,10 @@ on:
 env:
   DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
 
+concurrency:
+  group: preview-pr-${{ github.head_ref }}
+  cancel-in-progress: true
+
 name: Deploy Preview PR
 jobs:
   deploy-preview:

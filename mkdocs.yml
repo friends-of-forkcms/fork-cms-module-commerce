@@ -1,0 +1,86 @@
+# Project information
+site_name: fork-cms-module-commerce
+site_url: https://friends-of-forkcms.github.io/fork-cms-module-commerce/
+site_author: 'Friends of Fork CMS'
+site_description: >-
+   Fork CMS Commerce module allows you to manage a product catalog and create a unique webshop
+
+# Repository
+repo_name: 'friends-of-forkcms/fork-cms-module-commerce'
+repo_url: 'https://github.com/friends-of-forkcms/fork-cms-module-commerce'
+docs_dir: docs/
+
+# See https://squidfunk.github.io/mkdocs-material/setup
+theme:
+  name: 'material'
+  logo: img/logo.svg
+  font: false # system fonts
+  icon:
+    repo: fontawesome/brands/github # use the github icon instead of git icon
+  palette:
+    - scheme: default
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      accent: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - search.suggest
+
+extra_css:
+  - css/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/forkcms
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/fork_cms
+    - icon: fontawesome/brands/slack
+      link: https://fork-cms.herokuapp.com/
+
+# Extensions
+markdown_extensions:
+  - admonition # callouts, https://squidfunk.github.io/mkdocs-material/reference/admonitions/
+  - def_list
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight:
+      use_pygments: true
+      extend_pygments_lang:
+        - name: php
+          lang: php
+          options:
+            startinline: true # Avoid adding <?php on every snippet
+  - pymdownx.inlinehilite # highlight inline code
+  - pymdownx.superfences
+  - pymdownx.magiclink: # MagicLink linkafies URL and email links without having to wrap them in Markdown syntax.
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Page tree
+nav:
+    - Home: index.md
+    - Getting started:
+      - Installation: installation.md
+      - Local development: local-development.md
+      - Frontend theming: frontend-theming.md
+    - Misc:
+      - Preview environments: preview-environments.md
+      - Money pattern: money-pattern.md

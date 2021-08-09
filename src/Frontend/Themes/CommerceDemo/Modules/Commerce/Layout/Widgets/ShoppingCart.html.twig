@@ -8,6 +8,7 @@
     <div
         x-data="{ count: 0 }"
         x-init="count = {{ cart.totalQuantity }}"
+        x-cloak
         @update-cart-quantity.window="count = $event.detail.count"
     >
         <span
