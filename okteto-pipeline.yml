@@ -7,11 +7,12 @@ deploy:
   - cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
 
   # Inject the app label
-  - cd k8s && kustomize edit set label app:$NAME
+  - cd k8s && kustomize edit set label app:$OKTETO_NAME
 
   # Inject the name suffix, e.g. fork-cms-module-commerce-demo-pr-1
-  - if [[ $NAME == *"-pr-"* ]]; then NAMESUFFIX=$(echo $NAME | sed "s/.*-pr-//" | awk '{print "-pr-"$1}') && cd k8s && kustomize edit set namesuffix -- "$NAMESUFFIX"; fi
+  - if [[ $OKTETO_NAME == *"-pr-"* ]]; then NAMESUFFIX=$(echo $OKTETO_NAME | sed "s/.*-pr-//" | awk '{print "-pr-"$1}') && cd k8s && kustomize edit set namesuffix -- "$NAMESUFFIX"; fi
 
   # Deploy Kubernetes manifest using Kustomize.
   # Use envsubst to replace env values, e.g. for injecting the SITE_DOMAIN.
+  - kustomize build ./k8s | envsubst # For debugging
   - kustomize build ./k8s | envsubst | kubectl apply -f -
