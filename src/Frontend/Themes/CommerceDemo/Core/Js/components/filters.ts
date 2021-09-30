@@ -70,7 +70,9 @@ function updateUrl(filters: Map<string, string[]>, sort: string): void {
     Array.from(filters).forEach(([filterName, filterValues]) => urlParams.append(filterName, filterValues.join(',')));
 
     // Reload the page with filters applied
-    window.location.href = `${baseUrl}?${urlParams.toString()}`;
+    setTimeout(() => {
+        window.location.href = `${baseUrl}?${urlParams.toString()}`;
+    }, 50);
 }
 
 /**

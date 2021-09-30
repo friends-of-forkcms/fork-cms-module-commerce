@@ -56,12 +56,6 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         'MediaGroupMediaItem',
         'MediaItem',
     ];
-    protected array $uploadFolders = [
-        PATH_WWW.'/src/Frontend/Files/Commerce/brands',
-        PATH_WWW.'/src/Frontend/Files/Commerce/categories',
-        PATH_WWW.'/src/Frontend/Files/Cache',
-        PATH_WWW.'/src/Frontend/Files/MediaLibrary',
-    ];
 
     public static function getGroups(): array
     {

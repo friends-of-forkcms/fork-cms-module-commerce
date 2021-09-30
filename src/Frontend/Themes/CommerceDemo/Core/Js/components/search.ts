@@ -138,7 +138,7 @@ export async function search(): Promise<void> {
             return requestAjax('Search', 'Autosuggest', {
                 term: query,
             });
-        } catch (ex) {
+        } catch (ex: any) {
             if (ex.name === 'AbortError') {
                 return; // Continuation logic has already been skipped, so return normally
             }

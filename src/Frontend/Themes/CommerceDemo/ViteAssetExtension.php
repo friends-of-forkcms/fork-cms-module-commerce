@@ -2,9 +2,12 @@
 
 namespace Frontend\Themes\CommerceDemo;
 
+use Frontend\Core\Engine\Theme;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -17,28 +20,45 @@ use Twig\TwigFunction;
  */
 class ViteAssetExtension extends AbstractExtension
 {
-    private const VITE_CLIENT = '@vite/client.mjs';
+    private const VITE_CLIENT = '@vite/client';
     private const LEGACY_POLYFILLS = 'vite/legacy-polyfills';
 
     private ?array $manifestData = null;
 
     private ClientInterface $httpClient;
+    private string $environment;
+    private ExceptionListener $exceptionListener;
     private string $basePublicPath;
     private string $manifest;
     private string $devServerPublic;
-    private string $environment;
+    private bool $includeReactRefreshShim;
+    private bool $includeModulePreloadShim;
 
+    // Possible to override with custom values in config.yml
     public function __construct(
-        string $basePublicPath,
-        string $manifest,
-        string $devServerPublic,
-        string $environment
+        string $environment,
+        ExceptionListener $exceptionListener,
+        ?string $basePublicPath = null,
+        ?string $manifest = null,
+        ?string $devServerPublic = null,
+        bool $includeReactRefreshShim = false,
+        bool $includeModulePreloadShim = true
     ) {
+        if (!(defined('APPLICATION') && APPLICATION === 'Frontend')) {
+            return;
+        }
+
+        $theme = Theme::getTheme();
         $this->httpClient = new Client();
-        $this->basePublicPath = $basePublicPath;
-        $this->manifest = $manifest;
-        $this->devServerPublic = $devServerPublic;
         $this->environment = $environment;
+        $this->exceptionListener = $exceptionListener;
+
+        // optional config args
+        $this->basePublicPath = $basePublicPath ?? "/src/Frontend/Themes/$theme/dist/";
+        $this->manifest = $manifest ?? PATH_WWW . "/src/Frontend/Themes/$theme/dist/manifest.json";
+        $this->devServerPublic = $devServerPublic ?? "http://localhost:3000/src/Frontend/Themes/$theme/";
+        $this->includeReactRefreshShim = $includeReactRefreshShim;
+        $this->includeModulePreloadShim = $includeModulePreloadShim;
     }
 
     public function getFunctions(): array
@@ -106,8 +126,23 @@ HTML;
 
     public function renderScriptsDev(string $entryName): string
     {
+        $html = '';
+
+        // Include the react-refresh-shim
+        if ($this->includeReactRefreshShim) {
+            $html .= <<<HTML
+<script type="module">
+  import RefreshRuntime from '{$this->devServerPublic}@react-refresh'
+  RefreshRuntime.injectIntoGlobalHook(window)
+  window.\$RefreshReg$ = () => {}
+  window.\$RefreshSig$ = () => (type) => type
+  window.__vite_plugin_react_preamble_installed__ = true
+</script>
+HTML;
+        }
+
         // Add the vite client script
-        $html = <<<HTML
+        $html .= <<<HTML
 <script type="module" src="{$this->devServerPublic}@vite/client"></script>
 HTML;
 
@@ -124,6 +159,15 @@ HTML;
         // Read manifest file
         $manifest = $this->getManifestData();
         $html = '';
+
+        // Vite automatically generates <link rel="modulepreload"> directives for entry chunks and their
+        // direct imports in the built HTML. Check whether or not the shim for modulepreload-polyfill should
+        // be included to polyfill <link rel="modulepreload">
+        if ($this->includeModulePreloadShim) {
+            $html .= <<<HTML
+<script>!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
+HTML;
+        }
 
         // Detect vite-plugin-legacy
         ['dirname' => $entryDirName, 'filename' => $entryFileName, 'extension' => $entryFileExtension] = pathinfo($entryName);
@@ -172,5 +216,38 @@ HTML;
         }
 
         return $this->manifestData;
+    }
+
+    /**
+     * Inject the error entry point JavaScript for auto-reloading of Twig error pages
+     */
+    public function onKernelException(GetResponseForExceptionEvent $event): void
+    {
+        if (!isset($this->exceptionListener)) {
+            return;
+        }
+
+        // Let the normal exceptionlistener handle the event first
+        $this->exceptionListener->onKernelException($event);
+
+        // Stop here if Vite dev server is not running
+        if (!$this->isDevServerRunning()) {
+            return;
+        }
+
+        // Grab the response of the exception page
+        $content = $event->getResponse()->getContent();
+        if (strpos($content, '<!DOCTYPE html>') !== 0) {
+            // We only want to edit html responses
+            return;
+        }
+
+        // Inject the vite client script in the exception response
+        $html = <<<HTML
+<script type="module" src="{$this->devServerPublic}@vite/client"></script>
+HTML;
+        $event
+            ->getResponse()
+            ->setContent(preg_replace('|<head>|', '<head>' . PHP_EOL . $html, $content, 1));
     }
 }

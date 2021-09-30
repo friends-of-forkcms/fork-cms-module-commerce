@@ -1,5 +1,3 @@
-import 'vite/dynamic-import-polyfill';
-
 // Styles
 import '../Layout/Css/app.css';
 

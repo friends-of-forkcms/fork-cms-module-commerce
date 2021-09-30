@@ -1,6 +1,7 @@
 import * as path from 'path';
-import legacy from '@vitejs/plugin-legacy';
 import ViteRestart from 'vite-plugin-restart';
+import checker from 'vite-plugin-checker';
+import copy from 'rollup-plugin-copy';
 
 const FORK_THEME_BASE_PATH = '/src/Frontend/Themes/' + path.basename(__dirname);
 
@@ -20,14 +21,18 @@ export default ({ command }) => ({
     },
 
     plugins: [
-        // Generate a legacy bundle for non-ESM native browsers
-        legacy({
-            targets: ['defaults', 'not IE 11'],
-        }),
-
         // Reload the Vite server when our (twig) templates changed
         ViteRestart({
             reload: ['Core/Layout/Templates/**/*', 'Modules/**/*'],
+        }),
+
+        // A Vite plugin that can run TypeScript checks in worker thread.
+        checker({ typescript: true }),
+
+        // Ensure a screen.css file exists (which gets loaded by the CMS)
+        copy({
+            hook: 'writeBundle',
+            targets: [{ src: 'dist/assets/app.*.css', dest: 'Core/Layout/Css', rename: () => 'screen.css' }],
         }),
     ],
 
