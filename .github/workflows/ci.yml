@@ -48,3 +48,6 @@ jobs:
 
       - name: Doctrine Schema Validator
         run: docker-compose exec -T app bin/console doctrine:schema:validate --skip-sync
+
+      - name: Run PHPStan
+        run: docker-compose exec -T app bin/phpstan --error-format=github
