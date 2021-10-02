@@ -22,13 +22,13 @@ class ProductDimensionNotification
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="product_dimension_notifications")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="dimension_notifications")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Product $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="product_dimension_notifications")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="dimension_notifications")
      * @ORM\JoinColumn(name="product_option_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?ProductOption $product_option;

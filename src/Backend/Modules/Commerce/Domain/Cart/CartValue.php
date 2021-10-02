@@ -45,7 +45,7 @@ class CartValue
     private ?Product $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension", inversedBy="cart_values")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension")
      * @ORM\JoinColumn(name="product_dimension_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private ?ProductDimension $product_dimension;
