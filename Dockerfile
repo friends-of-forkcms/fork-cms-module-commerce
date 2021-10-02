@@ -80,10 +80,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
 
-# Install yq (a YAML processor). We need this to configure our parameters.yml
-RUN add-apt-repository ppa:rmescandon/yq \
-    && apt-get update \
-    && apt install yq -y
+# Install yq (a YAML processor). We need this to write to our parameters.yml in the entrypoint.
+RUN apt-get update && apt-get install -y wget && \
+    wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_amd64 && \
+    chmod 777 /usr/local/bin/yq
 
 # Install Composer 2
 RUN curl -sS https://getcomposer.org/installer | \
