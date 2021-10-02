@@ -34,7 +34,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache dependencies
+      - name: Install CLI dependencies
+        run: |
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt update
+          sudo apt install yq -y
+
+      - name: Cache PHP dependencies
         uses: actions/cache@v2
         with:
           path: ~/.composer/cache/files
