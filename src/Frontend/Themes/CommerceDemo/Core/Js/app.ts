@@ -3,6 +3,10 @@ import '../Layout/Css/app.css';
 
 // Enable AlpineJS, a minimal framework for adding "just enough" JS behavior to our HTML.
 import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse'
+import persist from '@alpinejs/persist'
+Alpine.plugin(collapse)
+Alpine.plugin(persist)
 window.Alpine = Alpine;
 
 // Components

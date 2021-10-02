@@ -76,6 +76,7 @@
                         {{ form_widget(form.amount, {'attr': {'class': 'w-full flex border-gray-300 text-center'}}) }}
                         {{ form_rest(form) }}
 
+                        <!-- Add to cart button -->
                         {% if product.inStock %}
                             <button
                                 class="btn-cart | w-full bg-gray-800 flex py-2 items-center justify-center hover:bg-gray-600 text-white"
@@ -86,11 +87,13 @@
                         {% endif %}
                     </div>
 
+                    <!-- Add to wishlist -->
                     <div>
                         <a class="block w-5 text-gray-400 transition-colors duration-200 hover:text-yellow-500">
-                            <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M20.84 4.61l1.9475e-07 1.94841e-07c-2.14738-2.14839-5.62979-2.14921-7.77817-.00182601 -.000608683.000608398-.00121722.00121694-.00182562.00182562l-1.06 1.06 -1.06-1.06 3.78705e-07 3.78706e-07c-2.14839-2.14839-5.63161-2.14839-7.78-7.57411e-07 -2.14839 2.14839-2.14839 5.63161-7.57411e-07 7.78 0 0 1.77636e-15 1.77636e-15 1.77636e-15 1.77636e-15l1.06 1.06 7.78 7.78 7.78-7.78 1.06-1.06 9.88459e-08-9.87995e-08c2.14839-2.14738 2.1492-5.62979.00182542-7.77817 -.000608398-.000608683-.00121694-.00121722-.00182562-.00182562Z" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="currentColor" stroke-linejoin="round"></path></svg>
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M20.84 4.61l1.9475e-07 1.94841e-07c-2.14738-2.14839-5.62979-2.14921-7.77817-.00182601 -.000608683.000608398-.00121722.00121694-.00182562.00182562l-1.06 1.06 -1.06-1.06 3.78705e-07 3.78706e-07c-2.14839-2.14839-5.63161-2.14839-7.78-7.57411e-07 -2.14839 2.14839-2.14839 5.63161-7.57411e-07 7.78 0 0 1.77636e-15 1.77636e-15 1.77636e-15 1.77636e-15l1.06 1.06 7.78 7.78 7.78-7.78 1.06-1.06 9.88459e-08-9.87995e-08c2.14839-2.14738 2.1492-5.62979.00182542-7.77817 -.000608398-.000608683-.00121694-.00121722-.00182562-.00182562Z" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="currentColor" stroke-linejoin="round"></path></svg>
                         </a>
                     </div>
+
                     {{ form_end(form) }}
                 </div>
             </div>
@@ -138,12 +141,26 @@
     </ul>
 
     <div>
-        <div id="description" class="tab-pane" x-show="tab === 'description'" x-transition.opacity:enter.duration.300ms>
+        <!-- Description tab -->
+        <div
+            id="description"
+            class="tab-pane"
+            x-show="tab === 'description'"
+            x-transition.opacity.duration.300ms
+            x-transition.opacity:leave.duration.100ms
+        >
             {{ product.text|raw }}
         </div>
 
         {% if product.specificationValues.count > 0 %}
-            <div id="specifications" class="tab-pane" x-show="tab === 'specifications'" x-transition.opacity:enter.duration.300ms>
+            <!-- Specifications tab -->
+            <div
+                id="specifications"
+                class="tab-pane"
+                x-show="tab === 'specifications'"
+                x-transition.opacity.duration.300ms
+                x-transition.opacity:leave.duration.100ms
+            >
                 <table class="table w-full">
                     <tbody>
                         {% for specification in specifications %}
@@ -164,9 +181,16 @@
         {% endif %}
 
         {% if downloads %}
-        <div id="downloads" class="tab-pane" x-show="tab === 'downloads'" x-transition.opacity:enter.duration.300ms>
-            {{ downloads|raw }}
-        </div>
+            <!-- Downloads tab -->
+            <div
+                id="downloads"
+                class="tab-pane"
+                x-show="tab === 'downloads'"
+                x-transition.opacity.duration.300ms
+                x-transition.opacity:leave.duration.100ms
+            >
+                {{ downloads|raw }}
+            </div>
         {% endif %}
     </div>
 </section>

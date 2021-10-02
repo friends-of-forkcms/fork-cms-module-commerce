@@ -92,10 +92,10 @@
                 </tbody>
             </table>
 
-            <div class="shopping-cart-overview-summary | w-full flex flex-row justify-between mt-16">
+            <div class="shopping-cart-overview-summary | mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16 justify-around">
 
                 <!-- Discount code -->
-                <div class="panel-discount | block w-4/12 border border-gray-200 rounded">
+                <div class="panel-discount | block lg:col-span-6 border border-gray-200 rounded">
                     <div class="panel-heading | text-gray-600 bg-gray-100 px-4 py-2 text-md border-gray-200 border-b">{{ 'msg.DoYouHaveADiscountCode'|trans }}</div>
                     <div class="panel-body">
                         <form action="#" method="POST" @submit.prevent="submitDiscountCode">
@@ -132,59 +132,131 @@
                 </div>
 
                 <!-- Cart summary -->
-                <div class="w-5/12">
-                    <table class="w-full max-w-full text-black">
-                        <tbody class="w-full">
+                <div class="lg:col-span-6">
+                    <section aria-labelledby="summary-heading" class="">
+                        <div class="bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8">
+                            <h2 id="summary-heading" class="sr-only">Order summary</h2>
 
-                            <!-- Discounts -->
-                            <template x-for="cartRule in data.cartRules" :key="cartRule.id">
-                                <tr>
-                                    <td class="px-3 py-1">
-                                        <span class="font-bold">{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>: <span x-text="cartRule.code"></span>
-                                        <button
-                                            class="font-bold text-red-500 hover:text-red-400"
-                                            type="button"
-                                            title="{{ 'msg.ConfirmDelete'|trans|format('discount code'|e) }}"
-                                            @click="removeDiscountCodeFromCart(cartRule.id)"
-                                        >&times;</button>
-                                    </td>
-                                    <td class="px-3 py-1 text-right tabular-nums">
-                                        <span x-text="'- ' + formatCurrency(cartRule.total)"></span>
-                                    </td>
-                                </tr>
-                            </template>
+                            <div class="flow-root">
+                                <dl class="-my-4 text-sm">
+                                    <!-- Discounts -->
+                                    <template x-for="cartRule in data.cartRules" :key="cartRule.id">
+                                        <div class="py-4 flex items-center justify-between border-gray-200 border-b">
+                                            <dt class="text-gray-600 flex space-x-1">
+                                                <span>{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>: <span x-text="cartRule.code"></span>
+                                                <button
+                                                    class="font-bold text-red-500 hover:text-red-400"
+                                                    type="button"
+                                                    title="{{ 'msg.ConfirmDelete'|trans|format('discount code'|e) }}"
+                                                    @click="removeDiscountCodeFromCart(cartRule.id)"
+                                                >&times;</button>
+                                            </dt>
+                                            <dd class="font-medium text-gray-900 tabular-nums">
+                                                <span x-text="'- ' + formatCurrency(cartRule.total)"></span>
+                                            </dd>
+                                        </div>
+                                    </template>
 
-                            <!-- Subtotal -->
-                            <tr>
-                                <td class="px-3 py-1">
-                                    <span class="font-bold">{{ 'lbl.SubTotal'|trans|ucfirst }}</span>
-                                    <span class="text-xs text-gray-400">({{ 'lbl.ExcludingVAT'|trans }})</span>
-                                </td>
-                                <td class="px-3 py-1 text-right tabular-nums">
-                                    <span x-text="formatCurrency(data.subTotal)"></span>
-                                </td>
-                            </tr>
+                                    <!-- Subtotal -->
+                                    <div class="py-4 flex items-center justify-between border-gray-200 border-b">
+                                        <dt class="text-gray-600">
+                                            {{ 'lbl.SubTotal'|trans|ucfirst }}
+                                            <span class="text-xs text-gray-400">({{ 'lbl.ExcludingVAT'|trans }})</span>
+                                        </dt>
+                                        <dd class="font-medium text-gray-900 tabular-nums">
+                                            <span x-text="formatCurrency(data.subTotal)"></span>
+                                        </dd>
+                                    </div>
 
-                            <!-- VAT -->
-                            <template x-for="vat in data.vats" :key="vat.id">
-                                <tr>
-                                    <td class="px-3 py-1 font-bold" x-text="'{{ 'lbl.Vat'|trans }} ' + vat.title"></td>
-                                    <td class="px-3 py-1 text-right tabular-nums" x-text="formatCurrency(vat.total)"></td>
-                                </tr>
-                            </template>
+                                    <!-- Shipping -->
+                                    {# TODO #}
+{#                                    <div class="py-4 flex items-center justify-between border-gray-200 border-b">#}
+{#                                        <dt class="text-gray-600">#}
+{#                                            Shipping#}
+{#                                        </dt>#}
+{#                                        <dd class="font-medium text-gray-900 tabular-nums">#}
+{#                                            $5.00#}
+{#                                        </dd>#}
+{#                                    </div>#}
 
-                            <!-- Total -->
-                            <tr>
-                                <td class="px-3 py-1">
-                                    <span class="font-bold">{{ 'lbl.Total'|trans|ucfirst }}</span>
-                                    <span class="text-xs text-gray-400">({{ 'lbl.IncludingVAT'|trans }})</span>
-                                </td>
-                                <td class="px-3 py-1 text-right tabular-nums">
-                                    <strong x-text="formatCurrency(data.total)"></strong>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <!-- VAT -->
+                                    <template x-for="vat in data.vats" :key="vat.id">
+                                        <div class="py-4 flex items-center justify-between border-gray-200 border-b">
+                                            <dt class="text-gray-600" x-text="'{{ 'lbl.Vat'|trans }} ' + vat.title"></dt>
+                                            <dd class="font-medium text-gray-900 tabular-nums" x-text="formatCurrency(vat.total)">
+                                            </dd>
+                                        </div>
+                                    </template>
+
+                                    <!-- Order total -->
+                                    <div class="py-4 flex items-center justify-between">
+                                        <dt class="text-base font-medium text-gray-900">
+                                            <span class="font-bold">{{ 'lbl.Total'|trans|ucfirst }}</span>
+                                            <span class="text-xs text-gray-400">({{ 'lbl.IncludingVAT'|trans }})</span>
+                                        </dt>
+                                        <dd class="text-base font-medium text-gray-900">
+                                            <span x-text="formatCurrency(data.total)"></span>
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+{#                    <table class="w-full max-w-full text-black">#}
+{#                        <tbody class="w-full">#}
+
+{#                            <!-- Discounts -->#}
+{#                            <template x-for="cartRule in data.cartRules" :key="cartRule.id">#}
+{#                                <tr>#}
+{#                                    <td class="px-3 py-1">#}
+{#                                        <span class="font-bold">{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>: <span x-text="cartRule.code"></span>#}
+{#                                        <button#}
+{#                                            class="font-bold text-red-500 hover:text-red-400"#}
+{#                                            type="button"#}
+{#                                            title="{{ 'msg.ConfirmDelete'|trans|format('discount code'|e) }}"#}
+{#                                            @click="removeDiscountCodeFromCart(cartRule.id)"#}
+{#                                        >&times;</button>#}
+{#                                    </td>#}
+{#                                    <td class="px-3 py-1 text-right tabular-nums">#}
+{#                                        <span x-text="'- ' + formatCurrency(cartRule.total)"></span>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                            </template>#}
+
+{#                            <!-- Subtotal -->#}
+{#                            <tr>#}
+{#                                <td class="px-3 py-1">#}
+{#                                    <span class="font-bold">{{ 'lbl.SubTotal'|trans|ucfirst }}</span>#}
+{#                                    <span class="text-xs text-gray-400">({{ 'lbl.ExcludingVAT'|trans }})</span>#}
+{#                                </td>#}
+{#                                <td class="px-3 py-1 text-right tabular-nums">#}
+{#                                    <span x-text="formatCurrency(data.subTotal)"></span>#}
+{#                                </td>#}
+{#                            </tr>#}
+
+{#                            <!-- VAT -->#}
+{#                            <template x-for="vat in data.vats" :key="vat.id">#}
+{#                                <tr>#}
+{#                                    <td class="px-3 py-1 font-bold" x-text="'{{ 'lbl.Vat'|trans }} ' + vat.title"></td>#}
+{#                                    <td class="px-3 py-1 text-right tabular-nums" x-text="formatCurrency(vat.total)"></td>#}
+{#                                </tr>#}
+{#                            </template>#}
+
+{#                            <!-- Total -->#}
+{#                            <tr>#}
+{#                                <td class="px-3 py-1">#}
+{#                                    <span class="font-bold">{{ 'lbl.Total'|trans|ucfirst }}</span>#}
+{#                                    <span class="text-xs text-gray-400">({{ 'lbl.IncludingVAT'|trans }})</span>#}
+{#                                </td>#}
+{#                                <td class="px-3 py-1 text-right tabular-nums">#}
+{#                                    <strong x-text="formatCurrency(data.total)"></strong>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        </tbody>#}
+{#                    </table>#}
                 </div>
             </div>
 
