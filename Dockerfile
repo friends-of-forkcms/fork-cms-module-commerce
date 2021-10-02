@@ -108,6 +108,9 @@ COPY --from=frontend /app/src/Frontend/Themes/$THEME_NAME/Core ./src/Frontend/Th
 # Give apache user write access
 RUN chown -R www-data:www-data /var/www/html
 
+# Set health check to see if container is still doing fine
+HEALTHCHECK --interval=10s --timeout=3s --retries=3  CMD curl -f http://127.0.0.1:80|| exit 1
+
 # This specifies on which port the application will run. This is pure communicative and makes this 12 factor app compliant
 # (see https://12factor.net/port-binding).
 EXPOSE 80 443
