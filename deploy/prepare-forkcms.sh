@@ -7,13 +7,13 @@ mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} <
 # Prepare Fork CMS parameters.yml
 echo "Adding Fork CMS parameters.yml..."
 cp app/config/parameters.yml.test app/config/parameters.yml
-yq write --inplace app/config/parameters.yml 'parameters.[database.host]' '%env(DB_HOST)%'
-yq write --inplace app/config/parameters.yml 'parameters.[database.name]' '%env(DB_NAME)%'
-yq write --inplace app/config/parameters.yml 'parameters.[database.user]' '%env(DB_USER)%'
-yq write --inplace app/config/parameters.yml 'parameters.[database.password]' '%env(DB_PASSWORD)%'
-yq write --inplace app/config/parameters.yml 'parameters.[session.cookie_secure]' 'true'
-yq write --inplace app/config/parameters.yml 'parameters.[site.domain]' '%env(SITE_DOMAIN)%'
-yq write --inplace app/config/parameters.yml 'parameters.[site.protocol]' 'https'
+yq eval --inplace '.parameters."database.host" = "%env(DB_HOST)%"' app/config/parameters.yml
+yq eval --inplace '.parameters."database.name" = "%env(DB_NAME)%"' app/config/parameters.yml
+yq eval --inplace '.parameters."database.user" = "%env(DB_USER)%"' app/config/parameters.yml
+yq eval --inplace '.parameters."database.password" = "%env(DB_PASSWORD)%"' app/config/parameters.yml
+yq eval --inplace '.parameters."session.cookie_secure" = true' app/config/parameters.yml
+yq eval --inplace '.parameters."site.domain" = "%env(SITE_DOMAIN)%"' app/config/parameters.yml
+yq eval --inplace '.parameters."site.protocol" = "https"' app/config/parameters.yml
 
 # Prepare a god avatar. The god avatar is normally installed during the installation process.
 echo "Restore the missing god avatar"
