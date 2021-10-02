@@ -56,4 +56,8 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - run: docker-compose ps
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: |
+          docker ps
+          docker-compose ps
