@@ -15,6 +15,7 @@ name: Deploy Preview PR
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: checkout
         uses: actions/checkout@master
