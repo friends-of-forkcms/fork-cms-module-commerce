@@ -20,6 +20,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
 
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5
+
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
         id: deployment
@@ -27,7 +31,7 @@ jobs:
           token: "${{ github.token }}"
           target_url: "${{ env.PREVIEW_URL }}"
           environment: development
-          ref: "run-unit-tests"
+          ref: "${{ steps.branch-name.outputs.current_branch }}"
 
       - name: Login
         uses: okteto/login@master
