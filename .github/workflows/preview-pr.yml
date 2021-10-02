@@ -26,7 +26,7 @@ jobs:
           token: "${{ github.token }}"
           target_url: "${{ env.PREVIEW_URL }}"
           environment: development
-          ref: "${{ github.ref }}"
+          ref: "run-unit-tests"
 
       - name: Login
         uses: okteto/login@master
