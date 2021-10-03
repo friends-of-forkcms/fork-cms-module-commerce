@@ -265,7 +265,7 @@ class CartValue
         foreach ($this->getCartValueOptions() as $option) {
             if ($option->isImpactTypeAdd()) {
                 $this->price = $this->price->add($option->getPrice());
-            } else if($option->isImpactTypeSubtract()) {
+            } elseif ($option->isImpactTypeSubtract()) {
                 $this->price = $this->price->subtract($option->getPrice());
             }
         }

@@ -566,7 +566,8 @@ class ProductRepository extends EntityRepository
      * @param Locale $locale
      * @return Product[]
      */
-    public function getMostRecent(int $limit, Locale $locale): array {
+    public function getMostRecent(int $limit, Locale $locale): array
+    {
         return $this->createQueryBuilder('i')
             ->where('i.locale = :locale')
             ->orderBy('i.createdOn', 'DESC')
@@ -586,7 +587,8 @@ class ProductRepository extends EntityRepository
     {
         /** @var EntityManager $em */
         $em = FrontendModel::getContainer()->get('doctrine.orm.entity_manager');
-        $items = $em->getConnection()->executeQuery('
+        $items = $em->getConnection()->executeQuery(
+            '
             SELECT
                 p.id,
                 p.title,

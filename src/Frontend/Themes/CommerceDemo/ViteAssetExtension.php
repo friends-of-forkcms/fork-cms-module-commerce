@@ -99,14 +99,14 @@ class ViteAssetExtension extends AbstractExtension
 
         // Render the stylesheet tag. It loads asynchronous because we should have critical css set up.
         $html = '';
-        foreach($css as $cssFile) {
+        foreach ($css as $cssFile) {
             $html .= <<<HTML
 <link href="{$this->basePublicPath}{$cssFile}" rel="stylesheet">
 HTML;
         }
 
         // Render preload links
-        foreach($imports as $importKey) {
+        foreach ($imports as $importKey) {
             $importFile = $manifest[$importKey]['file'];
             $html .= <<<HTML
 <link rel="modulepreload" href="{$this->basePublicPath}{$importFile}"/>
