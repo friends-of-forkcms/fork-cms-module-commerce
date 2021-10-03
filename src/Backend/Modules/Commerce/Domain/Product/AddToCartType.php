@@ -317,7 +317,7 @@ class AddToCartType extends AbstractType
                             HiddenType::class
                         )->addModelTransformer(
                             new CallbackTransformer(
-                            function (?ProductOptionValue $input) {
+                                function (?ProductOptionValue $input) {
                                 $value = null;
 
                                 if ($input) {
@@ -326,7 +326,7 @@ class AddToCartType extends AbstractType
 
                                 return $value;
                             },
-                            function ($reverseTransform) use ($productOption) {
+                                function ($reverseTransform) use ($productOption) {
                                 /**
                                  * @var ProductOptionValueRepository $productOptionValueRepository
                                  */
@@ -334,7 +334,7 @@ class AddToCartType extends AbstractType
 
                                 return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
                             }
-                        )
+                            )
                         )
                     );
 

@@ -41,7 +41,7 @@ class ProductTest extends TestCase
     public function it_can_get_an_active_price_without_vat(): void
     {
         /** @var Product $product */
-        $product = ProductFactory::new()->withPrice('299,99')->withVat(21.00)->create();
+        $product = ProductFactory::new()->withPrice('299.99')->withVat(21.00)->create();
         self::assertEquals('29999', $product->getOldPrice(false)->getAmount());
         self::assertEquals('29999', $product->getActivePrice(false)->getAmount());
     }
@@ -50,7 +50,7 @@ class ProductTest extends TestCase
     public function it_can_get_an_active_price_with_vat_included(): void
     {
         /** @var Product $product */
-        $product = ProductFactory::new()->withPrice('299,99')->withVat(21.00)->create();
+        $product = ProductFactory::new()->withPrice('299.99')->withVat(21.00)->create();
         self::assertEquals('36299', $product->getOldPrice(true)->getAmount());
         self::assertEquals('36299', $product->getActivePrice(true)->getAmount());
     }
@@ -60,9 +60,9 @@ class ProductTest extends TestCase
     {
         /** @var Product $product */
         $product = ProductFactory::new()
-            ->withPrice('299,99')
+            ->withPrice('299.99')
             ->withVat(21.00)
-            ->withNewSpecial('240,00', (new DateTime())->modify('-1 day'))
+            ->withNewSpecial('240.00', (new DateTime())->modify('-1 day'))
             ->create();
         self::assertEquals('29999', $product->getOldPrice(false)->getAmount());
         self::assertEquals('24000', $product->getActivePrice(false)->getAmount());
@@ -74,9 +74,9 @@ class ProductTest extends TestCase
     {
         /** @var Product $product */
         $product = ProductFactory::new()
-            ->withPrice('299,99')
+            ->withPrice('299.99')
             ->withVat(21.00)
-            ->withNewSpecial('240,00', (new DateTime())->modify('-1 day'))
+            ->withNewSpecial('240.00', (new DateTime())->modify('-1 day'))
             ->create();
         self::assertEquals('36299', $product->getOldPrice(true)->getAmount());
         self::assertEquals('29040', $product->getActivePrice(true)->getAmount());
@@ -88,9 +88,9 @@ class ProductTest extends TestCase
     {
         /** @var Product $product */
         $product = ProductFactory::new()
-            ->withPrice('299,99')
+            ->withPrice('299.99')
             ->withVat(21.00)
-            ->withNewSpecial('240,00', (new DateTime())->modify('+2 days'))
+            ->withNewSpecial('240.00', (new DateTime())->modify('+2 days'))
             ->create();
         self::assertEquals('29999', $product->getOldPrice(false)->getAmount());
         self::assertEquals('29999', $product->getActivePrice(false)->getAmount());
@@ -102,9 +102,9 @@ class ProductTest extends TestCase
     {
         /** @var Product $product */
         $product = ProductFactory::new()
-            ->withPrice('299,99')
+            ->withPrice('299.99')
             ->withVat(21.00)
-            ->withNewSpecial('240,00', (new DateTime())->modify('-9 days'), (new DateTime())->modify('-2 days'))
+            ->withNewSpecial('240.00', (new DateTime())->modify('-9 days'), (new DateTime())->modify('-2 days'))
             ->create();
         self::assertEquals('29999', $product->getOldPrice(false)->getAmount());
         self::assertEquals('29999', $product->getActivePrice(false)->getAmount());
@@ -115,29 +115,29 @@ class ProductTest extends TestCase
     public function it_should_calculate_the_current_discount_in_percentage(): void
     {
         $productA = ProductFactory::new()
-            ->withPrice('234,00')
+            ->withPrice('234.00')
             ->withVat(21.00)
-            ->withNewSpecial('208,00', (new DateTime())->modify('-2 days'))
+            ->withNewSpecial('208.00', (new DateTime())->modify('-2 days'))
             ->create();
 
         $productB = ProductFactory::new()
-            ->withPrice('79,00')
+            ->withPrice('79.00')
             ->withVat(21.00)
-            ->withNewSpecial('39,00', (new DateTime())->modify('-2 days'))
+            ->withNewSpecial('39.00', (new DateTime())->modify('-2 days'))
             ->create();
 
         // A product without actual discount
         $productC = ProductFactory::new()
-            ->withPrice('100,00')
+            ->withPrice('100.00')
             ->withVat(21.00)
-            ->withNewSpecial('100,00', (new DateTime())->modify('-2 days'))
+            ->withNewSpecial('100.00', (new DateTime())->modify('-2 days'))
             ->create();
 
         // A product with a sneaky temporary price increase
         $productD = ProductFactory::new()
-            ->withPrice('100,00')
+            ->withPrice('100.00')
             ->withVat(21.00)
-            ->withNewSpecial('120,00', (new DateTime())->modify('-2 days'))
+            ->withNewSpecial('120.00', (new DateTime())->modify('-2 days'))
             ->create();
 
         self::assertEquals('-11%', $productA->getDiscountPercentageFormatted());

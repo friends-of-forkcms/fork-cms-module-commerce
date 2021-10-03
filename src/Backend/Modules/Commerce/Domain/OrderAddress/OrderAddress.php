@@ -32,7 +32,7 @@ class OrderAddress
     private ?Account $account;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Country\Country", inversedBy="addresses")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Country\Country")
      * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Country $country;

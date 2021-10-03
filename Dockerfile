@@ -80,9 +80,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
 
-# Install yq (a YAML processor). We need this to configure our parameters.yml
+# Install yq (a YAML processor). We need this to write to our parameters.yml in the entrypoint.
 RUN apt-get update && apt-get install -y wget && \
-    wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/1.15.0/yq_linux_amd64 && \
+    wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_amd64 && \
     chmod 777 /usr/local/bin/yq
 
 # Install Composer 2
@@ -107,6 +107,9 @@ COPY --from=frontend /app/src/Frontend/Themes/$THEME_NAME/Core ./src/Frontend/Th
 
 # Give apache user write access
 RUN chown -R www-data:www-data /var/www/html
+
+# Set health check to see if container is still doing fine
+HEALTHCHECK --interval=10s --timeout=3s --retries=3  CMD curl -f http://127.0.0.1:80|| exit 1
 
 # This specifies on which port the application will run. This is pure communicative and makes this 12 factor app compliant
 # (see https://12factor.net/port-binding).

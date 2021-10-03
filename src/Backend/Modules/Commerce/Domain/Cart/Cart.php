@@ -410,7 +410,7 @@ class Cart implements JsonSerializable
                 if ($valueOption->isImpactTypeAdd()) {
                     $this->addVat($vat, $vatPrice);
                     $this->total = $this->total->add($vatPrice);
-                } else if ($valueOption->isImpactTypeSubtract()) {
+                } elseif ($valueOption->isImpactTypeSubtract()) {
                     $this->addVat($vat, $vatPrice, true);
                     $this->total = $this->total->subtract($vatPrice);
                 }
