@@ -17,7 +17,7 @@ jobs:
       - name: Run PHP CS Fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
-          args: --rules=@PSR2 --diff --dry-run src
+          args: --rules=@PSR2 src
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
