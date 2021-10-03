@@ -318,22 +318,22 @@ class AddToCartType extends AbstractType
                         )->addModelTransformer(
                             new CallbackTransformer(
                                 function (?ProductOptionValue $input) {
-                                $value = null;
+                                    $value = null;
 
-                                if ($input) {
-                                    $value = $input->getId();
-                                }
+                                    if ($input) {
+                                        $value = $input->getId();
+                                    }
 
-                                return $value;
-                            },
+                                    return $value;
+                                },
                                 function ($reverseTransform) use ($productOption) {
-                                /**
-                                 * @var ProductOptionValueRepository $productOptionValueRepository
-                                 */
-                                $productOptionValueRepository = Model::get('commerce.repository.product_option_value');
+                                    /**
+                                     * @var ProductOptionValueRepository $productOptionValueRepository
+                                     */
+                                    $productOptionValueRepository = Model::get('commerce.repository.product_option_value');
 
-                                return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
-                            }
+                                    return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
+                                }
                             )
                         )
                     );
