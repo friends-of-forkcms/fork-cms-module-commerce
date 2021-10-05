@@ -87,7 +87,7 @@ class EditOrder extends BackendBaseActionEdit
 
         return $form;
     }
-    
+
     private function getOrder(): Order
     {
         /** @var OrderRepository $orderRepository */
