@@ -6,14 +6,16 @@
 <li
     class="mb-4 border-b border-gray-200"
     x-data="{ expanded: $persist(true).as('product-filter-{{ title|lower|url_encode }}-expanded') }"
+    role="region"
 >
     <h3
         class="flex items-center justify-between text-base font-normal text-black capitalize cursor-pointer px-1"
         @click="expanded = !expanded"
+        :aria-expanded="expanded"
     >
         {{ title }}
 
-        <div class="w-4 h-5 text-gray-400 hover:text-gray-500">
+        <div class="w-4 h-5 text-gray-400 hover:text-gray-500" aria-hidden="true">
             <!-- Caret down -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" x-cloak x-show="!expanded">
                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
