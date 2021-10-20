@@ -54,4 +54,4 @@ jobs:
         run: docker-compose exec -T app bin/console doctrine:schema:validate --skip-sync
 
       - name: Run PHPStan
-        run: docker-compose exec -T app bin/phpstan --error-format=github
+        run: docker-compose exec -T app php -d memory_limit=1G bin/phpstan --error-format=github
