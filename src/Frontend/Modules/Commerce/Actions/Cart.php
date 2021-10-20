@@ -16,14 +16,14 @@ use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
 use Frontend\Modules\Commerce\CheckoutProgress;
 use Frontend\Modules\Commerce\CheckoutStep\ChangeStepException;
-use Frontend\Modules\Commerce\CheckoutStep\{AccountStep,
-    AddressesStep,
-    ConfirmOrderStep,
-    LoginStep,
-    OrderPlacedStep,
-    PaymentMethodStep,
-    PayOrderStep,
-    ShipmentMethodStep};
+use Frontend\Modules\Commerce\CheckoutStep\AccountStep;
+use Frontend\Modules\Commerce\CheckoutStep\AddressesStep;
+use Frontend\Modules\Commerce\CheckoutStep\ConfirmOrderStep;
+use Frontend\Modules\Commerce\CheckoutStep\LoginStep;
+use Frontend\Modules\Commerce\CheckoutStep\OrderPlacedStep;
+use Frontend\Modules\Commerce\CheckoutStep\PaymentMethodStep;
+use Frontend\Modules\Commerce\CheckoutStep\PayOrderStep;
+use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethodStep;
 use Frontend\Modules\Profiles\Engine\Authentication;
 use Backend\Modules\Commerce\Domain\Cart\Cart as CartEntity;
 
