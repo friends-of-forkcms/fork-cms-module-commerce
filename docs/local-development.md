@@ -24,7 +24,7 @@ We use [DoctrineFixturesBundle](https://symfony.com/doc/current/bundles/Doctrine
 bin/console doctrine:fixtures:load --append --group=module-commerce
 ```
 
-## Unit tests
+## Unit tests with PHPUnit
 
 We use PHPUnit and create fixture objects using the awesome [zenstruck/foundry](https://github.com/zenstruck/foundry) library. This allows for an readable and expressive, on-demand fixture system to quickly create a certain situation, e.g. `ProductTest.php`. Check out the [Symfonycasts series on Foundry](https://symfonycasts.com/screencast/symfony-doctrine/foundry).
 
@@ -42,4 +42,17 @@ public function it_can_get_a_discounted_price_with_vat(): void
 }
 ```
 
-To run the backend tests, simply let PHPUnit run all tests in the `src/Backend/Modules/Commerce/Tests` directory.
+To run the all module tests, simply run `simple-phpunit` using the filter option to run both backend and frontend tests:
+
+```bash
+bin/simple-phpunit --filter '\\Modules\\Commerce\\'
+```
+
+or run them from PhpStorm: 
+
+1. Go to 'Add Configuration' > 'New configuration' > 'PHPUnit'
+2. Enter a name and select 'Test scope: Defined in the configuration file'
+3. Enter a filter in the Test runner options: `--filter '\\Modules\\Commerce\\'` to run both frontend and backend tests.
+4. Run the tests from PhpStorm using the green play button
+
+![PhpStorm configured to run fork-cms-module-commerce tests](img/PhpStorm-phpunit-config.png)
