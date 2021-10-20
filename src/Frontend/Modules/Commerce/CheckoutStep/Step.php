@@ -21,80 +21,21 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 abstract class Step
 {
     public static string $stepIdentifier;
+    protected string $name;
+    protected bool $active = false;
+    protected bool $current = false;
+    protected bool $complete = false;
+    protected bool $reachable = false;
+    protected bool $showInBreadcrumbs = true;
+    protected Step $previousStep;
+    protected Step $nextStep;
+    protected TwigTemplate $template;
+    protected Cart $cart;
+    protected SessionInterface $session;
+    protected CheckoutProgress $checkoutProgress;
+    protected CommerceAccount $account;
+    protected array $jsFiles = [];
 
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var bool
-     */
-    protected $active = false;
-
-    /**
-     * @var bool
-     */
-    protected $current = false;
-
-    /**
-     * @var bool
-     */
-    protected $complete = false;
-
-    /**
-     * @var bool
-     */
-    protected $reachable = false;
-
-    /**
-     * @var bool
-     */
-    protected $showBreadcrumbs = true;
-
-    /**
-     * @var Step
-     */
-    protected $previousStep;
-
-    /**
-     * @var Step
-     */
-    protected $nextStep;
-
-    /**
-     * @var TwigTemplate
-     */
-    protected $template;
-
-    /**
-     * @var Cart
-     */
-    protected $cart;
-
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
-     * @var CheckoutProgress
-     */
-    protected $checkoutProgress;
-
-    /**
-     * @var CommerceAccount
-     */
-    protected $account;
-
-    /**
-     * @var array
-     */
-    protected $jsFiles = [];
-
-    /**
-     * Step constructor.
-     */
     public function __construct()
     {
         $this->template = Model::get('templating');
@@ -104,11 +45,11 @@ abstract class Step
         $this->init();
     }
 
-    public function init()
+    public function init(): void
     {
     }
 
-    public function setStepName(string $name)
+    public function setStepName(string $name): void
     {
         $this->name = $name;
     }
@@ -120,7 +61,7 @@ abstract class Step
 
     public function isReachable(): bool
     {
-        if ($this->previousStep) {
+        if (isset($this->previousStep)) {
             $this->reachable = $this->previousStep->isComplete();
         }
 
@@ -142,19 +83,19 @@ abstract class Step
         $this->current = $current;
     }
 
-    public function invalidateStep()
+    public function invalidateStep(): void
     {
-        if ($this->nextStep) {
+        if (isset($this->nextStep)) {
             $this->nextStep->invalidateStep();
         }
     }
 
-    protected function goToStep(string $class)
+    protected function goToStep(string $class): void
     {
         exit();
     }
 
-    public function render()
+    public function render(): string
     {
         $name = class_basename($this);
         $flashErrors = [];
@@ -163,6 +104,8 @@ abstract class Step
             $flashErrors = $this->session->get('flash_errors', []);
             $this->session->remove('flash_errors');
         }
+
+        $this->cart->calculateTotals();
 
         $this->template->assign('flashErrors', $flashErrors);
         $this->template->assign('cart', $this->cart);
@@ -221,15 +164,12 @@ abstract class Step
         return $this->get('commerce.repository.account');
     }
 
-    /**
-     * Get the cart repository.
-     */
     protected function getCartRepository(): CartRepository
     {
         return $this->get('commerce.repository.cart');
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return static::$stepIdentifier;
     }
@@ -280,9 +220,9 @@ abstract class Step
         return $this->nextStep;
     }
 
-    public function showBreadcrumbs(): bool
+    public function shouldShowInBreadcrumbs(): bool
     {
-        return $this->showBreadcrumbs;
+        return $this->showInBreadcrumbs;
     }
 
     /**

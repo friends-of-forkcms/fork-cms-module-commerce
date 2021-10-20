@@ -9,36 +9,22 @@ use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Language as FL;
-use Frontend\Modules\Commerce\CheckoutStep\Account as AccountStep;
+use Frontend\Modules\Commerce\CheckoutStep\AccountStep as AccountStep;
 use Frontend\Modules\Profiles\Engine\Authentication;
 use Frontend\Modules\Profiles\Engine\Authentication as FrontendProfilesAuthentication;
 use Frontend\Modules\Profiles\Engine\Model as FrontendProfilesModel;
+use SpoonFilter;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 
-class Login extends Step
+class LoginStep extends Step
 {
-    /**
-     * @var string
-     */
-    public static $stepIdentifier = 'login';
+    public static string $stepIdentifier = 'login';
+    protected bool $reachable = true;
+    protected bool $showInBreadcrumbs = true;
+    private Form $loginForm;
 
-    /**
-     * @var bool
-     */
-    protected $reachable = true;
-
-    /**
-     * @var bool
-     */
-    protected $showBreadcrumbs = false;
-
-    /**
-     * @var Form
-     */
-    private $loginForm;
-
-    public function init()
+    public function init(): void
     {
         $this->setStepName('Login');
 
@@ -46,15 +32,12 @@ class Login extends Step
         $this->complete = true;
     }
 
-    /**
-     * @throws ChangeStepException
-     */
     public function execute(): void
     {
         $this->loginForm = $this->handleLoginForm($this->getLoginForm());
     }
 
-    public function render()
+    public function render(): string
     {
         $this->template->assign('loginForm', $this->loginForm->createView());
         $this->template->assign('accountUrl', $this->getAccountUrl());
@@ -62,9 +45,6 @@ class Login extends Step
         return parent::render();
     }
 
-    /**
-     * Get the login form.
-     */
     private function getLoginForm(): Form
     {
         $form = $this->createForm(AccountLoginType::class);
@@ -74,9 +54,6 @@ class Login extends Step
         return $form;
     }
 
-    /**
-     * @throws ChangeStepException
-     */
     private function handleLoginForm(Form $form): Form
     {
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +63,7 @@ class Login extends Step
 
             if (!FrontendProfilesModel::verifyPassword($email, $password)) {
                 $errorString = sprintf(
-                    Language::getError('Profiles'.\SpoonFilter::toCamelCase(FrontendProfilesAuthentication::LOGIN_INVALID).'Login'),
+                    Language::getError('Profiles'. SpoonFilter::toCamelCase(FrontendProfilesAuthentication::LOGIN_INVALID).'Login'),
                     Navigation::getUrlForBlock('Profiles', 'ResendActivation')
                 );
 
@@ -98,7 +75,7 @@ class Login extends Step
             $loginStatus = FrontendProfilesAuthentication::getLoginStatus($email, $password);
             if ($loginStatus !== FrontendProfilesAuthentication::LOGIN_ACTIVE) {
                 $errorString = sprintf(
-                    FL::getError('Profiles'.\SpoonFilter::toCamelCase($loginStatus).'Login'),
+                    FL::getError('Profiles'. SpoonFilter::toCamelCase($loginStatus).'Login'),
                     FrontendNavigation::getUrlForBlock('Profiles', 'ResendActivation')
                 );
 
@@ -141,6 +118,6 @@ class Login extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('Login'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('Login'));
     }
 }

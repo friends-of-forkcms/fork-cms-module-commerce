@@ -1,5 +1,5 @@
-import Splide from '@splidejs/splide';
-import Video from '@splidejs/splide-extension-video';
+import { Splide } from '@splidejs/splide';
+import { Video } from '@splidejs/splide-extension-video';
 
 import '@splidejs/splide/dist/css/splide.min.css';
 import '@splidejs/splide-extension-video/dist/css/splide-extension-video.min.css';
@@ -40,6 +40,6 @@ export default (carouselSelector: string): void => {
         waitForTransition: false,
     });
 
-    // Connect the primary slider to the second one.
+    // Connect the primary slider to the second one, and mount the video plugin.
     primarySlider.sync(thumbnailSlider).mount({ Video });
 };

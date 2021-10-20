@@ -43,12 +43,12 @@ class AccountCustomerDataTransferObject
     /**
      * @Assert\Valid
      */
-    public AccountAddressDataTransferObject $shipment_address;
+    public $shipment_address;
 
     /**
      * @Assert\Valid(groups={"DifferentInvoiceAddress"})
      */
-    public AccountAddressDataTransferObject $invoice_address;
+    public $invoice_address;
 
     public bool $same_invoice_address = true;
 

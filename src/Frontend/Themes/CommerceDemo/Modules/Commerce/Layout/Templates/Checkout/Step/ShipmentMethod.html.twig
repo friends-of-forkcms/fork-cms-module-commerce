@@ -1,0 +1,11 @@
+{% form_theme form with ["Commerce/Layout/Templates/FormHelper.html.twig"] %}
+
+{{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+  <div class="row">
+    <div class="col-md-12">
+      {{ form_widget(form.shipment_method) }}
+      {{ form_errors(form.shipment_method) }}
+    </div>
+  </div>
+  {% include 'Commerce/Layout/Templates/Checkout/Step/_partials/StepFooter.html.twig' with {checkoutStep: 'shipmentMethod', checkoutStepValueSelector : '.radio input:checked + label'} %}
+{{ form_end(form) }}

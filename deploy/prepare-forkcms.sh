@@ -39,6 +39,9 @@ composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'ze
 curl -sL https://github.com/friends-of-forkcms/fork-cms-module-sitemaps/archive/master.tar.gz | tar xz --strip-components 1
 bin/console forkcms:install:module Sitemaps
 
+# Install the Profiles module
+bin/console forkcms:install:module Profiles
+
 # Install the Commerce module
 bin/console forkcms:install:module Commerce
 

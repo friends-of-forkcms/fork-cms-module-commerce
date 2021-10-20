@@ -9,7 +9,7 @@ use Frontend\Core\Language\Language;
 use Frontend\Modules\Profiles\Engine\Authentication;
 use Symfony\Component\Form\Form;
 
-class ConfirmOrder extends Step
+class ConfirmOrderStep extends Step
 {
     public static string $stepIdentifier = 'confirmOrder';
     private Form $form;
@@ -43,22 +43,22 @@ class ConfirmOrder extends Step
         if (Authentication::isLoggedIn()) {
             $this->template->assign(
                 'addressUrl',
-                $this->checkoutProgress->getUrlByIdentifier(Addresses::$stepIdentifier)
+                $this->checkoutProgress->getUrlByIdentifier(AddressesStep::$stepIdentifier)
             );
         } else {
             $this->template->assign(
                 'addressUrl',
-                $this->checkoutProgress->getUrlByIdentifier(Account::$stepIdentifier)
+                $this->checkoutProgress->getUrlByIdentifier(AccountStep::$stepIdentifier)
             );
         }
 
         $this->template->assign(
             'shipmentMethodUrl',
-            $this->checkoutProgress->getUrlByIdentifier(ShipmentMethod::$stepIdentifier)
+            $this->checkoutProgress->getUrlByIdentifier(ShipmentMethodStep::$stepIdentifier)
         );
         $this->template->assign(
             'paymentMethodUrl',
-            $this->checkoutProgress->getUrlByIdentifier(PaymentMethod::$stepIdentifier)
+            $this->checkoutProgress->getUrlByIdentifier(PaymentMethodStep::$stepIdentifier)
         );
 
         return parent::render();

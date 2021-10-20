@@ -18,7 +18,7 @@ h3 {
     background: #fff !important;
 }
 
-/* Override the Splide carousel style */
+/* Override the Splide carousel style to make the arrows prettier */
 .splide__arrow {
     opacity: 1 !important;
     border-radius: inherit !important;
@@ -30,6 +30,7 @@ h3 {
 .splide__arrow svg {
     width: inherit !important;
     height: inherit !important;
+    fill: none !important;
 }
 
 .splide--nav > .splide__track > .splide__list > .splide__slide.is-active {

@@ -1,0 +1,66 @@
+{% form_theme loginForm with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
+
+<div class="grid-cols-2 gap-4 md:grid">
+    <!-- Existing customer -->
+    <div class="p-8 bg-gray-100">
+        <div class="panel-heading">
+            <h2 class="mb-4 text-lg">
+                {{ 'lbl.ExistingCustomer'|trans|ucfirst }}
+            </h2>
+        </div>
+        <div class="panel-body">
+            {# prettier-ignore #}
+            {{ form_start(loginForm, { 'attr': {'class': 'space-y-6'} }) }}
+
+            <!-- email address -->
+            {{ form_row(loginForm.email) }}
+
+            <!-- password -->
+            {{ form_row(loginForm.password) }}
+
+            <!-- Remember me & forget password -->
+            <div class="flex items-center justify-between">
+                {{ form_row(loginForm.remember) }}
+
+                <div class="text-sm text-gray-500 transition-colors duration-200 hover:text-gray-900">
+                    <a href="{{ geturlforblock('Profiles', 'ForgotPassword') }}" title="{{ 'msg.ForgotPassword'|trans }}">
+                        {{ 'msg.ForgotPassword'|trans }}
+                    </a>
+                </div>
+            </div>
+
+            {{ form_rest(loginForm) }}
+
+            <button type="submit"
+                class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600"
+                data-checkout-step="login-or-guest"
+                data-checkout-step-value="login">
+                {{ 'lbl.Login'|trans|ucfirst }}
+            </button>
+
+            {{ form_end(loginForm) }}
+        </div>
+    </div>
+
+    <!-- New Customer -->
+    <div class="p-8 bg-gray-100">
+        <div class="panel-heading">
+            <h2 class="mb-4 text-lg">
+                {{ 'lbl.ContinueOrRegister'|trans|ucfirst }}
+            </h2>
+        </div>
+        <div class="panel-body">
+            <p class="mb-10">
+                {{ 'msg.NewCustomerCheckoutDescription'|trans|raw }}
+            </p>
+            <p>
+                <a href="{{ accountUrl }}"
+                    class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600"
+                    data-checkout-step="login-or-guest"
+                    data-checkout-step-value="guest">
+                    {{ 'lbl.ContinueWithoutLogin'|trans|ucfirst }}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>

@@ -7,11 +7,11 @@ use Common\Uri;
 use Frontend\Core\Engine\Model as FrontendModel;
 use Frontend\Core\Language\Language;
 
-class OrderPlaced extends Step
+class OrderPlacedStep extends Step
 {
-    public static $stepIdentifier = 'orderPlaced';
+    public static string $stepIdentifier = 'orderPlaced';
 
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('Thanks'));
     }

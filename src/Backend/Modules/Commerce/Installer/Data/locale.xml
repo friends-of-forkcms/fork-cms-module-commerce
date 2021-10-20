@@ -1466,26 +1466,6 @@
         <translation language="nl"><![CDATA[afrekenen]]></translation>
         <translation language="en"><![CDATA[checkout]]></translation>
       </item>
-      <item type="label" name="Step1HowToPay">
-        <translation language="nl"><![CDATA[stap 1: gewenste manier van afrekenen]]></translation>
-        <translation language="en"><![CDATA[step 1: required way to checkout]]></translation>
-      </item>
-      <item type="label" name="Step2Addresses">
-        <translation language="nl"><![CDATA[stap 2: adressen]]></translation>
-        <translation language="en"><![CDATA[step 2: addresses]]></translation>
-      </item>
-      <item type="label" name="Step4ShipmentMethod">
-        <translation language="nl"><![CDATA[stap 4: verzendmethode]]></translation>
-        <translation language="en"><![CDATA[step 4: shipment method]]></translation>
-      </item>
-      <item type="label" name="Step5PaymentMethod">
-        <translation language="nl"><![CDATA[stap 5: betaalmethode]]></translation>
-        <translation language="en"><![CDATA[step 5: payment method]]></translation>
-      </item>
-      <item type="label" name="Step6ConfirmOrder">
-        <translation language="nl"><![CDATA[stap 6: bevestig bestelling]]></translation>
-        <translation language="en"><![CDATA[step 6: confirm order]]></translation>
-      </item>
       <item type="label" name="IAcceptTermsAndConditions">
         <translation language="nl"><![CDATA[ik ga akkoord met de <a href="/algemene-voorwaarden" target="_blank">algemene voorwaarden</a>.]]></translation>
         <translation language="en"><![CDATA[i accept the <a href="/terms-and-conditions" target="_blank">terms and conditions</a>.]]></translation>
@@ -1493,6 +1473,10 @@
       <item type="label" name="NewCustomer">
         <translation language="nl"><![CDATA[nieuwe klant]]></translation>
         <translation language="en"><![CDATA[new customer]]></translation>
+      </item>
+      <item type="label" name="ContinueOrRegister">
+        <translation language="nl"><![CDATA[doorgaan / registreren]]></translation>
+        <translation language="en"><![CDATA[continue / register]]></translation>
       </item>
       <item type="label" name="SignUp">
         <translation language="nl"><![CDATA[registreren]]></translation>
@@ -1531,12 +1515,12 @@
         <translation language="en"><![CDATA[street]]></translation>
       </item>
       <item type="label" name="HouseNumber">
-        <translation language="nl"><![CDATA[huisnummer]]></translation>
-        <translation language="en"><![CDATA[house number]]></translation>
+        <translation language="nl"><![CDATA[nr.]]></translation>
+        <translation language="en"><![CDATA[nr.]]></translation>
       </item>
       <item type="label" name="HouseNumberAddition">
-        <translation language="nl"><![CDATA[huisnummer toevoeging]]></translation>
-        <translation language="en"><![CDATA[house number addition]]></translation>
+        <translation language="nl"><![CDATA[bus]]></translation>
+        <translation language="en"><![CDATA[apartment, suite, etc.]]></translation>
       </item>
       <item type="label" name="City">
         <translation language="nl"><![CDATA[plaats]]></translation>
@@ -1650,14 +1634,6 @@
         <translation language="nl"><![CDATA[offerte aanvragen]]></translation>
         <translation language="en"><![CDATA[request quote]]></translation>
       </item>
-      <item type="label" name="Step1AddressDetails">
-        <translation language="nl"><![CDATA[stap 1: adresgegevens]]></translation>
-        <translation language="en"><![CDATA[step 1: address details]]></translation>
-      </item>
-      <item type="label" name="Step2YourQuoteRequest">
-        <translation language="nl"><![CDATA[stap 2: uw offerte aanvraag]]></translation>
-        <translation language="en"><![CDATA[step 2: your quote reqeust]]></translation>
-      </item>
       <item type="label" name="YourQuoteRequestMailSubject">
         <translation language="nl"><![CDATA[uw offerte aanvraag]]></translation>
         <translation language="en"><![CDATA[your quote request]]></translation>
@@ -1671,8 +1647,8 @@
         <translation language="en"><![CDATA[Thank you for your quote request. We will contact you as soon as possible. Bellow you will find the quote request.]]></translation>
       </item>
       <item type="label" name="AddressDetails">
-        <translation language="nl"><![CDATA[adresgegevens]]></translation>
-        <translation language="en"><![CDATA[address details]]></translation>
+        <translation language="nl"><![CDATA[jouw adresgegevens]]></translation>
+        <translation language="en"><![CDATA[your address details]]></translation>
       </item>
       <item type="label" name="QuoteDetails">
         <translation language="nl"><![CDATA[offertegegevens]]></translation>
@@ -1851,12 +1827,8 @@
         <translation language="en"><![CDATA[optional]]></translation>
       </item>
       <item type="label" name="ContinueWithoutLogin">
-        <translation language="nl"><![CDATA[doorgaan zonder in te loggen]]></translation>
-        <translation language="en"><![CDATA[continue without login]]></translation>
-      </item>
-      <item type="label" name="ContinueWithoutLogin">
-        <translation language="nl"><![CDATA[doorgaan zonder in te loggen]]></translation>
-        <translation language="en"><![CDATA[continue without login]]></translation>
+        <translation language="nl"><![CDATA[registreren of doorgaan zonder account]]></translation>
+        <translation language="en"><![CDATA[register or continue without account]]></translation>
       </item>
       <item type="label" name="ChangeShipmentMethod">
         <translation language="nl"><![CDATA[verander verzendmethode]]></translation>
@@ -1899,8 +1871,8 @@
         <translation language="en"><![CDATA[pay order]]></translation>
       </item>
       <item type="label" name="SameInvoiceAddress">
-        <translation language="nl"><![CDATA[zelfde factuur adres]]></translation>
-        <translation language="en"><![CDATA[same invoice address]]></translation>
+        <translation language="nl"><![CDATA[factuur- en verzendadres zijn hetzelfde]]></translation>
+        <translation language="en"><![CDATA[same as shipping information]]></translation>
       </item>
       <item type="label" name="ConfirmationOfYourOrder">
         <translation language="nl"><![CDATA[bevestig van je bestelling: %s]]></translation>
@@ -1987,12 +1959,12 @@
         <translation language="en"><![CDATA[your zip code]]></translation>
       </item>
       <item type="label" name="YourHouseNumber">
-        <translation language="nl"><![CDATA[jouw huisnummer]]></translation>
-        <translation language="en"><![CDATA[your house number]]></translation>
+        <translation language="nl"><![CDATA[nr.]]></translation>
+        <translation language="en"><![CDATA[nr.]]></translation>
       </item>
       <item type="label" name="YourHouseNumberAddition">
-        <translation language="nl"><![CDATA[jouw huisnummer toevoeging (optioneel)]]></translation>
-        <translation language="en"><![CDATA[your house number addition]]></translation>
+        <translation language="nl"><![CDATA[bus (optioneel)]]></translation>
+        <translation language="en"><![CDATA[your apartment, suite, etc.]]></translation>
       </item>
       <item type="label" name="YourStreet">
         <translation language="nl"><![CDATA[jouw straatnaam]]></translation>
@@ -2139,12 +2111,12 @@
         <translation language="en"><![CDATA[This value is invalid.]]></translation>
       </item>
       <item type="message" name="NewCustomerCheckoutDescription">
-        <translation language="nl"><![CDATA[Plaats uw bestelling als een nieuwe klant. Wilt u vaker bij ons bestellen? Maak dan direct een account aan zodat u sneller kunt afrekenen.]]></translation>
-        <translation language="en"><![CDATA[Place your order as a new customer. Would you like to order more? Create an account for a faster checkout.]]></translation>
+        <translation language="nl"><![CDATA[<strong>Je kan ook een bestelling plaatsen zonder een account aan te maken.</strong> <br /><br />Nog geen account? Via onderstaande knop kan je ervoor kiezen om een account aan te maken. Je kan eventueel ook bestellen zonder te registreren. ]]></translation>
+        <translation language="en"><![CDATA[<strong>You can also place an order without creating an account.</strong><br /><br />No account yet? Using the button below you can choose to create an account. You can also order without registering. ]]></translation>
       </item>
       <item type="label" name="ContactDetails">
-        <translation language="nl"><![CDATA[contactgegevens]]></translation>
-        <translation language="en"><![CDATA[contact details]]></translation>
+        <translation language="nl"><![CDATA[jouw persoonlijke gegevens]]></translation>
+        <translation language="en"><![CDATA[your contact details]]></translation>
       </item>
       <item type="label" name="RepeatPassword">
         <translation language="nl"><![CDATA[herhaal wachtwoord]]></translation>

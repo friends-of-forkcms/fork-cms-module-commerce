@@ -12,16 +12,16 @@ use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Symfony\Component\Form\Form;
 
-class PaymentMethod extends Step
+class PaymentMethodStep extends Step
 {
-    public static $stepIdentifier = 'paymentMethod';
+    public static string $stepIdentifier = 'paymentMethod';
 
     /**
      * @var Form
      */
     private $form;
 
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('PaymentMethod'));
 
@@ -47,7 +47,7 @@ class PaymentMethod extends Step
         }
     }
 
-    public function render()
+    public function render(): string
     {
         $this->template->assign('form', $this->form->createView());
 
@@ -71,7 +71,7 @@ class PaymentMethod extends Step
         return $form;
     }
 
-    public function invalidateStep()
+    public function invalidateStep(): void
     {
         // Clear the payment method data because these are based on our shipment option
         $this->cart->setPaymentMethod(null);

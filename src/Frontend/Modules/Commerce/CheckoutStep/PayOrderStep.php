@@ -19,11 +19,11 @@ use Common\Uri;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 
-class PayOrder extends Step
+class PayOrderStep extends Step
 {
-    public static $stepIdentifier = 'payOrder';
+    public static string $stepIdentifier = 'payOrder';
 
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('Pay'));
 
@@ -250,7 +250,7 @@ class PayOrder extends Step
         }
     }
 
-    public function render()
+    public function render(): string
     {
         return '';
     }
@@ -290,7 +290,7 @@ class PayOrder extends Step
         }
 
         /**
-         * @var ConfirmOrder $class
+         * @var ConfirmOrderStep $class
          */
         $class = new $className($method[0], $method[1]);
 

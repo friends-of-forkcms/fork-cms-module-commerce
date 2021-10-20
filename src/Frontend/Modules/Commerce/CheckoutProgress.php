@@ -6,15 +6,10 @@ use Frontend\Modules\Commerce\CheckoutStep\Step;
 
 class CheckoutProgress
 {
-    /**
-     * @var Step[]
-     */
-    private $steps = [];
-
-    /**
-     * @var array
-     */
-    private $urls = [];
+    /** @var array<int, Step> */
+    private array $steps = [];
+    /** @var array<string, string> */
+    private array $urls = [];
 
     public function addStep(Step $step): CheckoutProgress
     {
@@ -43,11 +38,9 @@ class CheckoutProgress
     }
 
     /**
-     * @param $url
-     *
      * @return bool|Step
      */
-    public function getStepByUrl($url)
+    public function getStepByUrl(string $url)
     {
         if (!array_key_exists($url, $this->urls)) {
             return false;
@@ -56,12 +49,7 @@ class CheckoutProgress
         return $this->steps[$this->urls[$url]];
     }
 
-    /**
-     * @param $identifier
-     *
-     * @return mixed
-     */
-    public function getUrlByIdentifier($identifier)
+    public function getUrlByIdentifier(string $identifier): string
     {
         return $this->steps[$identifier]->getUrl();
     }

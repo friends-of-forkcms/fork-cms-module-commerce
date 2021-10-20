@@ -15,15 +15,15 @@ use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
 use Frontend\Modules\Commerce\CheckoutProgress;
-use Frontend\Modules\Commerce\CheckoutStep\Account as AccountStep;
-use Frontend\Modules\Commerce\CheckoutStep\Addresses as AddressesStep;
 use Frontend\Modules\Commerce\CheckoutStep\ChangeStepException;
-use Frontend\Modules\Commerce\CheckoutStep\ConfirmOrder as ConfirmOrderStep;
-use Frontend\Modules\Commerce\CheckoutStep\Login as LoginStep;
-use Frontend\Modules\Commerce\CheckoutStep\OrderPlaced as OrderPlacedStep;
-use Frontend\Modules\Commerce\CheckoutStep\PaymentMethod as PaymentMethodStep;
-use Frontend\Modules\Commerce\CheckoutStep\PayOrder as PayOrderStep;
-use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethod as ShipmentMethodStep;
+use Frontend\Modules\Commerce\CheckoutStep\{AccountStep,
+    AddressesStep,
+    ConfirmOrderStep,
+    LoginStep,
+    OrderPlacedStep,
+    PaymentMethodStep,
+    PayOrderStep,
+    ShipmentMethodStep};
 use Frontend\Modules\Profiles\Engine\Authentication;
 use Backend\Modules\Commerce\Domain\Cart\Cart as CartEntity;
 
@@ -108,13 +108,15 @@ class Cart extends FrontendBaseBlock
         $checkoutProgress = new CheckoutProgress();
 
         if (!Authentication::isLoggedIn()) {
-            $checkoutProgress->addStep(new LoginStep())
+            $checkoutProgress
+                ->addStep(new LoginStep())
                 ->addStep(new AccountStep());
         } else {
             $checkoutProgress->addStep(new AddressesStep());
         }
 
-        $checkoutProgress->addStep(new ShipmentMethodStep())
+        $checkoutProgress
+            ->addStep(new ShipmentMethodStep())
             ->addStep(new PaymentMethodStep())
             ->addStep(new ConfirmOrderStep())
             ->addStep(new PayOrderStep())
@@ -150,7 +152,7 @@ class Cart extends FrontendBaseBlock
             $this->redirect($url);
         }
 
-        $this->template->assign('steps', $checkoutProgress->getSteps());
+        $this->template->assign('checkoutProgress', $checkoutProgress);
         $this->template->assign('currentStep', $currentStep);
     }
 

@@ -143,7 +143,8 @@
                                     <template x-for="cartRule in data.cartRules" :key="cartRule.id">
                                         <div class="py-4 flex items-center justify-between border-gray-200 border-b">
                                             <dt class="text-gray-600 flex space-x-1">
-                                                <span>{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>: <span x-text="cartRule.code"></span>
+                                                <span>{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>
+                                                <span x-text="cartRule.code" class="ml-2 rounded-full bg-gray-200 text-xs text-gray-600 py-0.5 px-2 tracking-wide"></span>
                                                 <button
                                                     class="font-bold text-red-500 hover:text-red-400"
                                                     type="button"

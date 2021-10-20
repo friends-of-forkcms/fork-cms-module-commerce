@@ -10,16 +10,16 @@ use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Symfony\Component\Form\Form;
 
-class ShipmentMethod extends Step
+class ShipmentMethodStep extends Step
 {
-    public static $stepIdentifier = 'shipmentMethod';
+    public static string $stepIdentifier = 'shipmentMethod';
 
     /**
      * @var Form
      */
     private $shipmentForm;
 
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('ShipmentMethod'));
 
@@ -57,7 +57,7 @@ class ShipmentMethod extends Step
         return $reachable;
     }
 
-    public function render()
+    public function render(): string
     {
         $this->template->assign('form', $this->shipmentForm->createView());
 
@@ -79,7 +79,7 @@ class ShipmentMethod extends Step
         return $form;
     }
 
-    public function invalidateStep()
+    public function invalidateStep(): void
     {
         // Clear cart details
         $this->cart->setShipmentMethod(null);

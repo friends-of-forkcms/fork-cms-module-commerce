@@ -1,0 +1,29 @@
+<div class="container px-6 py-3 mx-auto mb-12">
+    <h1 class="mb-8 text-2xl">
+        {{ 'lbl.Checkout'|trans|ucfirst }}
+    </h1>
+
+    <!-- Checkout progress navigation -->
+    <nav class="p-4 mb-8 bg-gray-100">
+        <ol class="flex flex-row space-x-4 list-decimal list-inside">
+            {% for key, step in checkoutProgress.steps %}
+                {% if step.shouldShowInBreadcrumbs == true %}
+                    <li class="{% if step.isCurrent %}font-bold{% endif %}">
+                        {% if step.reachable and step.complete and not step.current %}
+                            <a href="{{ checkoutProgress.getUrlByIdentifier(key) }}" class="hover:underline">{{ step.stepName|ucfirst }}</a>
+                        {% else %}
+                            {{ step.stepName|ucfirst }}
+                        {% endif %}
+
+                        {% if not loop.last %}
+                            &nbsp;&nbsp;&nbsp;›
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
+
+    {# Render the current step depending on the url #}
+    {{ currentStep.render()|raw }}
+</div>

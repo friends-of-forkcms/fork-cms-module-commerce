@@ -1,0 +1,34 @@
+<h1>Bestelling afgerond</h1>
+<p>Bedankt voor uw bestelling. We brengen u op de hoogte zodra er wijzigingen zijn.</p>
+<script type="text/javascript">
+  function updateCart() {
+    if (typeof ga === 'undefined') {
+      return
+    }
+
+    ga('require', 'ec')
+    ga('set', 'currencyCode', 'EUR');
+
+    {% for value in cart.values %}
+    ga('ec:addProduct', {
+      'id': '{{ value.product.sku }}',
+      'name': '{{ value.product.title }}',
+      'category': '{{ value.product.category.title }}',
+      'brand': '{{ value.product.brand.title }}',
+      'price': '{{ value.price }}',
+      'quantity': {{ value.quantity }}
+    });
+    {% endfor %}
+
+    ga('ec:setAction', 'purchase', {
+      id: '{{ cart.order.id }}',
+      revenue: '{{ cart.total }}',
+      tax: '{{ cart.vatTotals }}',
+      shipping: '0.00'
+    });
+
+    ga("send", "pageview");
+  }
+
+  updateCart()
+</script>

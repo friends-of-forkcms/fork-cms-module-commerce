@@ -19,9 +19,9 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Required;
 
-class Addresses extends Step
+class AddressesStep extends Step
 {
-    public static $stepIdentifier = 'addresses';
+    public static string $stepIdentifier = 'addresses';
 
     /**
      * @var Form
@@ -38,7 +38,7 @@ class Addresses extends Step
      */
     private $address;
 
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('Address'));
         $this->reachable = $this->getAccount() !== null;
@@ -83,7 +83,7 @@ class Addresses extends Step
         }
     }
 
-    public function render()
+    public function render(): string
     {
         if ($this->getRequest()->query->has('add') || $this->getRequest()->query->has('edit')) {
             $this->template->assign('form', $this->getAddressForm()->createView());

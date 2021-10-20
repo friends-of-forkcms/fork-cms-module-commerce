@@ -1,0 +1,77 @@
+{# Remove this copy of tailwind_2_layout when we are on Symfony 5.3+ }
+{# See https://symfony.com/blog/new-in-symfony-5-3-tailwind-css-form-theme #}
+{# I renamed row_attr to attr, and removed form_help to make it work #}
+{% use "form_div_layout.html.twig" %}
+
+{# prettier-ignore-start #}
+
+{%- block widget_attributes -%}
+    {%- set attr = attr|merge({ class: attr.class|default(widget_class|default('appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm')) ~ (disabled ? ' ' ~ widget_disabled_class|default('border-gray-300 text-gray-500')) ~ (errors|length ? ' ' ~ widget_errors_class|default('border-red-700')) }) -%}
+    {{- parent() -}}
+{%- endblock widget_attributes -%}
+
+{%- block form_widget_simple -%}
+    <div class="mt-1">
+        {{- parent() -}}
+    </div>
+{%- endblock form_widget_simple -%}
+
+{%- block form_label -%}
+    {%- set label_attr = label_attr|merge({ class: label_attr.class|default(label_class|default('block text-sm font-medium text-gray-700 first-letter:uppercase')) }) -%}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block form_help -%}
+    {%- set help_attr = help_attr|merge({ class: help_attr.class|default(help_class|default('mt-1 text-gray-600')) }) -%}
+    {{- parent() -}}
+{%- endblock form_help -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul>
+            {%- for error in errors -%}
+                <li class="{{ error_item_class|default('text-red-700') }}">{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block choice_widget_expanded -%}
+    {%- set attr = attr|merge({ class: attr.class|default('mt-2') }) -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <div class="flex items-center">
+                {{- form_widget(child) -}}
+                {{- form_label(child, null, { translation_domain: choice_translation_domain }) -}}
+            </div>
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+
+{% block checkbox_label -%}
+    {%- set label_attr = label_attr|merge({'for': id}) -%}
+    {%- set label_attr = label_attr|merge({ class: label_attr.class|default(label_class|default('block text-sm text-gray-900 first-letter:uppercase')) }) -%}
+
+    {{- block('checkbox_radio_label') -}}
+{%- endblock checkbox_label %}
+
+{% block checkbox_widget -%}
+    {%- set widget_class = widget_class|default('h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded mr-2') -%}
+    {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+
+    {% if 'checkbox-inline' in parent_label_class %}
+        {{- form_label(form, null, { widget: parent() }) -}}
+    {% else -%}
+        <div class="flex items-center">
+            {{- form_label(form, null, { widget: parent() }) -}}
+        </div>
+    {%- endif -%}
+{%- endblock checkbox_widget %}
+
+{%- block radio_widget -%}
+    {%- set widget_class = widget_class|default('mr-2') -%}
+    {{- parent() -}}
+{%- endblock radio_widget -%}
+
+{# prettier-ignore-end #}

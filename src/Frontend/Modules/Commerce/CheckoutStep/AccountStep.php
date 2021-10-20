@@ -19,18 +19,17 @@ use Frontend\Modules\Profiles\Engine\Model as FrontendProfilesModel;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 
-class Account extends Step
+/**
+ * The AccountStep is shown when the user chooses to continue as guest and has to fill in his user and address details
+ * with optional possibility to enter a password to create an account.
+ */
+class AccountStep extends Step
 {
-    public static $stepIdentifier = 'account';
+    public static string $stepIdentifier = 'account';
+    protected bool $reachable = true;
+    private Form $accountForm;
 
-    protected $reachable = true;
-
-    /**
-     * @var Form
-     */
-    private $accountForm;
-
-    public function init()
+    public function init(): void
     {
         $this->setStepName(Language::lbl('Address'));
 
@@ -59,17 +58,13 @@ class Account extends Step
         }
     }
 
-    public function render()
+    public function render(): string
     {
         $this->template->assign('accountForm', $this->accountForm->createView());
-        $this->template->assign('cart', $this->cart);
 
         return parent::render();
     }
 
-    /**
-     * Get the account form.
-     */
     private function getAccountForm(): Form
     {
         $accountData = new CreateAccount();
@@ -106,7 +101,7 @@ class Account extends Step
              */
             $createAccount = $form->getData();
 
-            // When there is an password set check if the user exists
+            // When there is a password set check if the user exists
             if ($createAccount->password && FrontendProfilesModel::existsByEmail($createAccount->email_address)) {
                 $form->get('email_address')->addError(new FormError(Language::getError('EmailExists')));
 
@@ -163,7 +158,7 @@ class Account extends Step
         return $form;
     }
 
-    private function saveShipmentAddress(AccountCustomerDataTransferObject $data)
+    private function saveShipmentAddress(AccountCustomerDataTransferObject $data): void
     {
         $account = $this->cart->getAccount();
         $data->shipment_address->account = $account;
@@ -179,7 +174,7 @@ class Account extends Step
         }
     }
 
-    private function saveInvoiceAddress(AccountCustomerDataTransferObject $data)
+    private function saveInvoiceAddress(AccountCustomerDataTransferObject $data): void
     {
         if ($data->same_invoice_address) {
             $this->cart->setInvoiceAddress(null);
