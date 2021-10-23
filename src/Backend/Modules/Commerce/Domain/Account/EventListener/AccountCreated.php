@@ -30,7 +30,7 @@ final class AccountCreated
     public function onCreated(AccountCreatedEvent $event): void
     {
         $account = $event->getAccount();
-        $activationUrl = SITE_URL.FrontendNavigation::getUrlForBlock('Profiles', 'Activate');
+        $activationUrl = SITE_URL . FrontendNavigation::getUrlForBlock('Profiles', 'Activate');
         $activationKey = $this->getProfileActivationKey($account);
 
         $from = $this->modulesSettings->get('Core', 'mailer_from');
@@ -42,7 +42,7 @@ final class AccountCreated
             ->setReplyTo([$replyTo['email'] => $replyTo['name']])
             ->parseHtml(
                 'Profiles/Layout/Templates/Mails/Register.html.twig',
-                ['activationUrl' => $activationUrl.'/'.$activationKey],
+                ['activationUrl' => $activationUrl . '/' . $activationKey],
                 true
             );
 

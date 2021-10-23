@@ -2,7 +2,6 @@
 
 namespace Frontend\Modules\Commerce\Engine;
 
-use Frontend\Core\Engine\Language as FL;
 use Frontend\Core\Engine\Model as FrontendModel;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 
@@ -51,8 +50,8 @@ class Model
         }
 
         // create full url
-        $item['full_url'] = FrontendNavigation::getURLForBlock('Commerce', 'Detail').'/'.$item['url'];
-        $item['category_full_url'] = FrontendNavigation::getURLForBlock('Commerce', 'Category').'/'.$item['category_url'];
+        $item['full_url'] = FrontendNavigation::getURLForBlock('Commerce', 'Detail') . '/' . $item['url'];
+        $item['category_full_url'] = FrontendNavigation::getURLForBlock('Commerce', 'Category') . '/' . $item['category_url'];
 
         // add images
         if ($images = self::getImages((int) $item['id'])) {
@@ -100,13 +99,13 @@ class Model
 
         // build the item urls
         foreach ($items as &$item) {
-            $basePath = FRONTEND_FILES_URL.'/Commerce/'.$item['product_id'];
-            $item['image'] = $basePath.'/source/'.$item['filename'];
-            $item['image_icon'] = $basePath.'/64x64/'.$item['filename'];
-            $item['image_thumb'] = $basePath.'/128x128/'.$item['filename'];
-            $item['image_dim1'] = $basePath.'/'.$settings['width1'].'x'.$settings['height1'].'/'.$item['filename'];
-            $item['image_dim2'] = $basePath.'/'.$settings['width2'].'x'.$settings['height2'].'/'.$item['filename'];
-            $item['image_dim3'] = $basePath.'/'.$settings['width3'].'x'.$settings['height3'].'/'.$item['filename'];
+            $basePath = FRONTEND_FILES_URL . '/Commerce/' . $item['product_id'];
+            $item['image'] = $basePath . '/source/' . $item['filename'];
+            $item['image_icon'] = $basePath . '/64x64/' . $item['filename'];
+            $item['image_thumb'] = $basePath . '/128x128/' . $item['filename'];
+            $item['image_dim1'] = $basePath . '/' . $settings['width1'] . 'x' . $settings['height1'] . '/' . $item['filename'];
+            $item['image_dim2'] = $basePath . '/' . $settings['width2'] . 'x' . $settings['height2'] . '/' . $item['filename'];
+            $item['image_dim3'] = $basePath . '/' . $settings['width3'] . 'x' . $settings['height3'] . '/' . $item['filename'];
         }
 
         return $items;
@@ -147,6 +146,7 @@ class Model
     {
         $ids = array_map('intval', array_values($ids));
         $repository = FrontendModel::getContainer()->get('commerce.repository.product');
+
         return $repository->search($ids);
     }
 
@@ -173,7 +173,7 @@ class Model
         }
 
         // create full url
-        $item['full_url'] = FrontendNavigation::getURLForBlock('Commerce', 'Brand').'/'.$item['url'];
+        $item['full_url'] = FrontendNavigation::getURLForBlock('Commerce', 'Brand') . '/' . $item['url'];
 
         return $item;
     }
@@ -207,12 +207,12 @@ class Model
         foreach ($items as &$item) {
             $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM commerce_images WHERE product_id = ? ORDER BY sequence', [(int) $item['id']]);
             if ($img) {
-                $item['image'] = FRONTEND_FILES_URL.'/commerce/'.$item['id'].'/200x200/'.$img['filename'];
+                $item['image'] = FRONTEND_FILES_URL . '/commerce/' . $item['id'] . '/200x200/' . $img['filename'];
             } else {
-                $item['image'] = '/'.APPLICATION.'/modules/commerce/layout/images/dummy.png';
+                $item['image'] = '/' . APPLICATION . '/modules/commerce/layout/images/dummy.png';
             }
 
-            $item['full_url'] = $detailUrl.'/'.$item['url'];
+            $item['full_url'] = $detailUrl . '/' . $item['url'];
         }
 
         // return

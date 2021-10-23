@@ -63,7 +63,7 @@ class LoginStep extends Step
 
             if (!FrontendProfilesModel::verifyPassword($email, $password)) {
                 $errorString = sprintf(
-                    Language::getError('Profiles'. SpoonFilter::toCamelCase(FrontendProfilesAuthentication::LOGIN_INVALID).'Login'),
+                    Language::getError('Profiles' . SpoonFilter::toCamelCase(FrontendProfilesAuthentication::LOGIN_INVALID) . 'Login'),
                     Navigation::getUrlForBlock('Profiles', 'ResendActivation')
                 );
 
@@ -75,7 +75,7 @@ class LoginStep extends Step
             $loginStatus = FrontendProfilesAuthentication::getLoginStatus($email, $password);
             if ($loginStatus !== FrontendProfilesAuthentication::LOGIN_ACTIVE) {
                 $errorString = sprintf(
-                    FL::getError('Profiles'. SpoonFilter::toCamelCase($loginStatus).'Login'),
+                    FL::getError('Profiles' . SpoonFilter::toCamelCase($loginStatus) . 'Login'),
                     FrontendNavigation::getUrlForBlock('Profiles', 'ResendActivation')
                 );
 

@@ -64,7 +64,7 @@ class EditCategory extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateCategory->title,
-                    'highlight' => 'row-'.$updateCategory->getCategoryEntity()->getId(),
+                    'highlight' => 'row-' . $updateCategory->getCategoryEntity()->getId(),
                 ]
             )
         );
@@ -137,9 +137,9 @@ class EditCategory extends BackendBaseActionEdit
     {
         $filesystem = new Filesystem();
         $kernelRootDir = $this->getKernel()->getRootDir();
-        $googleTaxonomyFile = $kernelRootDir.'/../src/Backend/Modules/Commerce/GoogleTaxonomy/'
-            .Locale::workingLocale()->getLocale()
-            .'/taxonomies.txt';
+        $googleTaxonomyFile = $kernelRootDir . '/../src/Backend/Modules/Commerce/GoogleTaxonomy/'
+            . Locale::workingLocale()->getLocale()
+            . '/taxonomies.txt';
 
         $categories = [];
         if ($filesystem->exists($googleTaxonomyFile)) {

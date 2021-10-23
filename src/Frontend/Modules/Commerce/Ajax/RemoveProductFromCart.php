@@ -7,12 +7,8 @@ use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\Cart\CartValue;
 use Backend\Modules\Commerce\Domain\Cart\CartValueRepository;
 use Backend\Modules\Commerce\Domain\Product\Product;
-use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
-use Frontend\Core\Engine\TemplateModifiers;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,12 +28,14 @@ class RemoveProductFromCart extends FrontendBaseAJAXAction
         // Product must be set
         if (!$this->getRequest()->request->has('cart')) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 
         // Failed to update product, it does not exist in the cart
         if (!$cartValue = $this->removeCartValue()) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY);
+
             return;
         }
 

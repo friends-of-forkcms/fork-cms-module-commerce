@@ -22,7 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
+      # Check for syntax errors
       - name: PHPLint
         uses: overtrue/phplint@7.4
 

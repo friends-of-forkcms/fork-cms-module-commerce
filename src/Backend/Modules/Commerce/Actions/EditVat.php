@@ -62,7 +62,7 @@ class EditVat extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateVat->title,
-                    'highlight' => 'row-'.$updateVat->getVatEntity()->getId(),
+                    'highlight' => 'row-' . $updateVat->getVatEntity()->getId(),
                 ]
             )
         );

@@ -130,7 +130,7 @@ class ShipmentMethodStep extends Step
              */
             $class = new $className($shipmentMethod, $this->cart, $this->cart->getShipmentAddress());
             foreach ($class->getQuote() as $key => $options) {
-                $shipmentMethods[$shipmentMethod.'.'.$key] = $options;
+                $shipmentMethods[$shipmentMethod . '.' . $key] = $options;
             }
         }
 
@@ -139,6 +139,6 @@ class ShipmentMethodStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('ShipmentMethod'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('ShipmentMethod'));
     }
 }

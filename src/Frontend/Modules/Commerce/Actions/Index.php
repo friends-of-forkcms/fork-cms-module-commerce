@@ -12,12 +12,10 @@ use Backend\Modules\Commerce\Domain\Product\AddToCartType;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Backend\Modules\Commerce\Domain\Specification\SpecificationRepository;
-use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
-use Frontend\Modules\Commerce\Engine\Pagination;
 use Frontend\Modules\Commerce\Engine\ProductSorting;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -99,7 +97,7 @@ class Index extends FrontendBaseBlock
         $productRepository = $this->getProductRepository();
         $specificationRepository = $this->getSpecificationRepository();
         $productOffset = ($currentPage - 1) * $itemsPerPage;
-        $baseUrl = '/'.implode('/', array_merge($this->url->getPages(), $this->url->getParameters(false)));
+        $baseUrl = '/' . implode('/', array_merge($this->url->getPages(), $this->url->getParameters(false)));
 
         // Set page defaults
         $this->loadTemplate('Commerce/Layout/Templates/Category.html.twig');
@@ -212,7 +210,7 @@ class Index extends FrontendBaseBlock
         $this->template->assign('form', $form->createView());
         $this->template->assign(
             'siteTitle',
-            $this->get('fork.settings')->get('Core', 'site_title_'.Locale::frontendLanguage())
+            $this->get('fork.settings')->get('Core', 'site_title_' . Locale::frontendLanguage())
         );
     }
 
@@ -323,7 +321,7 @@ class Index extends FrontendBaseBlock
         }
 
         return [
-            'url' => '/'.implode('/', array_merge($this->url->getPages(), $this->url->getParameters(false))),
+            'url' => '/' . implode('/', array_merge($this->url->getPages(), $this->url->getParameters(false))),
             'limit' => $limit,
             'offset' => ($requestedPage * $limit) - $limit,
             'requested_page' => $requestedPage,

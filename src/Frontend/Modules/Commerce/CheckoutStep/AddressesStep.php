@@ -157,7 +157,7 @@ class AddressesStep extends Step
                 'expanded' => true,
                 'constraints' => [new Required(), new NotBlank()],
                 'attr' => [
-                    'edit_link' => $this->getUrl().'?edit=',
+                    'edit_link' => $this->getUrl() . '?edit=',
                 ],
             ]
         )->add(
@@ -173,7 +173,7 @@ class AddressesStep extends Step
                 'block_name' => 'order_address',
                 'expanded' => true,
                 'attr' => [
-                    'edit_link' => $this->getUrl().'?edit=',
+                    'edit_link' => $this->getUrl() . '?edit=',
                 ],
             ]
         )->add(
@@ -234,7 +234,7 @@ class AddressesStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('Addresses'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('Addresses'));
     }
 
     private function getOrderAddressRepository(): OrderAddressRepository

@@ -56,7 +56,7 @@ class EditCartRule extends BackendBaseActionEdit
             $this->getBackLink([
                 'report' => 'edited',
                 'var' => $updateCartRule->title,
-                'highlight' => 'row-'.$updateCartRule->getCartRuleEntity()->getId(),
+                'highlight' => 'row-' . $updateCartRule->getCartRuleEntity()->getId(),
             ])
         );
     }

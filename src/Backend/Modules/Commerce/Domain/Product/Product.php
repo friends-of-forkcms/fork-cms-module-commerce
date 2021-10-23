@@ -786,7 +786,7 @@ class Product
      */
     public function getUrl(): string
     {
-        return $this->category->getUrl().'/'.$this->meta->getUrl();
+        return $this->category->getUrl() . '/' . $this->meta->getUrl();
     }
 
     /**

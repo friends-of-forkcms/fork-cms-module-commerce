@@ -29,12 +29,12 @@ class PackingSlip extends Action
         $template = $this->get('templating');
         $template->assign('order', $this->order);
 
-        return $template->getContent($this->getModule().'/Layout/Templates/'.$this->getAction().'.html.twig');
+        return $template->getContent($this->getModule() . '/Layout/Templates/' . $this->getAction() . '.html.twig');
     }
 
     public function getContent(): Response
     {
-        $filename = Language::lbl('Order').'-'.$this->order->getId().'.pdf';
+        $filename = Language::lbl('Order') . '-' . $this->order->getId() . '.pdf';
 
         return new Response(
             $this->get('knp_snappy.pdf')->getOutputFromHtml($this->generateHTML()),

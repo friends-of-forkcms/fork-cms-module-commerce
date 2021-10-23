@@ -71,7 +71,7 @@ class AddToCartType extends AbstractType
                     'attr' => [
                         'step' => 1,
                         'min' => 1,
-                    ]
+                    ],
                 ]
             );
         } else {
@@ -193,8 +193,8 @@ class AddToCartType extends AbstractType
                 continue;
             }
 
-            $name = 'option_'.$productOption->getId();
-            $customValueName = $name.'_custom_value';
+            $name = 'option_' . $productOption->getId();
+            $customValueName = $name . '_custom_value';
 
             if ($data[$name] == 'custom_value' && array_key_exists($customValueName, $data)) {
                 $data[$name] = null;
@@ -241,7 +241,7 @@ class AddToCartType extends AbstractType
     private function addProductOptions($productOptions, FormBuilderInterface $builder, string $parent = null, int $parentValue = null, bool $hidden = false): void
     {
         foreach ($productOptions as $productOption) {
-            $name = 'option_'.$productOption->getId();
+            $name = 'option_' . $productOption->getId();
             $type = null;
             $modelTransformer = null;
             $params = [
@@ -271,7 +271,7 @@ class AddToCartType extends AbstractType
 
                         $label = $value->getTitle();
                         if ($value->getPrice()) {
-                            $label .= ' (€ '.number_format($value->getPrice(), 2, ',', '.').')';
+                            $label .= ' (€ ' . number_format($value->getPrice(), 2, ',', '.') . ')';
                         }
 
                         return $label;
@@ -289,12 +289,13 @@ class AddToCartType extends AbstractType
 
                         $label = $value->getTitle();
                         if ($value->getPrice()) {
-                            $label .= ' (€ '.number_format($value->getPrice(), 2, ',', '.').')';
+                            $label .= ' (€ ' . number_format($value->getPrice(), 2, ',', '.') . ')';
                         }
 
                         return $label;
                     };
                     $params['choices'] = $productOption->getProductOptionValues();
+
                     break;
                 case ProductOption::DISPLAY_TYPE_COLOR:
                     $type = ColorType::class;
@@ -305,6 +306,7 @@ class AddToCartType extends AbstractType
                         return $label;
                     };
                     $params['choices'] = $productOption->getProductOptionValues();
+
                     break;
                 case ProductOption::DISPLAY_TYPE_BETWEEN:
                     $type = BetweenType::class;
@@ -397,7 +399,7 @@ class AddToCartType extends AbstractType
             $builder->add($field);
 
             if ($productOption->isCustomValueAllowed()) {
-                $fieldName = 'option_'.$productOption->getId().'_custom_value';
+                $fieldName = 'option_' . $productOption->getId() . '_custom_value';
                 if ($productOption->isColorType()) {
                     $builder->add(
                         $fieldName,
@@ -406,7 +408,7 @@ class AddToCartType extends AbstractType
                             'required' => false,
                             'label' => 'lbl.OtherRALColor',
                             'attr' => [
-                                'data-custom-value' => $builder->getName().'_option_'.$productOption->getId(),
+                                'data-custom-value' => $builder->getName() . '_option_' . $productOption->getId(),
                                 'data-option-type' => $productOption->getType(),
                                 'placeholder' => 'lbl.EnterYourOwnRALColor',
                             ],
@@ -421,7 +423,7 @@ class AddToCartType extends AbstractType
                             'label' => 'lbl.OtherValue',
                             'scale' => 0,
                             'attr' => [
-                                'data-custom-value' => $builder->getName().'_option_'.$productOption->getId(),
+                                'data-custom-value' => $builder->getName() . '_option_' . $productOption->getId(),
                                 'data-option-type' => $productOption->getType(),
                                 'prefix' => $productOption->getPrefix(),
                                 'suffix' => $productOption->getSuffix(),
@@ -525,7 +527,7 @@ class AddToCartType extends AbstractType
     private function addExtraViewOptions($productOptions, FormView $view, FormInterface $form, array $options)
     {
         foreach ($productOptions as $productOption) {
-            $name = 'option_'.$productOption->getId();
+            $name = 'option_' . $productOption->getId();
 
             if ($productOption->isCustomValueAllowed() && !$productOption->isColorType()) {
                 switch ($productOption->getType()) {
@@ -533,6 +535,7 @@ class AddToCartType extends AbstractType
                     case ProductOption::DISPLAY_TYPE_DROP_DOWN:
                         $newChoice = new ChoiceView([], 'custom_value', Language::lbl('EnterCustomValue'));
                         $view->children[$name]->vars['choices'][] = $newChoice;
+
                         break;
                 }
             }

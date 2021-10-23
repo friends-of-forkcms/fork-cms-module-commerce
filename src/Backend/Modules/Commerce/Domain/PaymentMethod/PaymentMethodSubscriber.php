@@ -47,7 +47,7 @@ class PaymentMethodSubscriber implements EventSubscriberInterface
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\Options";
 
         if (!class_exists($className)) {
-            throw new Exception('Class '.$className.' not found');
+            throw new Exception('Class ' . $className . ' not found');
         }
 
         /**

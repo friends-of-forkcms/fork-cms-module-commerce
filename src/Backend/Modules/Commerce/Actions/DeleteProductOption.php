@@ -57,7 +57,7 @@ class DeleteProductOption extends BackendBaseActionDelete
                         'report' => 'deleted',
                         'var' => $productOption->getTitle(),
                     ]
-                ).'#tabOptions'
+                ) . '#tabOptions'
             );
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->redirect($this->getBackLink(['error' => 'products-connected']));

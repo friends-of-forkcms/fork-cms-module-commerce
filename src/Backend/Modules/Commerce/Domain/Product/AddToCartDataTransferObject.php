@@ -59,8 +59,8 @@ class AddToCartDataTransferObject
             foreach ($cartValue->getCartValueOptions() as $cartValueOption) {
                 $productOption = $cartValueOption->getProductOption();
 
-                $key = $prefix.$productOption->getId();
-                $customValueKey = $key.'_custom_value';
+                $key = $prefix . $productOption->getId();
+                $customValueKey = $key . '_custom_value';
 
                 if (!property_exists($this, $key)) {
                     return;
@@ -84,8 +84,8 @@ class AddToCartDataTransferObject
 
     private function validateProductOption(ProductOption $productOption, ExecutionContextInterface $context): void
     {
-        $fieldName = 'option_'.$productOption->getId();
-        $customValueFieldName = $fieldName.'_custom_value';
+        $fieldName = 'option_' . $productOption->getId();
+        $customValueFieldName = $fieldName . '_custom_value';
         $valid = true;
 
         if ($productOption->isRequired()) {
@@ -141,10 +141,10 @@ class AddToCartDataTransferObject
     private function loadProductOptions(Collection $productOptions, string $prefix): void
     {
         foreach ($productOptions as $productOption) {
-            $this->{$prefix.$productOption->getId()} = $productOption->getDefaultProductOptionValue();
+            $this->{$prefix . $productOption->getId()} = $productOption->getDefaultProductOptionValue();
 
             if ($productOption->isCustomValueAllowed() || $productOption->isBetweenType()) {
-                $this->{$prefix.$productOption->getId().'_custom_value'} = null;
+                $this->{$prefix . $productOption->getId() . '_custom_value'} = null;
             }
 
             foreach ($productOption->getProductOptionValues() as $productOptionValue) {

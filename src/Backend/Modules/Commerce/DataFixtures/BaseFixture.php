@@ -47,7 +47,7 @@ abstract class BaseFixture extends Fixture
     {
         $fs = new Filesystem();
         $targetDir ??= sys_get_temp_dir();
-        $targetPath = $targetDir.'/'.pathinfo($sourcePath, PATHINFO_FILENAME).uniqid().'.'.pathinfo($sourcePath, PATHINFO_EXTENSION);
+        $targetPath = $targetDir . '/' . pathinfo($sourcePath, PATHINFO_FILENAME) . uniqid() . '.' . pathinfo($sourcePath, PATHINFO_EXTENSION);
         $fs->copy($sourcePath, $targetPath, true);
 
         return new UploadedFile($targetPath, basename($targetPath), null, null, null, true);

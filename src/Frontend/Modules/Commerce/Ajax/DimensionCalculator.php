@@ -91,8 +91,8 @@ class DimensionCalculator extends FrontendBaseAJAXAction
     protected function parseProductOptionsDimension(Collection $productOptions): void
     {
         foreach ($productOptions as $option) {
-            $propertyName = 'option_'.$option->getId();
-            $propertyNameCustomValue = $propertyName.'_custom_value';
+            $propertyName = 'option_' . $option->getId();
+            $propertyNameCustomValue = $propertyName . '_custom_value';
 
             if (!property_exists($this->data, $propertyName) || $option->isTextType() || $option->isColorType()) {
                 continue;

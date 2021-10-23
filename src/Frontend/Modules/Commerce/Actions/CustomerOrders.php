@@ -7,12 +7,10 @@ use Backend\Modules\Commerce\Domain\Account\AccountRepository;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\Order\OrderRepository;
-use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
 use Frontend\Modules\Profiles\Engine\Authentication as FrontendProfilesAuthentication;
-use Frontend\Modules\Profiles\Engine\Profile;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 class CustomerOrders extends FrontendBaseBlock
@@ -63,7 +61,7 @@ class CustomerOrders extends FrontendBaseBlock
         $this->template->assign('account', $this->account);
         $this->template->assign('order', $order);
 
-        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')).' - '.$order->getId());
+        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')) . ' - ' . $order->getId());
     }
 
     /**
@@ -76,7 +74,7 @@ class CustomerOrders extends FrontendBaseBlock
         if ($path === null) {
             $path = $this->getAction();
         }
-        $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
+        $path = $this->getModule() . '/Layout/Templates/Customer/' . $path . '.html.twig';
 
         parent::loadTemplate($path, $overwrite);
     }

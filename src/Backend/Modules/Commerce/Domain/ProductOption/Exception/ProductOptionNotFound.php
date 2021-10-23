@@ -13,6 +13,6 @@ class ProductOptionNotFound extends Exception
 
     public static function forId(string $id): self
     {
-        return new self('Can\'t find a product option with id = "'.$id.'".');
+        return new self('Can\'t find a product option with id = "' . $id . '".');
     }
 }

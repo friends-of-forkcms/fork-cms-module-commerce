@@ -315,7 +315,7 @@ class Category
      */
     private function updateWidget(): void
     {
-        $editUrl = Model::createUrlForAction('EditCategory', 'Commerce', (string) $this->locale).'&id='.$this->id;
+        $editUrl = Model::createUrlForAction('EditCategory', 'Commerce', (string) $this->locale) . '&id=' . $this->id;
 
         // update data for the extra
         // @TODO replace this with an implementation with doctrine
@@ -331,7 +331,7 @@ class Category
         }
 
         Language::setLocale(Language::getWorkingLanguage());
-        $data['extra_label'] = ucfirst(Language::lbl('Category', 'Commerce')).' - '.$this->title;
+        $data['extra_label'] = ucfirst(Language::lbl('Category', 'Commerce')) . ' - ' . $this->title;
 
         Model::updateExtra($this->extraId, 'data', $data);
     }
@@ -354,7 +354,7 @@ class Category
             }
         }
 
-        return $this->urlPrefix.'/'.$this->meta->getUrl();
+        return $this->urlPrefix . '/' . $this->meta->getUrl();
     }
 
     public function getActiveProducts(): Collection

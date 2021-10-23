@@ -84,7 +84,7 @@ class SpecificationValueRepository extends EntityRepository
                          )
                      )
                      ->andWhere('s.id = :specification_id')
-                     ->setParameter('query', '%'.$query.'%')
+                     ->setParameter('query', '%' . $query . '%')
                      ->setParameter('specification_id', $specificationId);
 
         return $queryBuilder->getQuery()

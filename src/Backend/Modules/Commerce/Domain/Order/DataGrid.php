@@ -55,7 +55,7 @@ class DataGrid extends DataGridDatabase
 
     public function getFormatPrice($price)
     {
-        return '&euro;&nbsp;'.number_format($price, 2, ',', '.');
+        return '&euro;&nbsp;' . number_format($price, 2, ',', '.');
     }
 
     public function getName($companyName, $name)
@@ -64,6 +64,6 @@ class DataGrid extends DataGridDatabase
             return $name;
         }
 
-        return $companyName.' ('.$name.')';
+        return $companyName . ' (' . $name . ')';
     }
 }

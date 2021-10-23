@@ -66,7 +66,7 @@ class EditProductOption extends BackendBaseActionEdit
                 [
                     'id' => $updateProductOption->getProductOptionEntity()->getProduct()->getId(),
                     'report' => 'edited',
-                    'highlight' => 'row-'.$updateProductOption->getProductOptionEntity()->getId(),
+                    'highlight' => 'row-' . $updateProductOption->getProductOptionEntity()->getId(),
                 ]
             )
         );
@@ -98,7 +98,7 @@ class EditProductOption extends BackendBaseActionEdit
                 null,
                 null,
                 $parameters
-            ).'#tabSubOptions';
+            ) . '#tabSubOptions';
         }
 
         $parameters = array_merge($parameters, [
@@ -110,7 +110,7 @@ class EditProductOption extends BackendBaseActionEdit
             null,
             null,
             $parameters
-        ).'#tabOptions';
+        ) . '#tabOptions';
     }
 
     private function getForm(ProductOption $productOption): Form

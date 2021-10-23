@@ -100,6 +100,6 @@ class ConfirmOrderStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('ConfirmOrder'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('ConfirmOrder'));
     }
 }

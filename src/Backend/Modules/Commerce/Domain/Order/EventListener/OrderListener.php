@@ -41,7 +41,7 @@ class OrderListener
         $language = $this->orderHistory->getOrderStatus()->getLocale();
         $from = $this->modulesSettings->get('Core', 'mailer_from');
 
-        $subject = $this->modulesSettings->get('Core', 'site_title_'.$language);
+        $subject = $this->modulesSettings->get('Core', 'site_title_' . $language);
         $subject .= ' - ';
         $subject .= $this->orderHistory->getOrderStatus()->getMailSubject();
 
@@ -62,7 +62,7 @@ class OrderListener
         $from = $this->modulesSettings->get('Core', 'mailer_from');
         $to = $this->modulesSettings->get('Core', 'mailer_to');
 
-        $subject = '['.$this->modulesSettings->get('Core', 'site_title_'.$language).']';
+        $subject = '[' . $this->modulesSettings->get('Core', 'site_title_' . $language) . ']';
         $subject .= ' - ';
         $subject .= $this->orderHistory->getOrderStatus()->getCompanyMailSubject();
 
@@ -81,7 +81,7 @@ class OrderListener
             ->parseHtml(
                 $this->getTemplatePath($template),
                 [
-                    'siteTitle' => $this->modulesSettings->get('Core', 'site_title_'.Locale::frontendLanguage()),
+                    'siteTitle' => $this->modulesSettings->get('Core', 'site_title_' . Locale::frontendLanguage()),
                     'SITE_URL' => SITE_URL,
                     'order' => $this->order,
                     'orderHistory' => $this->orderHistory,
@@ -96,7 +96,7 @@ class OrderListener
                 new OrderGenerateInvoiceNumber($this->order)
             );
 
-            $filename = Language::lbl('Invoice').'-'.$orderGenerateInvoiceNumber->getOrder()->getInvoiceNumber().'.pdf';
+            $filename = Language::lbl('Invoice') . '-' . $orderGenerateInvoiceNumber->getOrder()->getInvoiceNumber() . '.pdf';
 
             $attachment = new Swift_Attachment(
                 $this->generateInvoice($orderGenerateInvoiceNumber->getOrder()),
@@ -139,10 +139,10 @@ class OrderListener
     private function getTemplatePath(string $template): string
     {
         $currentTheme = $this->modulesSettings->get('Core', 'theme');
-        $themePath = '/Themes/'.$currentTheme.'/Modules';
+        $themePath = '/Themes/' . $currentTheme . '/Modules';
 
-        if (file_exists(FRONTEND_PATH.$themePath.$template)) {
-            return $themePath.$template;
+        if (file_exists(FRONTEND_PATH . $themePath . $template)) {
+            return $themePath . $template;
         }
 
         return $template;

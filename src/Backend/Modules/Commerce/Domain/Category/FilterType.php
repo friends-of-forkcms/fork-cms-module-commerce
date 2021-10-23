@@ -23,10 +23,10 @@ class FilterType extends AbstractType
                 'choice_label' => function ($category) {
                     $prefix = null;
                     if ($category->path > 0) {
-                        $prefix = str_repeat('-', $category->path).' ';
+                        $prefix = str_repeat('-', $category->path) . ' ';
                     }
 
-                    return $prefix.$category->getTitle();
+                    return $prefix . $category->getTitle();
                 },
             ]
         );

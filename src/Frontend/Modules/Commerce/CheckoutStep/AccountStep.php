@@ -198,6 +198,6 @@ class AccountStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('Address'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('Address'));
     }
 }

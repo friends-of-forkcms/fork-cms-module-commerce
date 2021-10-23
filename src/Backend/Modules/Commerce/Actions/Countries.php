@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
-use Backend\Core\Engine\DataGrid as BackendDataGridDB;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Country\DataGrid;
 

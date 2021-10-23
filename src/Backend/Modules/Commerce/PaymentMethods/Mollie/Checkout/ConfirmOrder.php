@@ -38,7 +38,7 @@ class ConfirmOrder extends BaseConfirmOrder
         $this->mollie->setApiKey($this->getSetting('apiKey'));
 
         if (!$this->redirectUrl) {
-            $this->redirectUrl = '/post-payment?order_id='.$this->order->getId();
+            $this->redirectUrl = '/post-payment?order_id=' . $this->order->getId();
         }
 
         $payment = $this->getPayment();
@@ -115,16 +115,16 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     private function createPayment(): Payment
     {
-        $baseUrl = SITE_URL.Navigation::getUrlForBlock('Commerce', 'Cart');
+        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Commerce', 'Cart');
         $payment = $this->mollie->payments->create(
             [
                 'amount' => [
                     'currency' => $this->currency,
                     'value' => number_format($this->order->getTotal(), 2, '.', ''),
                 ],
-                'description' => 'Order '.$this->order->getId(),
-                'redirectUrl' => SITE_URL.$this->redirectUrl,
-                'webhookUrl' => $baseUrl.'/webhook?payment_method=Mollie.'.$this->option,
+                'description' => 'Order ' . $this->order->getId(),
+                'redirectUrl' => SITE_URL . $this->redirectUrl,
+                'webhookUrl' => $baseUrl . '/webhook?payment_method=Mollie.' . $this->option,
                 'method' => $this->option,
                 'issuer' => $this->data->issuer,
                 'metadata' => [
@@ -154,7 +154,7 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     private function updatePayment($transactionId): Payment
     {
-        $baseUrl = SITE_URL.Navigation::getUrlForBlock('Commerce', 'Cart');
+        $baseUrl = SITE_URL . Navigation::getUrlForBlock('Commerce', 'Cart');
 
         $payment = $this->mollie->payments->get($transactionId);
 
@@ -166,9 +166,9 @@ class ConfirmOrder extends BaseConfirmOrder
             'currency' => $this->currency,
             'value' => number_format($this->order->getTotal(), 2, '.', ''),
         ];
-        $payment->description = 'Order '.$this->order->getId();
-        $payment->redirectUrl = SITE_URL.$this->redirectUrl;
-        $payment->webhookUrl = $baseUrl.'/webhook?payment_method=Mollie.'.$this->option;
+        $payment->description = 'Order ' . $this->order->getId();
+        $payment->redirectUrl = SITE_URL . $this->redirectUrl;
+        $payment->webhookUrl = $baseUrl . '/webhook?payment_method=Mollie.' . $this->option;
         $payment->method = $this->option;
         $payment->metadata = [
             'order_id' => $this->order->getId(),

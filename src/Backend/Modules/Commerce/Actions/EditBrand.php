@@ -63,7 +63,7 @@ class EditBrand extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateBrand->title,
-                    'highlight' => 'row-'.$updateBrand->getBrandEntity()->getId(),
+                    'highlight' => 'row-' . $updateBrand->getBrandEntity()->getId(),
                 ]
             )
         );

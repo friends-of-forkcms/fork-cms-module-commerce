@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Domain\CartRule;
 use Common\Locale;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Money;
 
@@ -243,6 +242,7 @@ class CartRule
         if ($this->reduction_percentage === null) {
             return null;
         }
+
         return $this->getReductionPercentage() * 100 . '%';
     }
 

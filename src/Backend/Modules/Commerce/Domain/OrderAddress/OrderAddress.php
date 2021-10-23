@@ -232,7 +232,7 @@ class OrderAddress
 
     public function getFullName(): string
     {
-        return $this->getFirstName().' '.$this->getLastName();
+        return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
     public function getDataTransferObject(): OrderAddressDataTransferObject

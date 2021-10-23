@@ -2,6 +2,7 @@
 
 namespace Frontend\Modules\Commerce\Actions;
 
+use Backend\Modules\Commerce\Domain\Cart\Cart as CartEntity;
 use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\Cart\Command\DeleteCart;
 use Backend\Modules\Commerce\Domain\Quote\Event\QuoteCreated;
@@ -15,9 +16,9 @@ use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
 use Frontend\Modules\Commerce\CheckoutProgress;
-use Frontend\Modules\Commerce\CheckoutStep\ChangeStepException;
 use Frontend\Modules\Commerce\CheckoutStep\AccountStep;
 use Frontend\Modules\Commerce\CheckoutStep\AddressesStep;
+use Frontend\Modules\Commerce\CheckoutStep\ChangeStepException;
 use Frontend\Modules\Commerce\CheckoutStep\ConfirmOrderStep;
 use Frontend\Modules\Commerce\CheckoutStep\LoginStep;
 use Frontend\Modules\Commerce\CheckoutStep\OrderPlacedStep;
@@ -25,7 +26,6 @@ use Frontend\Modules\Commerce\CheckoutStep\PaymentMethodStep;
 use Frontend\Modules\Commerce\CheckoutStep\PayOrderStep;
 use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethodStep;
 use Frontend\Modules\Profiles\Engine\Authentication;
-use Backend\Modules\Commerce\Domain\Cart\Cart as CartEntity;
 
 /**
  * This is the cart-action, it will display the cart.
@@ -52,12 +52,15 @@ class Cart extends FrontendBaseBlock
                     case Language::lbl('Checkout'):
                         $this->isAllowedToCheckout();
                         $this->checkout();
+
                         break;
                     case Language::lbl('RequestQuoteUrl'):
                         $this->requestQuote();
+
                         break;
                     default:
                         $this->redirect(Navigation::getUrl(404));
+
                         break;
                 }
             } elseif ($parameters[0] === 'webhook') {
@@ -70,6 +73,7 @@ class Cart extends FrontendBaseBlock
                 case Language::lbl('Checkout'):
                     $this->isAllowedToCheckout();
                     $this->checkout();
+
                     break;
             }
         } else {
@@ -100,7 +104,7 @@ class Cart extends FrontendBaseBlock
 
         $this->breadcrumb->addElement(
             ucfirst(Language::lbl('Checkout')),
-            Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('Checkout')
+            Navigation::getUrlForBlock($this->getModule(), 'Cart') . '/' . Language::lbl('Checkout')
         );
 
         $baseUrl = Navigation::getUrlForBlock($this->getModule(), 'Cart');
@@ -123,7 +127,7 @@ class Cart extends FrontendBaseBlock
             ->addStep(new OrderPlacedStep());
 
         $urlParameters = $this->url->getParameters(false);
-        $requestedUrl = $baseUrl.'/'.implode('/', $urlParameters);
+        $requestedUrl = $baseUrl . '/' . implode('/', $urlParameters);
 
         // Load the first step
         if (count($urlParameters) === 1) {
@@ -145,7 +149,7 @@ class Cart extends FrontendBaseBlock
         try {
             $currentStep->execute();
             foreach ($currentStep->getJsFiles() as $file) {
-                $this->addJS('Checkout/'.$file);
+                $this->addJS('Checkout/' . $file);
             }
         } catch (ChangeStepException $exception) {
             $url = $exception->getStep()->getUrl();
@@ -178,7 +182,7 @@ class Cart extends FrontendBaseBlock
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->breadcrumb->addElement(
                 ucfirst(Language::lbl('RequestQuote')),
-                Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('RequestQuoteUrl')
+                Navigation::getUrlForBlock($this->getModule(), 'Cart') . '/' . Language::lbl('RequestQuoteUrl')
             );
 
             if ($this->getRequest()->get('submitted')) {
@@ -206,7 +210,7 @@ class Cart extends FrontendBaseBlock
         );
 
         $this->redirect(
-            Navigation::getUrlForBlock($this->getModule(), 'Cart').'/'.Language::lbl('RequestQuoteUrl').'?submitted=1'
+            Navigation::getUrlForBlock($this->getModule(), 'Cart') . '/' . Language::lbl('RequestQuoteUrl') . '?submitted=1'
         );
     }
 
@@ -248,7 +252,7 @@ class Cart extends FrontendBaseBlock
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
 
         if (!class_exists($className)) {
-            throw new Exception('Class '.$className.' not found');
+            throw new Exception('Class ' . $className . ' not found');
         }
 
         /** @var ConfirmOrder $class */

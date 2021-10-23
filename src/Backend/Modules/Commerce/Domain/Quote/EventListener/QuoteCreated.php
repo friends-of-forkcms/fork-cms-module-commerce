@@ -42,8 +42,8 @@ final class QuoteCreated
 
     private function getCustomerMessage(QuoteDataTransferObject $quote, Cart $cart): Swift_Mime_SimpleMessage
     {
-        $subject = $this->modulesSettings->get('Core', 'site_title_'.LANGUAGE).
-                   ' - '.
+        $subject = $this->modulesSettings->get('Core', 'site_title_' . LANGUAGE) .
+                   ' - ' .
                    Language::getLabel('YourQuoteRequestMailSubject');
 
         $from = $this->modulesSettings->get('Core', 'mailer_from');
@@ -65,8 +65,8 @@ final class QuoteCreated
 
     private function getCompanyMessage(QuoteDataTransferObject $quote, Cart $cart): Swift_Mime_SimpleMessage
     {
-        $subject = $this->modulesSettings->get('Core', 'site_title_'.LANGUAGE).
-                   ' - '.
+        $subject = $this->modulesSettings->get('Core', 'site_title_' . LANGUAGE) .
+                   ' - ' .
                    Language::getLabel('NewQuoteRequestMailSubject');
 
         $from = $this->modulesSettings->get('Core', 'mailer_from');

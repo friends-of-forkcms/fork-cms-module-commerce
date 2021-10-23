@@ -69,7 +69,7 @@ class PayOrderStep extends Step
         $paymentMethod = $this->getPaymentMethod($this->cart->getPaymentMethod());
         $paymentMethod->setOrder($order);
         $paymentMethod->setData($this->getPaymentMethodDataTransferObject());
-        $paymentMethod->setRedirectUrl($this->getUrl().'?redirect=postPayment');
+        $paymentMethod->setRedirectUrl($this->getUrl() . '?redirect=postPayment');
 
         $paymentMethod->prePayment();
     }
@@ -223,9 +223,9 @@ class PayOrderStep extends Step
             $createOrderRule->title = $cartRule->getTitle();
             $createOrderRule->code = $cartRule->getCode();
             if ($cartRule->getReductionPercentage()) {
-                $createOrderRule->value = $cartRule->getReductionPercentage().'% '.Language::lbl('Discount');
+                $createOrderRule->value = $cartRule->getReductionPercentage() . '% ' . Language::lbl('Discount');
             } else {
-                $createOrderRule->value = '&euro; -'.number_format($cartRule->getReductionPrice(), 2, ',', '.');
+                $createOrderRule->value = '&euro; -' . number_format($cartRule->getReductionPrice(), 2, ',', '.');
             }
             $createOrderRule->total = $this->cart->getCartRuleTotal($cartRule);
 
@@ -257,7 +257,7 @@ class PayOrderStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('PayOrder'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('PayOrder'));
     }
 
     private function getPaymentMethodDataTransferObject(): CheckoutPaymentMethodDataTransferObject
@@ -286,7 +286,7 @@ class PayOrderStep extends Step
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
 
         if (!class_exists($className)) {
-            throw new \Exception('Class '.$className.' not found');
+            throw new \Exception('Class ' . $className . ' not found');
         }
 
         /**

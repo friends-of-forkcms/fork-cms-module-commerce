@@ -62,7 +62,7 @@ class GenerateMerchantFeed extends Command
                 $item->appendChild($this->domDocument->createElement('g:id', $product->getId()));
                 $titleElement = $item->appendChild($this->domDocument->createElement('g:title'));
                 $titleElement->appendChild($this->domDocument->createCDATASection(trim($product->getTitle())));
-                $item->appendChild($this->createCDATASection('g:link', SITE_URL.$product->getUrl()));
+                $item->appendChild($this->createCDATASection('g:link', SITE_URL . $product->getUrl()));
                 $descriptionElement = $this->domDocument->createElement('g:description');
                 $descriptionElement->appendChild($this->domDocument->createCDATASection($this->getText($product)));
                 $item->appendChild($descriptionElement);
@@ -72,13 +72,14 @@ class GenerateMerchantFeed extends Command
                 $imageCount = 0;
                 foreach ($product->getImages()->getConnectedMediaItems() as $image) {
                     if ($first) {
-                        $item->appendChild($this->createCDATASection('g:image_link', SITE_URL.$image->getWebPath()));
+                        $item->appendChild($this->createCDATASection('g:image_link', SITE_URL . $image->getWebPath()));
 
                         $first = false;
+
                         continue;
                     }
 
-                    $item->appendChild($this->createCDATASection('g:additional_image_link', SITE_URL.$image->getWebPath()));
+                    $item->appendChild($this->createCDATASection('g:additional_image_link', SITE_URL . $image->getWebPath()));
 
                     ++$imageCount;
                     if ($imageCount >= $maxImages) {
@@ -88,7 +89,7 @@ class GenerateMerchantFeed extends Command
 
                 // Only add weight when available
                 if ($product->getWeight()) {
-                    $item->appendChild($this->createCDATASection('g:shipping_weight', $product->getWeight().' kg'));
+                    $item->appendChild($this->createCDATASection('g:shipping_weight', $product->getWeight() . ' kg'));
                 }
 
                 $item->appendChild($this->createCDATASection('g:condition', 'new'));
@@ -96,7 +97,7 @@ class GenerateMerchantFeed extends Command
                     'g:availability',
                     $this->getAvailability($product)
                 ));
-                $item->appendChild($this->domDocument->createElement('g:price', $product->getPrice().' EUR'));
+                $item->appendChild($this->domDocument->createElement('g:price', $product->getPrice() . ' EUR'));
 
                 if ($product->hasActiveSpecialPrice()) {
                     $item->appendChild($this->domDocument->createElement(
@@ -137,7 +138,7 @@ class GenerateMerchantFeed extends Command
         }
 
         $this->domDocument->appendChild($domFeed);
-        $this->domDocument->save($this->kernelRootDir.'/../shopping_feed.xml');
+        $this->domDocument->save($this->kernelRootDir . '/../shopping_feed.xml');
     }
 
     private function getTitle(): DOMElement

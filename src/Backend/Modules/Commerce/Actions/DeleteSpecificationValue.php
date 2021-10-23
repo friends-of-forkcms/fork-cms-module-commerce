@@ -47,7 +47,7 @@ class DeleteSpecificationValue extends BackendBaseActionDelete
                         'report' => 'deleted',
                         'var' => $specificationValue->getValue(),
                     ]
-                ).'#tabValues'
+                ) . '#tabValues'
             );
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->redirect($this->getBackLink(['error' => 'products-connected']));

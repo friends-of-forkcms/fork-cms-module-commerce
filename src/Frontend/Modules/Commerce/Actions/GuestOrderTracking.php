@@ -3,11 +3,9 @@
 namespace Frontend\Modules\Commerce\Actions;
 
 use Backend\Modules\Commerce\Domain\Account\Account;
-use Backend\Modules\Commerce\Domain\Account\AccountRepository;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\Order\OrderRepository;
-use Common\Exception\RedirectException;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
@@ -24,6 +22,7 @@ class GuestOrderTracking extends FrontendBaseBlock
 {
     private Profile $profile;
     private Account $account;
+
     public function execute(): void
     {
         parent::execute();
@@ -65,7 +64,7 @@ class GuestOrderTracking extends FrontendBaseBlock
         // Current customer has a profile redirect to profiles page
         if ($order->getAccount()->getProfileId()) {
             $this->redirect(
-                Navigation::getUrlForBlock($this->getModule(), 'CustomerOrders') .'?order_id='.$order->getId()
+                Navigation::getUrlForBlock($this->getModule(), 'CustomerOrders') . '?order_id=' . $order->getId()
             );
 
             return;
@@ -73,7 +72,7 @@ class GuestOrderTracking extends FrontendBaseBlock
 
         // Redirect to detail page
         $this->redirect(
-            Navigation::getUrlForBlock($this->getModule(), $this->getAction()) .'?order_id='.$order->getId().'&email='.$formData['email']
+            Navigation::getUrlForBlock($this->getModule(), $this->getAction()) . '?order_id=' . $order->getId() . '&email=' . $formData['email']
         );
     }
 
@@ -83,7 +82,7 @@ class GuestOrderTracking extends FrontendBaseBlock
 
         $this->template->assign('order', $order);
 
-        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')).' - '.$order->getId());
+        $this->breadcrumb->addElement(ucfirst(Language::lbl('Order')) . ' - ' . $order->getId());
     }
 
     private function getGuestOrderForm(): Form
@@ -157,7 +156,7 @@ class GuestOrderTracking extends FrontendBaseBlock
         if ($path === null) {
             $path = $this->getAction();
         }
-        $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
+        $path = $this->getModule() . '/Layout/Templates/Customer/' . $path . '.html.twig';
 
         parent::loadTemplate($path, $overwrite);
     }

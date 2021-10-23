@@ -18,7 +18,7 @@ class Quote extends BaseQuote
         $name = $this->getSetting('name');
 
         if ($this->getSetting('price')) {
-            $name .= ' (&euro; '.number_format($this->getSetting('price'), 2, ',', '.').')';
+            $name .= ' (&euro; ' . number_format($this->getSetting('price'), 2, ',', '.') . ')';
         }
 
         return [

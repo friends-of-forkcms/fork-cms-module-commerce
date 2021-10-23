@@ -76,7 +76,7 @@ class Edit extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateProduct->title,
-                    'highlight' => 'row-'.$updateProduct->getProductEntity()->getId(),
+                    'highlight' => 'row-' . $updateProduct->getProductEntity()->getId(),
                 ]
             )
         );

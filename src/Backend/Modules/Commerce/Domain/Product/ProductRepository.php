@@ -201,7 +201,7 @@ class ProductRepository extends EntityRepository
                 )
             )
             ->setParameter('locale', $locale)
-            ->setParameter('query', '%'.$query.'%');
+            ->setParameter('query', '%' . $query . '%');
 
         if ($excluded_id) {
             $queryBuilder->andWhere('i.id != :excluded_id')
@@ -286,7 +286,7 @@ class ProductRepository extends EntityRepository
         ];
 
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '.$offset.', '.$limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -310,7 +310,7 @@ class ProductRepository extends EntityRepository
 
         $this->buildFilterQuery($sql, $parameters, $filters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '.$offset.', '.$limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -352,7 +352,7 @@ class ProductRepository extends EntityRepository
         $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
         $this->buildFilterQuery($sql, $parameters, $filters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '.$offset.', '.$limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -395,7 +395,7 @@ class ProductRepository extends EntityRepository
 
         $this->buildSearchQuery('p', $sql, $searchTerm, $parameters);
         $this->setProductSorting($sql, $sorting);
-        $sql .= ' LIMIT '.$offset.', '.$limit;
+        $sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(Product::class, 'p');
@@ -453,14 +453,14 @@ class ProductRepository extends EntityRepository
                 continue;
             }
 
-            $parameters['specification'.$i] = $specification;
+            $parameters['specification' . $i] = $specification;
 
             // Split the specification values
             $specificationValuesPlaceholder = [];
             $j = 0;
             foreach ($specificationValue as $value) {
-                $key = 'specificationValue'.$i.'_'.$j;
-                $specificationValuesPlaceholder[] = ':'.$key;
+                $key = 'specificationValue' . $i . '_' . $j;
+                $specificationValuesPlaceholder[] = ':' . $key;
                 $parameters[$key] = $value;
                 ++$j;
             }
@@ -473,8 +473,8 @@ class ProductRepository extends EntityRepository
                 INNER JOIN commerce_specifications s ON s.id = sv.`specification_id`
                 INNER JOIN meta smeta ON smeta.id = s.meta_id
                 WHERE s.filter = 1
-                AND smeta.url = :specification'.$i.'
-                AND svmeta.url IN ('.implode(', ', $specificationValuesPlaceholder).')
+                AND smeta.url = :specification' . $i . '
+                AND svmeta.url IN (' . implode(', ', $specificationValuesPlaceholder) . ')
             )';
 
             // Update the counter
@@ -488,15 +488,19 @@ class ProductRepository extends EntityRepository
             case Product::SORT_STANDARD:
             default:
                 $query .= ' ORDER BY p.sequence ASC, p.id DESC';
+
                 break;
             case Product::SORT_PRICE_ASC:
                 $query .= ' ORDER BY p.price_amount ASC';
+
                 break;
             case Product::SORT_PRICE_DESC:
                 $query .= ' ORDER BY p.price_amount DESC';
+
                 break;
             case Product::SORT_CREATED_AT:
                 $query .= ' ORDER BY p.created_on DESC';
+
                 break;
         }
     }
@@ -507,13 +511,13 @@ class ProductRepository extends EntityRepository
     private function buildSearchQuery(string $alias, string &$sql, string $searchTerm, array &$parameters): void
     {
         $sql .= ' (';
-        $sql .= $alias.'.title LIKE :search_term OR ';
-        $sql .= $alias.'.summary LIKE :search_term OR ';
-        $sql .= $alias.'.text LIKE :search_term OR ';
-        $sql .= $alias.'.sku LIKE :search_term';
+        $sql .= $alias . '.title LIKE :search_term OR ';
+        $sql .= $alias . '.summary LIKE :search_term OR ';
+        $sql .= $alias . '.text LIKE :search_term OR ';
+        $sql .= $alias . '.sku LIKE :search_term';
         $sql .= ') ';
 
-        $parameters['search_term'] = '%'.$searchTerm.'%';
+        $parameters['search_term'] = '%' . $searchTerm . '%';
     }
 
     /**

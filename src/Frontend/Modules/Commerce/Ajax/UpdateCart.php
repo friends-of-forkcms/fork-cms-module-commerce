@@ -13,8 +13,6 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Common\Core\Cookie;
 use Doctrine\ORM\NonUniqueResultException;
-use Frontend\Core\Engine\Navigation;
-use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use Money\Currencies\ISOCurrencies;
@@ -292,8 +290,8 @@ class UpdateCart extends DimensionCalculator
         }
 
         foreach ($product->getProductOptionsWithSubOptions() as $productOption) {
-            $fieldName = 'option_'.$productOption->getId();
-            $customValueFieldName = $fieldName.'_custom_value';
+            $fieldName = 'option_' . $productOption->getId();
+            $customValueFieldName = $fieldName . '_custom_value';
 
             if ($this->data->{$fieldName} || isset($this->data->{$customValueFieldName})) {
                 /**
@@ -320,12 +318,15 @@ class UpdateCart extends DimensionCalculator
                         switch ($productOption->getType()) {
                             case ProductOption::DISPLAY_TYPE_TEXT:
                                 $value = $productOptionValue;
+
                                 break;
                             case ProductOption::DISPLAY_TYPE_BETWEEN:
                                 $value = $this->data->{$customValueFieldName};
+
                                 break;
                             default:
                                 $value = $productOptionValue->getTitle();
+
                                 break;
                         }
                         $cartValueOption->setValue($value);

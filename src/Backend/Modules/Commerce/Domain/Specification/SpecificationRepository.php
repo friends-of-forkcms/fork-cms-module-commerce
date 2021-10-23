@@ -155,7 +155,7 @@ class SpecificationRepository extends EntityRepository
             ))
             ->orderBy('s.sequence', 'ASC')
             ->setParameter('filter', true)
-            ->setParameter('search_term', '%'.$searchTerm.'%')
+            ->setParameter('search_term', '%' . $searchTerm . '%')
             ->getQuery()
             ->getResult();
     }

@@ -41,10 +41,10 @@ final class UpdateSettingsHandler
         if (!$matches) {
             return;
         }
-        $googleTaxonomyDir = $this->kernelRootDir.'/../src/Backend/Modules/Commerce/GoogleTaxonomy/'.$matches[1];
+        $googleTaxonomyDir = $this->kernelRootDir . '/../src/Backend/Modules/Commerce/GoogleTaxonomy/' . $matches[1];
 
         $filesystem = new Filesystem();
-        $filesystem->dumpFile($googleTaxonomyDir.'/taxonomies.txt', $contents);
+        $filesystem->dumpFile($googleTaxonomyDir . '/taxonomies.txt', $contents);
     }
 
     /**
