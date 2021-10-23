@@ -31,8 +31,8 @@ class Quote extends BaseQuote
             $vatPrice = $this->getVatPrice($price);
             $totalPrice = $price + $vatPrice['price'];
 
-            $quote[$this->name.'_'.$key] = [
-                'label' => $value->name.' (&euro; '.number_format($totalPrice, 2, ',', '.').')',
+            $quote[$this->name . '_' . $key] = [
+                'label' => $value->name . ' (&euro; ' . number_format($totalPrice, 2, ',', '.') . ')',
                 'name' => $value->name,
                 'price' => $price,
                 'vat' => $vatPrice,

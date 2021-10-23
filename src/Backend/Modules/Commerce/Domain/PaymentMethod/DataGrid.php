@@ -70,7 +70,7 @@ class DataGrid extends DataGridArray
         // get more information for each module
         foreach ($paymentMethods as $paymentMethodName) {
             $paymentMethod = [];
-            $paymentMethod['id'] = 'payment_method_'.$paymentMethodName;
+            $paymentMethod['id'] = 'payment_method_' . $paymentMethodName;
             $paymentMethod['raw_name'] = $paymentMethodName;
             $paymentMethod['name'] = $paymentMethodName;
             $paymentMethod['description'] = '';
@@ -83,7 +83,7 @@ class DataGrid extends DataGridArray
 
             try {
                 $infoXml = @new \SimpleXMLElement(
-                    BACKEND_MODULES_PATH.'/Commerce/PaymentMethods/'.$paymentMethod['raw_name'].'/Info.xml',
+                    BACKEND_MODULES_PATH . '/Commerce/PaymentMethods/' . $paymentMethod['raw_name'] . '/Info.xml',
                     LIBXML_NOCDATA,
                     true
                 );
@@ -119,10 +119,10 @@ class DataGrid extends DataGridArray
         $paymentMethods = [];
 
         $finder = new Finder();
-        $directories = $finder->directories()->in(BACKEND_MODULES_PATH.'/Commerce/PaymentMethods')->depth('==0');
+        $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Commerce/PaymentMethods')->depth('==0');
         foreach ($directories as $directory) {
             // Exclude some directories
-            if (!file_exists($directory.'/Info.xml')) {
+            if (!file_exists($directory . '/Info.xml')) {
                 continue;
             }
 

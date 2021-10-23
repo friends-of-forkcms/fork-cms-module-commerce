@@ -104,7 +104,7 @@ class AddProductOptionValue extends BackendBaseActionAdd
             null,
             null,
             $parameters
-        ).'#tabValues';
+        ) . '#tabValues';
     }
 
     private function getForm(): Form

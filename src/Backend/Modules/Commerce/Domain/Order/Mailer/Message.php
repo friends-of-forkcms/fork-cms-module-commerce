@@ -106,7 +106,7 @@ class Message extends Swift_Message
             // loop old links
             foreach ($matches[1] as $i => $link) {
                 $searchLinks[] = $matches[0][$i];
-                $replaceLinks[] = 'href="'.Model::addUrlParameters($link, $utm).'"';
+                $replaceLinks[] = 'href="' . Model::addUrlParameters($link, $utm) . '"';
             }
 
             $html = str_replace($searchLinks, $replaceLinks, $html);
@@ -150,7 +150,7 @@ class Message extends Swift_Message
     {
         // replace internal links/images
         $search = ['href="/', 'src="/'];
-        $replace = ['href="'.SITE_URL.'/', 'src="'.SITE_URL.'/'];
+        $replace = ['href="' . SITE_URL . '/', 'src="' . SITE_URL . '/'];
 
         return str_replace($search, $replace, $html);
     }

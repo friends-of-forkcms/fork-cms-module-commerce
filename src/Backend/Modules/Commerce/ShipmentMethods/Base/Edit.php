@@ -57,7 +57,7 @@ abstract class Edit
 
     public function getTemplateName(): string
     {
-        return '/Commerce/ShipmentMethods/'.$this->name.'/Layout/Edit.html.twig';
+        return '/Commerce/ShipmentMethods/' . $this->name . '/Layout/Edit.html.twig';
     }
 
     public function execute(): void
@@ -95,7 +95,7 @@ abstract class Edit
     {
         $baseKey = $this->getBaseKey($includeLanguage);
 
-        $this->settings->set('Commerce', $baseKey.'_'.$name, $value);
+        $this->settings->set('Commerce', $baseKey . '_' . $name, $value);
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class Edit
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage).'_'.$property;
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
             $value = $this->settings->get('Commerce', $key, $defaultValue);
             $dataTransferObject->{$property} = $value;
         }
@@ -148,7 +148,7 @@ abstract class Edit
      */
     public function getDataGridRowKey(): string
     {
-        return 'row-shipment_method_'.$this->name;
+        return 'row-shipment_method_' . $this->name;
     }
 
     protected function installShipmentMethod(bool $install): void
@@ -174,7 +174,7 @@ abstract class Edit
         $key = $this->name;
 
         if ($includeLanguage) {
-            $key .= '_'.$this->locale;
+            $key .= '_' . $this->locale;
         }
 
         return $key;

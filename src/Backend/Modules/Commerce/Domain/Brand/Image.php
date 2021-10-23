@@ -18,7 +18,7 @@ final class Image extends AbstractImage
     {
         if ($this->getFile()) {
             $this->namePrefix = str_replace(
-                '.'.$this->getFile()->getClientOriginalExtension(),
+                '.' . $this->getFile()->getClientOriginalExtension(),
                 '',
                 $this->getFile()->getClientOriginalName()
             );

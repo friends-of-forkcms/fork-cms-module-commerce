@@ -50,7 +50,7 @@ class Register extends FrontendBaseBlock
             return;
         }
 
-        $this->redirect($this->url->getQueryString().'?registered=true');
+        $this->redirect($this->url->getQueryString() . '?registered=true');
     }
 
     /**

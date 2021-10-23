@@ -78,14 +78,14 @@ class AddProductOption extends BackendBaseActionAdd
                 'id' => $this->productOptionValue->getId(),
             ]);
 
-            return BackendModel::createUrlForAction('EditProductOptionValue', null, null, $parameters).'#tabSubOptions';
+            return BackendModel::createUrlForAction('EditProductOptionValue', null, null, $parameters) . '#tabSubOptions';
         }
 
         $parameters = array_merge($parameters, [
             'id' => $this->product->getId(),
         ]);
 
-        return BackendModel::createUrlForAction('Edit', null, null, $parameters).'#tabOptions';
+        return BackendModel::createUrlForAction('Edit', null, null, $parameters) . '#tabOptions';
     }
 
     private function getForm(): Form

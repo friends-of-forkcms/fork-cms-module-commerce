@@ -123,7 +123,7 @@ class PaymentMethodStep extends Step
              */
             $class = new $className($paymentMethod, $this->cart, $this->getPaymentAddress());
             foreach ($class->getQuote() as $key => $options) {
-                $paymentMethods[$paymentMethod.'.'.$key] = $options;
+                $paymentMethods[$paymentMethod . '.' . $key] = $options;
             }
         }
 
@@ -141,6 +141,6 @@ class PaymentMethodStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('PaymentMethod'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('PaymentMethod'));
     }
 }

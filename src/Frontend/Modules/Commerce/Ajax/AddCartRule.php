@@ -8,10 +8,7 @@ use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 use Backend\Modules\Commerce\Domain\CartRule\CartRuleRepository;
 use Common\Core\Cookie;
 use Frontend\Core\Engine\Base\AjaxAction as FrontendBaseAJAXAction;
-use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Language;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\DecimalMoneyFormatter;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,17 +30,20 @@ class AddCartRule extends FrontendBaseAJAXAction
         // Cart rule code must be set
         if (!$this->getRequest()->request->has('code') || empty($code)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('FieldIsRequired'));
+
             return;
         }
 
         // Discount code must exist
         if (!$this->cartRule = $this->getCartRuleRepository()->findValidByCode($code)) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('DiscountCodeNotFound'));
+
             return;
         }
 
         if ($this->cartRule->getQuantity() < 1) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('ThisCartRuleIsNotValid'));
+
             return;
         }
 
@@ -51,6 +51,7 @@ class AddCartRule extends FrontendBaseAJAXAction
         $cartRuleExists = $this->cart->getCartRules()->exists(fn ($key, $value) => $value->getId() === $this->cartRule->getId());
         if ($cartRuleExists) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('CartRuleAlreadyUsed'));
+
             return;
         }
 

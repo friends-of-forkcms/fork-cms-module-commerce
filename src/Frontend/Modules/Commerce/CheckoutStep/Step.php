@@ -111,7 +111,7 @@ abstract class Step
         $this->template->assign('cart', $this->cart);
         $this->template->assign('step', $this);
 
-        $html = $this->template->getContent('Commerce/Layout/Templates/Checkout/Step/'.$name.'.html.twig');
+        $html = $this->template->getContent('Commerce/Layout/Templates/Checkout/Step/' . $name . '.html.twig');
 
         return $html;
     }
@@ -192,7 +192,7 @@ abstract class Step
 
     public function getUrl(): ?string
     {
-        return Navigation::getUrlForBlock('Commerce', 'Cart').'/'.Language::lbl('Checkout');
+        return Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . Language::lbl('Checkout');
     }
 
     public function setCheckoutProgress(CheckoutProgress $checkoutProgress): void

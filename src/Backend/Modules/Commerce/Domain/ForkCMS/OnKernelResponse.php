@@ -32,8 +32,8 @@ final class OnKernelResponse
         $event->getResponse()->setContent(
             preg_replace(
                 '|<head>|',
-                '<head>'.PHP_EOL
-                .'<style media="screen" type="text/css">.nav-item-commerce a:before {content: "\f07a";}</style>',
+                '<head>' . PHP_EOL
+                . '<style media="screen" type="text/css">.nav-item-commerce a:before {content: "\f07a";}</style>',
                 $content,
                 1
             )

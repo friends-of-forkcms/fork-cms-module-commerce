@@ -53,7 +53,7 @@ class Installer extends ModuleInstaller
     {
         $this->configureEntities();
         $this->addModule('Commerce');
-        $this->importLocale(__DIR__.'/Data/locale.xml');
+        $this->importLocale(__DIR__ . '/Data/locale.xml');
         $this->addBackendNavigation();
         $this->addModulePermissions();
         $this->addModuleSettings();
@@ -359,7 +359,7 @@ class Installer extends ModuleInstaller
     {
         $this->setSetting($this->getModule(), 'overview_num_items', 10);
         $this->setSetting($this->getModule(), 'filters_show_more_num_items', 5);
-        $this->setSetting($this->getModule(), 'next_invoice_number', (int) date('Y').'0001');
+        $this->setSetting($this->getModule(), 'next_invoice_number', (int) date('Y') . '0001');
     }
 
     private function configureFrontendPages(): void

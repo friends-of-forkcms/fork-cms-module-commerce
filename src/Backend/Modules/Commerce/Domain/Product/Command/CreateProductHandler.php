@@ -6,7 +6,6 @@ use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Backend\Modules\Search\Engine\Model as BackendSearchModel;
-use Common\ModuleExtraType;
 
 final class CreateProductHandler
 {

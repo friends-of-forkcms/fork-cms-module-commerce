@@ -372,7 +372,7 @@ class Pagination
             array_keys($parameters)
         ));
 
-        return $this->base_url.'?'.$parameterString;
+        return $this->base_url . '?' . $parameterString;
     }
 
     /**

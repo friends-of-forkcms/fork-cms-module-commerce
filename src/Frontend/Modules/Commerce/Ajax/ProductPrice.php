@@ -7,7 +7,6 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
-use Frontend\Core\Engine\TemplateModifiers;
 use Frontend\Core\Language\Locale;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;
@@ -136,8 +135,8 @@ class ProductPrice extends DimensionCalculator
 
     private function parseProductOption(ProductOption $option, Product $product): void
     {
-        $propertyName = 'option_'.$option->getId();
-        $propertyNameCustomValue = $propertyName.'_custom_value';
+        $propertyName = 'option_' . $option->getId();
+        $propertyNameCustomValue = $propertyName . '_custom_value';
 
         if (!property_exists($this->data, $propertyName)) { //  || $this->data->{$propertyName} === null
             return;
@@ -151,7 +150,7 @@ class ProductPrice extends DimensionCalculator
         if ($option->isCustomValueAllowed() && isset($this->data->{$propertyNameCustomValue})) {
             $price = $option->getCustomValuePrice();
             $vatPrice = $option->getCustomValuePrice()->multiply($product->getVat()->getAsPercentage());
-            $value = $option->getPrefix().$this->data->{$propertyNameCustomValue}.$option->getSuffix();
+            $value = $option->getPrefix() . $this->data->{$propertyNameCustomValue} . $option->getSuffix();
         } else {
             /**
              * @var ProductOptionValue $optionValue
@@ -173,12 +172,15 @@ class ProductPrice extends DimensionCalculator
                 switch ($option->getType()) {
                     case ProductOption::DISPLAY_TYPE_TEXT:
                         $value = $optionValue;
+
                         break;
                     case ProductOption::DISPLAY_TYPE_BETWEEN:
                         $value = $this->data->{$propertyNameCustomValue};
+
                         break;
                     default:
                         $value = $optionValue->getTitle();
+
                         break;
                 }
             }

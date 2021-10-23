@@ -138,7 +138,7 @@ class ProductOptionType extends AbstractType
                     return $queryBuilder;
                 },
                 'choice_label' => function (ProductOptionValue $productOptionValue) {
-                    return $productOptionValue->getProductOption()->getTitle().' - '.$productOptionValue->getTitle();
+                    return $productOptionValue->getProductOption()->getTitle() . ' - ' . $productOptionValue->getTitle();
                 },
             ]
         );

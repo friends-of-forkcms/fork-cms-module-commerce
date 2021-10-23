@@ -114,10 +114,10 @@ abstract class ConfirmOrder
         $baseKey = $this->name;
 
         if ($includeLanguage) {
-            $baseKey .= '_'.$this->language->getLocale();
+            $baseKey .= '_' . $this->language->getLocale();
         }
 
-        return $this->settings->get('Commerce', $baseKey.'_'.$key, $defaultValue);
+        return $this->settings->get('Commerce', $baseKey . '_' . $key, $defaultValue);
     }
 
     public function isPaid(): bool
@@ -207,17 +207,17 @@ abstract class ConfirmOrder
      */
     private function goToPage(string $page, array $parameters = []): void
     {
-        $url = Navigation::getUrlForBlock('Commerce', 'Cart').'/'.$page;
+        $url = Navigation::getUrlForBlock('Commerce', 'Cart') . '/' . $page;
 
         // Add extra parameters
         if ($parameters) {
             $query = [];
 
             foreach ($parameters as $key => $value) {
-                $query[] = $key.'='.$value;
+                $query[] = $key . '=' . $value;
             }
 
-            $url .= '?'.implode('&', $query);
+            $url .= '?' . implode('&', $query);
         }
 
         throw new RedirectException('Redirect', new RedirectResponse($url, RedirectResponse::HTTP_FOUND));

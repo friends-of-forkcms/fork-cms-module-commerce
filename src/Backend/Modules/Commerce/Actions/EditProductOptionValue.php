@@ -50,7 +50,7 @@ class EditProductOptionValue extends BackendBaseActionEdit
             );
             $this->template->assign('backLink', $this->getBackLink([
                     'id' => $productOptionValue->getProductOption()->getId(),
-                ]).'#tabValues');
+                ]) . '#tabValues');
 
             $this->parse();
             $this->display();
@@ -71,9 +71,9 @@ class EditProductOptionValue extends BackendBaseActionEdit
                 [
                     'id' => $updateProductOptionValue->getProductOptionValueEntity()->getProductOption()->getId(),
                     'report' => 'edited',
-                    'highlight' => 'row-'.$updateProductOptionValue->getProductOptionValueEntity()->getId(),
+                    'highlight' => 'row-' . $updateProductOptionValue->getProductOptionValueEntity()->getId(),
                 ]
-            ).'#tabValues'
+            ) . '#tabValues'
         );
     }
 

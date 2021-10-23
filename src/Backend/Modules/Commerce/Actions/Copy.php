@@ -52,7 +52,7 @@ class Copy extends BackendBaseAction
         $product = $this->getProduct((int) $copyFormData['id']);
         $createProduct = new CreateProduct(clone $product);
         $createProduct->copy();
-        $createProduct->title = $createProduct->title.' ('.ucfirst(Language::lbl('Copy')).')';
+        $createProduct->title = $createProduct->title . ' (' . ucfirst(Language::lbl('Copy')) . ')';
         $createProduct->meta = $this->copyMeta($product->getMeta());
         $createProduct->images = $this->copyMediaGroup($product->getImages());
         $createProduct->downloads = $this->copyMediaGroup($product->getDownloads());

@@ -11,7 +11,6 @@ use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
-use Money\Formatter\DecimalMoneyFormatter;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 
@@ -62,7 +61,7 @@ class DataGrid extends DataGridDatabase
 
         if ($sku) {
             $query .= ' AND i.`sku` LIKE :sku';
-            $parameters['sku'] = '%'.$sku.'%';
+            $parameters['sku'] = '%' . $sku . '%';
         }
 
         parent::__construct($query, $parameters);
@@ -72,7 +71,7 @@ class DataGrid extends DataGridDatabase
         $this->setAttributes(
             [
                 'data-action' => 'SequenceProducts',
-                'data-extra-params' => '{\'currentOffset\' : '.$offset.'}',
+                'data-extra-params' => '{\'currentOffset\' : ' . $offset . '}',
             ]
         );
 
@@ -125,11 +124,11 @@ class DataGrid extends DataGridDatabase
     {
         $name = null;
         if ($category->getParent()) {
-            $name = self::generateCategoryName($category->getParent(), $separator, false).$separator;
+            $name = self::generateCategoryName($category->getParent(), $separator, false) . $separator;
         }
 
         if ($first) {
-            $name .= '<strong>'.$category->getTitle().'</strong>';
+            $name .= '<strong>' . $category->getTitle() . '</strong>';
         } else {
             $name .= $category->getTitle();
         }

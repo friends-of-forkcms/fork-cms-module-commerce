@@ -150,7 +150,7 @@ class PersonalData extends FrontendBaseBlock
     protected function parse()
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/Commerce.css');
 
         // url to checkout page
         $this->tpl->assign('checkoutUrl', $this->checkoutUrl);

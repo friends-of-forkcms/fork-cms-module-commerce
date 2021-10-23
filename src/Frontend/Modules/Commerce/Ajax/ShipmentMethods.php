@@ -141,7 +141,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
              */
             $class = new $className($shipmentMethod, $cart, $this->session->get('guest_shipment_address'));
             foreach ($class->getQuote() as $key => $options) {
-                $shipmentMethods[$shipmentMethod.'.'.$key] = $options;
+                $shipmentMethods[$shipmentMethod . '.' . $key] = $options;
             }
         }
 

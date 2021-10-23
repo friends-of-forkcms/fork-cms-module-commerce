@@ -101,9 +101,9 @@ class AddCategory extends BackendBaseActionAdd
     {
         $filesystem = new Filesystem();
         $kernelRootDir = $this->getKernel()->getRootDir();
-        $googleTaxonomyFile = $kernelRootDir.'/../src/Backend/Modules/Commerce/GoogleTaxonomy/'
-            .Locale::workingLocale()->getLocale()
-            .'/taxonomies.txt';
+        $googleTaxonomyFile = $kernelRootDir . '/../src/Backend/Modules/Commerce/GoogleTaxonomy/'
+            . Locale::workingLocale()->getLocale()
+            . '/taxonomies.txt';
 
         $categories = [];
         $query = strtolower($this->getRequest()->request->get('q'));

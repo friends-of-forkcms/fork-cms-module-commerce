@@ -62,7 +62,7 @@ class EditOrderStatus extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateOrderStatus->title,
-                    'highlight' => 'row-'.$updateOrderStatus->getOrderStatusEntity()->getId(),
+                    'highlight' => 'row-' . $updateOrderStatus->getOrderStatusEntity()->getId(),
                 ]
             )
         );

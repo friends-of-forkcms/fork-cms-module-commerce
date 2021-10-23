@@ -53,7 +53,7 @@ class Brand extends FrontendBaseBlock
         $requestedPage = $this->url->getParameter('page', 'int', 1);
 
         // set URL and limit
-        $this->pagination['url'] = FrontendNavigation::getURLForBlock($this->getModule(), 'category').'/'.$this->record['url'];
+        $this->pagination['url'] = FrontendNavigation::getURLForBlock($this->getModule(), 'category') . '/' . $this->record['url'];
         $this->pagination['limit'] = $this->get('fork.settings')->get('commerce', 'overview_num_items', 10);
 
         // populate count fields in pagination
@@ -78,7 +78,7 @@ class Brand extends FrontendBaseBlock
     protected function parse(): void
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/Commerce.css');
 
         // add breadcrumb
         $this->breadcrumb->addElement($this->record['title'], $this->record['full_url']);

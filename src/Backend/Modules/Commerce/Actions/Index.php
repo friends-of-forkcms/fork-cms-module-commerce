@@ -43,6 +43,7 @@ class Index extends BackendBaseActionIndex
                 $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
+
                 return;
             }
         }

@@ -75,7 +75,7 @@ abstract class Edit
      */
     public function getTemplateName(): string
     {
-        return '/Commerce/PaymentMethods/'.$this->name.'/Layout/Edit.html.twig';
+        return '/Commerce/PaymentMethods/' . $this->name . '/Layout/Edit.html.twig';
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class Edit
     {
         $baseKey = $this->getBaseKey($includeLanguage);
 
-        $this->settings->set('Commerce', $baseKey.'_'.$name, $value);
+        $this->settings->set('Commerce', $baseKey . '_' . $name, $value);
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class Edit
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage).'_'.$property;
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
             $value = $this->settings->get('Commerce', $key, $defaultValue);
             $dataTransferObject->{$property} = $value;
         }
@@ -192,7 +192,7 @@ abstract class Edit
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage).'_'.$property;
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
             $value = $dataTransferObject->{$property};
 
             $this->settings->set('Commerce', $key, $value);
@@ -213,7 +213,7 @@ abstract class Edit
      */
     public function getDataGridRowKey(): string
     {
-        return 'row-payment_method_'.$this->name;
+        return 'row-payment_method_' . $this->name;
     }
 
     /**
@@ -238,7 +238,7 @@ abstract class Edit
         $key = $this->name;
 
         if ($includeLanguage) {
-            $key .= '_'.$this->locale;
+            $key .= '_' . $this->locale;
         }
 
         return $key;

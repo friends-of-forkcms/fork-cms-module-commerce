@@ -63,9 +63,9 @@ class EditSpecificationValue extends BackendBaseActionEdit
                     'id' => $updateSpecificationValue->getSpecificationValueEntity()->getSpecification()->getId(),
                     'report' => 'edited',
                     'var' => $updateSpecificationValue->value,
-                    'highlight' => 'row-'.$updateSpecificationValue->getSpecificationValueEntity()->getId(),
+                    'highlight' => 'row-' . $updateSpecificationValue->getSpecificationValueEntity()->getId(),
                 ]
-            ).'#tabValues'
+            ) . '#tabValues'
         );
     }
 

@@ -62,7 +62,7 @@ class EditCountry extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateCountry->title,
-                    'highlight' => 'row-'.$updateCountry->getCountryEntity()->getId(),
+                    'highlight' => 'row-' . $updateCountry->getCountryEntity()->getId(),
                 ]
             )
         );

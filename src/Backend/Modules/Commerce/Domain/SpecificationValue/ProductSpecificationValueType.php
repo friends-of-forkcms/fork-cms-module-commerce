@@ -38,7 +38,7 @@ class ProductSpecificationValueType extends AbstractType
                 'allow_clear' => false,
                 'allow_add' => [
                     'enabled' => true,
-                    'new_tag_text' => ' ('.Language::lbl('New').')',
+                    'new_tag_text' => ' (' . Language::lbl('New') . ')',
                     'tag_separators' => '[","]',
                 ],
                 'delay' => 250,

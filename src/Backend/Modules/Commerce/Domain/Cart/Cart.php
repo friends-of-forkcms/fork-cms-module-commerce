@@ -568,7 +568,7 @@ class Cart implements JsonSerializable
                     'quantity' => $cartValue->getQuantity(),
                     'total' => (float) $moneyFormatter->format($cartValue->getTotal()),
                 ];
-            }, $this->getValues()->toArray())
+            }, $this->getValues()->toArray()),
         ];
     }
 }

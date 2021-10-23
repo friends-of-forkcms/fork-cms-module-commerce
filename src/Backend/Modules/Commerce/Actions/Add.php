@@ -45,7 +45,7 @@ class Add extends BackendBaseActionAdd
                 [
                     'report' => 'added',
                     'var' => $createProduct->title,
-                    'highlight' => 'row-'.$createProduct->getProductEntity()->getId(),
+                    'highlight' => 'row-' . $createProduct->getProductEntity()->getId(),
                 ]
             )
         );

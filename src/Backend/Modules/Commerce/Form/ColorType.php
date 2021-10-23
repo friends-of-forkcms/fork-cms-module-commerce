@@ -111,6 +111,7 @@ class ColorType extends AbstractType
                     if (isset($valueMap[$value])) {
                         $data[$child->getName()] = $value;
                         unset($unknownValues[$value]);
+
                         continue;
                     }
                 }
@@ -365,11 +366,13 @@ class ColorType extends AbstractType
             // Flatten groups
             if (\is_array($choiceView)) {
                 $this->addSubForms($builder, $choiceView, $options);
+
                 continue;
             }
 
             if ($choiceView instanceof ChoiceGroupView) {
                 $this->addSubForms($builder, $choiceView->choices, $options);
+
                 continue;
             }
 
@@ -391,12 +394,12 @@ class ColorType extends AbstractType
         ];
 
         if ($options['multiple']) {
-            $choiceType = __NAMESPACE__.'\CheckboxType';
+            $choiceType = __NAMESPACE__ . '\CheckboxType';
             // The user can check 0 or more checkboxes. If required
             // is true, they are required to check all of them.
             $choiceOpts['required'] = false;
         } else {
-            $choiceType = __NAMESPACE__.'\RadioType';
+            $choiceType = __NAMESPACE__ . '\RadioType';
         }
 
         $builder->add($name, $choiceType, $choiceOpts);

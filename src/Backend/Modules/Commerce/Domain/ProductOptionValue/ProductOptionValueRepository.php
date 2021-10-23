@@ -91,7 +91,7 @@ class ProductOptionValueRepository extends EntityRepository
         $queryBuilder->join('i.product_option', 'po')
             ->where('po.id = :product_option_id')
             ->andWhere('i.title LIKE :query')
-            ->setParameter('query', '%'.$query.'%')
+            ->setParameter('query', '%' . $query . '%')
             ->setParameter('product_option_id', $productOptionId);
 
         return $queryBuilder->getQuery()

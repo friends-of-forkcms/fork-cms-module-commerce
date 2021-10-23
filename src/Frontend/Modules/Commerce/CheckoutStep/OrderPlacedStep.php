@@ -32,6 +32,6 @@ class OrderPlacedStep extends Step
 
     public function getUrl(): ?string
     {
-        return parent::getUrl().'/'.Uri::getUrl(Language::lbl('Thanks'));
+        return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('Thanks'));
     }
 }

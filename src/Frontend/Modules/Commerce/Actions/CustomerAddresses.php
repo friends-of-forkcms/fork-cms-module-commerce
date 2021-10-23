@@ -17,7 +17,6 @@ use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
 use Frontend\Modules\Profiles\Engine\Authentication as FrontendProfilesAuthentication;
-use Frontend\Modules\Profiles\Engine\Profile;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
@@ -160,7 +159,7 @@ class CustomerAddresses extends FrontendBaseBlock
         if ($path === null) {
             $path = $this->getAction();
         }
-        $path = $this->getModule().'/Layout/Templates/Customer/'.$path.'.html.twig';
+        $path = $this->getModule() . '/Layout/Templates/Customer/' . $path . '.html.twig';
 
         parent::loadTemplate($path, $overwrite);
     }

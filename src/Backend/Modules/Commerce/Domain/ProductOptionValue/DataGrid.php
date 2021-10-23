@@ -63,9 +63,11 @@ class DataGrid extends DataGridDatabase
             case ProductOptionValue::IMPACT_TYPE_ADD:
             default:
                 $returnValue = ucfirst(Language::lbl('Add'));
+
                 break;
             case ProductOptionValue::IMPACT_TYPE_SUBTRACT:
                 $returnValue = ucfirst(Language::lbl('SubTract'));
+
                 break;
         }
 

@@ -28,6 +28,7 @@ class ProductDimensionRepository extends EntityRepository
                 'width' => $width,
                 'height' => $height,
             ]);
+
         try {
             return $query->getQuery()
                 ->getSingleResult();

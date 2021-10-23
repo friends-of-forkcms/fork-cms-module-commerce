@@ -70,7 +70,7 @@ class DataGrid extends DataGridArray
         // get more information for each module
         foreach ($shipmentMethods as $shipmentMethodName) {
             $shipmentMethod = [];
-            $shipmentMethod['id'] = 'shipment_method_'.$shipmentMethodName;
+            $shipmentMethod['id'] = 'shipment_method_' . $shipmentMethodName;
             $shipmentMethod['raw_name'] = $shipmentMethodName;
             $shipmentMethod['name'] = $shipmentMethodName;
             $shipmentMethod['description'] = '';
@@ -83,7 +83,7 @@ class DataGrid extends DataGridArray
 
             try {
                 $infoXml = @new \SimpleXMLElement(
-                    BACKEND_MODULES_PATH.'/Commerce/ShipmentMethods/'.$shipmentMethod['raw_name'].'/Info.xml',
+                    BACKEND_MODULES_PATH . '/Commerce/ShipmentMethods/' . $shipmentMethod['raw_name'] . '/Info.xml',
                     LIBXML_NOCDATA,
                     true
                 );
@@ -123,7 +123,7 @@ class DataGrid extends DataGridArray
         ];
 
         $finder = new Finder();
-        $directories = $finder->directories()->in(BACKEND_MODULES_PATH.'/Commerce/ShipmentMethods')->depth('==0');
+        $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Commerce/ShipmentMethods')->depth('==0');
         foreach ($directories as $directory) {
             // Exclude some directories
             if (in_array($directory->getBasename(), $excludedDirectories)) {

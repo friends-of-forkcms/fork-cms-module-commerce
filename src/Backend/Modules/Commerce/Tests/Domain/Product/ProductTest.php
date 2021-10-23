@@ -2,9 +2,9 @@
 
 namespace Backend\Modules\Commerce\Tests\Domain\Product;
 
+use Backend\Modules\Commerce\Domain\Product\Factory\ProductFactory;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
-use Backend\Modules\Commerce\Domain\Product\Factory\ProductFactory;
 use Common\ModulesSettings;
 use DateTime;
 use ForkCMS\App\BaseModel;
@@ -32,7 +32,7 @@ class ProductTest extends TestCase
             ->method('get')
             ->willReturnMap([
                     ['fork.settings', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $forkSettings],
-                    ['commerce.repository.product', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $productRepository]
+                    ['commerce.repository.product', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $productRepository],
             ]);
         BaseModel::setContainer($container);
     }

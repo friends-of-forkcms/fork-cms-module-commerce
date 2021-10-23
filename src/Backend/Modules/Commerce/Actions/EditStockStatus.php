@@ -62,7 +62,7 @@ class EditStockStatus extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateStockStatus->title,
-                    'highlight' => 'row-'.$updateStockStatus->getStockStatusEntity()->getId(),
+                    'highlight' => 'row-' . $updateStockStatus->getStockStatusEntity()->getId(),
                 ]
             )
         );

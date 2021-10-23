@@ -45,6 +45,7 @@ class Detail extends FrontendBaseBlock
         // validate incoming parameters
         if ($this->url->getParameter(1) === null) {
             $this->redirect(FrontendNavigation::getURL(404));
+
             return;
         }
 
@@ -59,7 +60,7 @@ class Detail extends FrontendBaseBlock
     protected function parse(): void
     {
         // add css
-        $this->header->addCSS('/src/Frontend/Modules/'.$this->getModule().'/Layout/Css/Commerce.css');
+        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/Commerce.css');
 
         // add into breadcrumb
         $this->breadcrumb->addElement($this->product->getTitle());

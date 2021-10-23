@@ -21,6 +21,6 @@ class DeleteCompleted extends BackendBaseActionDelete
         BackendCommerceModel::deleteCompletedOrders();
 
         // item was deleted, so redirect
-        $this->redirect(BackendModel::createURLForAction('orders').'&report=deleted-completed#tabCompleted');
+        $this->redirect(BackendModel::createURLForAction('orders') . '&report=deleted-completed#tabCompleted');
     }
 }

@@ -51,6 +51,7 @@ class ProductFactory extends ModelFactory
                 $dto->summary = $attributes['summary'];
                 $dto->text = $attributes['text'];
                 $dto->specials = $attributes['specials'];
+
                 return Product::fromDataTransferObject($dto);
             });
     }
@@ -102,6 +103,7 @@ class ProductFactory extends ModelFactory
     public function withPrice(string $price): self
     {
         $moneyTransformer = new MoneyToLocalizedStringTransformer(2, true, null, 100);
+
         return $this->addState(['price' => Money::EUR($moneyTransformer->reverseTransform($price))]);
     }
 

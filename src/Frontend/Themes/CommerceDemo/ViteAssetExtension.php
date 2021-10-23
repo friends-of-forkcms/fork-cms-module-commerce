@@ -79,6 +79,7 @@ class ViteAssetExtension extends AbstractExtension
         // Check to see if the dev server is actually running by pinging the vite endpoint
         try {
             $response = $this->httpClient->request('GET', $this->devServerPublic . self::VITE_CLIENT);
+
             return $response->getStatusCode() === 200;
         } catch (GuzzleException $e) {
             return false;
@@ -121,6 +122,7 @@ HTML;
         if ($this->isDevServerRunning()) {
             return $this->renderScriptsDev($entryName);
         }
+
         return $this->renderScriptsProd($entryName);
     }
 

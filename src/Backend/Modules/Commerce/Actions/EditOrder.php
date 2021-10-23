@@ -58,7 +58,7 @@ class EditOrder extends BackendBaseActionEdit
             $this->getBackLink(
                 [
                     'report' => 'edited',
-                    'highlight' => 'row-'.$this->order->getId(),
+                    'highlight' => 'row-' . $this->order->getId(),
                 ]
             )
         );

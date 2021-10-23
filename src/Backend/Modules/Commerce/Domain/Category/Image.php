@@ -44,7 +44,7 @@ final class Image extends AbstractImage
     {
         if ($this->getFile()) {
             $this->namePrefix = str_replace(
-                '.'.$this->getFile()->getClientOriginalExtension(),
+                '.' . $this->getFile()->getClientOriginalExtension(),
                 '',
                 $this->getFile()->getClientOriginalName()
             );
@@ -70,7 +70,7 @@ final class Image extends AbstractImage
 
             try {
                 Model::get(Thumbnails::class)->generate(
-                    FRONTEND_FILES_PATH.'/'.$this->getTrimmedUploadDir(),
+                    FRONTEND_FILES_PATH . '/' . $this->getTrimmedUploadDir(),
                     $this->getAbsolutePath('source')
                 );
             } catch (SpoonThumbnailException $e) {

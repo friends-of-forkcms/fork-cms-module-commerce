@@ -27,7 +27,7 @@ class DataGrid extends DataGridDatabase
                 ['category' => $category->getId(), 'language' => $locale]
             );
 
-            $this->setURL('&amp;category='.$category->getId(), true);
+            $this->setURL('&amp;category=' . $category->getId(), true);
         } else {
             parent::__construct(
                 'SELECT c.id, c.title, COUNT(i.id) AS num_products, c.sequence

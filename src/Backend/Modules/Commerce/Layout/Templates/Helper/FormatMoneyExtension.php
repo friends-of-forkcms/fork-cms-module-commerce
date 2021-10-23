@@ -43,6 +43,7 @@ class FormatMoneyExtension extends AbstractExtension
     {
         $currencies = new ISOCurrencies();
         $moneyFormatter = new DecimalMoneyFormatter($currencies);
+
         return (float) $moneyFormatter->format($money);
     }
 }

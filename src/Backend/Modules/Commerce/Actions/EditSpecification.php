@@ -66,7 +66,7 @@ class EditSpecification extends BackendBaseActionEdit
                 [
                     'report' => 'edited',
                     'var' => $updateSpecification->title,
-                    'highlight' => 'row-'.$updateSpecification->getSpecificationEntity()->getId(),
+                    'highlight' => 'row-' . $updateSpecification->getSpecificationEntity()->getId(),
                 ]
             )
         );

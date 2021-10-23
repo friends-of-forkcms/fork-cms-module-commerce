@@ -39,10 +39,10 @@ abstract class Quote
         $baseKey = $this->name;
 
         if ($includeLanguage) {
-            $baseKey .= '_'.$this->language->getLocale();
+            $baseKey .= '_' . $this->language->getLocale();
         }
 
-        return $this->settings->get('Commerce', $baseKey.'_'.$key, $defaultValue);
+        return $this->settings->get('Commerce', $baseKey . '_' . $key, $defaultValue);
     }
 
     /**

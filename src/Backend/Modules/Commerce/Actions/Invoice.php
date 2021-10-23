@@ -42,12 +42,12 @@ class Invoice extends Action
         $template = $this->get('templating');
         $template->assign('order', $this->order);
 
-        return $template->getContent($this->getModule().'/Layout/Templates/'.$this->getAction().'.html.twig');
+        return $template->getContent($this->getModule() . '/Layout/Templates/' . $this->getAction() . '.html.twig');
     }
 
     public function getContent(): Response
     {
-        $filename = Language::lbl('Invoice').'-'.$this->order->getInvoiceNumber().'.pdf';
+        $filename = Language::lbl('Invoice') . '-' . $this->order->getInvoiceNumber() . '.pdf';
 
         /** @var Pdf $pdf */
         $pdf = $this->get('knp_snappy.pdf');
