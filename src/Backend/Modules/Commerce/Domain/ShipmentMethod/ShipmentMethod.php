@@ -3,7 +3,9 @@
 namespace Backend\Modules\Commerce\Domain\ShipmentMethod;
 
 use Common\Locale;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_shipment_methods")
@@ -22,6 +24,18 @@ class ShipmentMethod
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     public function __construct(
         string $name,

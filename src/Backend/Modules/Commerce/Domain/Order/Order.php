@@ -14,6 +14,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_orders")
@@ -72,9 +73,16 @@ class Order
     private ?string $comment;
 
     /**
-     * @ORM\Column(type="datetime", name="date")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $date;
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     /**
      * @var Collection|OrderRule[]
@@ -115,7 +123,7 @@ class Order
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="order")
      * @ORM\JoinColumn(name="order_id")
-     * @ORM\OrderBy({"created_at": "DESC"}))
+     * @ORM\OrderBy({"created_on": "DESC"}))
      */
     private Collection $history;
 
@@ -132,7 +140,7 @@ class Order
     private function __construct(
         Account $account,
         ?Cart $cart,
-        DateTime $date,
+        DateTimeInterface $createdOn,
         string $paymentMethod,
         string $shipment_method,
         string $shipment_price,
@@ -149,7 +157,7 @@ class Order
     ) {
         $this->account = $account;
         $this->cart = $cart;
-        $this->date = $date;
+        $this->$createdOn = $createdOn;
         $this->payment_method = $paymentMethod;
         $this->shipment_method = $shipment_method;
         $this->shipment_price = $shipment_price;
@@ -179,7 +187,7 @@ class Order
         return new self(
             $dataTransferObject->account,
             $dataTransferObject->cart,
-            $dataTransferObject->date,
+            $dataTransferObject->createdOn,
             $dataTransferObject->paymentMethod,
             $dataTransferObject->shipment_method,
             $dataTransferObject->shipment_price,
@@ -241,9 +249,9 @@ class Order
         return $this->comment;
     }
 
-    public function getDate(): DateTimeInterface
+    public function getCreatedOn(): DateTimeInterface
     {
-        return $this->date;
+        return $this->createdOn;
     }
 
     public function getSubTotal(): float
@@ -304,7 +312,7 @@ class Order
 
         $order->account = $dataTransferObject->account;
         $order->cart = $dataTransferObject->cart;
-        $order->date = $dataTransferObject->date;
+        $order->date = $dataTransferObject->createdOn;
         $order->total = $dataTransferObject->total;
         $order->invoice_number = $dataTransferObject->invoiceNumber;
         $order->invoice_date = $dataTransferObject->invoiceDate;

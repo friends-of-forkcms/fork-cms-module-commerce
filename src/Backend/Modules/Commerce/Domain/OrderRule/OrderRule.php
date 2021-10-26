@@ -4,7 +4,9 @@ namespace Backend\Modules\Commerce\Domain\OrderRule;
 
 use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 use Backend\Modules\Commerce\Domain\Order\Order;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_order_rules")
@@ -51,6 +53,12 @@ class OrderRule
      * @ORM\Column(type="string")
      */
     private string $value;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
 
     private function __construct(
         Order $order,

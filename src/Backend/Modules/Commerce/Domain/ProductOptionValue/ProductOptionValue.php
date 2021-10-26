@@ -10,6 +10,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
@@ -141,12 +142,14 @@ class ProductOptionValue
     private int $sequence;
 
     /**
-     * @ORM\Column(type="datetime", name="created_on")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $createdOn;
 
     /**
-     * @ORM\Column(type="datetime", name="edited_on")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $editedOn;
 
@@ -311,22 +314,6 @@ class ProductOptionValue
     public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist(): void
-    {
-        $this->createdOn = $this->editedOn = new DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate(): void
-    {
-        $this->editedOn = new DateTime();
     }
 
     public static function fromDataTransferObject(ProductOptionValueDataTransferObject $dataTransferObject): ProductOptionValue

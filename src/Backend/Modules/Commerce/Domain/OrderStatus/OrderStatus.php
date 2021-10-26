@@ -4,8 +4,10 @@ namespace Backend\Modules\Commerce\Domain\OrderStatus;
 
 use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
 use Common\Locale;
+use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_order_statuses")
@@ -98,6 +100,18 @@ class OrderStatus
      * @ORM\JoinColumn(name="order_status_id")
      */
     private Collection $order_histories;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         Locale $locale,

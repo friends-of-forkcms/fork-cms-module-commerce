@@ -9,6 +9,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_account")
@@ -77,12 +78,14 @@ class Account
     private string $last_name;
 
     /**
-     * @ORM\Column(type="datetime", name="created_on")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $createdOn;
 
     /**
-     * @ORM\Column(type="datetime", name="edited_on")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $editedOn;
 
@@ -184,18 +187,6 @@ class Account
     public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist(): void
-    {
-        $this->editedOn = new DateTime();
-
-        if (!$this->id) {
-            $this->createdOn = $this->editedOn;
-        }
     }
 
     public static function fromDataTransferObject(AccountCustomerDataTransferObject $dataTransferObject): Account

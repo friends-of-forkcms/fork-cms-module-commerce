@@ -6,8 +6,10 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotification;
 use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Commerce\Domain\Product\Product;
+use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_order_products")
@@ -98,6 +100,18 @@ class OrderProduct
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private float $total;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         Order $order,

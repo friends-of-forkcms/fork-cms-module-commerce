@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Language\Locale;
+use Gedmo\Mapping\Annotation as Gedmo;
 use JsonSerializable;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;
@@ -104,12 +105,14 @@ class Cart implements JsonSerializable
     private ?array $payment_method_data;
 
     /**
-     * @ORM\Column(type="datetime", name="created_on")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $createdOn;
 
     /**
-     * @ORM\Column(type="datetime", name="edited_on")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $editedOn;
 
@@ -298,18 +301,6 @@ class Cart implements JsonSerializable
     public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist(): void
-    {
-        $this->editedOn = new DateTime();
-
-        if (!isset($this->id)) {
-            $this->createdOn = $this->editedOn;
-        }
     }
 
     public function getOrder(): ?Order

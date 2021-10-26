@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Engine\Navigation;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_categories")
@@ -96,12 +97,14 @@ class Category
     private Collection $products;
 
     /**
-     * @ORM\Column(type="datetime", name="created_on")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $createdOn;
 
     /**
-     * @ORM\Column(type="datetime", name="edited_on")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $editedOn;
 
@@ -284,14 +287,6 @@ class Category
     public function getEditedOn(): DateTimeInterface
     {
         return $this->editedOn;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist(): void
-    {
-        $this->createdOn = $this->editedOn = new DateTime();
     }
 
     /**

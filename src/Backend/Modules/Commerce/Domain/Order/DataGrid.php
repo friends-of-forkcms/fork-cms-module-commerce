@@ -23,8 +23,8 @@ class DataGrid extends DataGridDatabase
     public function __construct(Locale $locale, int $status = null)
     {
         $query = 'SELECT i.id as order_number, i.invoice_number, a.company_name, CONCAT_WS(" ", a.first_name, a.last_name) as name, i.total,
-            (SELECT s.title FROM commerce_order_statuses s INNER JOIN commerce_order_histories h ON h.order_status_id = s.id WHERE h.order_id = i.id ORDER BY h.created_at DESC LIMIT 1) as order_status
-            , UNIX_TIMESTAMP(i.date) as `order_date`
+            (SELECT s.title FROM commerce_order_statuses s INNER JOIN commerce_order_histories h ON h.order_status_id = s.id WHERE h.order_id = i.id ORDER BY h.created_on DESC LIMIT 1) as order_status
+            , UNIX_TIMESTAMP(i.created_on) as `order_date`
             FROM commerce_orders AS i INNER JOIN commerce_order_addresses a ON a.id = i.invoice_address_id';
 
         parent::__construct($query);

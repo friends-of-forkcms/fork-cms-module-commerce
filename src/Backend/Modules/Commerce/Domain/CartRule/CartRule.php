@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\CartRule;
 use Common\Locale;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
 use Money\Money;
 
@@ -86,6 +87,18 @@ class CartRule
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private bool $hidden;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         Locale $locale,

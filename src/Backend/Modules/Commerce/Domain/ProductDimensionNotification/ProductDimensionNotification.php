@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -48,6 +49,12 @@ class ProductDimensionNotification
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $message;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
 
     public function __construct()
     {

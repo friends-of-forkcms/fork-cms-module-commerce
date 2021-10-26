@@ -3,7 +3,9 @@
 namespace Backend\Modules\Commerce\Domain\UpSellProduct;
 
 use Backend\Modules\Commerce\Domain\Product\Product;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_up_sell_products")
@@ -35,6 +37,18 @@ class UpSellProduct
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
     private ?int $sequence;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     public function getId(): int
     {

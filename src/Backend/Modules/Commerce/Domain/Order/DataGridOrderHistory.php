@@ -14,9 +14,9 @@ class DataGridOrderHistory extends DataGridDatabase
      */
     public function __construct(Order $order)
     {
-        $query = 'SELECT UNIX_TIMESTAMP(i.created_at) as `date`, s.title
+        $query = 'SELECT UNIX_TIMESTAMP(i.created_on) as `date`, s.title
                     FROM commerce_order_histories i INNER JOIN commerce_order_statuses s ON s.id = i.order_status_id
-                    WHERE i.order_id = ? ORDER BY i.created_at DESC';
+                    WHERE i.order_id = ? ORDER BY i.created_on DESC';
 
         parent::__construct($query, [$order->getId()]);
 

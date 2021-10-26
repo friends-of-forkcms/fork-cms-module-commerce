@@ -23,7 +23,7 @@ class OrderDataTransferObject
     public ?string $paymentMethod = null;
     public string $shipment_method;
     public ?string $shipment_price = null;
-    public DateTimeInterface $date;
+    public DateTimeInterface $createdOn;
     public ?string $comment = null;
     public float $sub_total;
     public float $total;
@@ -50,7 +50,7 @@ class OrderDataTransferObject
     public function __construct(Order $order = null)
     {
         $this->orderEntity = $order;
-        $this->date = new DateTime();
+        $this->createdOn = new DateTime();
         $this->rules = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->vats = new ArrayCollection();
@@ -65,7 +65,7 @@ class OrderDataTransferObject
         $this->paymentMethod = $this->orderEntity->getPaymentMethod();
         $this->shipment_method = $this->orderEntity->getShipmentMethod();
         $this->shipment_price = $this->orderEntity->getShipmentPrice();
-        $this->date = $this->orderEntity->getDate();
+        $this->createdOn = $this->orderEntity->getCreatedOn();
         $this->comment = $this->orderEntity->getComment();
         $this->sub_total = $this->orderEntity->getSubTotal();
         $this->total = $this->orderEntity->getTotal();
