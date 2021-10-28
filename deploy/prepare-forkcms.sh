@@ -54,9 +54,8 @@ patch -p1 < deploy/prepare-forkcms-php.patch
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce
 
-# Generate thumbnails cache from LiipImagineBundle
-# Disabled because too slow on preview env
-# bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/* || true
+# Generate thumbnails cache from LiipImagineBundle. Run this in the background using "&"
+bin/console liip:imagine:cache:resolve src/Frontend/Files/MediaLibrary/**/*.{jpg,png} &
 
 # After modules were installed, we need to make sure the Apache user has ownership of the var directory.
 chown -R www-data:www-data /var/www/html/var/
