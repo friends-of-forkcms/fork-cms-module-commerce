@@ -4,8 +4,7 @@ on:
       - master
 
 env:
-  DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
-  PREVIEW_URL: "https://fork-cms-module-commerce-demo-pr-${{ github.event.number }}-jessedobbelaere.cloud.okteto.net/en"
+  DEPLOY_NAME: fork-cms-module-commerce-pr-${{ github.event.number }}-jessedobbelaere
 
 concurrency:
   group: preview-pr-${{ github.head_ref }}
@@ -15,70 +14,17 @@ name: Deploy Preview PR
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
-      - name: checkout
-        uses: actions/checkout@master
-
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v5
-
-      - uses: chrnorm/deployment-action@releases/v1
-        name: Create GitHub deployment
-        id: deployment
-        with:
-          token: "${{ github.token }}"
-          target_url: "${{ env.PREVIEW_URL }}"
-          environment: development
-          ref: "${{ steps.branch-name.outputs.current_branch }}"
-
       - name: Login
         uses: okteto/login@master
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
-      - name: Activate Namespace
-        uses: okteto/namespace@master
-        with:
-          namespace: jessedobbelaere
-
-      - name: Deploy Pipeline
-        uses: okteto/pipeline@master
-        with:
-          name: ${{ env.DEPLOY_NAME }}
-          timeout: 10m
-
-      - name: Verify up and running
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: "https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net/en"
-          responseCode: 200
-          timeout: 600000 # 10min
-          interval: 5000 # 5s
-
-      - name: Comment PR
-        if: success()
-        uses: unsplash/comment-on-pr@master
+      - name: Deploy preview environment
+        uses: okteto/deploy-preview@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: "🚀 Preview environment available at https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net for the next 24 hours."
-
-      - name: Update deployment status (success)
-        if: success()
-        uses: chrnorm/deployment-status@releases/v1
-        with:
-          token: "${{ github.token }}"
-          target_url: "${{ env.PREVIEW_URL }}"
-          state: "success"
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-
-      - name: Update deployment status (failure)
-        if: failure()
-        uses: chrnorm/deployment-status@releases/v1
-        with:
-          token: "${{ github.token }}"
-          target_url: "${{ env.PREVIEW_URL }}"
-          state: "failure"
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          name: ${{ env.DEPLOY_NAME }}
+          timeout: 20m

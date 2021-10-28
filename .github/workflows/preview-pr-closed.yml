@@ -6,25 +6,17 @@ on:
 env:
   DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
 
-name: Cleanup Preview PR
+name: Cleanup PR Preview
 jobs:
-  build:
+  close-preview:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@master
-
       - name: Login
         uses: okteto/login@master
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
-      - name: Activate Namespace
-        uses: okteto/namespace@master
-        with:
-          namespace: jessedobbelaere
-
-      - name: "Destroy the pipeline"
-        uses: okteto/destroy-pipeline@master
+      - name: Delete preview
+        uses: okteto/destroy-preview@master
         with:
           name: ${{ env.DEPLOY_NAME }}

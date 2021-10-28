@@ -106,7 +106,7 @@ COPY --from=frontend /app/src/Frontend/Themes/$THEME_NAME/dist ./src/Frontend/Th
 COPY --from=frontend /app/src/Frontend/Themes/$THEME_NAME/Core ./src/Frontend/Themes/$THEME_NAME/Core
 
 # Give apache user write access
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html/src/*/Cache /var/www/html/src/*/Files /var/www/html/var
 
 # Set health check to see if container is still doing fine
 HEALTHCHECK --interval=10s --timeout=3s --retries=3  CMD curl -f http://127.0.0.1:80|| exit 1
