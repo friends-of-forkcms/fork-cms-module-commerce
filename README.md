@@ -16,8 +16,8 @@ Add a shopping cart and checkout process to your website, and follow-up with inc
 
 ## Demo
 
-- Frontend: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/
-- CMS: https://fork-cms-module-commerce-demo-jessedobbelaere.cloud.okteto.net/private
+- Frontend: https://preview-module-commerce-jessedobbelaere.cloud.okteto.net
+- CMS: https://preview-module-commerce-jessedobbelaere.cloud.okteto.net/private
 
 Login with the following credentials:
 

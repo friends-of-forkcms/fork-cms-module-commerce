@@ -6,9 +6,6 @@ on:
     - cron: "30 6 * * *"  # Runs at 06:30 UTC every day
     - cron: "30 18 * * *" # Runs at 18:30 UTC every day
 
-env:
-  DEPLOY_NAME: fork-cms-module-commerce-demo
-
 concurrency:
   group: deploy-demo-${{ github.head_ref }}
   cancel-in-progress: true
@@ -33,13 +30,13 @@ jobs:
       - name: Deploy Pipeline
         uses: okteto/pipeline@master
         with:
-          name: ${{ env.DEPLOY_NAME }}
+          name: "fork-cms-module-commerce-demo"
           timeout: 15m
 
       - name: Verify up and running
         uses: nev7n/wait_for_response@v1
         with:
-          url: "https://${{ env.DEPLOY_NAME }}-jessedobbelaere.cloud.okteto.net/en"
+          url: "https://preview-module-commerce-jessedobbelaere.cloud.okteto.net/en"
           responseCode: 200
           timeout: 600000 # 10min
           interval: 5000 # 5s
