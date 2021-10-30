@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: preview-module-commerce
+  name: $K8S_APP_NAME
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: preview-module-commerce
+      app: $K8S_APP_NAME
   template:
     metadata:
       labels:
-        app: preview-module-commerce
+        app: $K8S_APP_NAME
     spec:
       containers:
         - name: app
@@ -37,7 +37,7 @@ spec:
             - name: DB_PASSWORD
               value: forkcms
             - name: SITE_DOMAIN
-              value: $NAME-jessedobbelaere.cloud.okteto.net
+              value: $SITE_DOMAIN
           # Container loads fixtures and prepares Fork CMS, we don't want to serve traffic until that finished
           readinessProbe:
             initialDelaySeconds: 90 # Wait 90s before first probe because of docker-entrypoint scripts
