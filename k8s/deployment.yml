@@ -17,11 +17,11 @@ spec:
           image: okteto.dev/fork-cms-module-commerce-demo:latest
           resources:
             limits:
-              memory: 256Mi
-              cpu: 500m
+              memory: 512Mi
+              cpu: 700m
             requests:
-              memory: 256Mi
-              cpu: 250m
+              memory: 512Mi
+              cpu: 500m
           ports:
             - containerPort: 80
               protocol: TCP
@@ -38,6 +38,8 @@ spec:
               value: forkcms
             - name: SITE_DOMAIN
               value: $SITE_DOMAIN
+            - name: FORK_DEBUG
+              value: "1"
           # Container loads fixtures and prepares Fork CMS, we don't want to serve traffic until that finished
           readinessProbe:
             initialDelaySeconds: 90 # Wait 90s before first probe because of docker-entrypoint scripts

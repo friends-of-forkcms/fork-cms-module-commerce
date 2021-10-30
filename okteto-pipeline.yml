@@ -1,17 +1,15 @@
 icon: https://raw.githubusercontent.com/friends-of-forkcms/fork-cms-module-commerce/master/deploy/icon.png
 deploy:
-  # Build & push docker image on okteto.com
-  - okteto build --build-arg THEME_NAME=CommerceDemo --cache-from okteto.dev/fork-cms-module-commerce-demo:latest -t okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
-  - echo "Finished building docker image with tag ${OKTETO_GIT_COMMIT} for branch ${OKTETO_GIT_BRANCH}"
-
-  # Override the container image tag in our k8s files
-  - cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${OKTETO_GIT_COMMIT}
+  # Build & push docker image on okteto.com. Then override the container image tag with this one using kustomize
+  - |
+    IMAGE_TAG=$(if [[ "$OKTETO_GIT_BRANCH" == "master" ]]; then echo "latest"; else echo $OKTETO_GIT_COMMIT; fi)
+    okteto build --build-arg THEME_NAME=CommerceDemo --cache-from okteto.dev/fork-cms-module-commerce-demo:latest -t okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
+    echo "Finished building docker image with tag ${IMAGE_TAG} for branch ${OKTETO_GIT_BRANCH}"
+    cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
 
   # Deploy Kubernetes manifest using Kustomize.
-  # Use envsubst to replace env values, e.g. for injecting the SITE_DOMAIN.
+  # Use envsubst to replace env values in our k8s files, e.g. for injecting the SITE_DOMAIN.
   - |
     export K8S_APP_NAME="preview-module-commerce"
     export SITE_DOMAIN="https://${K8S_APP_NAME}-${OKTETO_NAMESPACE}.cloud.okteto.net"
-    printenv
-    kustomize build ./k8s | envsubst # debug
     kustomize build ./k8s | envsubst | kubectl apply -f -
