@@ -4,8 +4,9 @@ on:
       - closed
 
 env:
-  DEPLOY_NAME: fork-cms-module-commerce-demo-pr-${{ github.event.number }}
+  DEPLOY_NAME: pr-${{ github.event.number }}-jessedobbelaere
 
+# See: https://okteto.com/docs/tutorials/preview-environments/#step-6-cleanup
 name: Cleanup PR Preview
 jobs:
   close-preview:
