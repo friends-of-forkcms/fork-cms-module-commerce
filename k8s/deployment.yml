@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: module-commerce
+  name: preview-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: module-commerce
+      app: preview-app
   template:
     metadata:
       labels:
-        app: module-commerce
+        app: preview-app
     spec:
       containers:
         - name: app
