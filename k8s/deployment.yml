@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: commerce
+  name: module-commerce
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: commerce
+      app: module-commerce
   template:
     metadata:
       labels:
-        app: commerce
+        app: module-commerce
     spec:
       containers:
         - name: app
@@ -24,6 +24,9 @@ spec:
               cpu: 250m
           ports:
             - containerPort: 80
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
           env:
             - name: DB_HOST
               value: 127.0.0.1
@@ -37,11 +40,11 @@ spec:
               value: $NAME-jessedobbelaere.cloud.okteto.net
           # Because the container loads fixtures and prepares Fork CMS, we don't
           # want to serve traffic until that's done
-          readinessProbe:
-            initialDelaySeconds: 90 # Wait 90s before first probe
-            periodSeconds: 30 # Check every 30s
-            tcpSocket:
-              port: 80
+#          readinessProbe:
+#            initialDelaySeconds: 90 # Wait 90s before first probe
+#            periodSeconds: 30 # Check every 30s
+#            tcpSocket:
+#              port: 80
 
         - name: db
           image: mariadb:10

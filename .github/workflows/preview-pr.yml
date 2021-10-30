@@ -4,7 +4,7 @@ on:
       - master
 
 env:
-  DEPLOY_NAME: fork-cms-module-commerce-pr-${{ github.event.number }}-jessedobbelaere
+  DEPLOY_NAME: pr-${{ github.event.number }}-jessedobbelaere
 
 concurrency:
   group: preview-pr-${{ github.head_ref }}
