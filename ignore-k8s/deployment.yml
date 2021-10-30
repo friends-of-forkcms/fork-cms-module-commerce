@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fork-cms-module-commerce-demo
+  name: commerce
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fork-cms-module-commerce-demo
+      app: commerce
   template:
     metadata:
       labels:
-        app: fork-cms-module-commerce-demo
+        app: commerce
     spec:
       containers:
         - name: app

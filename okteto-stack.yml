@@ -1,0 +1,31 @@
+services:
+  app:
+    image: okteto.dev/fork-cms-module-commerce-demo:latest
+    replicas: 1
+    ports:
+      - 80:80
+    resources:
+      cpu: 250m
+      memory: 256Mi
+    environment:
+      - DB_HOST=127.0.0.1
+      - DB_NAME=forkcms
+      - DB_USER=forkcms
+      - DB_PASSWORD=forkcms
+      - SITE_DOMAIN=test
+
+  db:
+    image: mariadb:10
+    volumes:
+      - db-data:/var/lib/mysql
+    resources:
+      cpu: 250m
+      memory: 128Mi
+    environment:
+      - MYSQL_DATABASE=forkcms
+      - MYSQL_ROOT_PASSWORD=kingtriton
+      - MYSQL_USER=forkcms
+      - MYSQL_PASSWORD=forkcms
+
+volumes:
+  db-data: {}
