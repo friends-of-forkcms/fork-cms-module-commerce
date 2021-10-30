@@ -10,22 +10,21 @@ env:
   DEPLOY_NAME: fork-cms-module-commerce-demo
 
 concurrency:
-  group: preview-${{ github.head_ref }}
+  group: deploy-demo-${{ github.head_ref }}
   cancel-in-progress: true
 
-name: Deploy Preview
+name: Deploy Demo
 jobs:
-  deploy-preview:
+  deploy-demo-app:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: checkout
-        uses: actions/checkout@master
-
       - name: Login
         uses: okteto/login@master
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
+      # Namespace must be the GitHub ID or suffixed with it.
       - name: Activate Namespace
         uses: okteto/namespace@master
         with:
@@ -35,7 +34,7 @@ jobs:
         uses: okteto/pipeline@master
         with:
           name: ${{ env.DEPLOY_NAME }}
-          timeout: 10m
+          timeout: 15m
 
       - name: Verify up and running
         uses: nev7n/wait_for_response@v1

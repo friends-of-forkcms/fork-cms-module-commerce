@@ -1,29 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fork-cms-module-commerce-demo
+  name: $K8S_APP_NAME
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fork-cms-module-commerce-demo
+      app: $K8S_APP_NAME
   template:
     metadata:
       labels:
-        app: fork-cms-module-commerce-demo
+        app: $K8S_APP_NAME
     spec:
       containers:
         - name: app
           image: okteto.dev/fork-cms-module-commerce-demo:latest
           resources:
             limits:
-              memory: 256Mi
-              cpu: 500m
+              memory: 512Mi
+              cpu: 700m
             requests:
-              memory: 256Mi
-              cpu: 250m
+              memory: 512Mi
+              cpu: 500m
           ports:
             - containerPort: 80
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
           env:
             - name: DB_HOST
               value: 127.0.0.1
@@ -34,11 +37,12 @@ spec:
             - name: DB_PASSWORD
               value: forkcms
             - name: SITE_DOMAIN
-              value: $NAME-jessedobbelaere.cloud.okteto.net
-          # Because the container loads fixtures and prepares Fork CMS, we don't
-          # want to serve traffic until that's done
+              value: $SITE_DOMAIN
+            - name: FORK_DEBUG
+              value: "1"
+          # Container loads fixtures and prepares Fork CMS, we don't want to serve traffic until that finished
           readinessProbe:
-            initialDelaySeconds: 90 # Wait 90s before first probe
+            initialDelaySeconds: 90 # Wait 90s before first probe because of docker-entrypoint scripts
             periodSeconds: 30 # Check every 30s
             tcpSocket:
               port: 80
