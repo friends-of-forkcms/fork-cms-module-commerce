@@ -4,6 +4,9 @@ on:
       - master
 
 env:
+  # Name of the preview environment in okteto.com
+  # Will be prefixed with the actual deploy name. Must be suffixed with the github ID!
+  # e.g. end result: https://preview-module-commerce-pr-26-jessedobbelaere.cloud.okteto.net
   DEPLOY_NAME: pr-${{ github.event.number }}-jessedobbelaere
 
 # Kill the previous job in progress, when multiple job start (e.g. committing multiple times)
@@ -16,7 +19,7 @@ name: Deploy Preview PR
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - name: Login
         uses: okteto/login@master
@@ -29,4 +32,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ env.DEPLOY_NAME }}
-          timeout: 20m
+          timeout: 15m
+
+      - name: Verify up and running
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "https://preview-module-commerce-${{ env.DEPLOY_NAME }}.cloud.okteto.net/en"
+          responseCode: 200
+          timeout: 600000 # 10min
+          interval: 5000 # 5s
