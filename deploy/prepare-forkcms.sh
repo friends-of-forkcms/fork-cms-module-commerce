@@ -35,15 +35,12 @@ composer require --no-scripts \
     'moneyphp/money:v3.3.1'
 composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
 
-# Install the sitemap module which is a module dependency at the moment
+# Install the necessary modules
 curl -sL https://github.com/friends-of-forkcms/fork-cms-module-sitemaps/archive/master.tar.gz | tar xz --strip-components 1
 bin/console forkcms:install:module Sitemaps
-
-# Install the Profiles module
 bin/console forkcms:install:module Profiles
-
-# Install the Commerce module
 bin/console forkcms:install:module Commerce
+bin/console forkcms:install:module CommerceCashOnDelivery
 
 # Setup the CMS for our demo (install demo theme, add widgets, ...)
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql

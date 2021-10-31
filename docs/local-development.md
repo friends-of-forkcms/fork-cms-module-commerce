@@ -2,10 +2,11 @@
 
 ## Symlinking the module
 
-When developing locally, I tend to create a symlink between this git repository and an actual Fork CMS installation, e.g.:
+When developing locally, I usually create a symlink between this git repository and an actual Fork CMS installation, e.g.:
 
 ```bash
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/Commerce ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/Commerce
+ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/CommerceCashOnDelivery ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/CommerceCashOnDelivery
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Modules/Commerce ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Frontend/Modules/Commerce
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Themes/CommerceDemo ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Frontend/Themes/CommerceDemo
 ```
