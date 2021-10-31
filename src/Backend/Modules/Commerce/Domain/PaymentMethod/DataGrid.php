@@ -6,38 +6,39 @@ use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\DataGridArray;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
+use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
-use Symfony\Component\Finder\Finder;
+use Exception;
+use SimpleXMLElement;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
  */
 class DataGrid extends DataGridArray
 {
-    public function __construct()
+    public function __construct(Locale $locale)
     {
-        parent::__construct($this->getPaymentMethods());
+        parent::__construct($this->getPaymentMethods($locale));
+
+        $this->setColumnsSequence(['id', 'name', 'description', 'version', 'is_enabled']);
+        $this->setColumnsHidden(['module']);
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
 
-        // Hide columns
-        $this->setColumnHidden('raw_name');
-        $this->setColumnHidden('installed');
-
         // Add some columns
         $this->setColumnFunction(
             [new DataGridFunctions(), 'showBool'],
-            ['[data_grid_installed]'],
-            'data_grid_installed',
+            ['[is_enabled]'],
+            'is_enabled',
             true
         );
 
         // Overwrite header labels
         $this->setHeaderLabels(
             [
-                'data_grid_installed' => ucfirst(Language::lbl('Installed')),
+                'is_enabled' => ucfirst(Language::lbl('Enabled')),
             ]
         );
 
@@ -49,107 +50,41 @@ class DataGrid extends DataGridArray
         }
     }
 
-    public static function getHtml(): string
+    public static function getHtml(Locale $locale): string
     {
-        return (new self())->getContent();
+        return (new self($locale))->getContent();
     }
 
     /**
-     * Get all the available payment methods.
+     * First fetch the installed payment methods from the DB
+     * Then read the module's info.xml to display extra information.
      */
-    private function getPaymentMethods(): array
+    private function getPaymentMethods(Locale $locale): array
     {
-        $installedPaymentMethods = Model::get('commerce.repository.payment_method')->findInstalledPaymentMethods(
-            Locale::workingLocale()
+        $paymentMethodsData = BackendModel::get('database')->getRecords('
+            SELECT pm.id, pm.name, pm.module, pm.is_enabled
+            FROM commerce_payment_methods AS pm
+            WHERE pm.language = :language',
+            ['language' => $locale]
         );
 
-        $availablePaymentMethods = [];
-
-        $paymentMethods = $this->getPaymentMethodsOnFilesystem();
-
-        // get more information for each module
-        foreach ($paymentMethods as $paymentMethodName) {
-            $paymentMethod = [];
-            $paymentMethod['id'] = 'payment_method_' . $paymentMethodName;
-            $paymentMethod['raw_name'] = $paymentMethodName;
-            $paymentMethod['name'] = $paymentMethodName;
-            $paymentMethod['description'] = '';
-            $paymentMethod['version'] = '';
-            $paymentMethod['installed'] = false;
-
-            if (in_array($paymentMethodName, $installedPaymentMethods)) {
-                $paymentMethod['installed'] = true;
+        return array_map(function ($paymentMethod) {
+            $moduleDirectory = BACKEND_MODULES_PATH . '/' . $paymentMethod['module'];
+            if (!file_exists("$moduleDirectory/info.xml")) {
+                return $paymentMethod;
             }
 
             try {
-                $infoXml = @new \SimpleXMLElement(
-                    BACKEND_MODULES_PATH . '/Commerce/PaymentMethods/' . $paymentMethod['raw_name'] . '/Info.xml',
-                    LIBXML_NOCDATA,
-                    true
-                );
-
-                $info = $this->processPaymentMethodXml($infoXml);
-
-                $paymentMethod['name'] = $info['name'];
-
-                // set fields if they were found in the XML
-                if (isset($info['description'])) {
-                    $paymentMethod['description'] = DataGridFunctions::truncate($info['description'], 80);
+                $infoXml = new SimpleXMLElement("$moduleDirectory/info.xml", LIBXML_NOCDATA, true);
+                $information = $infoXml->xpath('/module');
+                if (isset($information[0])) {
+                    ['description' => $description, 'version' => $version] = (array) $information[0];
+                    $paymentMethod['description'] = trim($description);
+                    $paymentMethod['version'] = trim($version);
                 }
-                if (isset($info['version'])) {
-                    $paymentMethod['version'] = $info['version'];
-                }
-            } catch (\Exception $e) {
-                // don't act upon error, we simply won't possess some info
-            }
+            } catch (Exception $e) {}
 
-            $paymentMethod['data_grid_installed'] = $paymentMethod['installed'] ? 'Y' : 'N';
-
-            $availablePaymentMethods[] = $paymentMethod;
-        }
-
-        return $availablePaymentMethods;
-    }
-
-    /**
-     * Get the payment methods from file system.
-     */
-    public static function getPaymentMethodsOnFilesystem(): array
-    {
-        $paymentMethods = [];
-
-        $finder = new Finder();
-        $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Commerce/PaymentMethods')->depth('==0');
-        foreach ($directories as $directory) {
-            // Exclude some directories
-            if (!file_exists($directory . '/Info.xml')) {
-                continue;
-            }
-
-            $paymentMethods[] = $directory->getBasename();
-        }
-
-        return $paymentMethods;
-    }
-
-    /**
-     * Process the payment method XML.
-     */
-    private function processPaymentMethodXml(\SimpleXMLElement $xml): array
-    {
-        $information = [];
-
-        // fetch theme node
-        $module = $xml->xpath('/paymentMethod');
-        if (isset($module[0])) {
-            $module = $module[0];
-        }
-
-        // fetch general module info
-        $information['name'] = (string) $module->name;
-        $information['version'] = (string) $module->version;
-        $information['description'] = (string) $module->description;
-
-        return $information;
+            return $paymentMethod;
+        }, $paymentMethodsData ?? []);
     }
 }

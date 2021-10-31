@@ -3,6 +3,7 @@
 namespace Backend\Modules\Commerce\ShipmentMethods\Pickup;
 
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Backend\Modules\Commerce\ShipmentMethods\Base\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -24,12 +25,16 @@ class PickupType extends Type
                 'label' => 'lbl.Name',
             ]
         )->add(
-            'price',
-            MoneyType::class,
-            [
-                'required' => true,
-                'label' => 'lbl.Price',
-            ]
+            $builder
+                ->create(
+                    'price',
+                    MoneyType::class,
+                    [
+                        'required' => true,
+                        'label' => 'lbl.Price',
+                    ]
+                )
+                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
         )->add(
             'vat',
             EntityType::class,

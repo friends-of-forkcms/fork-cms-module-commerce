@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\CashOnDelivery;
+namespace Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery;
 
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatusTransformer;
@@ -38,6 +38,8 @@ class CashOnDeliveryType extends Type
             ]
         );
 
-        $builder->get('orderInitId')->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
+        $builder
+            ->get('orderInitId')
+            ->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
     }
 }

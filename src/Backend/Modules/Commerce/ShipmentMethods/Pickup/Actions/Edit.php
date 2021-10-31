@@ -60,7 +60,7 @@ class Edit extends BaseEdit
 
         // Save the form data
         $this->saveSetting('name', $data->name);
-        $this->saveSetting('price', (float) $data->price);
-        $this->saveSetting('vat', $data->vat->getId());
+        $this->saveSetting('price', $data->price);
+        $this->saveSetting('vat', $data->vat);
     }
 }

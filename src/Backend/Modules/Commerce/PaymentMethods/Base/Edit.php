@@ -2,72 +2,58 @@
 
 namespace Backend\Modules\Commerce\PaymentMethods\Base;
 
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model;
-use Backend\Core\Engine\TwigTemplate;
+use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
 use Common\ModulesSettings;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use SimpleBus\Message\Bus\MessageBus;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class Edit
+abstract class Edit extends BackendBaseActionEdit
 {
-    protected Request $request;
-    protected string $name;
-    protected TwigTemplate $template;
+    protected string $module;
     protected Locale $locale;
     protected ModulesSettings $settings;
     protected PaymentMethodRepository $paymentMethodRepository;
     protected bool $installed = false;
     protected EntityManager $entityManager;
+    protected MessageBus $commandBus;
 
-    public function __construct()
+    public function __construct(KernelInterface $kernel)
     {
+        parent::__construct($kernel);
         $this->locale = Locale::workingLocale();
         $this->settings = Model::get('fork.settings');
         $this->paymentMethodRepository = Model::get('commerce.repository.payment_method');
         $this->entityManager = Model::get('doctrine.orm.entity_manager');
+        $this->commandBus = Model::get('command_bus');
     }
 
-    public function setRequest(Request $request): void
+    protected function getPaymentMethod(): PaymentMethod
     {
-        $this->request = $request;
+        try {
+            return $this->paymentMethodRepository->findOneByIdAndLocale(
+                $this->getRequest()->query->getInt('id'),
+                Locale::workingLocale()
+            );
+        } catch (PaymentMethodNotFound $e) {
+            $this->redirect($this->getBackLink(['error' => 'non-existing']));
+        }
     }
 
-    /**
-     * Set the payment method name.
-     */
-    public function setName(string $name): void
+    private function getBackLink(array $parameters = []): string
     {
-        $this->name = $name;
+        return BackendModel::createUrlForAction('PaymentMethods', null, null, $parameters);
     }
 
-    /**
-     * Set the twig template which is used to handle our template.
-     */
-    public function setTemplate(TwigTemplate $template): void
+    public function getModule(): string
     {
-        $this->template = $template;
-    }
-
-    /**
-     * Get the current request.
-     */
-    public function getRequest(): Request
-    {
-        return $this->request;
-    }
-
-    /**
-     * Get template with all the required assigments.
-     */
-    public function getTemplate(): TwigTemplate
-    {
-        return $this->template;
+        return $this->module;
     }
 
     /**
@@ -75,65 +61,12 @@ abstract class Edit
      */
     public function getTemplateName(): string
     {
-        return '/Commerce/PaymentMethods/' . $this->name . '/Layout/Edit.html.twig';
+        return '/' . $this->getModule() . '/Layout/Edit.html.twig';
     }
 
-    /**
-     * Execute this controller.
-     */
-    public function execute(): void
+    public function display(string $template = null): void
     {
-        $this->checkInstallation();
-    }
-
-    /**
-     * Check if is installed.
-     */
-    private function checkInstallation(): void
-    {
-        try {
-            $this->paymentMethodRepository->findOneByNameAndLocale($this->name, $this->locale);
-            $this->installed = true;
-        } catch (PaymentMethodNotFound $e) {
-            $this->installed = false;
-        }
-    }
-
-    /**
-     * Install the payment method.
-     */
-    protected function install(): void
-    {
-        try {
-            $paymentMethod = $this->paymentMethodRepository->findOneByNameAndLocale($this->name, $this->locale);
-        } catch (PaymentMethodNotFound $e) {
-            $paymentMethod = new PaymentMethod(
-                $this->name,
-                $this->locale
-            );
-        }
-
-        $this->paymentMethodRepository->add($paymentMethod);
-    }
-
-    /**
-     * Uninstall the payment method.
-     */
-    protected function uninstall(): void
-    {
-        $this->paymentMethodRepository->removeByNameAndLocale($this->name, $this->locale);
-    }
-
-    /**
-     * Creates and returns a Form instance from the type of the form.
-     *
-     * @param string $type    FQCN of the form type class i.e: MyClass::class
-     * @param mixed  $data    The initial data for the form
-     * @param array  $options Options for the form
-     */
-    public function createForm(string $type, $data = null, array $options = []): Form
-    {
-        return Model::get('form.factory')->create($type, $data, $options);
+        parent::display($template ?? $this->getTemplateName());
     }
 
     /**
@@ -153,25 +86,18 @@ abstract class Edit
     {
         // Get the public vars
         $properties = get_object_vars($dataTransferObject);
+        $skipProperties = get_class_vars(DataTransferObject::class);
 
         // Assign the properties to object transfer object
         foreach ($properties as $property => $defaultValue) {
-            // Skip the installed var
-            if ($property === 'installed') {
+            // Skip the values that are saved already on the PaymentMethod entity
+            if (array_key_exists($property, $skipProperties)) {
                 continue;
             }
 
             $key = $this->getBaseKey($includeLanguage) . '_' . $property;
             $value = $this->settings->get('Commerce', $key, $defaultValue);
             $dataTransferObject->{$property} = $value;
-        }
-
-        // Check if our payment method exists
-        try {
-            $this->paymentMethodRepository->findOneByNameAndLocale($this->name, $this->locale);
-            $dataTransferObject->installed = true;
-        } catch (PaymentMethodNotFound $e) {
-            $dataTransferObject->installed = false;
         }
 
         return $dataTransferObject;
@@ -184,11 +110,12 @@ abstract class Edit
     {
         // Get the public vars
         $properties = get_object_vars($dataTransferObject);
+        $skipProperties = get_class_vars(DataTransferObject::class);
 
         // Assign the properties to object transfer object
         foreach ($properties as $property => $value) {
-            // Skip the installed var
-            if ($property === 'installed') {
+            // Skip the values that are saved already on the PaymentMethod entity
+            if (array_key_exists($property, $skipProperties)) {
                 continue;
             }
 
@@ -200,42 +127,11 @@ abstract class Edit
     }
 
     /**
-     * Redirect to a given URL
-     * This is a helper method as the actual implementation is located in the url class.
-     */
-    public function redirect(string $url, int $code = Response::HTTP_FOUND): void
-    {
-        Model::get('url')->redirect($url, $code);
-    }
-
-    /**
-     * Generate the data grid row key to highlight this payment method.
-     */
-    public function getDataGridRowKey(): string
-    {
-        return 'row-payment_method_' . $this->name;
-    }
-
-    /**
-     * Install the current payment method.
-     */
-    protected function installPaymentMethod(bool $install): void
-    {
-        if ($install === true && $this->installed === false) {
-            $this->install();
-        }
-
-        if ($install === false && $this->installed === true) {
-            $this->uninstall();
-        }
-    }
-
-    /**
      * Get the settings base key.
      */
     private function getBaseKey(bool $includeLanguage): string
     {
-        $key = $this->name;
+        $key = $this->module;
 
         if ($includeLanguage) {
             $key .= '_' . $this->locale;

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  <Backend>
+    <Core>
+      <item type="label" name="CommerceCashOnDelivery">
+        <translation language="nl"><![CDATA[Cash bij levering]]></translation>
+        <translation language="en"><![CDATA[Cash on delivery]]></translation>
+      </item>
+    </Core>
+  </Backend>
+</locale>

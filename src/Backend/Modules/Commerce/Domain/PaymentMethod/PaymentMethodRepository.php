@@ -10,45 +10,49 @@ class PaymentMethodRepository extends EntityRepository
 {
     public function add(PaymentMethod $paymentMethod): void
     {
+        // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->persist($paymentMethod);
-        $this->getEntityManager()->flush();
     }
 
-    public function findOneByNameAndLocale(?string $name, Locale $locale): ?PaymentMethod
+    public function findOneByIdAndLocale(?int $id, Locale $locale): ?PaymentMethod
     {
-        if ($name === null) {
-            throw PaymentMethodNotFound::forEmptyName();
+        if ($id === null) {
+            throw PaymentMethodNotFound::forEmptyId();
         }
 
         /** @var PaymentMethod $paymentMethod */
-        $paymentMethod = $this->findOneBy(['name' => $name, 'locale' => $locale]);
+        $paymentMethod = $this->findOneBy(['id' => $id, 'locale' => $locale]);
 
         if ($paymentMethod === null) {
-            throw PaymentMethodNotFound::forName($name);
+            throw PaymentMethodNotFound::forId($id);
         }
 
         return $paymentMethod;
     }
 
-    public function removeByNameAndLocale($name, Locale $locale): void
+    public function findOneById(int $id): ?PaymentMethod
     {
-        array_map(
-            function (PaymentMethod $paymentMethod) {
-                $this->getEntityManager()->remove($paymentMethod);
-                $this->getEntityManager()->flush();
-            },
-            (array) $this->findBy(['name' => $name, 'locale' => $locale])
-        );
+        /** @var PaymentMethod $paymentMethod */
+        $paymentMethod = $this->find($id);
+
+        if ($paymentMethod === null) {
+            throw PaymentMethodNotFound::forId($id);
+        }
+
+        return $paymentMethod;
     }
 
-    public function findInstalledPaymentMethods(Locale $locale): array
+    public function findEnabledPaymentMethods(Locale $locale): array
     {
-        $result = $this->createQueryBuilder('i')
-                       ->select('i.name')
-                       ->where('i.locale = :locale')
-                       ->setParameter('locale', $locale)
-                       ->getQuery()
-                       ->getScalarResult();
+        $result = $this
+                    ->createQueryBuilder('i')
+                    ->select('i.name')
+                    ->andWhere('i.locale = :locale')
+                    ->andWhere('i.isEnabled = :isEnabled')
+                    ->setParameter('locale', $locale)
+                    ->setParameter('isEnabled', true)
+                    ->getQuery()
+                    ->getScalarResult();
 
         return array_column($result, 'name');
     }

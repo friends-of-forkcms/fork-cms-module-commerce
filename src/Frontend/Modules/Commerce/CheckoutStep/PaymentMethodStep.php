@@ -112,7 +112,7 @@ class PaymentMethodStep extends Step
          * @var PaymentMethodRepository $paymentMethodRepository
          */
         $paymentMethodRepository = $this->get('commerce.repository.payment_method');
-        $availablePaymentMethods = $paymentMethodRepository->findInstalledPaymentMethods(Locale::frontendLanguage());
+        $availablePaymentMethods = $paymentMethodRepository->findEnabledPaymentMethods(Locale::frontendLanguage());
 
         $paymentMethods = [];
         foreach ($availablePaymentMethods as $paymentMethod) {

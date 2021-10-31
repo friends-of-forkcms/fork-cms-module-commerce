@@ -10,11 +10,6 @@ class MollieDataTransferObject extends DataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public string $name;
-
-    /**
-     * @Assert\NotBlank(message="err.FieldIsRequired")
-     */
     public string $apiKey;
 
     /**
@@ -43,6 +38,11 @@ class MollieDataTransferObject extends DataTransferObject
     public string $orderExpiredId;
 
     public array $paymentMethods = [];
+
+    public function __construct()
+    {
+        $this->name = 'Mollie';
+    }
 
     public function __set($key, $value)
     {

@@ -9,5 +9,5 @@ class CheckoutShipmentMethodDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public string $shipment_method;
+    public ?string $shipment_method;
 }

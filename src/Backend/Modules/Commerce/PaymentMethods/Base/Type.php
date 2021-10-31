@@ -12,11 +12,11 @@ abstract class Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'installed',
+            'isEnabled',
             ChoiceType::class,
             [
                 'required' => false,
-                'label' => 'lbl.Installed',
+                'label' => 'lbl.Enabled',
                 'placeholder' => false,
                 'choices' => [
                     'lbl.Yes' => true,

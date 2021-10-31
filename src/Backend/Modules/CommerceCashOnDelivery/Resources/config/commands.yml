@@ -1,0 +1,8 @@
+services:
+    commerce.handler.update_payment_method_cash_on_delivery:
+        class: Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDeliveryHandler
+        arguments:
+            - "@commerce.repository.payment_method"
+            - "@fork.settings"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDelivery }

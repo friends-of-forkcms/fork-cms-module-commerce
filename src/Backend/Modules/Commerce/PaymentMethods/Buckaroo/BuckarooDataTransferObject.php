@@ -47,11 +47,6 @@ class BuckarooDataTransferObject extends DataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public string $name;
-
-    /**
-     * @Assert\NotBlank(message="err.FieldIsRequired")
-     */
     public string $apiEnvironment;
 
     /**
@@ -90,6 +85,11 @@ class BuckarooDataTransferObject extends DataTransferObject
     public string $orderExpiredId;
 
     public array $paymentMethods = [];
+
+    public function __construct()
+    {
+        $this->name = 'Buckaroo';
+    }
 
     public function __set($key, $value)
     {

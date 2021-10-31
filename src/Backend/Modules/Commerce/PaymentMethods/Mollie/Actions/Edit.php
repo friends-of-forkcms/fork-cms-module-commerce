@@ -22,7 +22,7 @@ class Edit extends BaseEdit
         $data = $this->getData(new MollieDataTransferObject());
 
         $enabledMethods = [];
-        if ($data->apiKey) {
+        if (isset($data->apiKey)) {
             $mollie = new MollieApiClient();
             $mollie->setApiKey($data->apiKey);
 

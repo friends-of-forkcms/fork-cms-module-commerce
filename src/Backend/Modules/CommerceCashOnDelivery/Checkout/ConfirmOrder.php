@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\CashOnDelivery\Checkout;
+namespace Backend\Modules\CommerceCashOnDelivery\Checkout;
 
 use Backend\Modules\Commerce\Domain\Order\Event\OrderCreated;
 use Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory;

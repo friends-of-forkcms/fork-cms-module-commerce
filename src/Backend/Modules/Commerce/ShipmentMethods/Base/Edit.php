@@ -10,6 +10,10 @@ use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository;
 use Common\Exception\RedirectException;
 use Common\ModulesSettings;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +26,14 @@ abstract class Edit
     protected Locale $locale;
     protected ModulesSettings $settings;
     protected ShipmentMethodRepository $shipmentMethodRepository;
+    protected EntityManager $entityManager;
 
     public function __construct()
     {
         $this->locale = Locale::workingLocale();
         $this->settings = Model::get('fork.settings');
         $this->shipmentMethodRepository = Model::get('commerce.repository.shipment_method');
+        $this->entityManager = Model::getContainer()->get('doctrine.orm.entity_manager');
     }
 
     public function setRequest(Request $request): void
@@ -85,7 +91,7 @@ abstract class Edit
         $this->installShipmentMethod($data->installed);
 
         // Set available payment methods
-        $this->saveSetting('available_payment_methods', $data->available_payment_methods);
+        $this->saveSetting('available_payment_methods', $data->available_payment_methods->toArray());
     }
 
     /**
@@ -113,8 +119,9 @@ abstract class Edit
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
-            $value = $this->settings->get('Commerce', $key, $defaultValue);
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;;
+            $value = $this->getDeserializedValueFromSettings($key, $defaultValue);
+
             $dataTransferObject->{$property} = $value;
         }
 
@@ -178,5 +185,51 @@ abstract class Edit
         }
 
         return $key;
+    }
+
+    /**
+     * Fetch the shipment method value from Fork settings
+     */
+    protected function getDeserializedValueFromSettings($key, $defaultValue)
+    {
+        $value = $this->settings->get('Commerce', $key, $defaultValue);
+
+        // E.g. VAT reference
+        // If it's an unmanaged doctrine entity, try to make it managed, which is needed for the form values
+        if (is_object($value)) {
+            $value = $this->refreshUnmanagedValue($value);
+        }
+
+        // E.g. payment options
+        // If it's an array of unmanaged doctrine entities, try to make them managed, which is needed for the form values
+        if (is_array($value)) {
+            $deserializedValue = new ArrayCollection();
+            foreach ($value as $item) {
+                $deserializedValue->add($this->refreshUnmanagedValue($item));
+            }
+            return $deserializedValue;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Note: need a better way for (de)serializing from/to Doctrine entities!
+     */
+    private function refreshUnmanagedValue($value)
+    {
+        $class = get_class($value);
+
+        try {
+            $identifierFieldName = $this->entityManager->getClassMetadata($class)->getSingleIdentifierFieldName();
+
+            // Try to refresh the object to a managed doctrine object
+            if ($identifierFieldName && $this->entityManager->getMetadataFactory()->getMetadataFor($class)) {
+                $identifierGetterName = "get$identifierFieldName";
+                return $this->entityManager->find($class, $value->$identifierGetterName());
+            }
+        } catch (ORMException | MappingException $e) {}
+
+        return $value;
     }
 }

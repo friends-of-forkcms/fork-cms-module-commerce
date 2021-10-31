@@ -278,6 +278,10 @@
         <translation language="nl"><![CDATA[afmeting]]></translation>
         <translation language="en"><![CDATA[dimension]]></translation>
       </item>
+      <item type="label" name="Enabled">
+        <translation language="nl"><![CDATA[geactiveerd]]></translation>
+        <translation language="en"><![CDATA[enabled]]></translation>
+      </item>
       <item type="label" name="AllowMultipleCategories">
         <translation language="nl"><![CDATA[meerdere categorieën toestaan]]></translation>
         <translation language="en"><![CDATA[allow multiple categories]]></translation>
@@ -582,6 +586,10 @@
       <item type="label" name="CustomerDetails">
         <translation language="nl"><![CDATA[klantdetails]]></translation>
         <translation language="en"><![CDATA[customer details]]></translation>
+      </item>
+      <item type="label" name="AvailablePaymentMethods">
+        <translation language="nl"><![CDATA[betalingsopties]]></translation>
+        <translation language="en"><![CDATA[payment methods]]></translation>
       </item>
       <item type="label" name="InvoiceAddress">
         <translation language="nl"><![CDATA[factuuradres]]></translation>

@@ -18,8 +18,4 @@ class ValueDataTransferObject extends DataTransferObject
     public string $price;
     public float $fromWeight;
     public float $tillWeight;
-
-    public function __construct()
-    {
-    }
 }

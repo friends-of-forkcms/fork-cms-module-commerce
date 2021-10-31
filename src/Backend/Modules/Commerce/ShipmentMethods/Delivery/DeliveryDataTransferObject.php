@@ -11,7 +11,7 @@ class DeliveryDataTransferObject extends DataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public string $name;
+    public string $name = 'Standard delivery';
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -22,8 +22,4 @@ class DeliveryDataTransferObject extends DataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public Vat $vat;
-
-    public function __construct()
-    {
-    }
 }

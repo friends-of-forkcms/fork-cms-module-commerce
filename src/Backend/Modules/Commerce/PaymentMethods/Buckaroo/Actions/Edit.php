@@ -109,16 +109,4 @@ class Edit extends BaseEdit
 
         return $form;
     }
-
-    private function updateData(Form $form): void
-    {
-        // Get the form data
-        $data = $form->getData();
-
-        // Save the form data
-        $this->setData($form->getData(), true);
-
-        // Install our payment method or not
-        $this->installPaymentMethod($data->installed);
-    }
 }

@@ -6,13 +6,13 @@ use Exception;
 
 class PaymentMethodNotFound extends Exception
 {
-    public static function forEmptyName(): self
+    public static function forEmptyId(): self
     {
-        return new self('The name you have given is null');
+        return new self('The id for the payment method you have given is null');
     }
 
-    public static function forName(string $name): self
+    public static function forId(int $id): self
     {
-        return new self('Can\'t find a PaymentMethod with name = "' . $name . '".');
+        return new self('Can\'t find a PaymentMethod with id = "' . $id . '".');
     }
 }

@@ -4,6 +4,12 @@ doctrine:
       commerce_category_image_type: Backend\Modules\Commerce\Domain\Category\ImageDBALType
       commerce_brand_image_type: Backend\Modules\Commerce\Domain\Brand\ImageDBALType
   orm:
+    # Enable the Gedmo softdeleteable filter
+    # https://github.com/doctrine-extensions/DoctrineExtensions/blob/main/doc/symfony4.md#filters
+    filters:
+      softdeleteable:
+        class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+
     mappings:
       commerce_category:
         type: annotation
@@ -175,5 +181,5 @@ doctrine:
         prefix: Backend\Modules\Commerce\Domain\Account
       Money:
         type: yml
-        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Resources/config"
+        dir: "%kernel.project_dir%/src/Backend/Modules/Commerce/Resources/config/doctrine"
         prefix: Money

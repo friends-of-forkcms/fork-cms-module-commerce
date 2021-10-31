@@ -1,0 +1,10 @@
+# Must be placed in a seperate subfolder to avoid conflicts with Gedmo
+# See: https://github.com/doctrine-extensions/DoctrineExtensions/blob/HEAD//doc/symfony4.md#troubleshooting
+Money\Money:
+  type: embeddable
+  fields:
+    amount:
+      type: bigint
+  embedded:
+    currency:
+      class: Money\Currency

@@ -22,6 +22,7 @@ class BasedOnWeightTransferObject extends DataTransferObject
 
     public function __construct()
     {
+        parent::__construct();
         $this->values = new ArrayCollection();
     }
 }
