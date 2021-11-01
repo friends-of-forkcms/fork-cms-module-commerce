@@ -66,9 +66,6 @@ class Edit extends PaymentBaseActionEdit
         /** @var DataTransferObject $data */
         $data = $form->getData();
 
-        // Save the form data to module settings
-        $this->setData($form->getData(), true);
-
         // The command bus will handle the saving of the payment method in the database.
         $this->commandBus->handle($data);
     }

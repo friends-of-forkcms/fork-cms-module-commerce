@@ -85,7 +85,7 @@ abstract class Edit extends BackendBaseActionEdit
     protected function getData(DataTransferObject $dataTransferObject, bool $includeLanguage = true): DataTransferObject
     {
         // Get the public vars
-        $properties = get_object_vars($dataTransferObject);
+        $properties = get_class_vars(get_class($dataTransferObject));
         $skipProperties = get_class_vars(DataTransferObject::class);
 
         // Assign the properties to object transfer object

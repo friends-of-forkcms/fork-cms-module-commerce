@@ -43,10 +43,10 @@ public function it_can_get_a_discounted_price_with_vat(): void
 }
 ```
 
-To run the all module tests, simply run `simple-phpunit` using the filter option to run both backend and frontend tests:
+To run the all module(s) tests, simply run `simple-phpunit` using the filter option to run both backend and frontend tests:
 
 ```bash
-bin/simple-phpunit --filter '\\Modules\\Commerce\\'
+bin/simple-phpunit --filter '\\Modules\\Commerce'
 ```
 
 or run them from PhpStorm: 

@@ -39,12 +39,13 @@ class UpdatePaymentMethodHandler
     private function setData(DataTransferObject $dataTransferObject, bool $includeLanguage): void
     {
         // Get the public vars
-        $properties = get_object_vars($dataTransferObject);
+        $properties = get_class_vars(get_class($dataTransferObject));
+        $skipProperties = get_class_vars(DataTransferObject::class);
 
         // Assign the properties to object transfer object
         foreach ($properties as $property => $value) {
-            // Skip the installed var
-            if ($property === 'isEnabled') {
+            // Skip the values that are saved already on the PaymentMethod entity
+            if (array_key_exists($property, $skipProperties)) {
                 continue;
             }
 

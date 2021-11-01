@@ -8,6 +8,7 @@ use Backend\Modules\Commerce\Domain\Category\CategoryDataTransferObject;
 use Backend\Modules\Commerce\Domain\Category\Image;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductDataTransferObject;
+use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatusDataTransferObject;
@@ -22,8 +23,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Money\Money;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\RepositoryProxy;
 
-class ProductFactory extends ModelFactory
+/**
+ * @extends ModelFactory<Product>
+ *
+ * @method static Product|Proxy createOne(array $attributes = [])
+ * @method static Product[]|Proxy[] createMany(int $number, array|callable $attributes = [])
+ * @method static Product|Proxy find(object|array|mixed $criteria)
+ * @method static Product|Proxy findOrCreate(array $attributes)
+ * @method static Product|Proxy first(string $sortedField = 'id')
+ * @method static Product|Proxy last(string $sortedField = 'id')
+ * @method static Product|Proxy random(array $attributes = [])
+ * @method static Product|Proxy randomOrCreate(array $attributes = []))
+ * @method static Product[]|Proxy[] all()
+ * @method static Product[]|Proxy[] findBy(array $attributes)
+ * @method static Product[]|Proxy[] randomSet(int $number, array $attributes = []))
+ * @method static Product[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
+ * @method static ProductRepository|RepositoryProxy repository()
+ * @method Product|Proxy create(array|callable $attributes = [])
+ */
+final class ProductFactory extends ModelFactory
 {
     /**
      * Our entities use private properties, no setters and a private constructor. Therefore, we have to use a DTO
