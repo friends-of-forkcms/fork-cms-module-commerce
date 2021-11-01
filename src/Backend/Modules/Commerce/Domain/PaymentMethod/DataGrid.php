@@ -61,7 +61,8 @@ class DataGrid extends DataGridArray
      */
     private function getPaymentMethods(Locale $locale): array
     {
-        $paymentMethodsData = BackendModel::get('database')->getRecords('
+        $paymentMethodsData = BackendModel::get('database')->getRecords(
+            '
             SELECT pm.id, pm.name, pm.module, pm.is_enabled
             FROM commerce_payment_methods AS pm
             WHERE pm.language = :language',
@@ -82,7 +83,8 @@ class DataGrid extends DataGridArray
                     $paymentMethod['description'] = trim($description);
                     $paymentMethod['version'] = trim($version);
                 }
-            } catch (Exception $e) {}
+            } catch (Exception $e) {
+            }
 
             return $paymentMethod;
         }, $paymentMethodsData ?? []);

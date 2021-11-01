@@ -119,7 +119,8 @@ abstract class Edit
                 continue;
             }
 
-            $key = $this->getBaseKey($includeLanguage) . '_' . $property;;
+            $key = $this->getBaseKey($includeLanguage) . '_' . $property;
+            ;
             $value = $this->getDeserializedValueFromSettings($key, $defaultValue);
 
             $dataTransferObject->{$property} = $value;
@@ -207,6 +208,7 @@ abstract class Edit
             foreach ($value as $item) {
                 $deserializedValue->add($this->refreshUnmanagedValue($item));
             }
+
             return $deserializedValue;
         }
 
@@ -226,9 +228,11 @@ abstract class Edit
             // Try to refresh the object to a managed doctrine object
             if ($identifierFieldName && $this->entityManager->getMetadataFactory()->getMetadataFor($class)) {
                 $identifierGetterName = "get$identifierFieldName";
+
                 return $this->entityManager->find($class, $value->$identifierGetterName());
             }
-        } catch (ORMException | MappingException $e) {}
+        } catch (ORMException | MappingException $e) {
+        }
 
         return $value;
     }

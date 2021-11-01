@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Actions;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\Brand\BrandRepository;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;

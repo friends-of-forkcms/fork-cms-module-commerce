@@ -42,7 +42,7 @@ final class CashOnDeliveryFactory extends ModelFactory
                 $dto = new CashOnDeliveryDataTransferObject(null, Locale::fromString('en'));
                 $dto->name = $attributes['name'];
                 $dto->isEnabled = $attributes['isEnabled'];
-                $dto->orderInitId  = $attributes['orderInitId'];
+                $dto->orderInitId = $attributes['orderInitId'];
 
                 return PaymentMethod::fromDataTransferObject($dto);
             });

@@ -3,7 +3,6 @@
 namespace Backend\Modules\Commerce\Domain\PaymentMethod\Command;
 
 use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
 use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;

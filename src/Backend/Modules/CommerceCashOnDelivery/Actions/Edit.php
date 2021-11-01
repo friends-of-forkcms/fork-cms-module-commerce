@@ -2,11 +2,11 @@
 
 namespace Backend\Modules\CommerceCashOnDelivery\Actions;
 
+use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
-use Backend\Modules\Commerce\PaymentMethods\Base\Edit as PaymentBaseActionEdit;
-use Backend\Core\Engine\Model;
 use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
+use Backend\Modules\Commerce\PaymentMethods\Base\Edit as PaymentBaseActionEdit;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\CashOnDeliveryType;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDelivery;
 use Symfony\Component\Form\Form;

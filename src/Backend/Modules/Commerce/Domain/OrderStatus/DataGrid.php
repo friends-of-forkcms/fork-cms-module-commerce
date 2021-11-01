@@ -41,6 +41,7 @@ class DataGrid extends DataGridDatabase
     public static function showColorDot(string $title, ?string $color, string $editUrl): string
     {
         $color = $color ?? 'currentColor';
+
         return <<<HTML
 <svg fill="$color" viewBox="0 0 8 8" style="width: 8px; height: 8px; margin-right: 2px;">
   <circle cx="4" cy="4" r="3"></circle>
