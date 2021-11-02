@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Domain\Account;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,7 +35,7 @@ class Account
      * @var Collection|Order[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", mappedBy="account")
-     * @ORM\OrderBy({"date": "DESC"})
+     * @ORM\OrderBy({"createdOn": "DESC"})
      */
     private Collection $orders;
 

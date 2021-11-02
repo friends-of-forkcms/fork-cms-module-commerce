@@ -123,7 +123,7 @@ class Order
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="order")
      * @ORM\JoinColumn(name="order_id")
-     * @ORM\OrderBy({"created_on": "DESC"}))
+     * @ORM\OrderBy({"createdOn": "DESC"}))
      */
     private Collection $history;
 
