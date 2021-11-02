@@ -52,7 +52,15 @@ jobs:
         run: curl -v -o /dev/null http://localhost
 
       - name: PHPUnit
-        run: docker-compose exec -T app bin/simple-phpunit --coverage-clover=coverage.clover --filter '\\Modules\\Commerce\\'
+        run: |
+          docker-compose exec -T app bin/simple-phpunit --coverage-clover=coverage.clover --filter '\\Modules\\Commerce'
+          docker cp $(docker-compose ps -q app):/var/www/html/coverage.clover ./coverage.clover
+
+      - name: Upload Coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          files: coverage.clover
+          verbose: true
 
       - name: Doctrine Schema Validator
         run: docker-compose exec -T app bin/console doctrine:schema:validate --skip-sync

@@ -12,7 +12,7 @@ class CashOnDeliveryDataTransferObject extends DataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public string $orderInitId;
+    public ?string $orderInitId = null;
 
     public function __construct(PaymentMethod $paymentMethod = null, Locale $locale)
     {
