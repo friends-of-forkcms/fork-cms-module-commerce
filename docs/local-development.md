@@ -53,7 +53,7 @@ or run them from PhpStorm:
 
 1. Go to 'Add Configuration' > 'New configuration' > 'PHPUnit'
 2. Enter a name and select 'Test scope: Defined in the configuration file'
-3. Enter a filter in the Test runner options: `--filter '\\Modules\\Commerce\\'` to run both frontend and backend tests.
+3. Enter a filter in the Test runner options: `--filter '\\Modules\\Commerce'` to run both frontend and backend tests.
 4. Run the tests from PhpStorm using the green play button
 
 ![PhpStorm configured to run fork-cms-module-commerce tests](img/PhpStorm-phpunit-config.png)

@@ -3,9 +3,9 @@
 Currently the module includes the `CommerceDemo` demo theme which is used in the preview url and to develop locally.
 It's built using an modern and productive stack:
 
--   [Tailwind CSS](https://tailwindcss.com), providing utility classes to style components.
--   [Alpine.js](https://alpinejs.dev), to sprinkle javascript on our Twig templates.
--   [Vite](https://vitejs.dev), a lightning fast build tool. Only needs a `vite.config.js` file, less complex than Webpack.
+-   [Tailwind CSS](https://tailwindcss.com), a highly customisable CSS framework which can be used directly in your HTML. No more heavy CSS!
+-   [Alpine.js](https://alpinejs.dev), a lightweight tool for progressive enhancement. Sprinkle some javascript on our Twig templates.
+-   [Vite](https://vitejs.dev), a lightning fast build tool ⚡. Only needs a `vite.config.js` file, less complex than Webpack.
 -   [Typescript](https://www.typescriptlang.org)
 
 The demo theme uses a few dependencies. We try to avoid jQuery and go for lightweight, vanilla JS libraries. E.g.
@@ -26,3 +26,5 @@ npm run dev
 
 This will start up Vite in watch-mode, and also output Typescript errors in the console.
 The `vite_entry_link_tags` and `vite_entry_script_tags` Twig tags in `Base.html.twig` will check if the dev server is running and output the appropriate tags.
+
+Read more about the Vite & Fork CMS integration at https://github.com/jessedobbelaere/fork-cms-vite-boilerplate
