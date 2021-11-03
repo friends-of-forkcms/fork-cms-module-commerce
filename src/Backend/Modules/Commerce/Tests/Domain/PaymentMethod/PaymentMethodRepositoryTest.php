@@ -35,7 +35,7 @@ class PaymentMethodRepositoryTest extends BackendWebTestCase
     {
         $paymentMethod = PaymentMethodFactory::new()->create([
             'name' => 'My cool payment method',
-            'locale' => 'en'
+            'locale' => 'en',
         ]);
         PaymentMethodFactory::createMany(5);
 
