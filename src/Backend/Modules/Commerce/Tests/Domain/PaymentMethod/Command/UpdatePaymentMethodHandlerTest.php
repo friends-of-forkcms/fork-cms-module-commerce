@@ -65,7 +65,7 @@ class UpdatePaymentMethodHandlerTest extends TestCase
     {
         // Arrange
         // We use an anonymous class to add a custom class property
-        $paymentMethod = new class(null, Locale::fromString('en')) extends UpdatePaymentMethod {
+        $paymentMethod = new class (null, Locale::fromString('en')) extends UpdatePaymentMethod {
             public ?string $myCustomProperty = 'customvalue';
         };
         $paymentMethod->name = 'MyCustomPaymentMethodWithSettings';
