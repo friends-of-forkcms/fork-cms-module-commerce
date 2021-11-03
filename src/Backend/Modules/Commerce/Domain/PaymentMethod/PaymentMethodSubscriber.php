@@ -40,7 +40,7 @@ class PaymentMethodSubscriber implements EventSubscriberInterface
     {
         $method = explode('.', $paymentMethod);
 
-        if (count($method) != 2) {
+        if (count($method) !== 2) {
             throw new Exception('Invalid payment method');
         }
 
