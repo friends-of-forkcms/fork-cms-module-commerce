@@ -30,19 +30,7 @@ class PaymentMethodRepository extends EntityRepository
         return $paymentMethod;
     }
 
-    public function findOneById(int $id): ?PaymentMethod
-    {
-        /** @var PaymentMethod $paymentMethod */
-        $paymentMethod = $this->find($id);
-
-        if ($paymentMethod === null) {
-            throw PaymentMethodNotFound::forId($id);
-        }
-
-        return $paymentMethod;
-    }
-
-    public function findEnabledPaymentMethods(Locale $locale): array
+    public function findEnabledPaymentMethodNames(Locale $locale): array
     {
         $result = $this
                     ->createQueryBuilder('i')
