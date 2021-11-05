@@ -1,14 +1,11 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\Base;
+namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model;
-use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
-use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
-use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
 use Common\ModulesSettings;
 use Doctrine\ORM\EntityManager;
 use SimpleBus\Message\Bus\MessageBus;
@@ -48,7 +45,7 @@ abstract class Edit extends BackendBaseActionEdit
 
     private function getBackLink(array $parameters = []): string
     {
-        return BackendModel::createUrlForAction('PaymentMethods', null, null, $parameters);
+        return Model::createUrlForAction('PaymentMethods', null, null, $parameters);
     }
 
     public function getModule(): string
@@ -82,11 +79,11 @@ abstract class Edit extends BackendBaseActionEdit
     /**
      * Populate data transfer object with data from the database.
      */
-    protected function getData(DataTransferObject $dataTransferObject, bool $includeLanguage = true): DataTransferObject
+    protected function getData(PaymentMethodDataTransferObject $dataTransferObject, bool $includeLanguage = true): PaymentMethodDataTransferObject
     {
         // Get the public vars
         $properties = get_class_vars(get_class($dataTransferObject));
-        $skipProperties = get_class_vars(DataTransferObject::class);
+        $skipProperties = get_class_vars(PaymentMethodDataTransferObject::class);
 
         // Assign the properties to object transfer object
         foreach ($properties as $property => $defaultValue) {
@@ -106,11 +103,11 @@ abstract class Edit extends BackendBaseActionEdit
     /**
      * Store data transfer object with the form data.
      */
-    protected function setData(DataTransferObject $dataTransferObject, bool $includeLanguage): void
+    protected function setData(PaymentMethodDataTransferObject $dataTransferObject, bool $includeLanguage): void
     {
         // Get the public vars
         $properties = get_object_vars($dataTransferObject);
-        $skipProperties = get_class_vars(DataTransferObject::class);
+        $skipProperties = get_class_vars(PaymentMethodDataTransferObject::class);
 
         // Assign the properties to object transfer object
         foreach ($properties as $property => $value) {

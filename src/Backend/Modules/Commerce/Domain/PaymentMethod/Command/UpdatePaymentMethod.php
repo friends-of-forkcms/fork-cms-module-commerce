@@ -2,8 +2,8 @@
 
 namespace Backend\Modules\Commerce\Domain\PaymentMethod\Command;
 
-use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
 
-class UpdatePaymentMethod extends DataTransferObject
+class UpdatePaymentMethod extends PaymentMethodDataTransferObject
 {
 }

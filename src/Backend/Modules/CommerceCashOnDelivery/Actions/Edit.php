@@ -5,8 +5,8 @@ namespace Backend\Modules\CommerceCashOnDelivery\Actions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
-use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
-use Backend\Modules\Commerce\PaymentMethods\Base\Edit as PaymentBaseActionEdit;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Edit as PaymentBaseActionEdit;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\CashOnDeliveryType;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDelivery;
 use Symfony\Component\Form\Form;
@@ -63,7 +63,7 @@ class Edit extends PaymentBaseActionEdit
     private function updatePaymentMethod(Form $form): void
     {
         // Get the form data
-        /** @var DataTransferObject $data */
+        /** @var PaymentMethodDataTransferObject $data */
         $data = $form->getData();
 
         // The command bus will handle the saving of the payment method in the database.

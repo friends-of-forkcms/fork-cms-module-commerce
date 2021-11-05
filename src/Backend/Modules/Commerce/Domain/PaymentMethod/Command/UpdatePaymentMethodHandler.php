@@ -5,7 +5,7 @@ namespace Backend\Modules\Commerce\Domain\PaymentMethod\Command;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
-use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
 use Common\ModulesSettings;
 
 class UpdatePaymentMethodHandler
@@ -21,7 +21,7 @@ class UpdatePaymentMethodHandler
         $this->locale = Locale::workingLocale();
     }
 
-    public function handle(DataTransferObject $dataTransferObject): void
+    public function handle(PaymentMethodDataTransferObject $dataTransferObject): void
     {
         // Save the payment method to Fork Settings
         $this->setData($dataTransferObject, true);
@@ -35,11 +35,11 @@ class UpdatePaymentMethodHandler
     /**
      * Store data transfer object with the form data.
      */
-    private function setData(DataTransferObject $dataTransferObject, bool $includeLanguage): void
+    private function setData(PaymentMethodDataTransferObject $dataTransferObject, bool $includeLanguage): void
     {
         // Get the public vars
         $properties = get_class_vars(get_class($dataTransferObject));
-        $skipProperties = get_class_vars(DataTransferObject::class);
+        $skipProperties = get_class_vars(PaymentMethodDataTransferObject::class);
 
         // Assign the properties to object transfer object
         foreach ($properties as $property => $value) {
@@ -58,7 +58,7 @@ class UpdatePaymentMethodHandler
     /**
      * Get the settings base key.
      */
-    private function getBaseKey(DataTransferObject $dataTransferObject, bool $includeLanguage): string
+    private function getBaseKey(PaymentMethodDataTransferObject $dataTransferObject, bool $includeLanguage): string
     {
         $key = $dataTransferObject->module;
 

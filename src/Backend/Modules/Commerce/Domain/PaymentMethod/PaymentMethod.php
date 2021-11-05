@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
-use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
 use Common\Locale;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,7 +65,7 @@ class PaymentMethod
         $this->locale = $locale;
     }
 
-    public static function fromDataTransferObject(DataTransferObject $dataTransferObject): PaymentMethod
+    public static function fromDataTransferObject(PaymentMethodDataTransferObject $dataTransferObject): PaymentMethod
     {
         if ($dataTransferObject->hasExistingPaymentMethod()) {
             return self::update($dataTransferObject);
@@ -75,7 +74,7 @@ class PaymentMethod
         return self::create($dataTransferObject);
     }
 
-    private static function create(DataTransferObject $dataTransferObject): self
+    private static function create(PaymentMethodDataTransferObject $dataTransferObject): self
     {
         return new self(
             $dataTransferObject->name,
@@ -85,7 +84,7 @@ class PaymentMethod
         );
     }
 
-    private static function update(DataTransferObject $dataTransferObject): self
+    private static function update(PaymentMethodDataTransferObject $dataTransferObject): self
     {
         $paymentMethod = $dataTransferObject->getPaymentMethod();
 

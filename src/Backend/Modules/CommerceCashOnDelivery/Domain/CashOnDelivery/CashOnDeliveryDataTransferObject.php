@@ -4,10 +4,10 @@ namespace Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery;
 
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
-use Backend\Modules\Commerce\PaymentMethods\Base\DataTransferObject;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CashOnDeliveryDataTransferObject extends DataTransferObject
+class CashOnDeliveryDataTransferObject extends PaymentMethodDataTransferObject
 {
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")

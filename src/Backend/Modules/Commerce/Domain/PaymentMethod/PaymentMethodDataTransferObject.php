@@ -1,12 +1,12 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\Base;
+namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Symfony\Component\Validator\Constraints as Assert;
 
-abstract class DataTransferObject
+abstract class PaymentMethodDataTransferObject
 {
     protected ?PaymentMethod $paymentMethod = null;
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\Base;
+namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class Type extends AbstractType
+abstract class PaymentMethodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -30,7 +30,7 @@ class EditPaymentMethod extends BackendBaseActionEdit
 
         // Load our class and pass the rendered template as output content
         /**
-         * @var \Backend\Modules\Commerce\PaymentMethods\Base\Edit $paymentMethodEdit
+         * @var \Backend\Modules\Commerce\Domain\PaymentMethod\Edit $paymentMethodEdit
          */
         $paymentMethodEdit = new $className($this->getKernel());
         $paymentMethodEdit->execute();
