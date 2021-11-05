@@ -30,6 +30,10 @@
 			<name><![CDATA[Jacob van Dam]]></name>
 			<url><![CDATA[https://www.jvdict.nl]]></url>
 		</author>
+		<author>
+			<name><![CDATA[Jesse Dobbelaere]]></name>
+			<url><![CDATA[https://www.jessedobbelae.re]]></url>
+		</author>
 	</authors>
 	<events>
 		<event application="backend" name="after_add"><![CDATA[Triggered when a product is added.]]></event>
