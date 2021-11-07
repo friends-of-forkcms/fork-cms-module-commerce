@@ -27,6 +27,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static PaymentMethod[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static PaymentMethodRepository|RepositoryProxy repository()
  * @method PaymentMethod|Proxy create(array|callable $attributes = [])
+ *
+ * @codeCoverageIgnore
  */
 final class PaymentMethodFactory extends ModelFactory
 {

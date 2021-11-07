@@ -27,6 +27,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static ShipmentMethod[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static ShipmentMethodRepository|RepositoryProxy repository()
  * @method ShipmentMethod|Proxy create(array|callable $attributes = [])
+ *
+ * @codeCoverageIgnore
  */
 final class ShipmentMethodFactory extends ModelFactory
 {
