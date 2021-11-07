@@ -4,8 +4,8 @@ namespace Backend\Modules\Commerce\Domain\ShipmentMethod\Command;
 
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod;
-use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodDataTransferObject;
+use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository;
 use Common\ModulesSettings;
 
 class UpdateShipmentMethodHandler

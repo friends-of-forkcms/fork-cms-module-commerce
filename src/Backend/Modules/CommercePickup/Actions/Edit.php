@@ -4,11 +4,11 @@ namespace Backend\Modules\CommercePickup\Actions;
 
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
+use Backend\Modules\Commerce\Domain\ShipmentMethod\Edit as ShipmentBaseActionEdit;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodDataTransferObject;
-use Backend\Modules\Commerce\Domain\ShipmentMethod\Edit as ShipmentBaseActionEdit;
-use Backend\Modules\CommercePickup\Domain\Pickup\PickupShipmentMethodType;
 use Backend\Modules\CommercePickup\Domain\Pickup\Command\UpdatePickupShipmentMethod;
+use Backend\Modules\CommercePickup\Domain\Pickup\PickupShipmentMethodType;
 use Symfony\Component\Form\Form;
 
 class Edit extends ShipmentBaseActionEdit

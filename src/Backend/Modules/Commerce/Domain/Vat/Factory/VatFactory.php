@@ -51,6 +51,7 @@ final class VatFactory extends ModelFactory
     protected function getDefaults(): array
     {
         $percentage = 21.0;
+
         return [
             'title' => $percentage . '%',
             'percentage' => $percentage,
