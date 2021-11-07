@@ -3,7 +3,7 @@
 namespace Backend\Modules\CommerceCashOnDelivery\Tests\Actions;
 
 use Backend\Core\Tests\BackendWebTestCase;
-use Backend\Modules\Commerce\Domain\OrderStatus\Factory\VatFactory;
+use Backend\Modules\Commerce\Domain\OrderStatus\Factory\OrderStatusFactory;
 use Backend\Modules\Extensions\Engine\Model as BackendExtensionsModel;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Zenstruck\Foundry\Test\Factories;
@@ -25,7 +25,7 @@ class EditTest extends BackendWebTestCase
         BackendExtensionsModel::installModule('CommerceCashOnDelivery');
 
         // Create a few order statuses to connect to the payment method
-        VatFactory::createMany(3);
+        OrderStatusFactory::createMany(3);
     }
 
     /** @test */
@@ -40,7 +40,7 @@ class EditTest extends BackendWebTestCase
         );
 
         // Edit the payment method and submit the form
-        $orderStatus = VatFactory::random();
+        $orderStatus = OrderStatusFactory::random();
         $form = $this->getFormForSubmitButton($client, 'Save');
         $client->submit($form, [
             'cash_on_delivery_payment_method[name]' => 'Cash On Delivery (EditTest)',
@@ -58,7 +58,7 @@ class EditTest extends BackendWebTestCase
         $client->request('GET', '/private/en/commerce/edit_payment_method?id=1');
         self::assertResponseHasContent($client->getResponse(), $orderStatus->getTitle());
         $formValues = $this->getFormForSubmitButton($client, 'Save')->getValues();
-        self::assertEquals('Cash On Delivery (edit)', $formValues['cash_on_delivery_payment_method[name]']);
+        self::assertEquals('Cash On Delivery (EditTest)', $formValues['cash_on_delivery_payment_method[name]']);
         self::assertEquals((string) $orderStatus->getId(), $formValues['cash_on_delivery_payment_method[orderInitId]']);
         self::assertEquals('1', $formValues['cash_on_delivery_payment_method[isEnabled]']);
     }
