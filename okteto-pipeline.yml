@@ -6,7 +6,6 @@ deploy:
     okteto build \
       --build-arg THEME_NAME=CommerceDemo \
       --cache-from ghcr.io/friends-of-forkcms/fork-cms-module-commerce:latest \
-      --cache-from okteto.dev/fork-cms-module-commerce-demo:latest \
       -t okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
     echo "Finished building docker image with tag ${IMAGE_TAG} for branch ${OKTETO_GIT_BRANCH}"
     cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
