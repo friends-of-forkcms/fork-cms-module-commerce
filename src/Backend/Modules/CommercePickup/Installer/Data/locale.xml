@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  <Backend>
+    <Core>
+      <item type="label" name="CommercePickup">
+        <translation language="nl"><![CDATA[Pakket ophalen]]></translation>
+        <translation language="en"><![CDATA[Pickup shipment]]></translation>
+      </item>
+    </Core>
+  </Backend>
+</locale>

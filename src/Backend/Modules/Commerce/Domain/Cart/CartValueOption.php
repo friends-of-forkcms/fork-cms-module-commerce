@@ -5,7 +5,9 @@ namespace Backend\Modules\Commerce\Domain\Cart;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
@@ -70,6 +72,12 @@ class CartValueOption
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $value;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
 
     public function getId(): int
     {

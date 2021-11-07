@@ -1,11 +1,15 @@
-{% form_theme accountForm with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
+{#
+    The AccountStep is the step where the customer fills in his contact info, address information
+    and has an option to create an account.
+#}
 
+{% form_theme accountForm with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
 
 <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
 
     <!-- Left panel -->
     <div class="panel">
-        {{ form_start(accountForm, { 'attr': {'class': 'space-y-10'}}) }}
+        {{ form_start(accountForm, { 'attr': {'class': 'space-y-10', 'novalidate': 'novalidate'}}) }}
 
         <!-- Contact details -->
         <fieldset>
@@ -90,7 +94,7 @@
                 <ul role="list" class="text-sm font-medium text-gray-900 divide-y divide-gray-200">
                     {% for cartItem in cart.values %}
                         <li class="flex items-start py-6 space-x-4">
-                            <img src="{{ cartItem.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}" alt="{{ cartItem.product.title }}" class="flex-none w-20 h-20 rounded-md object-center object-cover">
+                            <img src="{{ cartItem.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}" alt="{{ cartItem.product.title }}" class="flex-none object-cover object-center w-20 h-20 rounded-md">
                             <div class="flex-auto space-y-1">
                                 <h4>{{ cartItem.quantity }}x {{ cartItem.product.title }}</h4>
                             </div>
@@ -101,7 +105,7 @@
                     {% endfor %}
                 </ul>
 
-                <dl class="text-sm font-medium text-gray-900 space-y-6 border-t border-gray-200 pt-6">
+                <dl class="pt-6 space-y-6 text-sm font-medium text-gray-900 border-t border-gray-200">
                     <!-- Discount codes -->
                     {% for cartRule in cart.cartRules %}
                         <div class="flex items-center justify-between">
@@ -134,7 +138,7 @@
                     {% endfor %}
 
                     <!-- Total -->
-                    <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+                    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
                         <dt class="text-base">{{ 'lbl.Total'|trans|ucfirst }}</dt>
                         <dd class="text-base">{{ cart.total|format_money }}</dd>
                     </div>

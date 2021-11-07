@@ -3,7 +3,9 @@
 namespace Backend\Modules\Commerce\Domain\OrderProductOption;
 
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
@@ -50,6 +52,12 @@ class OrderProductOption
      * @ORM\Embedded(class="\Money\Money")
      */
     private Money $total;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
 
     public function getDataTransferObject(): OrderProductOptionDataTransferObject
     {

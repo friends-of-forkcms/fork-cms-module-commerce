@@ -2,10 +2,12 @@
 
 ## Symlinking the module
 
-When developing locally, I tend to create a symlink between this git repository and an actual Fork CMS installation, e.g.:
+When developing locally, I usually create a symlink between this git repository and an actual Fork CMS installation, e.g.:
 
 ```bash
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/Commerce ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/Commerce
+ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/CommerceCashOnDelivery ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/CommerceCashOnDelivery
+ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/CommercePickup ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/CommercePickup
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Modules/Commerce ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Frontend/Modules/Commerce
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Themes/CommerceDemo ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Frontend/Themes/CommerceDemo
 ```
@@ -42,17 +44,17 @@ public function it_can_get_a_discounted_price_with_vat(): void
 }
 ```
 
-To run the all module tests, simply run `simple-phpunit` using the filter option to run both backend and frontend tests:
+To run the all module(s) tests, simply run `simple-phpunit` using the filter option to run both backend and frontend tests:
 
 ```bash
-bin/simple-phpunit --filter '\\Modules\\Commerce\\'
+bin/simple-phpunit --filter '\\Modules\\Commerce'
 ```
 
 or run them from PhpStorm: 
 
 1. Go to 'Add Configuration' > 'New configuration' > 'PHPUnit'
 2. Enter a name and select 'Test scope: Defined in the configuration file'
-3. Enter a filter in the Test runner options: `--filter '\\Modules\\Commerce\\'` to run both frontend and backend tests.
+3. Enter a filter in the Test runner options: `--filter '\\Modules\\Commerce'` to run both frontend and backend tests.
 4. Run the tests from PhpStorm using the green play button
 
 ![PhpStorm configured to run fork-cms-module-commerce tests](img/PhpStorm-phpunit-config.png)

@@ -9,6 +9,8 @@ use Backend\Modules\Commerce\Domain\Category\Command\CreateCategory;
 use Backend\Modules\Commerce\Domain\Category\Image as CategoryImage;
 use Backend\Modules\Commerce\Domain\Country\Command\CreateCountry;
 use Backend\Modules\Commerce\Domain\OrderStatus\Command\CreateOrderStatus;
+use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\Product\Command\CreateProduct;
 use Backend\Modules\Commerce\Domain\Product\Command\UpdateProduct;
 use Backend\Modules\Commerce\Domain\Product\Product;
@@ -20,6 +22,9 @@ use Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecification;
 use Backend\Modules\Commerce\Domain\SpecificationValue\Command\CreateSpecificationValue;
 use Backend\Modules\Commerce\Domain\StockStatus\Command\CreateStockStatus;
 use Backend\Modules\Commerce\Domain\Vat\Command\CreateVat;
+use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDeliveryPaymentMethod;
+use Backend\Modules\CommercePickup\Domain\Pickup\Command\UpdatePickupShipmentMethod;
 use Backend\Modules\MediaLibrary\Domain\MediaFolder\MediaFolder;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Command\SaveMediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaItem\Command\CreateMediaItemFromLocalStorageType;
@@ -29,6 +34,7 @@ use Common\Doctrine\ValueObject\SEOIndex;
 use Common\Uri;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Money\Money;
 
@@ -42,16 +48,18 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         'commerce_brands',
         'commerce_categories',
         'commerce_countries',
-        'commerce_vats',
-        'commerce_stock_statuses',
         'commerce_order_statuses',
-        'commerce_products',
+        'commerce_payment_methods',
         'commerce_product_option_values',
         'commerce_product_options',
         'commerce_product_specials',
+        'commerce_products',
         'commerce_products_specification_values',
-        'commerce_specifications',
+        'commerce_shipment_methods',
         'commerce_specification_values',
+        'commerce_specifications',
+        'commerce_stock_statuses',
+        'commerce_vats',
         'MediaGroup',
         'MediaGroupMediaItem',
         'MediaItem',
@@ -71,6 +79,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         $this->createStockStatuses();
         $this->createOrderStatuses();
         $this->createPaymentMethods();
+        $this->createShipmentMethods();
         $this->createCountries();
         $this->createSpecifications(); // @todo
         $this->createProducts($manager->find(MediaFolder::class, 1));
@@ -136,21 +145,57 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
 
     private function createOrderStatuses(): void
     {
-        $orderStatuses = ['processing', 'picked', 'shipped', 'delivered', 'cancelled', 'expired', 'refunded'];
-        foreach ($orderStatuses as $status) {
+        $orderStatuses = [
+            'processing' => ['color' => '#059669'], // green
+            'shipped' => ['color' => '#2563EB'], // blue
+            'refunded' => ['color' => '#FCD34D'], // yellow
+        ];
+        foreach ($orderStatuses as $status => $statusValue) {
             $createOrderStatus = new CreateOrderStatus();
             $createOrderStatus->title = ucfirst($status);
+            $createOrderStatus->color = $statusValue['color'];
             $this->commandBus->handle($createOrderStatus);
 
             // Save reference for other fixtures
             $referenceKey = 'order_status_' . strtolower($createOrderStatus->title);
-            $this->addReference(md5($referenceKey), $createOrderStatus->getOrderStatusEntity());
+            $this->addReference($referenceKey, $createOrderStatus->getOrderStatusEntity());
         }
     }
 
     private function createPaymentMethods(): void
     {
-        // $paymentMethod = new PaymentMethod("Mollie", Locale::workingLocale());
+        /** @var OrderStatus $orderStatusProcessing */
+        $orderStatusProcessing = $this->getReference('order_status_processing');
+
+        // Register the CashOnDelivery module and enable it in our shop
+        $cashOnDelivery = new UpdateCashOnDeliveryPaymentMethod(null, Locale::workingLocale());
+        $cashOnDelivery->isEnabled = true;
+        $cashOnDelivery->orderInitId = $orderStatusProcessing->getId();
+        $this->commandBus->handle($cashOnDelivery);
+
+        // Save reference for other fixtures
+        $referenceKey = 'payment_method_cash';
+        $this->addReference($referenceKey, $cashOnDelivery->getPaymentMethod());
+    }
+
+    private function createShipmentMethods(): void
+    {
+        /** @var Vat $vat */
+        $vat = $this->getReference(md5('vat_0%'));
+        /** @var PaymentMethod $paymentMethod */
+        $paymentMethod = $this->getReference('payment_method_cash');
+
+        $pickupShipment = new UpdatePickupShipmentMethod(null, Locale::workingLocale());
+        $pickupShipment->isEnabled = true;
+        $pickupShipment->price = Money::EUR(0);
+        $pickupShipment->vatId = $vat->getId();
+        $pickupShipment->availablePaymentMethods = new ArrayCollection();
+        $pickupShipment->availablePaymentMethods->add($paymentMethod);
+        $this->commandBus->handle($pickupShipment);
+
+        // Save reference for other fixtures
+        $referenceKey = 'shipping_method_pickup';
+        $this->addReference($referenceKey, $pickupShipment->getShipmentMethod());
     }
 
     private function createCountries(): void

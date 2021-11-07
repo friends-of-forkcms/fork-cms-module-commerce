@@ -4,22 +4,23 @@ imports:
   - { resource: cart_commands.yml }
   - { resource: cart_rule_commands.yml }
   - { resource: category_commands.yml }
-  - { resource: eventListener.yml }
+  - { resource: commands.yml }
+  - { resource: country_commands.yml }
+  - { resource: doctrine_extensions.yml }
+  - { resource: event_listener.yml }
   - { resource: fixtures.yml }
-  - { resource: product_commands.yml }
   - { resource: order_commands.yml }
   - { resource: order_events.yml }
   - { resource: order_history_commands.yml }
+  - { resource: product_commands.yml }
+  - { resource: product_option_commands.yml }
+  - { resource: product_option_value_commands.yml }
+  - { resource: quote_events.yml }
   - { resource: repositories.yml }
   - { resource: settings_commands.yml }
+  - { resource: sitemap_providers.yml }
   - { resource: specification_commands.yml }
   - { resource: specification_value_commands.yml }
   - { resource: stock_status_commands.yml }
-  - { resource: vat_commands.yml }
-  - { resource: country_commands.yml }
-  - { resource: quote_events.yml }
-  - { resource: product_option_commands.yml }
-  - { resource: product_option_value_commands.yml }
-  - { resource: commands.yml }
-  - { resource: sitemap_providers.yml }
   - { resource: twig.yml }
+  - { resource: vat_commands.yml }

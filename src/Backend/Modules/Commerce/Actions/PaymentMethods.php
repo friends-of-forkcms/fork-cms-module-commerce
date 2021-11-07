@@ -3,20 +3,16 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
+use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\DataGrid;
 
-/**
- * This action allows you to enable, disable and edit a payment method.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
- */
 class PaymentMethods extends BackendBaseActionIndex
 {
     public function execute(): void
     {
         parent::execute();
 
-        $this->template->assign('dataGrid', DataGrid::getHtml());
+        $this->template->assign('dataGrid', DataGrid::getHtml(Locale::workingLocale()));
 
         $this->parse();
         $this->display();

@@ -3,7 +3,9 @@
 namespace Backend\Modules\Commerce\Domain\Vat;
 
 use Common\Locale;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
@@ -39,6 +41,18 @@ class Vat
      * @ORM\Column(type="integer", length=11)
      */
     private int $sequence;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     private function __construct(
         Locale $locale,

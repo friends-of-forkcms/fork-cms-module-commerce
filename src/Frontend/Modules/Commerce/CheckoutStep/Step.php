@@ -247,7 +247,7 @@ abstract class Step
 
     protected function getAccount(): ?CommerceAccount
     {
-        if (Authentication::isLoggedIn() && !$this->account) {
+        if (!isset($this->account) && Authentication::isLoggedIn()) {
             $this->account = $this->getAccountRepository()->findOneByProfile(Authentication::getProfile());
         }
 

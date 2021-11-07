@@ -2,6 +2,7 @@
 
 namespace Frontend\Modules\Commerce\CheckoutStep;
 
+use Backend\Modules\Commerce\Domain\Cart\CartValue;
 use Backend\Modules\Commerce\Domain\CartRule\Command\UpdateCartRule;
 use Backend\Modules\Commerce\Domain\Order\Command\CreateOrder;
 use Backend\Modules\Commerce\Domain\Order\Command\UpdateOrder;
@@ -161,6 +162,7 @@ class PayOrderStep extends Step
         }
 
         // Products
+        /** @var CartValue $orderProduct */
         foreach ($this->cart->getValues() as $orderProduct) {
             $product = $orderProduct->getProduct();
 

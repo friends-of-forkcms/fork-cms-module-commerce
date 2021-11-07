@@ -14,39 +14,21 @@ class OrderStatusTransformer implements DataTransformerInterface
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * Transforms an object to a string.
-     *
-     * @param mixed $orderStatusId
-     *
-     * @return string
-     */
     public function transform($orderStatusId)
     {
         if (null === $orderStatusId) {
             return '';
         }
 
-        $orderStatus = $this->entityManager
+        return $this->entityManager
             ->getRepository(OrderStatus::class)
-            // query for the issue with this id
-            ->find($orderStatusId)
-        ;
-
-        return $orderStatus;
+            ->find($orderStatusId);
     }
 
-    /**
-     * Transforms a string to an object.
-     *
-     * @param string $orderStatus
-     *
-     * @return OrderStatus|null
-     */
     public function reverseTransform($orderStatus)
     {
         if (!$orderStatus) {
-            return;
+            return null;
         }
 
         return $orderStatus->getId();

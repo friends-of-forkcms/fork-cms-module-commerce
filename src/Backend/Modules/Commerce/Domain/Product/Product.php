@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
@@ -288,12 +289,14 @@ class Product
     private ?int $sequence;
 
     /**
-     * @ORM\Column(type="datetime", name="created_on")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $createdOn;
 
     /**
-     * @ORM\Column(type="datetime", name="edited_on")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTimeInterface $editedOn;
 
@@ -723,14 +726,6 @@ class Product
     public function getCartValues(): array
     {
         return $this->cart_values;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdOn = $this->editedOn = new DateTime();
     }
 
     private static function update(ProductDataTransferObject $dataTransferObject)

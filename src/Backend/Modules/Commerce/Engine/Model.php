@@ -68,7 +68,7 @@ class Model
      */
     public static function getOrder($id)
     {
-        return (array) BackendModel::getContainer()->get('database')->getRecord('SELECT i.*, UNIX_TIMESTAMP(i.date) AS ordered_on,
+        return (array) BackendModel::getContainer()->get('database')->getRecord('SELECT i.*, UNIX_TIMESTAMP(i.created_on) AS ordered_on,
              p.amount AS amount_of_product, c.title AS product_title
              FROM commerce_orders AS i
              INNER JOIN commerce_orders_values AS p ON i.id = p.order_id

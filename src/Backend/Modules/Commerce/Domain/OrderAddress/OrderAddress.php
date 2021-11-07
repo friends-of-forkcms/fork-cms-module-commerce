@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\OrderAddress;
 
 use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\Country\Country;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -184,6 +185,18 @@ class OrderAddress
     {
         return $this->zip_code;
     }
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $editedOn;
 
     public static function fromDataTransferObject(OrderAddressDataTransferObject $dataTransferObject): OrderAddress
     {

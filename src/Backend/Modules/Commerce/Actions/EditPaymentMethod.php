@@ -3,12 +3,16 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Language\Locale;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
+use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
 use Exception;
 
 /**
- * This edit action allows you to edit a specific payment method.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
+ * This edit action allows you to edit a payment shipment method.
+ * This will proxy through to the underlying payment module's edit action and template!
  */
 class EditPaymentMethod extends BackendBaseActionEdit
 {
@@ -16,37 +20,46 @@ class EditPaymentMethod extends BackendBaseActionEdit
     {
         parent::execute();
 
-        // Set the payment method id
-        $name = str_replace('payment_method_', '', $this->getRequest()->get('id'));
+        $paymentMethod = $this->getPaymentMethod();
 
-        $className = $this->getPaymentMethodAction($name);
-
-        // First check if our class exists
+        // Load class from the external module
+        $className = $this->getPaymentMethodAction($paymentMethod->getModule());
         if (!class_exists($className)) {
-            throw new Exception("Class {$name} is not found!");
+            throw new Exception("Class $className is not found!");
         }
 
-        // Load our class
+        // Load our class and pass the rendered template as output content
         /**
-         * @var \Backend\Modules\Commerce\PaymentMethods\Base\Edit $paymentMethod
+         * @var \Backend\Modules\Commerce\Domain\PaymentMethod\Edit $paymentMethodEdit
          */
-        $paymentMethod = new $className();
-
-        // Set some required parameters
-        $paymentMethod->setRequest($this->getRequest());
-        $paymentMethod->setName($name);
-        $paymentMethod->setTemplate($this->template);
-
-        // Execute the payment method
-        $paymentMethod->execute();
-
-        // Set the required template
-        $this->template = $paymentMethod->getTemplate();
-        $this->display($paymentMethod->getTemplateName());
+        $paymentMethodEdit = new $className($this->getKernel());
+        $paymentMethodEdit->execute();
+        $paymentMethodEdit->display();
+        $this->content = $paymentMethodEdit->getContent()->getContent();
     }
 
-    private function getPaymentMethodAction(string $name): string
+    private function getPaymentMethodAction(string $moduleName): string
     {
-        return "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$name}\\Actions\\Edit";
+        return "\\Backend\\Modules\\$moduleName\\Actions\\Edit";
+    }
+
+    protected function getPaymentMethod(): PaymentMethod
+    {
+        /** @var PaymentMethodRepository $paymentMethodRepository */
+        $paymentMethodRepository = $this->get('commerce.repository.payment_method');
+
+        try {
+            return $paymentMethodRepository->findOneByIdAndLocale(
+                $this->getRequest()->query->getInt('id'),
+                Locale::workingLocale()
+            );
+        } catch (PaymentMethodNotFound $e) {
+            $this->redirect($this->getBackLink(['error' => 'non-existing']));
+        }
+    }
+
+    private function getBackLink(array $parameters = []): string
+    {
+        return BackendModel::createUrlForAction('PaymentMethods', null, null, $parameters);
     }
 }

@@ -3,7 +3,9 @@
 namespace Backend\Modules\Commerce\Domain\OrderProductNotification;
 
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_order_product_notifications")
@@ -29,6 +31,12 @@ class OrderProductNotification
      * @ORM\Column(type="string")
      */
     private string $message;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTimeInterface $createdOn;
 
     public function getDataTransferObject(): OrderProductNotificationDataTransferObject
     {

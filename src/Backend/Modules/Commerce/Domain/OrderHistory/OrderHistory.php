@@ -6,6 +6,7 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="commerce_order_histories")
@@ -34,18 +35,19 @@ class OrderHistory
     private OrderStatus $order_status;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $created_at;
+    private DateTimeInterface $createdOn;
 
     private function __construct(
         Order $order,
         OrderStatus $order_status,
-        DateTimeInterface $created_at
+        DateTimeInterface $createdOn
     ) {
         $this->order = $order;
         $this->order_status = $order_status;
-        $this->created_at = $created_at;
+        $this->createdOn = $createdOn;
     }
 
     public static function fromDataTransferObject(OrderHistoryDataTransferObject $dataTransferObject): OrderHistory
@@ -58,7 +60,7 @@ class OrderHistory
         return new self(
             $dataTransferObject->order,
             $dataTransferObject->orderStatus,
-            $dataTransferObject->created_at
+            $dataTransferObject->createdOn
         );
     }
 
@@ -77,9 +79,9 @@ class OrderHistory
         return $this->order_status;
     }
 
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedOn(): DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdOn;
     }
 
     public function getDataTransferObject(): OrderHistoryDataTransferObject

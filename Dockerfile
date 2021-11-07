@@ -80,6 +80,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
 
+# Enable pcov for test coverage
+RUN pecl install pcov && \
+    docker-php-ext-enable pcov
+
 # Install yq (a YAML processor). We need this to write to our parameters.yml in the entrypoint.
 RUN apt-get update && apt-get install -y wget && \
     wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_amd64 && \

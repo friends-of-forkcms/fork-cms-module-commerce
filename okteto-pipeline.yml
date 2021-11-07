@@ -3,7 +3,10 @@ deploy:
   # Build & push docker image on okteto.com. Then override the container image tag with this one using kustomize
   - |
     IMAGE_TAG=$(if [[ "$OKTETO_GIT_BRANCH" == "master" ]]; then echo "latest"; else echo $OKTETO_GIT_COMMIT; fi)
-    okteto build --build-arg THEME_NAME=CommerceDemo --cache-from okteto.dev/fork-cms-module-commerce-demo:latest -t okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
+    okteto build \
+      --build-arg THEME_NAME=CommerceDemo \
+      --cache-from ghcr.io/friends-of-forkcms/fork-cms-module-commerce:latest \
+      -t okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
     echo "Finished building docker image with tag ${IMAGE_TAG} for branch ${OKTETO_GIT_BRANCH}"
     cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
 

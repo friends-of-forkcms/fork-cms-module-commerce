@@ -4,11 +4,11 @@ namespace Backend\Modules\Commerce\Domain\Cart;
 
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 
 /**
@@ -81,9 +81,10 @@ class CartValue
     private Money $total;
 
     /**
-     * @ORM\Column(type="datetime", name="date")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $date;
+    private DateTimeInterface $createdOn;
 
     private ?Money $price;
     private bool $isInStock;
@@ -209,26 +210,6 @@ class CartValue
     public function setTotal(Money $total): void
     {
         $this->total = $total;
-    }
-
-    public function getDate(): DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(DateTimeInterface $date): void
-    {
-        $this->date = $date;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist(): void
-    {
-        if (!isset($this->id)) {
-            $this->date = new DateTime();
-        }
     }
 
     public function isInStock(): bool
