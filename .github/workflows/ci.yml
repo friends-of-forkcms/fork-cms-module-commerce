@@ -27,11 +27,30 @@ jobs:
       - name: PHPLint
         uses: overtrue/phplint@7.4
 
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }} # must be in GitHub Secrets!
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@v2
+        with:
+          build-args: THEME_NAME=CommerceDemo
+          push: true
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:latest
+          cache-to: type=inline
+          tags: ghcr.io/${{ github.repository }}:latest
+
       - name: Pull images
         run: docker-compose pull --ignore-pull-failures || true
 
       - name: Start services
-        run: docker-compose up --build -d
+        run: COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose up --build -d
 
       - name: Wait for services
         run: |
@@ -65,5 +84,5 @@ jobs:
       - name: Doctrine Schema Validator
         run: docker-compose exec -T app bin/console doctrine:schema:validate --skip-sync
 
-      - name: Run PHPStan
-        run: docker-compose exec -T app bin/phpstan --memory-limit=-1 --error-format=github
+#      - name: Run PHPStan
+#        run: docker-compose exec -T app bin/phpstan --memory-limit=-1 --error-format=github

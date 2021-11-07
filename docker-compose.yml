@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: .
+      cache_from: [ghcr.io/friends-of-forkcms/fork-cms-module-commerce:latest]
       args:
         THEME_NAME: CommerceDemo
     ports:
