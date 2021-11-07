@@ -6,38 +6,39 @@ use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\DataGridArray;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
+use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
-use Symfony\Component\Finder\Finder;
+use Exception;
+use SimpleXMLElement;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
  */
 class DataGrid extends DataGridArray
 {
-    public function __construct()
+    public function __construct(Locale $locale)
     {
-        parent::__construct($this->getShipmentMethods());
+        parent::__construct($this->getShipmentMethods($locale));
+
+        $this->setColumnsSequence(['id', 'name', 'description', 'version', 'is_enabled']);
+        $this->setColumnsHidden(['module']);
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
 
-        // Hide columns
-        $this->setColumnHidden('raw_name');
-        $this->setColumnHidden('installed');
-
         // Add some columns
         $this->setColumnFunction(
             [new DataGridFunctions(), 'showBool'],
-            ['[data_grid_installed]'],
-            'data_grid_installed',
+            ['[is_enabled]'],
+            'is_enabled',
             true
         );
 
         // Overwrite header labels
         $this->setHeaderLabels(
             [
-                'data_grid_installed' => ucfirst(Language::lbl('Installed')),
+                'is_enabled' => ucfirst(Language::lbl('Enabled')),
             ]
         );
 
@@ -49,111 +50,43 @@ class DataGrid extends DataGridArray
         }
     }
 
-    public static function getHtml(): string
+    public static function getHtml(Locale $locale): string
     {
-        return (new self())->getContent();
+        return (new self($locale))->getContent();
     }
 
     /**
-     * Get all the available shipment methods.
+     * First fetch the installed shipment methods from the DB
+     * Then read the module's info.xml to display extra information.
      */
-    private function getShipmentMethods(): array
+    private function getShipmentMethods(Locale $locale): array
     {
-        $installedShipmentMethods = Model::get('commerce.repository.shipment_method')->findInstalledShipmentMethods(
-            Locale::workingLocale()
+        $shipmentMethodsData = BackendModel::get('database')->getRecords(
+            '
+            SELECT pm.id, pm.name, pm.module, pm.is_enabled
+            FROM commerce_shipment_methods AS pm
+            WHERE pm.language = :language',
+            ['language' => $locale]
         );
 
-        $availableShipmentMethods = [];
-
-        $shipmentMethods = $this->getShipmentMethodsOnFilesystem();
-
-        // get more information for each module
-        foreach ($shipmentMethods as $shipmentMethodName) {
-            $shipmentMethod = [];
-            $shipmentMethod['id'] = 'shipment_method_' . $shipmentMethodName;
-            $shipmentMethod['raw_name'] = $shipmentMethodName;
-            $shipmentMethod['name'] = $shipmentMethodName;
-            $shipmentMethod['description'] = '';
-            $shipmentMethod['version'] = '';
-            $shipmentMethod['installed'] = false;
-
-            if (in_array($shipmentMethodName, $installedShipmentMethods)) {
-                $shipmentMethod['installed'] = true;
+        return array_map(function ($shipmentMethod) {
+            $moduleDirectory = BACKEND_MODULES_PATH . '/' . $shipmentMethod['module'];
+            if (!file_exists("$moduleDirectory/info.xml")) {
+                return $shipmentMethod;
             }
 
             try {
-                $infoXml = @new \SimpleXMLElement(
-                    BACKEND_MODULES_PATH . '/Commerce/ShipmentMethods/' . $shipmentMethod['raw_name'] . '/Info.xml',
-                    LIBXML_NOCDATA,
-                    true
-                );
-
-                $info = $this->processShipmentMethodXml($infoXml);
-
-                $shipmentMethod['name'] = $info['name'];
-
-                // set fields if they were found in the XML
-                if (isset($info['description'])) {
-                    $shipmentMethod['description'] = DataGridFunctions::truncate($info['description'], 80);
+                $infoXml = new SimpleXMLElement("$moduleDirectory/info.xml", LIBXML_NOCDATA, true);
+                $information = $infoXml->xpath('/module');
+                if (isset($information[0])) {
+                    ['description' => $description, 'version' => $version] = (array) $information[0];
+                    $shipmentMethod['description'] = trim($description);
+                    $shipmentMethod['version'] = trim($version);
                 }
-                if (isset($info['version'])) {
-                    $shipmentMethod['version'] = $info['version'];
-                }
-            } catch (\Exception $e) {
-                // don't act upon error, we simply won't possess some info
+            } catch (Exception $e) {
             }
 
-            $shipmentMethod['data_grid_installed'] = $shipmentMethod['installed'] ? 'Y' : 'N';
-
-            $availableShipmentMethods[] = $shipmentMethod;
-        }
-
-        return $availableShipmentMethods;
-    }
-
-    /**
-     * Get the shipment methods from file system.
-     */
-    public static function getShipmentMethodsOnFilesystem(): array
-    {
-        $shipmentMethods = [];
-
-        $excludedDirectories = [
-            'Base',
-        ];
-
-        $finder = new Finder();
-        $directories = $finder->directories()->in(BACKEND_MODULES_PATH . '/Commerce/ShipmentMethods')->depth('==0');
-        foreach ($directories as $directory) {
-            // Exclude some directories
-            if (in_array($directory->getBasename(), $excludedDirectories)) {
-                continue;
-            }
-
-            $shipmentMethods[] = $directory->getBasename();
-        }
-
-        return $shipmentMethods;
-    }
-
-    /**
-     * Process the shipment method XML.
-     */
-    private function processShipmentMethodXml(\SimpleXMLElement $xml): array
-    {
-        $information = [];
-
-        // fetch theme node
-        $module = $xml->xpath('/shipmentMethod');
-        if (isset($module[0])) {
-            $module = $module[0];
-        }
-
-        // fetch general module info
-        $information['name'] = (string) $module->name;
-        $information['version'] = (string) $module->version;
-        $information['description'] = (string) $module->description;
-
-        return $information;
+            return $shipmentMethod;
+        }, $shipmentMethodsData ?? []);
     }
 }

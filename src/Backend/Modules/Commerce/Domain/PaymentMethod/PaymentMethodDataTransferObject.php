@@ -3,24 +3,19 @@
 namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
 use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class PaymentMethodDataTransferObject
 {
     protected ?PaymentMethod $paymentMethod = null;
-
     public int $id;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public string $name;
-
     public string $module;
-
     public bool $isEnabled = false;
-
     public Locale $locale;
 
     public function __construct(PaymentMethod $paymentMethod = null, Locale $locale)

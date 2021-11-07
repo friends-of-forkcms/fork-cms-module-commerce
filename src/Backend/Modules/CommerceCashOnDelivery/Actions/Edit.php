@@ -7,8 +7,8 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Edit as PaymentBaseActionEdit;
-use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\CashOnDeliveryType;
-use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDelivery;
+use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\CashOnDeliveryPaymentMethodType;
+use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDeliveryPaymentMethod;
 use Symfony\Component\Form\Form;
 
 class Edit extends PaymentBaseActionEdit
@@ -48,8 +48,8 @@ class Edit extends PaymentBaseActionEdit
     private function getForm(PaymentMethod $paymentMethod): Form
     {
         $form = $this->createForm(
-            CashOnDeliveryType::class,
-            $this->getData(new UpdateCashOnDelivery($paymentMethod, Locale::workingLocale())),
+            CashOnDeliveryPaymentMethodType::class,
+            $this->getData(new UpdateCashOnDeliveryPaymentMethod($paymentMethod, Locale::workingLocale())),
             [
                 'entityManager' => $this->entityManager,
             ]

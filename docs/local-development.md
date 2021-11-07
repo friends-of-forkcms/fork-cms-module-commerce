@@ -7,6 +7,7 @@ When developing locally, I usually create a symlink between this git repository 
 ```bash
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/Commerce ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/Commerce
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/CommerceCashOnDelivery ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/CommerceCashOnDelivery
+ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Backend/Modules/CommercePickup ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Backend/Modules/CommercePickup
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Modules/Commerce ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Frontend/Modules/Commerce
 ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Themes/CommerceDemo ~/Code/fork-cms/modules/fork-cms-module-commerce-demo/src/Frontend/Themes/CommerceDemo
 ```

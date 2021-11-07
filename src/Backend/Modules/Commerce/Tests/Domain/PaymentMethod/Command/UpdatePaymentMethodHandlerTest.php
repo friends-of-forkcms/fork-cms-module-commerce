@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class UpdatePaymentMethodHandlerTest extends TestCase
 {
-    /** @var ModulesSettings|MockObject */
+    /** @var ModulesSettings&MockObject */
     private $settingsMock;
-    /** @var PaymentMethodRepository|MockObject */
+    /** @var PaymentMethodRepository&MockObject */
     private $repositoryMock;
 
     protected function setUp(): void

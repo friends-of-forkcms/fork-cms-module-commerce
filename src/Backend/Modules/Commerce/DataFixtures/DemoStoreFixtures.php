@@ -22,8 +22,8 @@ use Backend\Modules\Commerce\Domain\Specification\Command\CreateSpecification;
 use Backend\Modules\Commerce\Domain\SpecificationValue\Command\CreateSpecificationValue;
 use Backend\Modules\Commerce\Domain\StockStatus\Command\CreateStockStatus;
 use Backend\Modules\Commerce\Domain\Vat\Command\CreateVat;
-use Backend\Modules\Commerce\ShipmentMethods\Pickup\PickupDataTransferObject;
-use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDelivery;
+use Backend\Modules\Commerce\ShipmentMethods\Pickup\PickupShipmentMethodDataTransferObject;
+use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Command\UpdateCashOnDeliveryPaymentMethod;
 use Backend\Modules\MediaLibrary\Domain\MediaFolder\MediaFolder;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\Command\SaveMediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaItem\Command\CreateMediaItemFromLocalStorageType;
@@ -167,7 +167,7 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         $orderStatusProcessing = $this->getReference('order_status_processing');
 
         // Register the CashOnDelivery module and enable it in our shop
-        $cashOnDelivery = new UpdateCashOnDelivery(null, Locale::workingLocale());
+        $cashOnDelivery = new UpdateCashOnDeliveryPaymentMethod(null, Locale::workingLocale());
         $cashOnDelivery->isEnabled = true;
         $cashOnDelivery->orderInitId = $orderStatusProcessing->getId();
         $this->commandBus->handle($cashOnDelivery);
@@ -182,11 +182,11 @@ class DemoStoreFixtures extends BaseFixture implements FixtureGroupInterface
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $this->getReference('payment_method_cash');
 
-        $pickupShipment = new PickupDataTransferObject();
+        $pickupShipment = new PickupShipmentMethodDataTransferObject();
         $pickupShipment->installed = true;
         $pickupShipment->price = Money::EUR(0);
-        $pickupShipment->available_payment_methods = new ArrayCollection();
-        $pickupShipment->available_payment_methods->add($paymentMethod);
+        $pickupShipment->availablePaymentMethods = new ArrayCollection();
+        $pickupShipment->availablePaymentMethods->add($paymentMethod);
     }
 
     private function createCountries(): void

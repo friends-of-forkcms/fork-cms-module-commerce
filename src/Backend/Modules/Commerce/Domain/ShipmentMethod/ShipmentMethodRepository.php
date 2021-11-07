@@ -10,45 +10,37 @@ class ShipmentMethodRepository extends EntityRepository
 {
     public function add(ShipmentMethod $shipmentMethod): void
     {
+        // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->persist($shipmentMethod);
-        $this->getEntityManager()->flush();
     }
 
-    public function findOneByNameAndLocale(?string $name, Locale $locale): ?ShipmentMethod
+    public function findOneByIdAndLocale(?int $id, Locale $locale): ?ShipmentMethod
     {
-        if ($name === null) {
-            throw ShipmentMethodNotFound::forEmptyName();
+        if ($id === null) {
+            throw ShipmentMethodNotFound::forEmptyId();
         }
 
-        /** @var ShipmentMethod $shipmentMethod */
-        $shipmentMethod = $this->findOneBy(['name' => $name, 'locale' => $locale]);
+        /** @var ShipmentMethod $paymentMethod */
+        $paymentMethod = $this->findOneBy(['id' => $id, 'locale' => $locale]);
 
-        if ($shipmentMethod === null) {
-            throw ShipmentMethodNotFound::forName($name);
+        if ($paymentMethod === null) {
+            throw ShipmentMethodNotFound::forId($id);
         }
 
-        return $shipmentMethod;
+        return $paymentMethod;
     }
 
-    public function removeByNameAndLocale($name, Locale $locale): void
+    public function findEnabledShipmentMethodNames(Locale $locale): array
     {
-        array_map(
-            function (ShipmentMethod $shipmentMethod) {
-                $this->getEntityManager()->remove($shipmentMethod);
-                $this->getEntityManager()->flush();
-            },
-            (array) $this->findBy(['name' => $name, 'locale' => $locale])
-        );
-    }
-
-    public function findInstalledShipmentMethods(Locale $locale): array
-    {
-        $result = $this->createQueryBuilder('i')
-                       ->select('i.name')
-                       ->where('i.locale = :locale')
-                       ->setParameter('locale', $locale)
-                       ->getQuery()
-                       ->getScalarResult();
+        $result = $this
+            ->createQueryBuilder('i')
+            ->select('i.name')
+            ->andWhere('i.locale = :locale')
+            ->andWhere('i.isEnabled = :isEnabled')
+            ->setParameter('locale', $locale)
+            ->setParameter('isEnabled', true)
+            ->getQuery()
+            ->getScalarResult();
 
         return array_column($result, 'name');
     }

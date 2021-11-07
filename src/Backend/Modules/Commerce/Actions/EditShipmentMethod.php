@@ -3,12 +3,15 @@
 namespace Backend\Modules\Commerce\Actions;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Language\Locale;
+use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
+use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod;
+use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository;
 use Exception;
 
 /**
  * This edit action allows you to edit a specific shipment method.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
+ * This will proxy through to the underlying module's edit action and template!
  */
 class EditShipmentMethod extends BackendBaseActionEdit
 {
@@ -16,37 +19,46 @@ class EditShipmentMethod extends BackendBaseActionEdit
     {
         parent::execute();
 
-        // Set the shipment method id
-        $name = str_replace('shipment_method_', '', $this->getRequest()->get('id'));
+        $shipmentMethod = $this->getShipmentMethod();
 
-        $className = $this->getShipmentMethodAction($name);
-
-        // First check if our class exists
+        // Load class from the external module
+        $className = $this->getShipmentMethodAction($shipmentMethod->getModule());
         if (!class_exists($className)) {
-            throw new Exception("Class {$name} is not found!");
+            throw new Exception("Class $className is not found!");
         }
 
-        // Load our class
+        // Load our class and pass the rendered template as output content
         /**
-         * @var \Backend\Modules\Commerce\ShipmentMethods\Base\Edit $shipmentMethod
+         * @var \Backend\Modules\Commerce\Domain\ShipmentMethod\Edit $shipmentMethodEdit
          */
-        $shipmentMethod = new $className();
-
-        // Set some required parameters
-        $shipmentMethod->setRequest($this->getRequest());
-        $shipmentMethod->setName($name);
-        $shipmentMethod->setTemplate($this->template);
-
-        // Execute the shipment method
-        $shipmentMethod->execute();
-
-        // Set the required template
-        $this->template = $shipmentMethod->getTemplate();
-        $this->display($shipmentMethod->getTemplateName());
+        $shipmentMethodEdit = new $className($this->getKernel());
+        $shipmentMethodEdit->execute();
+        $shipmentMethodEdit->display();
+        $this->content = $shipmentMethodEdit->getContent()->getContent();
     }
 
-    private function getShipmentMethodAction(string $name): string
+    private function getShipmentMethodAction(string $moduleName): string
     {
-        return "\\Backend\\Modules\\Commerce\\ShipmentMethods\\{$name}\\Actions\\Edit";
+        return "\\Backend\\Modules\\$moduleName\\Actions\\Edit";
+    }
+
+    protected function getShipmentMethod(): ShipmentMethod
+    {
+        /** @var ShipmentMethodRepository $shipmentMethodRepository */
+        $shipmentMethodRepository = $this->get('commerce.repository.shipment_method');
+
+        try {
+            return $shipmentMethodRepository->findOneByIdAndLocale(
+                $this->getRequest()->query->getInt('id'),
+                Locale::workingLocale()
+            );
+        } catch (ShipmentMethodNotFound $e) {
+            $this->redirect($this->getBackLink(['error' => 'non-existing']));
+        }
+    }
+
+    private function getBackLink(array $parameters = []): string
+    {
+        return BackendModel::createUrlForAction('ShipmentMethods', null, null, $parameters);
     }
 }

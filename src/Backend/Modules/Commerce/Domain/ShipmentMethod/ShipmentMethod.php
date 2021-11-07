@@ -16,14 +16,30 @@ class ShipmentMethod
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string", name="name", length=191)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer", name="id")
+     */
+    public int $id;
+
+    /**
+     * @ORM\Column(type="string", name="name", length=255)
      */
     private string $name;
+
+    /**
+     * @ORM\Column(type="string", name="module", length=255)
+     */
+    private string $module;
 
     /**
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
+
+    /**
+     * @ORM\Column(type="boolean", name="is_enabled", options={"default": false})
+     */
+    private bool $isEnabled;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -39,10 +55,45 @@ class ShipmentMethod
 
     public function __construct(
         string $name,
+        string $module,
+        bool $isEnabled,
         Locale $locale
     ) {
         $this->name = $name;
+        $this->module = $module;
+        $this->isEnabled = $isEnabled;
         $this->locale = $locale;
+    }
+
+    public static function fromDataTransferObject(ShipmentMethodDataTransferObject $dataTransferObject): ShipmentMethod
+    {
+        if ($dataTransferObject->hasExistingShipmentMethod()) {
+            return self::update($dataTransferObject);
+        }
+
+        return self::create($dataTransferObject);
+    }
+
+    private static function create(ShipmentMethodDataTransferObject $dataTransferObject): self
+    {
+        return new self(
+            $dataTransferObject->name,
+            $dataTransferObject->module,
+            $dataTransferObject->isEnabled,
+            $dataTransferObject->locale
+        );
+    }
+
+    private static function update(ShipmentMethodDataTransferObject $dataTransferObject): self
+    {
+        $paymentMethod = $dataTransferObject->getShipmentMethod();
+
+        $paymentMethod->name = $dataTransferObject->name;
+        $paymentMethod->module = $dataTransferObject->module;
+        $paymentMethod->isEnabled = $dataTransferObject->isEnabled;
+        $paymentMethod->locale = $dataTransferObject->locale;
+
+        return $paymentMethod;
     }
 
     public function getName(): string
@@ -53,5 +104,20 @@ class ShipmentMethod
     public function getLocale(): Locale
     {
         return $this->locale;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getModule(): string
+    {
+        return $this->module;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->isEnabled;
     }
 }

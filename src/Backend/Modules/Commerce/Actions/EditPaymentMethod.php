@@ -11,7 +11,7 @@ use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
 use Exception;
 
 /**
- * Action to edit a payment method
+ * This edit action allows you to edit a payment shipment method.
  * This will proxy through to the underlying payment module's edit action and template!
  */
 class EditPaymentMethod extends BackendBaseActionEdit

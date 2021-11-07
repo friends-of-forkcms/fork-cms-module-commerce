@@ -41,6 +41,7 @@ bin/console forkcms:install:module Sitemaps
 bin/console forkcms:install:module Profiles
 bin/console forkcms:install:module Commerce
 bin/console forkcms:install:module CommerceCashOnDelivery
+bin/console forkcms:install:module CommercePickup
 
 # Setup the CMS for our demo (install demo theme, add widgets, ...)
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
