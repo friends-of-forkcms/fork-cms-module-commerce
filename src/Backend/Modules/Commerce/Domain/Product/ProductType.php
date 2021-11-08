@@ -38,159 +38,104 @@ class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'summary',
-            TextareaType::class,
-            [
+            ])
+            ->add('summary', TextareaType::class, [
                 'required' => true,
                 'label' => 'lbl.Summary',
-            ]
-        )->add(
-            'text',
-            EditorType::class,
-            [
+            ])
+            ->add('text', EditorType::class, [
                 'required' => false,
                 'label' => 'lbl.Content',
-            ]
-        )->add(
-            'weight',
-            NumberType::class,
-            [
+            ])
+            ->add('weight', NumberType::class, [
                 'required' => false,
                 'label' => 'lbl.Weight',
-            ]
-        )->add(
-            $builder
-                ->create(
-                    'price',
-                    MoneyType::class,
-                    [
-                        'required' => true,
-                        'label' => 'lbl.Price',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-        )->add(
-            'order_quantity',
-            NumberType::class,
-            [
+            ])
+            ->add(
+                $builder
+                    ->create(
+                        'price',
+                        MoneyType::class,
+                        [
+                            'required' => true,
+                            'label' => 'lbl.Price',
+                        ]
+                    )
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+            )
+            ->add('order_quantity', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.OrderQuantity',
-            ]
-        )->add(
-            'stock',
-            NumberType::class,
-            [
+            ])
+            ->add('stock', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.Stock',
-            ]
-        )->add(
-            'from_stock',
-            ChoiceType::class,
-            [
+            ])
+            ->add('from_stock', ChoiceType::class, [
                 'required' => true,
                 'label' => 'lbl.FromStock',
                 'choices' => [
                     'lbl.Yes' => true,
                     'lbl.No' => false,
                 ],
-            ]
-        )->add(
-            'sku',
-            TextType::class,
-            [
+            ])
+            ->add('sku', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.ArticleNumber',
-            ]
-        )->add(
-            'ean13',
-            TextType::class,
-            [
+            ])
+            ->add('ean13', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.EAN13',
-            ]
-        )->add(
-            'isbn',
-            TextType::class,
-            [
+            ])
+            ->add('isbn', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.ISBN',
-            ]
-        )->add(
-            'type',
-            ChoiceType::class,
-            [
+            ])
+            ->add('type', ChoiceType::class, [
                 'required' => true,
                 'label' => 'lbl.Type',
                 'choices' => [
                     'lbl.Default' => Product::TYPE_DEFAULT,
                     'lbl.ProductWithDimensions' => Product::TYPE_DIMENSIONS,
                 ],
-            ]
-        )->add(
-            'hidden',
-            ChoiceType::class,
-            [
+            ])
+            ->add('hidden', ChoiceType::class, [
                 'required' => true,
                 'label' => 'lbl.Hidden',
                 'choices' => [
                     'lbl.Yes' => true,
                     'lbl.No' => false,
                 ],
-            ]
-        )->add(
-            'min_width',
-            NumberType::class,
-            [
+            ])
+            ->add('min_width', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.MinWidth',
-            ]
-        )->add(
-            'min_height',
-            NumberType::class,
-            [
+            ])
+            ->add('min_height', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.MinHeight',
-            ]
-        )->add(
-            'max_width',
-            NumberType::class,
-            [
+            ])
+            ->add('max_width', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.MaxWidth',
-            ]
-        )->add(
-            'max_height',
-            NumberType::class,
-            [
+            ])
+            ->add('max_height', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.MaxHeight',
-            ]
-        )->add(
-            'extra_production_width',
-            NumberType::class,
-            [
+            ])
+            ->add('extra_production_width', NumberType::class, [
                 'required' => false,
                 'label' => 'lbl.AddProductionWidth',
-            ]
-        )->add(
-            'extra_production_height',
-            NumberType::class,
-            [
+            ])
+            ->add('extra_production_height', NumberType::class, [
                 'required' => false,
                 'label' => 'lbl.AddProductionHeight',
-            ]
-        )->add(
-            'category',
-            EntityType::class,
-            [
+            ])
+            ->add('category', EntityType::class, [
                 'required' => true,
                 'label' => 'lbl.InCategory',
                 'placeholder' => 'lbl.None',
@@ -204,11 +149,8 @@ class ProductType extends AbstractType
 
                     return $prefix . $category->getTitle();
                 },
-            ]
-        )->add(
-            'related_products',
-            Select2EntityType::class,
-            [
+            ])
+            ->add('related_products', Select2EntityType::class, [
                 'multiple' => true,
                 'remote_route' => 'backend_ajax',
                 'remote_params' => [
@@ -226,119 +168,97 @@ class ProductType extends AbstractType
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.RelatedProducts',
                 'action' => 'AutoCompleteProducts',
-            ]
-        )->add(
-            'up_sell_products',
-            CollectionType::class,
-            [
-                    'required' => false,
-                    'label' => 'lbl.UpSellProducts',
-                    'entry_type' => UpSellProductType::class,
-                    'entry_options' => [
-                        'product' => ($options['product'] ? $options['product'] : null),
-                    ],
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ]
-        )->add(
-            $builder->create(
-                'specification_values',
-                CollectionType::class,
-                [
-                    'required' => false,
-                    'entry_type' => ProductSpecificationValueType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label' => 'lbl.Specifications',
-                ]
-            )->addModelTransformer(new CallbackTransformer(
-                function ($entities) {
-                    $dataTransferObjects = [];
+            ])
+            ->add('up_sell_products', CollectionType::class, [
+                'required' => false,
+                'label' => 'lbl.UpSellProducts',
+                'entry_type' => UpSellProductType::class,
+                'entry_options' => [
+                    'product' => ($options['product'] ? $options['product'] : null),
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add(
+                $builder
+                    ->create('specification_values', CollectionType::class, [
+                        'required' => false,
+                        'entry_type' => ProductSpecificationValueType::class,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'by_reference' => false,
+                        'label' => 'lbl.Specifications',
+                    ])
+                    ->addModelTransformer(new CallbackTransformer(
+                        function ($entities) {
+                            $dataTransferObjects = [];
 
-                    foreach ($entities as $entity) {
-                        $dataTransferObjects[] = new ProductSpecificationValueDataTransferObject($entity);
-                    }
+                            foreach ($entities as $entity) {
+                                $dataTransferObjects[] = new ProductSpecificationValueDataTransferObject($entity);
+                            }
 
-                    return $dataTransferObjects;
-                },
-                function ($dataTransferObjects) {
-                    $entities = [];
-                    $entityManager = Model::get('doctrine.orm.entity_manager');
+                            return $dataTransferObjects;
+                        },
+                        function ($dataTransferObjects) {
+                            $entities = [];
+                            $entityManager = Model::get('doctrine.orm.entity_manager');
 
-                    /**
-                     * @var ProductSpecificationValueDataTransferObject[] $dataTransferObjects
-                     */
-                    foreach ($dataTransferObjects as $dataTransferObject) {
-                        $specificationValue = $dataTransferObject->value;
+                            /**
+                             * @var ProductSpecificationValueDataTransferObject[] $dataTransferObjects
+                             */
+                            foreach ($dataTransferObjects as $dataTransferObject) {
+                                $specificationValue = $dataTransferObject->value;
 
-                        // Determine if the value not exists
-                        if (!$entityManager->contains($dataTransferObject->value)) {
-                            $specificationValue->setSpecification($dataTransferObject->specification);
-                            $specificationValue->setMeta($dataTransferObject->getMeta());
+                                // Determine if the value not exists
+                                if (!$entityManager->contains($dataTransferObject->value)) {
+                                    $specificationValue->setSpecification($dataTransferObject->specification);
+                                    $specificationValue->setMeta($dataTransferObject->getMeta());
+                                }
+
+                                $entities[] = $specificationValue;
+                            }
+
+                            return $entities;
                         }
-
-                        $entities[] = $specificationValue;
-                    }
-
-                    return $entities;
-                }
-            ))
-        )->add(
-            'specials',
-            CollectionType::class,
-            [
+                    ))
+            )
+            ->add('specials', CollectionType::class, [
                 'required' => false,
                 'entry_type' => ProductSpecialType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => 'lbl.Offer',
-            ]
-        )->add(
-            'dimensions',
-            CollectionType::class,
-            [
+            ])
+            ->add('dimensions', CollectionType::class, [
                 'required' => false,
                 'entry_type' => ProductDimensionType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => '',
-            ]
-        )->add(
-            'dimension_notifications',
-            CollectionType::class,
-            [
+            ])
+            ->add('dimension_notifications', CollectionType::class, [
                 'required' => false,
                 'entry_type' => ProductDimensionNotificationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => 'lbl.Notifications',
-            ]
-        )->add(
-            'dimension_instructions',
-            EditorType::class,
-            [
+            ])
+            ->add('dimension_instructions', EditorType::class, [
                 'required' => false,
                 'label' => 'lbl.DimensionInstructions',
-            ]
-        )->add(
-            'brand',
-            EntityType::class,
-            [
+            ])
+            ->add('brand', EntityType::class, [
                 'label' => 'lbl.Brand',
                 'placeholder' => 'lbl.None',
                 'class' => Brand::class,
                 'choice_label' => 'title',
                 'required' => true,
-            ]
-        )->add(
-            'vat',
-            EntityType::class,
-            [
+            ])
+            ->add('vat', EntityType::class, [
                 'label' => 'lbl.Vat',
                 'class' => Vat::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -346,11 +266,8 @@ class ProductType extends AbstractType
                         ->orderBy('i.sequence', 'ASC');
                 },
                 'choice_label' => 'title',
-            ]
-        )->add(
-            'stock_status',
-            EntityType::class,
-            [
+            ])
+            ->add('stock_status', EntityType::class, [
                 'label' => 'lbl.NotInStockStatus',
                 'class' => StockStatus::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -358,24 +275,16 @@ class ProductType extends AbstractType
                         ->orderBy('i.title', 'ASC');
                 },
                 'choice_label' => 'title',
-            ]
-        )->add(
-            'images',
-            MediaGroupType::class,
-            [
+            ])
+            ->add('images', MediaGroupType::class, [
                 'required' => false,
                 'label' => 'lbl.Images',
-            ]
-        )->add(
-            'downloads',
-            MediaGroupType::class,
-            [
+            ])
+            ->add('downloads', MediaGroupType::class, [
                 'required' => false,
                 'label' => 'lbl.Downloads',
-            ]
-        )->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $event->getForm()->add(
                     'meta',
                     MetaType::class,
@@ -390,8 +299,7 @@ class ProductType extends AbstractType
                         ],
                     ]
                 );
-            }
-        );
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

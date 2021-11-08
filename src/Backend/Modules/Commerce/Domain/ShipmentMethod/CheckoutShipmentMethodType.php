@@ -17,14 +17,11 @@ class CheckoutShipmentMethodType extends AbstractType
             $shipmentMethods[$shipmentMethod['label']] = $key;
         }
 
-        $builder->add(
-            'shipment_method',
-            ChoiceType::class,
-            [
+        $builder
+            ->add('shipment_method', ChoiceType::class, [
                 'choices' => $shipmentMethods,
                 'expanded' => true,
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

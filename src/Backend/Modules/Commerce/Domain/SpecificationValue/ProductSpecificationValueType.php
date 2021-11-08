@@ -15,19 +15,14 @@ class ProductSpecificationValueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'specification',
-            EntityType::class,
-            [
+        $builder
+            ->add('specification', EntityType::class, [
                 'required' => true,
                 'label' => 'lbl.Specification',
                 'class' => Specification::class,
                 'choice_label' => 'title',
-            ]
-        )->add(
-            'value',
-            Select2EntityType::class,
-            [
+            ])
+            ->add('value', Select2EntityType::class, [
                 'multiple' => false,
                 'remote_route' => 'backend_ajax',
                 'class' => SpecificationValue::class,
@@ -47,8 +42,7 @@ class ProductSpecificationValueType extends AbstractType
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.Value',
                 'action' => 'AutoCompleteSpecificationValue',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

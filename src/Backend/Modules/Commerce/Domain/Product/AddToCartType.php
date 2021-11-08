@@ -33,38 +33,25 @@ class AddToCartType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /**
-         * @var Product $product
-         */
+        /** @var Product $product */
         $product = $options['product'];
 
-        $builder->add(
-            'id',
-            HiddenType::class,
-            [
+        $builder
+            ->add('id', HiddenType::class, [
                 'required' => true,
-            ]
-        )->add(
-            'quote',
-            HiddenType::class,
-            [
+            ])
+            ->add('quote', HiddenType::class, [
                 'required' => true,
                 'data' => 1,
-            ]
-        )->add(
-            'overwrite',
-            HiddenType::class,
-            [
+            ])
+            ->add('overwrite', HiddenType::class, [
                 'required' => true,
                 'data' => 1,
-            ]
-        );
+            ]);
 
         if ($product->inStock()) {
-            $builder->add(
-                'amount',
-                IntegerType::class,
-                [
+            $builder
+                ->add('amount', IntegerType::class, [
                     'required' => true,
                     'label' => 'lbl.Amount',
                     'scale' => 0,
@@ -72,16 +59,12 @@ class AddToCartType extends AbstractType
                         'step' => 1,
                         'min' => 1,
                     ],
-                ]
-            );
+                ]);
         } else {
-            $builder->add(
-                'amount',
-                HiddenType::class,
-                [
+            $builder
+                ->add('amount', HiddenType::class, [
                     'required' => true,
-                ]
-            );
+                ]);
         }
 
         if ($product->usesDimensions()) {
@@ -106,10 +89,8 @@ class AddToCartType extends AbstractType
                 ]);
             }
 
-            $builder->add(
-                'width',
-                NumberType::class,
-                [
+            $builder
+                ->add('width', NumberType::class, [
                     'required' => false,
                     'label' => 'lbl.Width',
                     'scale' => 0,
@@ -122,11 +103,8 @@ class AddToCartType extends AbstractType
                         'data-max-error' => 'TheMaximalWidthIs',
                     ],
                     'constraints' => $widthConstraints,
-                ]
-            )->add(
-                'height',
-                NumberType::class,
-                [
+                ])
+                ->add('height', NumberType::class, [
                     'required' => false,
                     'label' => 'lbl.Height',
                     'scale' => 0,
@@ -139,17 +117,14 @@ class AddToCartType extends AbstractType
                         'data-max-error' => 'TheMaximalHeightIs',
                     ],
                     'constraints' => $heightConstraints,
-                ]
-            );
+                ]);
         }
 
         $this->addProductOptions($product->getProductOptions(), $builder);
 
         if ($product->getUpSellProducts()->count() > 0) {
-            $builder->add(
-                'up_sell',
-                EntityType::class,
-                [
+            $builder
+                ->add('up_sell', EntityType::class, [
                     'required' => false,
                     'label' => 'Optionele accessoires',
                     'class' => UpSellProduct::class,
@@ -162,8 +137,7 @@ class AddToCartType extends AbstractType
                     },
                     'expanded' => true,
                     'multiple' => true,
-                ]
-            );
+                ]);
         }
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($product) {
@@ -173,12 +147,7 @@ class AddToCartType extends AbstractType
         });
     }
 
-    /**
-     * @param ProductOption[] $productOptions
-     *
-     * @return mixed
-     */
-    private function preSubmitEvent(array $data, $productOptions)
+    private function preSubmitEvent(array $data, array $productOptions)
     {
         foreach ($productOptions as $productOption) {
             if ($productOption->isTextType() || $productOption->isColorType()) {
@@ -196,7 +165,7 @@ class AddToCartType extends AbstractType
             $name = 'option_' . $productOption->getId();
             $customValueName = $name . '_custom_value';
 
-            if ($data[$name] == 'custom_value' && array_key_exists($customValueName, $data)) {
+            if ($data[$name] === 'custom_value' && array_key_exists($customValueName, $data)) {
                 $data[$name] = null;
             } else {
                 $data[$customValueName] = null;

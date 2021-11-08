@@ -16,17 +16,12 @@ class CashOnDeliveryPaymentMethodType extends PaymentMethodType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add(
-            'name',
-            TextType::class,
-            [
+        $builder
+            ->add('name', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Name',
-            ]
-        )->add(
-            'orderInitId',
-            EntityType::class,
-            [
+            ])
+            ->add('orderInitId', EntityType::class, [
                 'required' => true,
                 'label' => 'lbl.OrderInitialized',
                 'class' => OrderStatus::class,

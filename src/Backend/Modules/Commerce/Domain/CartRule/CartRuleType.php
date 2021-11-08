@@ -18,83 +18,67 @@ class CartRuleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'from',
-            DateTimeType::class,
-            [
+            ])
+            ->add('from', DateTimeType::class, [
                 'required' => true,
                 'label' => 'lbl.StartDate',
                 'date_widget' => 'single_text',
                 'html5' => false,
                 'date_format' => 'dd/MM/yyyy', // For consistency with the data-mask and JS datepicker
-            ]
-        )->add(
-            'till',
-            DateTimeType::class,
-            [
+            ])
+            ->add('till', DateTimeType::class, [
                 'required' => false,
                 'label' => 'lbl.EndDate',
                 'date_widget' => 'single_text',
                 'html5' => false,
                 'date_format' => 'dd/MM/yyyy', // For consistency with the data-mask and JS datepicker
-            ]
-        )->add(
-            'quantity',
-            NumberType::class,
-            [
+            ])
+            ->add('quantity', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.DiscountQuantity',
                 'scale' => 0,
-            ]
-        )->add(
-            'code',
-            TextType::class,
-            [
+            ])
+            ->add('code', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.DiscountCode',
-            ]
-        )->add(
-            $builder
-                ->create(
-                    'minimum_price',
-                    MoneyType::class,
-                    [
-                        'required' => false,
-                        'label' => 'lbl.MinimumAmount',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-        )->add(
-            'reduction_percentage',
-            PercentType::class,
-            [
+            ])
+            ->add(
+                $builder
+                    ->create(
+                        'minimum_price',
+                        MoneyType::class,
+                        [
+                            'required' => false,
+                            'label' => 'lbl.MinimumAmount',
+                        ]
+                    )
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+            )
+            ->add('reduction_percentage', PercentType::class, [
                 'required' => false,
                 'label' => 'lbl.ReductionPercentage',
-            ]
-        )->add(
-            $builder
-                ->create(
-                    'reduction_price',
-                    MoneyType::class,
-                    [
-                        'required' => false,
-                        'label' => 'lbl.ReductionAmount',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-                ->addModelTransformer(new CallbackTransformer(
-                    // Store an 0 euro object as NULL in the DTO
-                    fn ($value): ?string => $value,
-                    fn ($value): ?Money => $value instanceof Money && $value->isZero() ? null : $value
-                ))
-        );
+            ])
+            ->add(
+                $builder
+                    ->create(
+                        'reduction_price',
+                        MoneyType::class,
+                        [
+                            'required' => false,
+                            'label' => 'lbl.ReductionAmount',
+                        ]
+                    )
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+                    ->addModelTransformer(new CallbackTransformer(
+                        // Store an 0 euro object as NULL in the DTO
+                        fn ($value): ?string => $value,
+                        fn ($value): ?Money => $value instanceof Money && $value->isZero() ? null : $value
+                    ))
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

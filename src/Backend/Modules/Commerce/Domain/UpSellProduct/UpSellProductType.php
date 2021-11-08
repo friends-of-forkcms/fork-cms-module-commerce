@@ -14,10 +14,8 @@ class UpSellProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'upSellProduct',
-            Select2EntityType::class,
-            [
+        $builder
+            ->add('upSellProduct', Select2EntityType::class, [
                 'multiple' => false,
                 'remote_route' => 'backend_ajax',
                 'remote_params' => [
@@ -35,14 +33,10 @@ class UpSellProductType extends AbstractType
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.Product',
                 'action' => 'AutoCompleteProducts',
-            ]
-        )->add(
-            'sequence',
-            HiddenType::class,
-            [
+            ])
+            ->add('sequence', HiddenType::class, [
                 'required' => true,
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

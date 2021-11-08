@@ -11,21 +11,15 @@ class VatType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'percentage',
-            TextType::class,
-            [
+            ])
+            ->add('percentage', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Percentage',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

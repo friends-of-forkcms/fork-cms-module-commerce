@@ -15,94 +15,58 @@ class AccountRegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'company_name',
-            TextType::class,
-            [
+        $builder
+            ->add('company_name', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.CompanyName',
-            ]
-        )->add(
-            'first_name',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'first_name', [
                 'required' => true,
                 'label' => 'lbl.FirstName',
-            ]
-        )->add(
-            'last_name',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'last_name', [
                 'required' => true,
                 'label' => 'lbl.LastName',
-            ]
-        )->add(
-            'email_address',
-            EmailType::class,
-            [
+            ])
+            ->add(EmailType::class, 'email_address', [
                 'required' => true,
                 'label' => 'lbl.EmailAddress',
-            ]
-        )->add(
-            'phone',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'phone', [
                 'required' => true,
                 'label' => 'lbl.Phone',
-            ]
-        )->add(
-            'street',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'street', [
                 'required' => true,
                 'label' => 'lbl.Street',
-            ]
-        )->add(
-            'house_number',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'house_number', [
                 'required' => true,
                 'label' => 'lbl.HouseNumber',
-            ]
-        )->add(
-            'house_number_addition',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'house_number_addition', [
                 'required' => false,
                 'label' => 'lbl.HouseNumberAddition',
-            ]
-        )->add(
-            'city',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'city', [
                 'required' => true,
                 'label' => 'lbl.City',
-            ]
-        )->add(
-            'zip_code',
-            TextType::class,
-            [
+            ])
+            ->add(TextType::class, 'zip_code', [
                 'required' => true,
                 'label' => 'lbl.ZipCode',
-            ]
-        )->add(
-            'same_shipping_address',
-            CheckboxType::class,
-            [
+            ])
+            ->add(CheckboxType::class, 'same_shipping_address', [
                 'required' => false,
                 'label' => 'lbl.InvoiceAndShipmentAddressAreTheSame',
-            ]
-        )->add(
-            'password',
-            RepeatedType::class,
-            [
+            ])
+            ->add(RepeatedType::class, 'password', [
                 'type' => PasswordType::class,
                 'required' => true,
                 'label' => 'lbl.Password',
                 'first_options' => ['label' => 'lbl.Password'],
                 'second_options' => ['label' => 'lbl.RepeatPassword'],
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

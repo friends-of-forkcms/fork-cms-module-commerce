@@ -15,24 +15,17 @@ class BrandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'image',
-            ImageType::class,
-            [
+            ])
+            ->add('image', ImageType::class, [
                 'required' => false,
                 'label' => 'lbl.Image',
                 'image_class' => Image::class,
-            ]
-        )->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $event->getForm()->add(
                     'meta',
                     MetaType::class,
@@ -47,8 +40,7 @@ class BrandType extends AbstractType
                         ],
                     ]
                 );
-            }
-        );
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

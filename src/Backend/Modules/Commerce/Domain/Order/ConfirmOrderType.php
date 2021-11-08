@@ -11,14 +11,11 @@ class ConfirmOrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'accept_terms_and_conditions',
-            HiddenType::class,
-            [
+        $builder
+            ->add('accept_terms_and_conditions', HiddenType::class, [
                 'required' => true,
                 'label' => 'lbl.IAcceptTermsAndConditions',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

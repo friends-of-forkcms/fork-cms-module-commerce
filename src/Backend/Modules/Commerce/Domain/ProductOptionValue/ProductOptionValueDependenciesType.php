@@ -15,15 +15,11 @@ class ProductOptionValueDependenciesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /**
-         * @var ProductOption $productOption
-         */
+        /** @var ProductOption $productOption */
         $productOption = $options['product_option'];
 
-        $builder->add(
-            'product_option',
-            EntityType::class,
-            [
+        $builder
+            ->add('product_option', EntityType::class, [
                 'required' => true,
                 'label' => 'lbl.ProductOption',
                 'class' => ProductOption::class,
@@ -34,11 +30,8 @@ class ProductOptionValueDependenciesType extends AbstractType
                         ->setParameter('product', $productOption->getProduct());
                 },
                 'choice_label' => 'title',
-            ]
-        )->add(
-            'values',
-            Select2EntityType::class,
-            [
+            ])
+            ->add('values', Select2EntityType::class, [
                 'multiple' => true,
                 'remote_route' => 'backend_ajax',
                 'class' => ProductOptionValue::class,
@@ -54,8 +47,7 @@ class ProductOptionValueDependenciesType extends AbstractType
                 'language' => Locale::workingLocale(),
                 'label' => 'lbl.Values',
                 'action' => 'AutoCompleteProductOptionValue',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

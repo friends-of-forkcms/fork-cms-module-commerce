@@ -19,14 +19,11 @@ class CheckoutPaymentMethodType extends AbstractType
             $paymentMethods[$paymentMethod['label']] = $key;
         }
 
-        $builder->add(
-            'payment_method',
-            ChoiceType::class,
-            [
+        $builder
+            ->add('payment_method', ChoiceType::class, [
                 'choices' => $paymentMethods,
                 'expanded' => true,
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

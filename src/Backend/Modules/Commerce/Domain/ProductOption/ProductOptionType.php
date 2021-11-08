@@ -31,89 +31,61 @@ class ProductOptionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'required',
-            CheckboxType::class,
-            [
+            ])
+            ->add('required', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.Required',
-            ]
-        )->add(
-            'custom_value_allowed',
-            CheckboxType::class,
-            [
+            ])
+            ->add('custom_value_allowed', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.CustomValueAllowed',
-            ]
-        )->add(
-            $builder->create(
-                'custom_value_price',
-                MoneyType::class,
-                [
-                    'required' => false,
-                    'label' => 'lbl.CustomValuePrice',
-                ]
+            ])
+            ->add(
+                $builder->create(
+                    'custom_value_price',
+                    MoneyType::class,
+                    [
+                        'required' => false,
+                        'label' => 'lbl.CustomValuePrice',
+                    ]
+                )
+                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
-            ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-        )->add(
-            'placeholder',
-            TextType::class,
-            [
+            ->add('placeholder', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Placeholder',
-            ]
-        )->add(
-            'prefix',
-            TextType::class,
-            [
+            ])
+            ->add('prefix', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Prefix',
-            ]
-        )->add(
-            'suffix',
-            TextType::class,
-            [
+            ])
+            ->add('suffix', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Suffix',
-            ]
-        )->add(
-            'text',
-            EditorType::class,
-            [
+            ])
+            ->add('text', EditorType::class, [
                 'required' => false,
                 'label' => 'lbl.Description',
-            ]
-        )->add(
-            'type',
-            ChoiceType::class,
-            [
+            ])
+            ->add('type', ChoiceType::class, [
                 'required' => true,
                 'label' => 'lbl.Type',
                 'placeholder' => 'lbl.MakeAChoice',
                 'choices' => self::$typeChoices,
-            ]
-        )->add(
-            'dimension_notifications',
-            CollectionType::class,
-            [
+            ])
+            ->add('dimension_notifications', CollectionType::class, [
                 'required' => false,
                 'entry_type' => ProductDimensionNotificationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => 'lbl.Notifications',
-            ]
-        )->add(
-            'parent_product_option_value',
-            EntityType::class,
-            [
+            ])
+            ->add('parent_product_option_value', EntityType::class, [
                 'required' => false,
                 'label' => 'lbl.ParentProductOptionValue',
                 'placeholder' => 'lbl.None',
@@ -140,8 +112,7 @@ class ProductOptionType extends AbstractType
                 'choice_label' => function (ProductOptionValue $productOptionValue) {
                     return $productOptionValue->getProductOption()->getTitle() . ' - ' . $productOptionValue->getTitle();
                 },
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

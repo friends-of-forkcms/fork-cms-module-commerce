@@ -15,27 +15,20 @@ class SpecificationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'filter',
-            ChoiceType::class,
-            [
+            ])
+            ->add('filter', ChoiceType::class, [
                 'required' => true,
                 'label' => 'lbl.UseAsFilter',
                 'choices' => [
                     'lbl.Yes' => true,
                     'lbl.No' => false,
                 ],
-            ]
-        )->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $event->getForm()->add(
                     'meta',
                     MetaType::class,
@@ -50,8 +43,7 @@ class SpecificationType extends AbstractType
                         ],
                     ]
                 );
-            }
-        );
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

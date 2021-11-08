@@ -19,40 +19,28 @@ class PickupShipmentMethodType extends ShipmentMethodType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add(
-                'name',
-                TextType::class,
-                [
+            ->add('name', TextType::class, [
                     'required' => true,
                     'label' => 'lbl.Name',
-                ]
-            )
+            ])
             ->add(
                 $builder
-                    ->create(
-                        'price',
-                        MoneyType::class,
-                        [
-                            'required' => true,
-                            'label' => 'lbl.Price',
-                        ]
-                    )
+                    ->create('price', MoneyType::class, [
+                        'required' => true,
+                        'label' => 'lbl.Price',
+                    ])
                     ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
-            ->add(
-                'vatId',
-                EntityType::class,
-                [
-                    'required' => true,
-                    'label' => 'lbl.Vat',
-                    'class' => Vat::class,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-                            ->orderBy('i.sequence', 'ASC');
-                    },
-                    'choice_label' => 'title',
-                ]
-            );
+            ->add('vatId', EntityType::class, [
+                'required' => true,
+                'label' => 'lbl.Vat',
+                'class' => Vat::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('i')
+                        ->orderBy('i.sequence', 'ASC');
+                },
+                'choice_label' => 'title',
+            ]);
 
         $builder
             ->get('vatId')
