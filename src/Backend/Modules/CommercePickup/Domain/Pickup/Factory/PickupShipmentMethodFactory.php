@@ -29,7 +29,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static ShipmentMethodRepository|RepositoryProxy repository()
  * @method ShipmentMethod|Proxy create(array|callable $attributes = [])
  */
-final class PickupFactory extends ModelFactory
+final class PickupShipmentMethodFactory extends ModelFactory
 {
     /**
      * Our entities use private properties, no setters and a private constructor. Therefore, we have to use a DTO
