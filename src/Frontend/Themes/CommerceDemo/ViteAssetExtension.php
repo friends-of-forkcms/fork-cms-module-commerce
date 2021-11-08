@@ -17,6 +17,8 @@ use Twig\TwigFunction;
  * @see: https://sebastiandedeyne.com/vite-with-laravel/
  * @see: https://github.com/lhapaipai/vite-bundle
  * @see: https://nystudio107.com/docs/vite/#legacy
+ *
+ * @codeCoverageIgnore
  */
 class ViteAssetExtension extends AbstractExtension
 {
