@@ -27,6 +27,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Vat[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static VatRepository|RepositoryProxy repository()
  * @method Vat|Proxy create(array|callable $attributes = [])
+ *
+ * @codeCoverageIgnore
  */
 final class VatFactory extends ModelFactory
 {

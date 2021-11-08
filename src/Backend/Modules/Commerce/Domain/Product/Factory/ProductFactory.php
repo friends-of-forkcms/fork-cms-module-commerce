@@ -43,6 +43,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Product[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static ProductRepository|RepositoryProxy repository()
  * @method Product|Proxy create(array|callable $attributes = [])
+ *
+ * @codeCoverageIgnore
  */
 final class ProductFactory extends ModelFactory
 {

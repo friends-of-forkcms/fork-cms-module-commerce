@@ -26,6 +26,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static OrderStatus[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static OrderStatusRepository|RepositoryProxy repository()
  * @method OrderStatus|Proxy create(array|callable $attributes = [])
+ *
+ * @codeCoverageIgnore
  */
 final class OrderStatusFactory extends ModelFactory
 {
