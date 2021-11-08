@@ -1,5 +1,5 @@
 services:
   commerce.twig.formatmoney:
-    class: Backend\Modules\Commerce\Layout\Templates\Helper\FormatMoneyExtension
+    class: Backend\Modules\Commerce\Twig\Extensions\FormatMoneyExtension
     tags:
       - { name: twig.extension }

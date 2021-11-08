@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Commerce\Layout\Templates\Helper;
+namespace Backend\Modules\Commerce\Twig\Extensions;
 
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;

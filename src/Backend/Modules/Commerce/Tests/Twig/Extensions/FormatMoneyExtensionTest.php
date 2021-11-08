@@ -1,13 +1,13 @@
 <?php
 
-namespace Backend\Modules\Commerce\Tests\Layout\Templates\Helper;
+namespace Backend\Modules\Commerce\Tests\Twig\Extensions;
 
-use Backend\Modules\Commerce\Layout\Templates\Helper\FormatMoneyExtension;
+use Backend\Modules\Commerce\Twig\Extensions\FormatMoneyExtension;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Twig\TwigFilter;
 
-class FormatMoneyTest extends TestCase
+class FormatMoneyExtensionTest extends TestCase
 {
     /** @test */
     public function it_can_list_the_correct_filters(): void
