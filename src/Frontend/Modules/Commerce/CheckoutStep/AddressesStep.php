@@ -55,6 +55,7 @@ class AddressesStep extends Step
 
         if ($this->getRequest()->query->has('add') || $this->getRequest()->query->has('edit')) {
             $this->handleAddressForm($this->getAddressForm());
+
             return;
         }
 
@@ -76,10 +77,12 @@ class AddressesStep extends Step
             $this->template->assign('address', $this->address ?? null);
             $this->template->assign('step', $this);
             $this->templatePath = 'Commerce/Layout/Templates/Checkout/Step/AddressForm.html.twig';
+
             return parent::render();
         }
 
         $this->template->assign('form', $this->form->createView());
+
         return parent::render();
     }
 

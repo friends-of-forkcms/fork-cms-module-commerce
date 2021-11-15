@@ -4,8 +4,6 @@ namespace Backend\Modules\Commerce\Domain\ShipmentMethod;
 
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
 use Common\Locale;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 
 class ShipmentMethodRepository extends EntityRepository

@@ -29,6 +29,7 @@ class CommerceModuleSettingsRepository
         $defaultValue = null
     ) {
         $key = $this->getBaseKey($moduleName, $includeLanguage) . '_' . $property;
+
         return $this->settings->get('Commerce', $key, $defaultValue);
     }
 

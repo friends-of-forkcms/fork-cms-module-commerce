@@ -141,6 +141,7 @@ class ShipmentMethodStep extends Step
     private function getShipmentMethodQuoteClass(string $moduleName): string
     {
         $domainName = str_replace('Commerce', '', $moduleName);
+
         return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\Quote";
     }
 }

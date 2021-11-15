@@ -25,7 +25,7 @@ class FilterType extends AbstractType
                     }
 
                     return $prefix . $order->getTitle();
-                }
+                },
             ]);
     }
 

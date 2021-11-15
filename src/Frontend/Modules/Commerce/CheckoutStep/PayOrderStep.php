@@ -14,7 +14,6 @@ use Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRule;
 use Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVat;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
-use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder;
 use Common\Exception\RedirectException;
@@ -305,6 +304,7 @@ class PayOrderStep extends Step
     private function getPaymentMethodConfirmOrderClass($moduleName): string
     {
         $domainName = str_replace('Commerce', '', $moduleName);
+
         return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\ConfirmOrder";
     }
 }

@@ -37,4 +37,3 @@ class Quote extends PaymentMethodQuote
         ];
     }
 }
-

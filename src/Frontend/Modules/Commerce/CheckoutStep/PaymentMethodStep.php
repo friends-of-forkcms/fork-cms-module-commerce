@@ -149,6 +149,7 @@ class PaymentMethodStep extends Step
     private function getPaymentMethodQuoteClass(string $moduleName): string
     {
         $domainName = str_replace('Commerce', '', $moduleName);
+
         return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\Quote";
     }
 }

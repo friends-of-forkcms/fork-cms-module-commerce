@@ -4,7 +4,6 @@ namespace Backend\Modules\Commerce\Domain\PaymentMethod\Checkout;
 
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
-use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
@@ -79,6 +78,7 @@ abstract class PaymentMethodQuote
     private function getShipmentMethodQuoteClass(string $moduleName): string
     {
         $domainName = str_replace('Commerce', '', $moduleName);
+
         return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\Quote";
     }
 

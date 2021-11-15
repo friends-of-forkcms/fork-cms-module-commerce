@@ -21,7 +21,10 @@ class CashOnDeliveryPaymentMethodType extends PaymentMethodType
                 'required' => true,
                 'label' => 'lbl.Name',
             ])
-            ->add('orderInitId', EntityType::class, [
+            ->add(
+                'orderInitId',
+                EntityType::class,
+                [
                 'required' => true,
                 'label' => 'lbl.OrderInitialized',
                 'class' => OrderStatus::class,
@@ -31,7 +34,7 @@ class CashOnDeliveryPaymentMethodType extends PaymentMethodType
                 },
                 'choice_label' => 'title',
             ]
-        );
+            );
 
         $builder
             ->get('orderInitId')

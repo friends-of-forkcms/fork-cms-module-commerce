@@ -60,7 +60,8 @@ class SettingsType extends AbstractType
                             'expanded' => true,
                         ]
                     )
-                    ->addModelTransformer(new CallbackTransformer(
+                    ->addModelTransformer(
+                        new CallbackTransformer(
                         function ($statusesArray) {
                             $collection = new ArrayCollection();
 
@@ -88,7 +89,7 @@ class SettingsType extends AbstractType
                             return $ids;
                         }
                     )
-                )
+                    )
             );
     }
 
