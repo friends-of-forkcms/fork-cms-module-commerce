@@ -71,11 +71,11 @@ class ShipmentMethodRepositoryTest extends BackendWebTestCase
         /** @var string[] $results */
         $results = $this->entityManager
             ->getRepository(ShipmentMethod::class)
-            ->findEnabledShipmentMethodNames(Locale::fromString('en'));
+            ->findEnabledShipmentMethods(Locale::fromString('en'));
 
         // Assert
         $this->assertCount(1, $results);
-        $this->assertEquals($enabledShipmentMethod->getName(), $results[0]);
+        $this->assertEquals($enabledShipmentMethod->getName(), $results[0]->getName());
     }
 
     protected function tearDown(): void

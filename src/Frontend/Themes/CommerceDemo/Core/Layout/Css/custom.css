@@ -3,15 +3,22 @@
   */
 /* Add a default link to editor links */
 .editor a:not([class]) {
-    @apply text-yellow-500 transition-colors duration-200 hover:text-gray-900;
+    @apply text-yellow-600 transition-colors duration-200 hover:text-gray-900;
 }
 
 h3 {
     @apply mb-4 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline;
 }
 
+/* E.g. for terms and conditions label link */
+.checkbox label a {
+    @apply text-yellow-600 transition-colors duration-200 hover:text-gray-900;
+}
+
 /** AlpineJS */
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
 
 /* Override the Photoswipe modal overlay */
 .pswp__bg {
@@ -40,7 +47,7 @@ h3 {
 /* Button animation when submitting a form to prevent double clicks */
 form.is-submitting button[type='submit'],
 button.is-submitting {
-    @apply opacity-25 cursor-not-allowed outline-none overflow-hidden relative;
+    @apply relative overflow-hidden outline-none opacity-25 cursor-not-allowed;
 }
 
 form.is-submitting button[type='submit']::before,
@@ -48,7 +55,7 @@ button.is-submitting::before {
     content: '';
     height: 0.2em;
     animation: move 1s linear infinite;
-    @apply absolute left-0 right-0 top-0 bg-yellow-500;
+    @apply absolute top-0 left-0 right-0 bg-yellow-500;
 }
 
 @keyframes move {
@@ -60,7 +67,6 @@ button.is-submitting::before {
     }
 }
 
-
 /**
     Algolia
     @see https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-theme-classic/
@@ -70,8 +76,8 @@ button.is-submitting::before {
     width: auto !important;
 
     &:hover {
-         @apply hover:text-yellow-500;
-     }
+        @apply hover:text-yellow-500;
+    }
 }
 .aa-DetachedSearchButtonIcon .aa-SubmitIcon {
     width: 24px !important;
@@ -101,5 +107,3 @@ button.is-submitting::before {
     max-height: inherit !important;
     max-width: inherit !important;
 }
-
-

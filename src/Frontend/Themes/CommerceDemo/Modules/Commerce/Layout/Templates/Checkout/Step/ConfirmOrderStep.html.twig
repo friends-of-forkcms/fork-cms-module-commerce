@@ -1,0 +1,106 @@
+{% form_theme form with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
+
+{% if flashErrors %}
+    <div class="row">
+        <div class="col-md-12">
+            {% for error in flashErrors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+<div class="relative grid grid-cols-1 mx-auto gap-x-16 max-w-7xl lg:px-8 lg:grid-cols-2 xl:gap-x-48">
+    <!-- Left panel -->
+    <div class="panel | space-y-10">
+        <!-- Shipment and invoice address -->
+        <div>
+            <h2 class="mb-4 text-lg text-gray-600">
+                {{ 'lbl.AddressDetails'|trans|ucfirst }}
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12">
+                <div>
+                    <h4 class="mb-1 font-bold">
+                        {{ 'lbl.ShipmentAddress'|trans|ucfirst }}
+                    </h4>
+                    {% include 'Commerce/Layout/Templates/Checkout/partials/Address.html.twig' with {
+                        address: cart.shipmentAddress
+                    } %}
+                </div>
+                <div>
+                    <h4 class="mb-1 font-bold">
+                        {{ 'lbl.InvoiceAddress'|trans|ucfirst }}
+                    </h4>
+                    {% if cart.invoiceAddress %}
+                        {% include 'Commerce/Layout/Templates/Checkout/partials/Address.html.twig' with {
+                            address: cart.invoiceAddress
+                        } %}
+                    {% else %}
+                        {% include 'Commerce/Layout/Templates/Checkout/partials/Address.html.twig' with {
+                            address: cart.shipmentAddress
+                        } %}
+                    {% endif %}
+                </div>
+            </div>
+            <p class="my-1">
+                <a href="{{ addressUrl }}" class="text-sm text-yellow-600 transition-colors duration-200 hover:text-gray-800">
+                    {{ 'lbl.ChangeAddressData'|trans|ucfirst }}
+                </a>
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12">
+            <!-- Shipment method -->
+            <div>
+                <h2 class="mb-4 text-lg text-gray-600">
+                    {{ 'lbl.Delivery'|trans|ucfirst }}
+                </h2>
+                {{ cart.shipmentMethodData.name }}
+                <p class="my-1">
+                    <a href="{{ shipmentMethodUrl }}" class="text-sm text-yellow-600 transition-colors duration-200 hover:text-gray-800">
+                        {{ 'lbl.ChangeShipmentMethod'|trans|ucfirst }}
+                    </a>
+                </p>
+            </div>
+
+            <!-- Payment method -->
+            <div>
+                <h2 class="mb-4 text-lg text-gray-600">
+                    {{ 'lbl.PaymentMethod'|trans|ucfirst }}
+                </h2>
+                {{ cart.paymentMethodData.label }}
+                <p class="my-1">
+                    <a href="{{ paymentMethodUrl }}" class="text-sm text-yellow-600 transition-colors duration-200 hover:text-gray-800">
+                        {{ 'lbl.ChangePaymentMethod'|trans|ucfirst }}
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Terms and conditions -->
+        <div>
+            <h2 class="mb-4 text-lg text-gray-600">
+                {{ 'lbl.TermsAndConditions'|trans|ucfirst }}
+            </h2>
+
+            {# prettier-ignore #}
+            {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+
+            {# Turn the checkbox label into a clickable link #}
+            <div class="a:text-yellow-600">
+                {# prettier-ignore #}
+                {{ form_row(form.accept_terms_and_conditions)|replace({IAcceptTermsAndConditions: 'lbl.IAcceptTermsAndConditions'|trans|ucfirst})|raw}}
+            </div>
+
+            {# prettier-ignore #}
+            {% include 'Commerce/Layout/Templates/Checkout/partials/StepFooter.html.twig' with { showPrevious : true, buttonLabel: 'lbl.Order' } %}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <!-- Right panel -->
+    {% include 'Commerce/Layout/Templates/Checkout/partials/CartSummary.html.twig' %}
+</div>

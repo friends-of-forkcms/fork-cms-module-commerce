@@ -13,6 +13,8 @@ use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRule;
 use Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVat;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodDataTransferObject;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
+use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder;
 use Common\Exception\RedirectException;
@@ -48,7 +50,7 @@ class PayOrderStep extends Step
      */
     public function execute(): void
     {
-        if ($this->getRequest()->query->has('redirect') && $this->getRequest()->query->get('redirect') == 'postPayment') {
+        if ($this->getRequest()->query->get('redirect') === 'postPayment') {
             $this->postPayment();
 
             return;
@@ -67,7 +69,7 @@ class PayOrderStep extends Step
         $order = $this->createOrder();
 
         // Start the payment
-        $paymentMethod = $this->getPaymentMethod($this->cart->getPaymentMethod());
+        $paymentMethod = $this->getPaymentMethodHandler($this->cart->getPaymentMethod());
         $paymentMethod->setOrder($order);
         $paymentMethod->setData($this->getPaymentMethodDataTransferObject());
         $paymentMethod->setRedirectUrl($this->getUrl() . '?redirect=postPayment');
@@ -84,7 +86,7 @@ class PayOrderStep extends Step
     private function postPayment(): void
     {
         // Start the payment
-        $paymentMethod = $this->getPaymentMethod($this->cart->getPaymentMethod());
+        $paymentMethod = $this->getPaymentMethodHandler($this->cart->getPaymentMethod());
         $paymentMethod->setOrder($this->cart->getOrder());
         $paymentMethod->setData($this->getPaymentMethodDataTransferObject());
         $paymentMethod->postPayment();
@@ -273,30 +275,18 @@ class PayOrderStep extends Step
     }
 
     /**
-     * Get the payment method handler.
-     *
-     * @throws \Exception
+     * Get the payment method handler
      */
-    private function getPaymentMethod(string $paymentMethod): ConfirmOrder
+    private function getPaymentMethodHandler(string $paymentMethod): ConfirmOrder
     {
-        $method = explode('.', $paymentMethod);
+        [$moduleName, $optionName] = explode('.', $paymentMethod);
 
-        if (count($method) != 2) {
-            throw new \Exception('Invalid payment method');
+        $confirmOrderClassName = $this->getPaymentMethodConfirmOrderClass($moduleName);
+        if (!class_exists($confirmOrderClassName)) {
+            throw new PaymentMethodNotFound('Class ' . $confirmOrderClassName . ' not found');
         }
 
-        $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
-
-        if (!class_exists($className)) {
-            throw new \Exception('Class ' . $className . ' not found');
-        }
-
-        /**
-         * @var ConfirmOrderStep $class
-         */
-        $class = new $className($method[0], $method[1]);
-
-        return $class;
+        return new $confirmOrderClassName($moduleName, $optionName);
     }
 
     /**
@@ -307,5 +297,14 @@ class PayOrderStep extends Step
         $vatRepository = $this->get('commerce.repository.vat');
 
         return $vatRepository->findOneByIdAndLocale($id, Locale::frontendLanguage());
+    }
+
+    /**
+     * We expect a ConfirmOrder class to be implemented by the payment method module
+     */
+    private function getPaymentMethodConfirmOrderClass($moduleName): string
+    {
+        $domainName = str_replace('Commerce', '', $moduleName);
+        return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\ConfirmOrder";
     }
 }

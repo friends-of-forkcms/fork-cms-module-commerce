@@ -12,6 +12,7 @@ use Backend\Modules\Commerce\Form\ColorType;
 use Backend\Modules\Commerce\Form\EntityTypeExtension;
 use Backend\Modules\Commerce\Form\TextTypeExtension;
 use Common\Core\Model;
+use Doctrine\Common\Collections\Collection;
 use Frontend\Core\Language\Language;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -147,7 +148,7 @@ class AddToCartType extends AbstractType
         });
     }
 
-    private function preSubmitEvent(array $data, array $productOptions)
+    private function preSubmitEvent(array $data, Collection $productOptions)
     {
         foreach ($productOptions as $productOption) {
             if ($productOption->isTextType() || $productOption->isColorType()) {

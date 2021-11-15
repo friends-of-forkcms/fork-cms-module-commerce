@@ -1,0 +1,73 @@
+{#
+    Overwrite the address choice selection with a custom style.
+    This will render a radio group as rectangle cards with the address in the card body. Uses AlpineJS to toggle active states.
+    See: https://symfony.com/doc/current/form/form_themes.html#form-fragment-naming
+#}
+{% block _form_order_address_row %}
+    <div
+        {{ block('widget_container_attributes') }}
+        class="grid grid-cols-1 py-6 gap-y-6 sm:grid-cols-2 sm:gap-x-4"
+        x-data="{ value: '{{ form.vars.value }}' }" {# Set the previously selected value #}
+    >
+        {%- for key, child in form %}
+            {% set entity = form.vars.choices[key].data %}
+            {% set checked = entity.id == form.vars.value %}
+
+            <label class="relative flex p-4 bg-white border rounded-lg shadow-sm cursor-pointer focus:outline-none" :class="{ 'border-transparent': value === '{{ entity.id }}' }">
+                <input
+                    type="radio"
+                    {{ block('widget_attributes') }}
+                    {% if value is defined %} value="{{ entity.id }}"{% endif %}
+                    {% if checked %} checked="checked"{% endif %}
+                    class="sr-only"
+                    x-model="value"
+                >
+
+                <div class="card-body | flex flex-col">
+                    <div class="flex flex-col flex-1">
+                        <span class="block text-sm font-medium text-gray-900">
+                            {{ entity.fullName }}
+                        </span>
+                        <span class="flex items-center mt-1 text-sm text-gray-500">
+                            {% if entity.companyName %}{{ entity.companyName }}<br />{% endif %}
+                            {{ entity.street }} {{ entity.houseNumber }}{{ entity.houseNumberAddition }}<br />
+                            {{ entity.zipCode }} {{ entity.city }}<br />
+                            {{ entity.country.name }}
+                        </span>
+                    </div>
+
+                    <div class="card-footer | flex pt-2 border-t-1">
+                        <a href="{{ form.vars.attr.edit_link }}{{ entity.id }}" class="text-sm text-yellow-600 transition-colors duration-200 hover:text-gray-800">{{ 'lbl.Edit'|trans|ucfirst }}</a>
+                    </div>
+                </div>
+
+                <!-- Checkmark icon -->
+                <svg class="w-5 h-5 text-yellow-600" x-show="value === '{{ entity.id }}'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+
+                <!-- Colored border -->
+                <div class="absolute border-2 rounded-lg pointer-events-none -inset-px" :class="{ 'border-yellow-500': value === '{{ entity.id }}' }" aria-hidden="true"></div>
+            </label>
+        {% endfor -%}
+
+        <!-- Add new address button -->
+        {% if form.vars.attr.add_link %}
+            <a
+                class="relative flex p-4 text-sm text-yellow-600 transition-colors duration-200 bg-white border rounded-lg shadow-sm cursor-pointer focus:outline-none hover:text-gray-800 min-h-[10rem]"
+                href="{{ form.vars.attr.add_link }}"
+            >
+                <div class="card-body | flex flex-1">
+                    <div class="flex items-center justify-center w-full">
+                        <span class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {{ 'lbl.AddAddress'|trans|ucfirst }}
+                        </span>
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

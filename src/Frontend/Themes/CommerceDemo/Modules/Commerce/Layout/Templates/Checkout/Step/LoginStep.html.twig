@@ -1,10 +1,15 @@
+{#
+    The LoginStep is the step where the customer can choose to login
+    or proceed as guest (or register an account).
+#}
+
 {% form_theme loginForm with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
 
-<div class="grid-cols-2 gap-4 md:grid">
+<div class="container grid-cols-2 gap-4 px-6 mx-auto mb-20 md:grid">
     <!-- Existing customer -->
     <div class="p-8 bg-gray-100">
         <div class="panel-heading">
-            <h2 class="mb-4 text-lg">
+            <h2 class="mb-4 text-lg text-gray-600">
                 {{ 'lbl.ExistingCustomer'|trans|ucfirst }}
             </h2>
         </div>
@@ -45,7 +50,7 @@
     <!-- New Customer -->
     <div class="p-8 bg-gray-100">
         <div class="panel-heading">
-            <h2 class="mb-4 text-lg">
+            <h2 class="mb-4 text-lg text-gray-600">
                 {{ 'lbl.ContinueOrRegister'|trans|ucfirst }}
             </h2>
         </div>

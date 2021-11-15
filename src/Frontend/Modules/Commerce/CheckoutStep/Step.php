@@ -35,12 +35,14 @@ abstract class Step
     protected CheckoutProgress $checkoutProgress;
     protected CommerceAccount $account;
     protected array $jsFiles = [];
+    protected string $templatePath;
 
     public function __construct()
     {
         $this->template = Model::get('templating');
         $this->session = \Common\Core\Model::getSession();
         $this->cart = $this->getCartRepository()->getActiveCart(false);
+        $this->templatePath = 'Commerce/Layout/Templates/Checkout/Step/' . class_basename($this) . '.html.twig';
 
         $this->init();
     }
@@ -97,9 +99,7 @@ abstract class Step
 
     public function render(): string
     {
-        $name = class_basename($this);
         $flashErrors = [];
-
         if ($this->session->has('flash_errors')) {
             $flashErrors = $this->session->get('flash_errors', []);
             $this->session->remove('flash_errors');
@@ -111,9 +111,7 @@ abstract class Step
         $this->template->assign('cart', $this->cart);
         $this->template->assign('step', $this);
 
-        $html = $this->template->getContent('Commerce/Layout/Templates/Checkout/Step/' . $name . '.html.twig');
-
-        return $html;
+        return $this->template->getContent($this->templatePath);
     }
 
     protected function get($serviceId)

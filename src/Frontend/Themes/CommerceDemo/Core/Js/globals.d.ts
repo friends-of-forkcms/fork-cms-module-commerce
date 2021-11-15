@@ -1,5 +1,5 @@
 declare interface Window {
-    Alpine: any;
+    Alpine: Alpine;
     jsData: {
         LANGUAGE: string;
     } & any;

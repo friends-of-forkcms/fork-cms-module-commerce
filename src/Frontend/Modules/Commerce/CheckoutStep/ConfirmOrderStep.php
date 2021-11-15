@@ -84,7 +84,6 @@ class ConfirmOrderStep extends Step
     private function getForm(): Form
     {
         $confirmOrderData = new ConfirmOrderDataTransferObject();
-        $confirmOrderData->accept_terms_and_conditions = true;
 
         // Load our form
         $form = $this->createForm(

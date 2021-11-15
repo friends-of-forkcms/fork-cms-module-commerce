@@ -1,8 +1,8 @@
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import { requestAjax } from '../api/ForkAPI';
-import { lbl } from "./locale";
-import { ucfirst } from "../utilities/utils";
+import { lbl } from './locale';
+import { ucfirst } from '../utilities/utils';
 
 interface CartItem {
     id: number;
@@ -32,7 +32,7 @@ interface CartData {
         total: number;
     }[];
     total: number;
-    items: CartItem[]
+    items: CartItem[];
 }
 
 export default (): void => {
@@ -48,7 +48,8 @@ export default (): void => {
         discountValidationMessage: null as string | null,
 
         // Actions
-        formatCurrency: (amount: number) => amount.toLocaleString(window.jsData.LANGUAGE, { style: 'currency', currency: 'EUR' }),
+        formatCurrency: (amount: number) =>
+            amount.toLocaleString(window.jsData.LANGUAGE, { style: 'currency', currency: 'EUR' }),
 
         /**
          * Add an item from the product page to the shopping cart. Shows a toast message.
@@ -67,16 +68,18 @@ export default (): void => {
             // Send the UpdateCart request
             const cartId = window.jsData?.Commerce?.cartId;
             const amount = document.querySelector<HTMLInputElement>('#product_amount')?.value || 1;
-            const response = await requestAjax('Commerce', 'UpdateCart', { product: { id: productId, amount }, cartId });
+            const response = await requestAjax('Commerce', 'UpdateCart', {
+                product: { id: productId, amount },
+                cartId,
+            });
 
             // Remove visual indicator to show the user it is submitting
             addToCartButton.classList.remove('is-submitting');
 
             // Dispatch an event to update the cart badge counter
-            window.dispatchEvent(new CustomEvent(
-                'update-cart-quantity',
-                { detail: { count: response.data.cart.totalQuantity } }
-            ));
+            window.dispatchEvent(
+                new CustomEvent('update-cart-quantity', { detail: { count: response.data.cart.totalQuantity } }),
+            );
 
             // Show notification
             const notyf = new Notyf({
@@ -95,16 +98,14 @@ export default (): void => {
          */
         removeItemFromCart(cartValueId: number) {
             this.loading = true;
-            return requestAjax(
-                'Commerce',
-                'RemoveProductFromCart',
-                { cart: { value_id: cartValueId } }
-            ).then((response) => {
-                this.data = response.data.cart
-                if (this.data?.totalQuantity === 0) {
-                    window.location = location;
-                }
-            })
+            return requestAjax('Commerce', 'RemoveProductFromCart', { cart: { value_id: cartValueId } }).then(
+                (response) => {
+                    this.data = response.data.cart;
+                    if (this.data?.totalQuantity === 0) {
+                        window.location = location;
+                    }
+                },
+            );
         },
 
         /**
@@ -112,8 +113,9 @@ export default (): void => {
          */
         removeDiscountCodeFromCart(cartRuleId: number) {
             this.loading = true;
-            return requestAjax('Commerce', 'RemoveCartRule', { cartRuleId })
-                .then((response) => this.data = response.data.cart)
+            return requestAjax('Commerce', 'RemoveCartRule', { cartRuleId }).then(
+                (response) => (this.data = response.data.cart),
+            );
         },
 
         /**
@@ -126,17 +128,13 @@ export default (): void => {
             }
 
             try {
-                const response = await requestAjax(
-                    'Commerce',
-                    'UpdateProductCart',
-                    { cartValueId, amount: quantity });
+                const response = await requestAjax('Commerce', 'UpdateProductCart', { cartValueId, amount: quantity });
                 this.data = response.data.cart;
 
                 // Dispatch an event to update the cart badge counter
-                window.dispatchEvent(new CustomEvent(
-                    'update-cart-quantity',
-                    { detail: { count: response.data.cart.totalQuantity } }
-                ));
+                window.dispatchEvent(
+                    new CustomEvent('update-cart-quantity', { detail: { count: response.data.cart.totalQuantity } }),
+                );
             } catch (err) {
                 console.error(err);
             } finally {
@@ -149,21 +147,18 @@ export default (): void => {
          */
         async submitDiscountCode() {
             this.discountValidationMessage = null;
-            this.discountButtonLabel = 'Loading...'
+            this.discountButtonLabel = 'Loading...';
             this.discountFormLoading = true;
 
             try {
-                const response = await requestAjax(
-                    'Commerce',
-                    'AddCartRule',
-                    { code: this.discountCode });
+                const response = await requestAjax('Commerce', 'AddCartRule', { code: this.discountCode });
 
                 if (response.code !== 200) {
                     this.discountValidationMessage = response.message;
                 } else {
                     this.data = response.data.cart;
                 }
-            } catch(err) {
+            } catch (err) {
                 console.error(err);
                 this.discountValidationMessage = 'Error';
             } finally {

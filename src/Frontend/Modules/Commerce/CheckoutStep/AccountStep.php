@@ -113,7 +113,7 @@ class AccountStep extends Step
                     'email' => $createAccount->email_address,
                     'password' => FrontendProfilesModel::encryptPassword($createAccount->password),
                     'status' => 'active',
-                    'display_name' => '',
+                    'display_name' => $createAccount->first_name . ' ' . $createAccount->last_name,
                     'registered_on' => Model::getUTCDate(),
                     'last_login' => Model::getUTCDate(null, 0),
                     'url' => '',

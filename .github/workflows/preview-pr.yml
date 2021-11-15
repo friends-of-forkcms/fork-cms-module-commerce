@@ -11,7 +11,7 @@ env:
 
 # Kill the previous job in progress, when multiple job start (e.g. committing multiple times)
 concurrency:
-  group: preview-pr-${{ github.head_ref }}
+  group: '${{ github.head_ref || github.ref }}'
   cancel-in-progress: true
 
 # See: https://okteto.com/docs/tutorials/preview-environments/#step-2-create-the-github-workflow

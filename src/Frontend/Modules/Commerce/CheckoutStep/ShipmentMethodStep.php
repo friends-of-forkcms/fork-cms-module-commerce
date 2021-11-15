@@ -2,6 +2,7 @@
 
 namespace Frontend\Modules\Commerce\CheckoutStep;
 
+use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\CheckoutShipmentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\CheckoutShipmentMethodType;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository;
@@ -13,11 +14,7 @@ use Symfony\Component\Form\Form;
 class ShipmentMethodStep extends Step
 {
     public static string $stepIdentifier = 'shipmentMethod';
-
-    /**
-     * @var Form
-     */
-    private $shipmentForm;
+    private Form $form;
 
     public function init(): void
     {
@@ -33,12 +30,14 @@ class ShipmentMethodStep extends Step
      */
     public function execute(): void
     {
+        // Clear previous shipment methods on the cart!
         $this->nextStep->invalidateStep();
 
-        $this->shipmentForm = $this->handleForm($this->getForm());
+        $shipmentMethods = $this->getShipmentMethods();
+        $this->form = $this->handleForm($this->getForm($shipmentMethods), $shipmentMethods);
 
-        if ($this->shipmentForm->isSubmitted()) {
-            if ($this->shipmentForm->isValid()) {
+        if ($this->form->isSubmitted()) {
+            if ($this->form->isValid()) {
                 $this->goToNextStep();
             } else {
                 $this->complete = false;
@@ -59,16 +58,14 @@ class ShipmentMethodStep extends Step
 
     public function render(): string
     {
-        $this->template->assign('form', $this->shipmentForm->createView());
+        $this->template->assign('form', $this->form->createView());
 
         return parent::render();
     }
 
-    private function handleForm(Form $form): Form
+    private function handleForm(Form $form, array $shipmentMethods): Form
     {
         if ($form->isSubmitted() && $form->isValid()) {
-            $shipmentMethods = $this->getShipmentMethods();
-
             $this->cart->setShipmentMethod($form->getNormData()->shipment_method);
             $this->cart->setShipmentMethodData($shipmentMethods[$form->getNormData()->shipment_method]);
             $this->getCartRepository()->save($this->cart);
@@ -89,7 +86,7 @@ class ShipmentMethodStep extends Step
         parent::invalidateStep();
     }
 
-    private function getForm(): Form
+    private function getForm(array $shipmentMethods): Form
     {
         // Create new form or restore session
         $formData = new CheckoutShipmentMethodDataTransferObject();
@@ -100,7 +97,7 @@ class ShipmentMethodStep extends Step
             CheckoutShipmentMethodType::class,
             $formData,
             [
-                'shipment_methods' => $this->getShipmentMethods(),
+                'shipment_methods' => $shipmentMethods,
             ]
         );
 
@@ -115,22 +112,18 @@ class ShipmentMethodStep extends Step
      */
     private function getShipmentMethods(): array
     {
-        /**
-         * @var ShipmentMethodRepository $shipmentMethodRepository
-         */
+        /** @var ShipmentMethodRepository $shipmentMethodRepository */
         $shipmentMethodRepository = $this->get('commerce.repository.shipment_method');
-        $availableShipmentMethods = $shipmentMethodRepository->findInstalledShipmentMethods(Locale::frontendLanguage());
+        $availableShipmentMethods = $shipmentMethodRepository->findEnabledShipmentMethods(Locale::frontendLanguage());
 
         $shipmentMethods = [];
         foreach ($availableShipmentMethods as $shipmentMethod) {
-            $className = "\\Backend\\Modules\\Commerce\\ShipmentMethods\\{$shipmentMethod}\\Checkout\\Quote";
+            $quoteClassName = $this->getShipmentMethodQuoteClass($shipmentMethod->getModule());
 
-            /**
-             * @var \Backend\Modules\Commerce\ShipmentMethods\Base\Checkout\Quote $class
-             */
-            $class = new $className($shipmentMethod, $this->cart, $this->cart->getShipmentAddress());
+            /** @var ShipmentMethodQuote $class */
+            $class = new $quoteClassName($shipmentMethod->getName(), $this->cart, $this->cart->getShipmentAddress());
             foreach ($class->getQuote() as $key => $options) {
-                $shipmentMethods[$shipmentMethod . '.' . $key] = $options;
+                $shipmentMethods[$shipmentMethod->getModule() . '.' . $key] = $options;
             }
         }
 
@@ -140,5 +133,14 @@ class ShipmentMethodStep extends Step
     public function getUrl(): ?string
     {
         return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('ShipmentMethod'));
+    }
+
+    /**
+     * We expect a Quote class to be implemented by the shipping method module
+     */
+    private function getShipmentMethodQuoteClass(string $moduleName): string
+    {
+        $domainName = str_replace('Commerce', '', $moduleName);
+        return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\Quote";
     }
 }

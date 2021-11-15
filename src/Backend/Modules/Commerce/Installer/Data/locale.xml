@@ -1474,6 +1474,10 @@
         <translation language="nl"><![CDATA[afrekenen]]></translation>
         <translation language="en"><![CDATA[checkout]]></translation>
       </item>
+      <item type="label" name="TermsAndConditions">
+        <translation language="nl"><![CDATA[algemene voorwaarden]]></translation>
+        <translation language="en"><![CDATA[terms and conditions]]></translation>
+      </item>
       <item type="label" name="IAcceptTermsAndConditions">
         <translation language="nl"><![CDATA[ik ga akkoord met de <a href="/algemene-voorwaarden" target="_blank">algemene voorwaarden</a>.]]></translation>
         <translation language="en"><![CDATA[i accept the <a href="/terms-and-conditions" target="_blank">terms and conditions</a>.]]></translation>
@@ -1903,8 +1907,8 @@
         <translation language="en"><![CDATA[summary]]></translation>
       </item>
       <item type="label" name="AddAddress">
-        <translation language="nl"><![CDATA[adres toevoegen]]></translation>
-        <translation language="en"><![CDATA[add address]]></translation>
+        <translation language="nl"><![CDATA[voeg nieuw adres toe]]></translation>
+        <translation language="en"><![CDATA[add a new address]]></translation>
       </item>
       <item type="label" name="MyOrders">
         <translation language="nl"><![CDATA[mijn bestellingen]]></translation>
@@ -1934,6 +1938,10 @@
         <translation language="nl"><![CDATA[bekijken]]></translation>
         <translation language="en"><![CDATA[view]]></translation>
       </item>
+      <item type="label" name="Addresses">
+        <translation language="nl"><![CDATA[adressen]]></translation>
+        <translation language="en"><![CDATA[addresses]]></translation>
+      </item>
       <item type="label" name="MyAddresses">
         <translation language="nl"><![CDATA[mijn adressen]]></translation>
         <translation language="en"><![CDATA[my addresses]]></translation>
@@ -1949,6 +1957,14 @@
       <item type="label" name="AddAddress">
         <translation language="nl"><![CDATA[adres toevoegen]]></translation>
         <translation language="en"><![CDATA[add address]]></translation>
+      </item>
+      <item type="message" name="AddNewAddress">
+        <translation language="nl"><![CDATA[voeg nieuw adres toe]]></translation>
+        <translation language="en"><![CDATA[add a new address]]></translation>
+      </item>
+      <item type="message" name="EditAddress">
+        <translation language="nl"><![CDATA[bewerk een adres]]></translation>
+        <translation language="en"><![CDATA[edit an address]]></translation>
       </item>
       <item type="label" name="YourCompanyName">
         <translation language="nl"><![CDATA[jouw bedrijfsnaam]]></translation>

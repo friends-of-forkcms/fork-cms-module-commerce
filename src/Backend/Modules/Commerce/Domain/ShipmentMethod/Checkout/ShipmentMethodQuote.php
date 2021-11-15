@@ -1,48 +1,36 @@
 <?php
 
-namespace Backend\Modules\Commerce\ShipmentMethods\Base\Checkout;
+namespace Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout;
 
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use Common\Core\Model;
-use Common\ModulesSettings;
 use Frontend\Core\Language\Locale;
+use Money\Money;
 
-abstract class Quote
+/**
+ * The quote class helps to calculate the shipping costs for a shipping method
+ */
+abstract class ShipmentMethodQuote
 {
     protected string $name;
     protected Cart $cart;
     protected OrderAddress $address;
-    protected ModulesSettings $settings;
     protected ?Locale $language;
+    protected CommerceModuleSettingsRepository $shipmentMethodSettingsRepository;
 
     public function __construct(string $name, Cart $cart, OrderAddress $address)
     {
         $this->name = $name;
         $this->cart = $cart;
         $this->address = $address;
-        $this->settings = Model::get('fork.settings');
         $this->language = Locale::frontendLanguage();
-    }
-
-    /**
-     * Get a setting.
-     *
-     * @param mixed $defaultValue
-     * @param bool  $includeLanguage
-     *
-     * @return mixed
-     */
-    protected function getSetting(string $key, $defaultValue = null, $includeLanguage = true)
-    {
-        $baseKey = $this->name;
-
-        if ($includeLanguage) {
-            $baseKey .= '_' . $this->language->getLocale();
-        }
-
-        return $this->settings->get('Commerce', $baseKey . '_' . $key, $defaultValue);
+        $this->shipmentMethodSettingsRepository = new CommerceModuleSettingsRepository(
+            Model::get('fork.settings'),
+            Locale::frontendLanguage()
+        );
     }
 
     /**
@@ -53,7 +41,7 @@ abstract class Quote
     /**
      * Calculate the vat price based on the given price.
      */
-    abstract protected function getVatPrice(float $price): array;
+    abstract protected function getVatPrice(Money $price): array;
 
     /**
      * Get the vat repository.

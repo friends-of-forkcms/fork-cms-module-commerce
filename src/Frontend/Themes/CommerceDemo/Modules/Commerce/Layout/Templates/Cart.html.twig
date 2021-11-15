@@ -79,7 +79,7 @@
                                     type="number"
                                     min="1"
                                     x-model="cartValue.quantity"
-                                    x-on:change="updateProductQuantity(cartValue.id, cartValue.quantity)"
+                                    x-on:change.debounce.500="updateProductQuantity(cartValue.id, cartValue.quantity)" {# Debounce to make sure that increasing quantity from 1>10 does not make 10 api calls! #}
                                 />
                             </td>
 
@@ -112,7 +112,7 @@
                                     <label for="discount-code" class="sr-only">Code</label>
                                     <input
                                         id="discount-code"
-                                        class="h-14 w-full"
+                                        class="w-full h-14"
                                         type="text"
                                         name="discount-code"
                                         placeholder="Code"
@@ -120,7 +120,7 @@
                                     >
                                 </div>
                                 <button
-                                    class="bg-gray-800 text-white px-4 hover:bg-gray-600 disabled:cursor-not-allowed"
+                                    class="px-4 text-white bg-gray-800 hover:bg-gray-600 disabled:cursor-not-allowed"
                                     type="submit"
                                     x-text="discountButtonLabel"
                                     :class="{ 'is-submitting': discountFormLoading }"
@@ -134,15 +134,15 @@
                 <!-- Cart summary -->
                 <div class="lg:col-span-6">
                     <section aria-labelledby="summary-heading" class="">
-                        <div class="bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8">
+                        <div class="px-4 py-6 rounded-lg bg-gray-50 sm:p-6 lg:p-8">
                             <h2 id="summary-heading" class="sr-only">Order summary</h2>
 
                             <div class="flow-root">
                                 <dl class="-my-4 text-sm">
                                     <!-- Discounts -->
                                     <template x-for="cartRule in data.cartRules" :key="cartRule.id">
-                                        <div class="py-4 flex items-center justify-between border-gray-200 border-b">
-                                            <dt class="text-gray-600 flex space-x-1">
+                                        <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                            <dt class="flex space-x-1 text-gray-600">
                                                 <span>{{ 'lbl.DiscountCode'|trans|ucfirst }}</span>
                                                 <span x-text="cartRule.code" class="ml-2 rounded-full bg-gray-200 text-xs text-gray-600 py-0.5 px-2 tracking-wide"></span>
                                                 <button
@@ -159,7 +159,7 @@
                                     </template>
 
                                     <!-- Subtotal -->
-                                    <div class="py-4 flex items-center justify-between border-gray-200 border-b">
+                                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
                                         <dt class="text-gray-600">
                                             {{ 'lbl.SubTotal'|trans|ucfirst }}
                                             <span class="text-xs text-gray-400">({{ 'lbl.ExcludingVAT'|trans }})</span>
@@ -171,7 +171,7 @@
 
                                     <!-- Shipping -->
                                     {# TODO #}
-{#                                    <div class="py-4 flex items-center justify-between border-gray-200 border-b">#}
+{#                                    <div class="flex items-center justify-between py-4 border-b border-gray-200">#}
 {#                                        <dt class="text-gray-600">#}
 {#                                            Shipping#}
 {#                                        </dt>#}
@@ -182,7 +182,7 @@
 
                                     <!-- VAT -->
                                     <template x-for="vat in data.vats" :key="vat.id">
-                                        <div class="py-4 flex items-center justify-between border-gray-200 border-b">
+                                        <div class="flex items-center justify-between py-4 border-b border-gray-200">
                                             <dt class="text-gray-600" x-text="'{{ 'lbl.Vat'|trans }} ' + vat.title"></dt>
                                             <dd class="font-medium text-gray-900 tabular-nums" x-text="formatCurrency(vat.total)">
                                             </dd>
@@ -190,7 +190,7 @@
                                     </template>
 
                                     <!-- Order total -->
-                                    <div class="py-4 flex items-center justify-between">
+                                    <div class="flex items-center justify-between py-4">
                                         <dt class="text-base font-medium text-gray-900">
                                             <span class="font-bold">{{ 'lbl.Total'|trans|ucfirst }}</span>
                                             <span class="text-xs text-gray-400">({{ 'lbl.IncludingVAT'|trans }})</span>

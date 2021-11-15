@@ -4,6 +4,8 @@ namespace Backend\Modules\Commerce\Domain\ShipmentMethod;
 
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
 use Common\Locale;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 
 class ShipmentMethodRepository extends EntityRepository
@@ -30,18 +32,20 @@ class ShipmentMethodRepository extends EntityRepository
         return $paymentMethod;
     }
 
-    public function findEnabledShipmentMethodNames(Locale $locale): array
+    /**
+     * @param Locale $locale
+     * @return array<int, ShipmentMethod>
+     */
+    public function findEnabledShipmentMethods(Locale $locale): array
     {
-        $result = $this
+        return $this
             ->createQueryBuilder('i')
-            ->select('i.name')
+            ->select('i')
             ->andWhere('i.locale = :locale')
             ->andWhere('i.isEnabled = :isEnabled')
             ->setParameter('locale', $locale)
             ->setParameter('isEnabled', true)
             ->getQuery()
-            ->getScalarResult();
-
-        return array_column($result, 'name');
+            ->getResult();
     }
 }
