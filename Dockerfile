@@ -89,6 +89,9 @@ RUN apt-get update && apt-get install -y wget && \
     wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_amd64 && \
     chmod 777 /usr/local/bin/yq
 
+# Install envsubst. We need this to replace env variables in our Fork CMS setup files
+RUN apt-get update && apt-get install -y gettext-base
+
 # Install Composer 2
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
