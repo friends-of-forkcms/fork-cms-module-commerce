@@ -32,6 +32,7 @@ jobs:
         with:
           name: "fork-cms-module-commerce-demo"
           timeout: 15m
+          variables: "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }},SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
 
       - name: Verify up and running
         uses: nev7n/wait_for_response@v1
