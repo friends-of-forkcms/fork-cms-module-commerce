@@ -17,7 +17,7 @@ INSERT INTO `pages_blocks` (`revision_id`, `position`, `extra_id`, `extra_type`,
 
 -- Setup a mailer for demo purposes using a free Mailjet account (200 mails per day, 6000 emails per month)
 -- See: https://www.mailjet.com/pricing/#email
-INSERT INTO `modules_settings` (`module`, `name`, `value`) VALUES
+REPLACE INTO `modules_settings` (`module`, `name`, `value`) VALUES
    ('Core', 'mailer_from', 'a:2:{s:4:\"name\";s:17:\"Fork CMS Commerce\";s:5:\"email\";s:21:\"bey4i7gsj@mozmail.com\";}'),
    ('Core', 'mailer_reply_to', 'a:2:{s:4:\"name\";s:17:\"Fork CMS Commerce\";s:5:\"email\";s:21:\"bey4i7gsj@mozmail.com\";}'),
    ('Core', 'mailer_to', 'a:2:{s:4:\"name\";s:17:\"Fork CMS Commerce\";s:5:\"email\";s:21:\"bey4i7gsj@mozmail.com\";}'),
