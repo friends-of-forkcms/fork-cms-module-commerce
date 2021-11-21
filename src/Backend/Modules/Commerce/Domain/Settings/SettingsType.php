@@ -62,7 +62,7 @@ class SettingsType extends AbstractType
                     )
                     ->addModelTransformer(
                         new CallbackTransformer(
-                        function ($statusesArray) {
+                            function ($statusesArray) {
                             $collection = new ArrayCollection();
 
                             /** @var OrderStatusRepository $orderStatusRepository */
@@ -78,7 +78,7 @@ class SettingsType extends AbstractType
 
                             return $collection;
                         },
-                        function ($statusesAsCollection) {
+                            function ($statusesAsCollection) {
                             $ids = [];
 
                             /** @var OrderStatus $item */
@@ -88,7 +88,7 @@ class SettingsType extends AbstractType
 
                             return $ids;
                         }
-                    )
+                        )
                     )
             );
     }
