@@ -63,31 +63,31 @@ class SettingsType extends AbstractType
                     ->addModelTransformer(
                         new CallbackTransformer(
                             function ($statusesArray) {
-                            $collection = new ArrayCollection();
+                                $collection = new ArrayCollection();
 
-                            /** @var OrderStatusRepository $orderStatusRepository */
-                            $orderStatusRepository = Model::get('commerce.repository.order_status');
+                                /** @var OrderStatusRepository $orderStatusRepository */
+                                $orderStatusRepository = Model::get('commerce.repository.order_status');
 
-                            foreach ($statusesArray as $id) {
-                                try {
-                                    $collection->add($orderStatusRepository->findOneById($id));
-                                } catch (OrderStatusNotFound $e) {
-                                    // Skip when nothing is found
+                                foreach ($statusesArray as $id) {
+                                    try {
+                                        $collection->add($orderStatusRepository->findOneById($id));
+                                    } catch (OrderStatusNotFound $e) {
+                                        // Skip when nothing is found
+                                    }
                                 }
-                            }
 
-                            return $collection;
-                        },
+                                return $collection;
+                            },
                             function ($statusesAsCollection) {
-                            $ids = [];
+                                $ids = [];
 
-                            /** @var OrderStatus $item */
-                            foreach ($statusesAsCollection as $item) {
-                                $ids[] = $item->getId();
+                                /** @var OrderStatus $item */
+                                foreach ($statusesAsCollection as $item) {
+                                    $ids[] = $item->getId();
+                                }
+
+                                return $ids;
                             }
-
-                            return $ids;
-                        }
                         )
                     )
             );
