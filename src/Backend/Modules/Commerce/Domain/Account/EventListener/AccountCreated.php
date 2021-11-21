@@ -4,7 +4,6 @@ namespace Backend\Modules\Commerce\Domain\Account\EventListener;
 
 use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\Account\Event\Created as AccountCreatedEvent;
-use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory;
 use Common\Mailer\Message;
 use Common\ModulesSettings;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
@@ -16,11 +15,7 @@ final class AccountCreated
 {
     private ModulesSettings $modulesSettings;
     private Swift_Mailer $mailer;
-    private OrderHistory $orderHistory;
 
-    /**
-     * OrderListener constructor.
-     */
     public function __construct(Swift_Mailer $mailer, ModulesSettings $modulesSettings)
     {
         $this->mailer = $mailer;
