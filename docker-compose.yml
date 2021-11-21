@@ -19,6 +19,8 @@ services:
       - FORK_ENV=prod
       - FORK_DEBUG=1
       - SITE_DOMAIN=localhost
+      - SMTP_USERNAME=dummy_smtp_username___1234567890
+      - SMTP_PASSWORD=dummy_smtp_password___1234567890
     volumes:
       - ./deploy:/var/www/html/deploy
     restart: unless-stopped

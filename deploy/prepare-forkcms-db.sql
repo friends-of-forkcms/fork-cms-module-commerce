@@ -12,5 +12,18 @@ UPDATE pages SET template_id = 4 WHERE id = 1;
 
 -- Add a recent products widget on the homepage
 SET @module_widget_extra_id = (SELECT id FROM modules_extras WHERE module = 'Commerce' AND type = 'widget' AND action = 'RecentProducts');
-INSERT INTO `pages_blocks` (`revision_id`, `position`, `extra_id`, `extra_type`, `extra_data`, `html`, `created_on`, `edited_on`, `visible`, `sequence`) VALUES 
+INSERT INTO `pages_blocks` (`revision_id`, `position`, `extra_id`, `extra_type`, `extra_data`, `html`, `created_on`, `edited_on`, `visible`, `sequence`) VALUES
     (1,'main',@module_widget_extra_id,'widget','',NULL,NOW(),NOW(),1,0);
+
+-- Setup a mailer for demo purposes using a free Mailjet account (200 mails per day, 6000 emails per month)
+-- See: https://www.mailjet.com/pricing/#email
+INSERT INTO `modules_settings` (`module`, `name`, `value`) VALUES
+   ('Core', 'mailer_from', 'a:2:{s:4:\"name\";s:17:\"Fork CMS Commerce\";s:5:\"email\";s:21:\"bey4i7gsj@mozmail.com\";}'),
+   ('Core', 'mailer_reply_to', 'a:2:{s:4:\"name\";s:17:\"Fork CMS Commerce\";s:5:\"email\";s:21:\"bey4i7gsj@mozmail.com\";}'),
+   ('Core', 'mailer_to', 'a:2:{s:4:\"name\";s:17:\"Fork CMS Commerce\";s:5:\"email\";s:21:\"bey4i7gsj@mozmail.com\";}'),
+   ('Core', 'mailer_type', 's:4:\"smtp\";'),
+   ('Core', 'smtp_password', 's:32:\"${SMTP_PASSWORD}\";'),
+   ('Core', 'smtp_port', 's:3:\"587\";'),
+   ('Core', 'smtp_secure_layer', 's:3:\"tls\";'),
+   ('Core', 'smtp_server', 's:17:\"in-v3.mailjet.com\";'),
+   ('Core', 'smtp_username', 's:32:\"${SMTP_USERNAME}\";');
