@@ -13,6 +13,7 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use NumberFormatter;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
@@ -141,7 +142,7 @@ class DataGrid extends DataGridDatabase
         $money = new Money($amount, new Currency($currencyCode));
         $currencies = new ISOCurrencies();
 
-        $numberFormatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
 
         return $moneyFormatter->format($money);

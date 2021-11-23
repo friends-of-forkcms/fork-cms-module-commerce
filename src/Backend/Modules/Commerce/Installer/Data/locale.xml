@@ -1614,6 +1614,10 @@
         <translation language="nl"><![CDATA[bestelling geannuleerd]]></translation>
         <translation language="en"><![CDATA[order cancelled]]></translation>
       </item>
+      <item type="label" name="OrderCompleted">
+        <translation language="nl"><![CDATA[order afgerond]]></translation>
+        <translation language="en"><![CDATA[order completed]]></translation>
+      </item>
       <item type="message" name="OrderThanksText">
         <translation language="nl"><![CDATA[Bedankt voor uw bestelling. Hieronder vind u een overzicht van de bestelgegevens. Bij vragen kunt u altijd antwoorden op deze email of bel ons.]]></translation>
         <translation language="en"><![CDATA[Thank you for your order. Below you will find the order details. If there are any questions, please reply to this e-mail or call us.]]></translation>

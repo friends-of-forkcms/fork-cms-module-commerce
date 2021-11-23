@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\OrderRule;
 
 use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 use Backend\Modules\Commerce\Domain\Order\Order;
+use Money\Money;
 
 class OrderRuleDataTransferObject
 {
@@ -11,7 +12,7 @@ class OrderRuleDataTransferObject
     public int $id;
     public Order $order;
     public ?CartRule $cartRule = null;
-    public float $total;
+    public Money $total;
     public string $title;
     public string $code;
     public string $value;

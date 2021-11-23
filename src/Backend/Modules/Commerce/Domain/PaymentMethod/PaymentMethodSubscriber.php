@@ -2,7 +2,7 @@
 
 namespace Backend\Modules\Commerce\Domain\PaymentMethod;
 
-use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\Options;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\Options;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

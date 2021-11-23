@@ -3,6 +3,7 @@
 namespace Backend\Modules\Commerce\Domain\OrderVat;
 
 use Backend\Modules\Commerce\Domain\Order\Order;
+use Money\Money;
 
 class OrderVatDataTransferObject
 {
@@ -10,7 +11,7 @@ class OrderVatDataTransferObject
     public int $id;
     public Order $order;
     public string $title;
-    public float $total;
+    public Money $total;
 
     public function __construct(OrderVat $orderVat = null)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\Base\Checkout;
+namespace Backend\Modules\Commerce\Domain\PaymentMethod\Checkout;
 
 use Backend\Modules\Commerce\Domain\Order\Event\OrderUpdated;
 use Backend\Modules\Commerce\Domain\Order\Exception\OrderNotFound;
@@ -19,51 +19,32 @@ use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class ConfirmOrder
 {
     protected string $name;
-
     protected string $option;
-
     protected Order $order;
-
     protected CheckoutPaymentMethodDataTransferObject $data;
-
     protected Request $request;
-
     protected ?Locale $language;
-
     protected ModulesSettings $settings;
-
     protected MessageBusSupportingMiddleware $commandBus;
-
-    protected EventDispatcher $eventDispatcher;
-
+    protected EventDispatcherInterface $eventDispatcher;
     protected EntityManager $entityManager;
-
     protected OrderStatusRepository $orderStatusRepository;
-
     protected OrderRepository $orderRepository;
-
     protected string $redirectUrl;
-
     protected bool $paid = false;
-
     protected bool $open = false;
-
     protected bool $expired = false;
-
     protected bool $canceled = false;
-
     protected bool $failed = false;
 
-    /**
-     * Confirm order constructor.
-     */
     public function __construct(string $name, string $option)
     {
         $this->name = $name;
@@ -77,9 +58,6 @@ abstract class ConfirmOrder
         $this->orderStatusRepository = Model::get('commerce.repository.order_status');
     }
 
-    /**
-     * Set the order.
-     */
     public function setOrder(Order $order): void
     {
         $this->order = $order;
@@ -155,7 +133,7 @@ abstract class ConfirmOrder
      *
      * @throws RedirectException
      */
-    protected function redirect(string $url, int $code = RedirectResponse::HTTP_FOUND): void
+    protected function redirect(string $url, int $code = Response::HTTP_FOUND): void
     {
         throw new RedirectException('Redirect', new RedirectResponse($url, $code));
     }
@@ -201,7 +179,7 @@ abstract class ConfirmOrder
     }
 
     /**
-     * Go to an given cart page.
+     * Go to a given cart page.
      *
      * @throws RedirectException
      */
@@ -220,7 +198,7 @@ abstract class ConfirmOrder
             $url .= '?' . implode('&', $query);
         }
 
-        throw new RedirectException('Redirect', new RedirectResponse($url, RedirectResponse::HTTP_FOUND));
+        throw new RedirectException('Redirect', new RedirectResponse($url, Response::HTTP_FOUND));
     }
 
     /**
@@ -271,7 +249,7 @@ abstract class ConfirmOrder
     abstract public function postPayment(): void;
 
     /**
-     * Handle a optional webhook call from the payment provider.
+     * Handle an optional webhook call from the payment provider.
      *
      * @return mixed
      */

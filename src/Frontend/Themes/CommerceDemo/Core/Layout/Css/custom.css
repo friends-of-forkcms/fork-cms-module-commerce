@@ -11,7 +11,7 @@ h3 {
 }
 
 /* E.g. for terms and conditions label link */
-.checkbox label a {
+label a {
     @apply text-yellow-600 transition-colors duration-200 hover:text-gray-900;
 }
 

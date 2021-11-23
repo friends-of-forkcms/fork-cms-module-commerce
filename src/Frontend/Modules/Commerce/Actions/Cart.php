@@ -5,10 +5,10 @@ namespace Frontend\Modules\Commerce\Actions;
 use Backend\Modules\Commerce\Domain\Cart\Cart as CartEntity;
 use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\Cart\Command\DeleteCart;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\ConfirmOrder;
 use Backend\Modules\Commerce\Domain\Quote\Event\QuoteCreated;
 use Backend\Modules\Commerce\Domain\Quote\QuoteDataTransferObject;
 use Backend\Modules\Commerce\Domain\Quote\QuoteType;
-use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder;
 use Common\Exception\ExitException;
 use Common\Exception\RedirectException;
 use Exception;
@@ -26,6 +26,7 @@ use Frontend\Modules\Commerce\CheckoutStep\PaymentMethodStep;
 use Frontend\Modules\Commerce\CheckoutStep\PayOrderStep;
 use Frontend\Modules\Commerce\CheckoutStep\ShipmentMethodStep;
 use Frontend\Modules\Profiles\Engine\Authentication;
+use RuntimeException;
 
 /**
  * This is the cart-action, it will display the cart.
@@ -238,21 +239,19 @@ class Cart extends FrontendBaseBlock
 
     /**
      * Get the payment method handler.
-     *
-     * @throws \Exception
      */
     private function getPaymentMethod(string $paymentMethod): ConfirmOrder
     {
         $method = explode('.', $paymentMethod);
 
         if (count($method) !== 2) {
-            throw new Exception('Invalid payment method');
+            throw new RuntimeException('Invalid payment method');
         }
 
         $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$method[0]}\\Checkout\\ConfirmOrder";
 
         if (!class_exists($className)) {
-            throw new Exception('Class ' . $className . ' not found');
+            throw new RuntimeException('Class ' . $className . ' not found');
         }
 
         /** @var ConfirmOrder $class */

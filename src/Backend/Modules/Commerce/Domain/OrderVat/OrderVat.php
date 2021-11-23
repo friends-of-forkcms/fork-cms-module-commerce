@@ -6,6 +6,7 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_order_vats")
@@ -33,9 +34,9 @@ class OrderVat
     private string $title;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $total;
+    private Money $total;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -52,7 +53,7 @@ class OrderVat
     private function __construct(
         Order $order,
         string $title,
-        float $total
+        Money $total
     ) {
         $this->order = $order;
         $this->title = $title;
@@ -92,7 +93,7 @@ class OrderVat
         return $this->title;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         return $this->total;
     }

@@ -6,6 +6,7 @@ use Backend\Modules\Commerce\Domain\Order\Command\UpdateOrder;
 use Backend\Modules\Commerce\Domain\Order\Event\OrderGenerateInvoiceNumber;
 use Common\ModulesSettings;
 use DateTime;
+use DateTimeImmutable;
 use SimpleBus\Message\Bus\MessageBus;
 
 final class GenerateInvoiceNumber
@@ -27,7 +28,7 @@ final class GenerateInvoiceNumber
 
         if (!$updateOrder->invoiceNumber) {
             $updateOrder->invoiceNumber = $invoiceNumber;
-            $updateOrder->invoiceDate = new DateTime();
+            $updateOrder->invoiceDate = new DateTimeImmutable();
 
             $this->commandBus->handle($updateOrder);
 

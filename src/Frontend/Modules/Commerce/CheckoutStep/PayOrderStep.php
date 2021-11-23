@@ -12,10 +12,10 @@ use Backend\Modules\Commerce\Domain\OrderProductNotification\OrderProductNotific
 use Backend\Modules\Commerce\Domain\OrderProductOption\OrderProductOption;
 use Backend\Modules\Commerce\Domain\OrderRule\Command\CreateOrderRule;
 use Backend\Modules\Commerce\Domain\OrderVat\Command\CreateOrderVat;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\ConfirmOrder;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentMethodNotFound;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder;
 use Common\Exception\RedirectException;
 use Common\Uri;
 use Frontend\Core\Language\Language;

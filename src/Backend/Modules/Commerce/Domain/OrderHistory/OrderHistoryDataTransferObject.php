@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\OrderHistory;
 
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
+use Common\Locale;
 use DateTime;
 use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;

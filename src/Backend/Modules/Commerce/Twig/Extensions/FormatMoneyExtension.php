@@ -6,6 +6,7 @@ use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use NumberFormatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -30,7 +31,7 @@ class FormatMoneyExtension extends AbstractExtension
     {
         $currencies = new ISOCurrencies();
 
-        $numberFormatter = new \NumberFormatter($localeCode, \NumberFormatter::CURRENCY);
+        $numberFormatter = new NumberFormatter($localeCode, NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
 
         return $moneyFormatter->format($money);

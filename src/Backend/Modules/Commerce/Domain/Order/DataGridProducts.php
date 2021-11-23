@@ -7,6 +7,11 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 use Backend\Modules\Commerce\Domain\Product\Product;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
+use NumberFormatter;
 
 class DataGridProducts extends DataGridDatabase
 {
@@ -17,26 +22,34 @@ class DataGridProducts extends DataGridDatabase
      */
     public function __construct(Order $order)
     {
-        $query = 'SELECT i.id, i.title as product, i.sku as article_number, i.amount, i.price_amount AS price, i.total
-                    FROM commerce_order_products i WHERE i.order_id = ? ORDER BY i.id ASC';
+        $query = '
+            SELECT 
+                i.id, 
+                i.title as product, 
+                i.sku as article_number, 
+                i.amount,
+                i.price_amount AS price,
+                i.price_currency_code,
+                i.total_amount AS total,
+                i.total_currency_code
+            FROM commerce_order_products i 
+            WHERE i.order_id = ? 
+            ORDER BY i.id ASC';
 
         parent::__construct($query, [$order->getId()]);
 
         // assign column functions
         $this->setColumnHidden('id');
         $this->setColumnFunction([self::class, 'getProductOptions'], ['[product]', '[id]'], 'product', true);
-        $this->setColumnFunction([self::class, 'getFormatPrice'], '[total]', 'total', true);
-        $this->setColumnFunction([self::class, 'getFormatPrice'], '[price]', 'price', true);
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[total]', '[total_currency_code]'], 'total', true);
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[price_currency_code]'], 'price', true);
+        $this->setColumnsHidden(['total_currency_code']);
+        $this->setColumnsHidden(['price_currency_code']);
     }
 
     public static function getHtml(Order $order): string
     {
         return (new self($order))->getContent();
-    }
-
-    public static function getFormatPrice($price)
-    {
-        return '&euro; ' . number_format($price, 2, ',', '.');
     }
 
     public static function getProductOptions($title, $id)
@@ -81,5 +94,16 @@ class DataGridProducts extends DataGridDatabase
         $repository = BackendModel::get('commerce.repository.order_product');
 
         return $repository->findOneById($id);
+    }
+
+    public static function getFormattedMoney(int $amount, string $currencyCode): string
+    {
+        $money = new Money($amount, new Currency($currencyCode));
+        $currencies = new ISOCurrencies();
+
+        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+
+        return $moneyFormatter->format($money);
     }
 }

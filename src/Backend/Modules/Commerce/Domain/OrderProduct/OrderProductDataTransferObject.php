@@ -9,6 +9,7 @@ use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Money\Money;
 
 class OrderProductDataTransferObject
 {
@@ -24,8 +25,8 @@ class OrderProductDataTransferObject
     public ?int $height = null;
     public ?int $order_width = null;
     public ?int $order_height = null;
-    public float $price;
-    public float $total;
+    public Money $price;
+    public Money $total;
 
     /**
      * @var Collection|ProductOption[]
