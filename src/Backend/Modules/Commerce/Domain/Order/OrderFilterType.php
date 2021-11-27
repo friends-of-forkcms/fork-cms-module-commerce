@@ -32,17 +32,19 @@ class OrderFilterType extends AbstractType
                 $builder
                     ->create('order_date_range', TextType::class, [
                         'required' => false,
-                        'label' => 'lbl.OrderDate'
+                        'label' => 'lbl.OrderDate',
                     ])
                     ->addModelTransformer(new CallbackTransformer(
                         function (array $daterangeAsArray = null) {
                             $daterangeAsArray = array_filter($daterangeAsArray);
+
                             return !empty($daterangeAsArray) ? implode(' - ', $daterangeAsArray) : null;
                         },
                         function (string $daterangeAsString) {
                             [$startedAt, $endedAt] = explode(' - ', $daterangeAsString);
                             $dateTimeStartedAt = DateTime::createFromFormat('d-m-Y', $startedAt);
                             $dateTimeEndedAt = DateTime::createFromFormat('d-m-Y', $endedAt);
+
                             return [$dateTimeStartedAt, $dateTimeEndedAt];
                         }
                     ))

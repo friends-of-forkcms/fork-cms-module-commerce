@@ -67,7 +67,7 @@ class Orders extends BackendBaseActionIndex
                 'order_date_range' => [
                     $this->orderDateStartedAt,
                     $this->orderDateEndedAt,
-                ]
+                ],
             ],
             [
                 'order_statuses' => $this->findAllOrderStatuses(),
@@ -105,6 +105,7 @@ class Orders extends BackendBaseActionIndex
     {
         /** @var OrderStatusRepository $repository */
         $repository = $this->get('commerce.repository.order_status');
+
         try {
             return $repository->findOneById($orderStatusId);
         } catch (OrderStatusNotFound $e) {
@@ -119,6 +120,7 @@ class Orders extends BackendBaseActionIndex
     {
         /** @var OrderStatusRepository $repository */
         $repository = $this->get('commerce.repository.order_status');
+
         return $repository->findAll();
     }
 

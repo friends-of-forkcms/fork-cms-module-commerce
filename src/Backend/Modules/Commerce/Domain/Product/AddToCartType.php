@@ -286,7 +286,8 @@ class AddToCartType extends AbstractType
                     $builder->add(
                         $builder
                             ->create($name, HiddenType::class)
-                            ->addModelTransformer(new CallbackTransformer(
+                            ->addModelTransformer(
+                                new CallbackTransformer(
                                 function (?ProductOptionValue $input) {
                                     $value = null;
 
@@ -305,7 +306,7 @@ class AddToCartType extends AbstractType
                                     return $productOptionValueRepository->findOneById($reverseTransform, $productOption);
                                 }
                             )
-                        )
+                            )
                     );
 
                     foreach ($productOption->getProductOptionValues() as $productOptionValue) {

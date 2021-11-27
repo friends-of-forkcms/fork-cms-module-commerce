@@ -7,7 +7,6 @@ use Backend\Core\Engine\DataGridDatabase;
 use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
-use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use DateTimeInterface;
 use Money\Currencies\ISOCurrencies;
@@ -44,7 +43,7 @@ class DataGrid extends DataGridDatabase
         }
         if ($orderDateEndedAt !== null) {
             $whereFilter[] = 'i.created_on <= :orderDateEndedAt';
-            $params['orderDateEndedAt'] = $orderDateEndedAt->setTime(23,59,59)->format('Y-m-d H:i:s'); // Until end of day
+            $params['orderDateEndedAt'] = $orderDateEndedAt->setTime(23, 59, 59)->format('Y-m-d H:i:s'); // Until end of day
         }
 
         // Create the query for our datagrid

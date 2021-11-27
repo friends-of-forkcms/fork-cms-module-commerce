@@ -11,7 +11,6 @@ use Backend\Modules\Commerce\Domain\Quote\QuoteDataTransferObject;
 use Backend\Modules\Commerce\Domain\Quote\QuoteType;
 use Common\Exception\ExitException;
 use Common\Exception\RedirectException;
-use Exception;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;

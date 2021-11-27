@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Domain\Order\EventListener;
 use Backend\Modules\Commerce\Domain\Order\Command\UpdateOrder;
 use Backend\Modules\Commerce\Domain\Order\Event\OrderGenerateInvoiceNumber;
 use Common\ModulesSettings;
-use DateTime;
 use DateTimeImmutable;
 use SimpleBus\Message\Bus\MessageBus;
 
