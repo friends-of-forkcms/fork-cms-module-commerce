@@ -26,7 +26,7 @@ class Index extends BackendBaseActionIndex
     private ?Category $category = null;
 
     /**
-     * An sku number to filter on.
+     * The sku number to filter on.
      */
     private ?string $sku = null;
 

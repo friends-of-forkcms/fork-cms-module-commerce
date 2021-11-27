@@ -31,7 +31,7 @@ class FilterType extends AbstractType
             ])
             ->add('sku', TextType::class, [
                 'required' => false,
-                'label' => 'lbl.FilterOnSku',
+                'label' => 'lbl.ArticleNumber',
             ]);
     }
 
