@@ -34,6 +34,7 @@ class Index extends BackendBaseActionIndex
     {
         parent::execute();
 
+        // Filters
         $categoryId = $this->getRequest()->query->getInt('category', null);
         $this->sku = $this->getRequest()->query->get('sku');
         $categoryRepository = $this->getCategoryRepository();

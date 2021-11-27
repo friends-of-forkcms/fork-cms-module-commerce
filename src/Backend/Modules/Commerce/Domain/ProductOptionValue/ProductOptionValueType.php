@@ -37,15 +37,12 @@ class ProductOptionValueType extends AbstractType
                 'label' => 'lbl.ArticleNumber',
             ])
             ->add(
-                $builder->create(
-                    'price',
-                    MoneyType::class,
-                    [
+                $builder
+                    ->create('price', MoneyType::class, [
                         'required' => false,
                         'label' => 'lbl.Price',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
             ->add('percentage', NumberType::class, [
                 'required' => false,

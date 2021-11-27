@@ -284,11 +284,9 @@ class AddToCartType extends AbstractType
 
                     // Add the root element
                     $builder->add(
-                        $builder->create(
-                            $name,
-                            HiddenType::class
-                        )->addModelTransformer(
-                            new CallbackTransformer(
+                        $builder
+                            ->create($name, HiddenType::class)
+                            ->addModelTransformer(new CallbackTransformer(
                                 function (?ProductOptionValue $input) {
                                     $value = null;
 

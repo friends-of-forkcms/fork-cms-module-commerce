@@ -45,15 +45,12 @@ class ProductOptionType extends AbstractType
                 'label' => 'lbl.CustomValueAllowed',
             ])
             ->add(
-                $builder->create(
-                    'custom_value_price',
-                    MoneyType::class,
-                    [
+                $builder
+                    ->create('custom_value_price', MoneyType::class, [
                         'required' => false,
                         'label' => 'lbl.CustomValuePrice',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
             ->add('placeholder', TextType::class, [
                 'required' => false,

@@ -15,15 +15,12 @@ class ProductDimensionType extends AbstractType
     {
         $builder
             ->add(
-                $builder->create(
-                    'price',
-                    MoneyType::class,
-                    [
+                $builder
+                    ->create('price', MoneyType::class, [
                         'required' => true,
                         'label' => 'lbl.Price',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
             ->add('width', HiddenType::class, [
                 'required' => true,

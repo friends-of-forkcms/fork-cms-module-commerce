@@ -5,5 +5,91 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Product filter -->
+  <div class="content-block">
+    {{ form_start(form) }}
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <!-- Search query filter -->
+          <div class="col-md-7">
+            <div class="form-group">
+              {{ form_label(form.search_query) }}
+              {{ form_widget(form.search_query) }}
+            </div>
+          </div>
+
+          <!-- Order status filter -->
+          <div class="col-md-2">
+            <div class="form-group">
+              {{ form_label(form.order_status) }}
+              {{ form_widget(form.order_status) }}
+            </div>
+          </div>
+
+          <!-- Order daterange filter -->
+          <div class="col-md-3">
+            <div class="form-group">
+              {{ form_label(form.order_date_range) }}
+
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <span class="fa fa-calendar" aria-hidden="true"></span>
+                </div>
+                {{ form_widget(form.order_date_range, {'attr' : {'class' : 'form-control js-daterange-picker'}}) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <div class="btn-toolbar">
+          <div class="btn-group pull-right">
+            {{ macro.buttonIcon('', 'refresh', 'lbl.UpdateFilter'|trans|ucfirst, 'btn-primary', { "type":"submit", "id":"search", "name":"search" }) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ form_end(form) }}
+  </div>
+
+  <!-- Datagrid -->
   {{ macro.dataGrid(dataGrid) }}
+
+  <!-- Setup datepicker -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <script>
+    // Set interface language on datepicker
+    moment.locale(jsBackend.data.get('interface_language'));
+
+    function translate(key, module = 'Commerce') {
+      return utils.string.ucfirst(jsBackend.locale.lbl(key, module))
+    }
+
+    // Init daterangepicker
+    const filterParams = new URLSearchParams(window.location.search)
+    $('.js-daterange-picker').daterangepicker({
+      ranges: {
+        [translate('Today')]: [moment(), moment()],
+        [translate('Yesterday')]: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        [translate('Last7Days')]: [moment().subtract(6, 'days'), moment()],
+        [translate('Last30Days')]: [moment().subtract(29, 'days'), moment()],
+        [translate('ThisMonth')]: [moment().startOf('month'), moment().endOf('month')],
+        [translate('LastMonth')]: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      },
+      "alwaysShowCalendars": true,
+      "startDate": filterParams.has('order_date_started_at') ? moment(filterParams.get('order_date_started_at'), 'DD-MM-YYYY') : moment().subtract(30,'days'),
+      "endDate": filterParams.has('order_date_ended_at') ? moment(filterParams.get('order_date_ended_at'), 'DD-MM-YYYY') : moment(),
+      "maxDate": moment(),
+      locale: {
+        "format": "DD-MM-YYYY",
+        "cancelLabel": translate('Cancel'),
+        "applyLabel": translate('Apply'),
+      }
+    });
+  </script>
 {% endblock %}

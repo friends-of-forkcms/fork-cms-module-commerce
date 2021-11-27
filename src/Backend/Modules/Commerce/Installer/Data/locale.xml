@@ -1099,6 +1099,38 @@
         <translation language="nl"><![CDATA[winkelinstellingen]]></translation>
         <translation language="en"><![CDATA[shop settings]]></translation>
       </item>
+      <item type="label" name="Today">
+        <translation language="nl"><![CDATA[vandaag]]></translation>
+        <translation language="en"><![CDATA[today]]></translation>
+      </item>
+      <item type="label" name="Yesterday">
+        <translation language="nl"><![CDATA[gisteren]]></translation>
+        <translation language="en"><![CDATA[yesterday]]></translation>
+      </item>
+      <item type="label" name="Last7Days">
+        <translation language="nl"><![CDATA[laatste 7 dagen]]></translation>
+        <translation language="en"><![CDATA[last 7 days]]></translation>
+      </item>
+      <item type="label" name="Last30Days">
+        <translation language="nl"><![CDATA[laatste 30 dagen]]></translation>
+        <translation language="en"><![CDATA[last 30 days]]></translation>
+      </item>
+      <item type="label" name="ThisMonth">
+        <translation language="nl"><![CDATA[deze maand]]></translation>
+        <translation language="en"><![CDATA[this month]]></translation>
+      </item>
+      <item type="label" name="LastMonth">
+        <translation language="nl"><![CDATA[vorige maand]]></translation>
+        <translation language="en"><![CDATA[last month]]></translation>
+      </item>
+      <item type="label" name="Cancel">
+        <translation language="nl"><![CDATA[annuleer]]></translation>
+        <translation language="en"><![CDATA[cancel]]></translation>
+      </item>
+      <item type="label" name="Apply">
+        <translation language="nl"><![CDATA[toepassen]]></translation>
+        <translation language="en"><![CDATA[apply]]></translation>
+      </item>
     </Commerce>
     <Core>
       <item type="label" name="Commerce">
@@ -1120,6 +1152,10 @@
       <item type="label" name="EditOrder">
         <translation language="nl"><![CDATA[bewerk bestelling]]></translation>
         <translation language="en"><![CDATA[edit order]]></translation>
+      </item>
+      <item type="label" name="EditCountry">
+        <translation language="nl"><![CDATA[bewerk land]]></translation>
+        <translation language="en"><![CDATA[edit country]]></translation>
       </item>
       <item type="label" name="GoogleSiteSearch">
         <translation language="nl"><![CDATA[google site search]]></translation>

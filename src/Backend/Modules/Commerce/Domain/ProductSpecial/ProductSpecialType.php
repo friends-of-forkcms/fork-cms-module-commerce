@@ -15,15 +15,12 @@ class ProductSpecialType extends AbstractType
     {
         $builder
             ->add(
-                $builder->create(
-                    'price',
-                    MoneyType::class,
-                    [
+                $builder
+                    ->create('price', MoneyType::class, [
                         'required' => true,
                         'label' => 'lbl.Price',
-                    ]
-                )
-                ->addModelTransformer(new MoneyToLocalizedStringTransformer())
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
             ->add('start_date', DateType::class, [
                 'required' => true,
