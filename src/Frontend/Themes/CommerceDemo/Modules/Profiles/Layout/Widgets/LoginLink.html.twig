@@ -1,0 +1,94 @@
+<div class="module-profiles widget-profiles-login-link">
+    <div class="block-body">
+        {% if isLoggedIn %}
+            {% block block_is_logged_in %}
+                <!-- Profile dropdown -->
+                <div
+                    x-data="Alpine.menu({ open: false })"
+                    x-init="init()"
+                    @keydown.escape.stop="open = false; focusButton()"
+                    @click.away="onClickAway($event)"
+                    class="relative flex-shrink-0"
+                >
+                    <div>
+                        <button
+                            type="button"
+                            class="flex flex-row items-end no-underline hover:text-black"
+                            id="user-menu-button"
+                            x-ref="button"
+                            @click="onButtonClick()"
+                            @keyup.space.prevent="onButtonEnter()"
+                            @keydown.enter.prevent="onButtonEnter()"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            x-bind:aria-expanded="open.toString()"
+                            @keydown.arrow-up.prevent="onArrowUp()"
+                            @keydown.arrow-down.prevent="onArrowDown()"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="sr-only">Open profile menu</span>
+                            <span>{{ profile.display_name }}</span>
+
+                            <!-- Caret down -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" x-show="!open">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+
+                            <!-- Caret up -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" x-show="open">
+                                <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div
+                        x-show="open"
+                        x-cloak
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        x-ref="menu-items"
+                        x-description="Dropdown menu, show/hide based on menu state."
+                        x-bind:aria-activedescendant="activeDescendant"
+                        role="menu" aria-orientation="vertical"
+                        aria-labelledby="user-menu-button"
+                        tabindex="-1"
+                        @keydown.arrow-up.prevent="onArrowUp()"
+                        @keydown.arrow-down.prevent="onArrowDown()"
+                        @keydown.tab="open = false"
+                        @keydown.enter.prevent="open = false; focusButton()"
+                        @keyup.space.prevent="open = false; focusButton()"
+                    >
+                        <a href="{{ geturlforblock('Profiles') }}" class="block px-4 py-2 text-sm text-gray-700" x-state:on="Active" x-state:off="Not Active" :class="{ 'bg-gray-100': activeIndex === 0 }" role="menuitem" tabindex="-1" id="user-menu-item-0" @mouseenter="activeIndex = 0" @mouseleave="activeIndex = -1" @click="open = false; focusButton()">Your Profile</a>
+                        {# <a href="#" class="block px-4 py-2 text-sm text-gray-700" :class="{ 'bg-gray-100': activeIndex === 1 }" role="menuitem" tabindex="-1" id="user-menu-item-1" @mouseenter="activeIndex = 1" @mouseleave="activeIndex = -1" @click="open = false; focusButton()">Settings</a> #}
+                        <a href="{{ geturlforblock('Profiles', 'Logout') }}" class="block px-4 py-2 text-sm text-gray-700" :class="{ 'bg-gray-100': activeIndex === 2 }" role="menuitem" tabindex="-1" id="user-menu-item-2" @mouseenter="activeIndex = 2" @mouseleave="activeIndex = -1" @click="open = false; focusButton()">Sign out</a>
+                    </div>
+
+                </div>
+            {% endblock %}
+        {% else %}
+            {% block block_is_not_logged_in %}
+                <a class="no-underline hover:text-black"
+                    title="Sign in / Profile"
+                    href="{{ geturlforblock('Profiles', 'Login') }}?queryString={{ geturlforblock('Profiles') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="sr-only">Sign in / Profile</span>
+                </a>
+            {% endblock %}
+        {% endif %}
+    </div>
+</div>

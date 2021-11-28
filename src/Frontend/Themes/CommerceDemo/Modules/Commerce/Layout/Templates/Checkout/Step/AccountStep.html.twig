@@ -5,15 +5,14 @@
 
 {% form_theme accountForm with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
 
-<div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
-
+<div class="relative grid grid-cols-1 mx-auto gap-x-16 max-w-7xl lg:px-8 lg:grid-cols-2 xl:gap-x-48">
     <!-- Left panel -->
     <div class="panel">
         {{ form_start(accountForm, { 'attr': {'class': 'space-y-10', 'novalidate': 'novalidate'}}) }}
 
         <!-- Contact details -->
         <fieldset>
-            <h2 class="text-lg font-medium text-gray-900">{{ 'lbl.ContactDetails'|trans|ucfirst }}</h2>
+            <h2 class="mb-4 text-lg text-gray-600">{{ 'lbl.ContactDetails'|trans|ucfirst }}</h2>
 
             <div class="grid grid-cols-1 mt-4 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                 <div>{{ form_row(accountForm.first_name) }}</div>
@@ -26,7 +25,7 @@
 
         <!-- Shipmentaddress details -->
         <fieldset>
-            <h2 class="text-lg font-medium text-gray-900">{{ 'lbl.AddressDetails'|trans|ucfirst }}</h2>
+            <h2 class="mb-4 text-lg text-gray-600">{{ 'lbl.AddressDetails'|trans|ucfirst }}</h2>
 
             <div class="grid grid-cols-1 mt-4 gap-y-6 sm:grid-cols-8 sm:gap-x-4">
                 <div class="sm:col-span-4">{{ form_row(accountForm.shipment_address.street) }}</div>
@@ -42,7 +41,7 @@
 
         <!-- Invoice address details -->
         <fieldset x-data="{isSameInvoiceAddress: {% if cart.invoiceAddress is null %}true{% else %}false{% endif %}}">
-            <h2 class="text-lg font-medium text-gray-900">{{ 'lbl.InvoiceAddress'|trans|ucfirst }}</h2>
+            <h2 class="mb-4 text-lg text-gray-600">{{ 'lbl.InvoiceAddress'|trans|ucfirst }}</h2>
 
             <div class="mt-4">
                 {{ form_row(accountForm.same_invoice_address, {attr : {'x-model' : 'isSameInvoiceAddress'}}) }}
@@ -62,7 +61,7 @@
 
         <!-- Create account / password -->
         <fieldset>
-            <h2 class="text-lg font-medium text-gray-900">{{ 'lbl.CreateAccount'|trans|ucfirst }}?</h2>
+            <h2 class="mb-4 text-lg text-gray-600">{{ 'lbl.CreateAccount'|trans|ucfirst }}?</h2>
             <p class="small">({{ 'lbl.Optional'|trans|ucfirst }})</p>
 
             <div class="grid grid-cols-1 mt-4 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
@@ -71,79 +70,11 @@
         </fieldset>
 
         <!-- Submit button -->
-        <div class="flex justify-end w-full pt-8 my-10 border-t border-gray-20">
-            <button
-                type="submit"
-                id="checkout-account"
-                class="flex items-center justify-center px-20 py-2 text-white bg-gray-800 hover:bg-gray-600"
-                data-checkout-step="address"
-            >
-                {{ 'lbl.Continue'|trans|ucfirst }}
-            </button>
-        </div>
+        {% include 'Commerce/Layout/Templates/Checkout/partials/StepFooter.html.twig' with { showPrevious : true } %}
 
         {{ form_end(accountForm) }}
     </div>
 
     <!-- Right panel -->
-    <div class="panel">
-        <section aria-labelledby="summary-heading" class="pb-10 lg:pb-16 lg:row-start-1 lg:col-start-2">
-            <div class="mx-auto">
-                <h2 id="summary-heading" class="text-lg font-medium text-gray-900">{{ 'lbl.Summary'|trans|ucfirst }}</h2>
-
-                <ul role="list" class="text-sm font-medium text-gray-900 divide-y divide-gray-200">
-                    {% for cartItem in cart.values %}
-                        <li class="flex items-start py-6 space-x-4">
-                            <img src="{{ cartItem.product.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}" alt="{{ cartItem.product.title }}" class="flex-none object-cover object-center w-20 h-20 rounded-md">
-                            <div class="flex-auto space-y-1">
-                                <h4>{{ cartItem.quantity }}x {{ cartItem.product.title }}</h4>
-                            </div>
-                            <p class="flex-none text-base font-medium">
-                                {{ cartItem.total|format_money }}
-                            </p>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                <dl class="pt-6 space-y-6 text-sm font-medium text-gray-900 border-t border-gray-200">
-                    <!-- Discount codes -->
-                    {% for cartRule in cart.cartRules %}
-                        <div class="flex items-center justify-between">
-                            <dt class="text-gray-600">
-                                {{ 'lbl.DiscountCode'|trans|ucfirst }}
-                                <span class="ml-2 rounded-full bg-gray-200 text-xs text-gray-600 py-0.5 px-2 tracking-wide">{{ cartRule.code }}</span>
-                            </dt>
-                            <dd>{{ cart.getCartRuleTotal(cartRule)|format_money }}</dd>
-                        </div>
-                    {% endfor %}
-
-                    <!-- Subtotal -->
-                    <div class="flex items-center justify-between">
-                        <dt class="text-gray-600">{{ 'lbl.SubTotal'|trans|ucfirst }}</dt>
-                        <dd>{{ cart.subTotal|format_money }}</dd>
-                    </div>
-
-                    <!-- Shipping -->
-{#                    <div class="flex items-center justify-between">#}
-{#                        <dt class="text-gray-600">Shipping</dt>#}
-{#                        <dd>$15.00</dd>#}
-{#                    </div>#}
-
-                    <!-- Vat -->
-                    {% for vat in cart.vats %}
-                        <div class="flex items-center justify-between">
-                            <dt class="text-gray-600">{{ 'lbl.Vat'|trans|ucfirst }} {{ vat.title }}</dt>
-                            <dd>{{ vat.total|format_money }}</dd>
-                        </div>
-                    {% endfor %}
-
-                    <!-- Total -->
-                    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
-                        <dt class="text-base">{{ 'lbl.Total'|trans|ucfirst }}</dt>
-                        <dd class="text-base">{{ cart.total|format_money }}</dd>
-                    </div>
-                </dl>
-            </div>
-        </section>
-    </div>
+    {% include 'Commerce/Layout/Templates/Checkout/partials/CartSummary.html.twig' %}
 </div>

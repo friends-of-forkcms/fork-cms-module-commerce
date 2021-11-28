@@ -18,102 +18,63 @@ class OrderStatusType extends AbstractType
     {
         $emailTemplates = $this->getEmailTemplates();
 
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'mail_subject',
-            TextType::class,
-            [
+            ])
+            ->add('mail_subject', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.MailSubject',
-            ]
-        )->add(
-            'company_mail_subject',
-            TextType::class,
-            [
+            ])
+            ->add('company_mail_subject', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.CompanyMailSubject',
-            ]
-        )->add(
-            'color',
-            ColorType::class,
-            [
+            ])
+            ->add('color', ColorType::class, [
                 'required' => false,
                 'label' => 'lbl.Color',
-            ]
-        )->add(
-            'template',
-            ChoiceType::class,
-            [
+            ])
+            ->add('template', ChoiceType::class, [
                 'required' => false,
                 'label' => 'lbl.EmailTemplate',
                 'placeholder' => 'lbl.SelectATemplate',
                 'choices' => $emailTemplates,
-            ]
-        )->add(
-            'company_template',
-            ChoiceType::class,
-            [
+            ])
+            ->add('company_template', ChoiceType::class, [
                 'required' => false,
                 'label' => 'lbl.CompanyEmailTemplate',
                 'placeholder' => 'lbl.SelectATemplate',
                 'choices' => $emailTemplates,
-            ]
-        )->add(
-            'send_email',
-            CheckboxType::class,
-            [
+            ])
+            ->add('send_email', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.SendEmail',
-            ]
-        )->add(
-            'send_company_email',
-            CheckboxType::class,
-            [
+            ])
+            ->add('send_company_email', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.SendCompanyEmail',
-            ]
-        )->add(
-            'pdf_invoice',
-            CheckboxType::class,
-            [
+            ])
+            ->add('pdf_invoice', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.AttachInvoiceToEmail',
-            ]
-        )->add(
-            'pdf_packing_slip',
-            CheckboxType::class,
-            [
+            ])
+            ->add('pdf_packing_slip', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.AttachPackingSlipToEmail',
-            ]
-        )->add(
-            'paid',
-            CheckboxType::class,
-            [
+            ])
+            ->add('paid', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.OrderIsPaid',
-            ]
-        )->add(
-            'shipped',
-            CheckboxType::class,
-            [
+            ])
+            ->add('shipped', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.OrderIsShipped',
-            ]
-        )->add(
-            'download_invoice',
-            CheckboxType::class,
-            [
+            ])
+            ->add('download_invoice', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.AllowDownloadInvoice',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

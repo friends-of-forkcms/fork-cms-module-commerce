@@ -12,28 +12,19 @@ class ProductDimensionNotificationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'width',
-            NumberType::class,
-            [
+        $builder
+            ->add('width', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.Width',
-            ]
-        )->add(
-            'height',
-            NumberType::class,
-            [
+            ])
+            ->add('height', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.Height',
-            ]
-        )->add(
-            'message',
-            TextareaType::class,
-            [
+            ])
+            ->add('message', TextareaType::class, [
                 'required' => false,
                 'label' => 'lbl.Notification',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

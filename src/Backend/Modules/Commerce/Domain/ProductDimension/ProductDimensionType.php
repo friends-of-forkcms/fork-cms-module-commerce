@@ -13,31 +13,23 @@ class ProductDimensionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            $builder->create(
-                'price',
-                MoneyType::class,
-                [
-                    'required' => true,
-                    'label' => 'lbl.Price',
-                ]
+        $builder
+            ->add(
+                $builder
+                    ->create('price', MoneyType::class, [
+                        'required' => true,
+                        'label' => 'lbl.Price',
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
-            ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-        )->add(
-            'width',
-            HiddenType::class,
-            [
+            ->add('width', HiddenType::class, [
                 'required' => true,
                 'label' => 'lbl.Width',
-            ]
-        )->add(
-            'height',
-            HiddenType::class,
-            [
+            ])
+            ->add('height', HiddenType::class, [
                 'required' => true,
                 'label' => 'lbl.Height',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

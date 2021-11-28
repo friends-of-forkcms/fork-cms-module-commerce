@@ -7,6 +7,7 @@ use Backend\Modules\Commerce\Domain\Order\Order;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_order_rules")
@@ -35,9 +36,9 @@ class OrderRule
     private ?CartRule $cart_rule;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $total;
+    private Money $total;
 
     /**
      * @ORM\Column(type="string")
@@ -63,7 +64,7 @@ class OrderRule
     private function __construct(
         Order $order,
         ?CartRule $cartRule,
-        float $total,
+        Money $total,
         string $title,
         string $code,
         string $value
@@ -122,7 +123,7 @@ class OrderRule
         return $this->cart_rule;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         return $this->total;
     }

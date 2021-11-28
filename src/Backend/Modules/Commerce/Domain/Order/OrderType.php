@@ -14,10 +14,8 @@ class OrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'orderStatus',
-            EntityType::class,
-            [
+        $builder
+            ->add('orderStatus', EntityType::class, [
                 'required' => true,
                 'label' => 'lbl.OrderStatus',
                 'class' => OrderStatus::class,
@@ -26,8 +24,7 @@ class OrderType extends AbstractType
                         ->orderBy('i.title', 'ASC');
                 },
                 'choice_label' => 'title',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

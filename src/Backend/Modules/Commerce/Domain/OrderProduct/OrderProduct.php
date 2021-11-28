@@ -10,6 +10,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_order_products")
@@ -72,9 +73,9 @@ class OrderProduct
     private ?int $amount;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $price;
+    private Money $price;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -97,9 +98,9 @@ class OrderProduct
     private ?int $order_height;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $total;
+    private Money $total;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -124,8 +125,8 @@ class OrderProduct
         ?int $order_width,
         ?int $order_height,
         int $amount,
-        float $price,
-        float $total,
+        Money $price,
+        Money $total,
         $product_options,
         $product_notifications
     ) {
@@ -235,7 +236,7 @@ class OrderProduct
         return $this->amount;
     }
 
-    public function getPrice(): float
+    public function getPrice(): Money
     {
         return $this->price;
     }
@@ -260,7 +261,7 @@ class OrderProduct
         return $this->order_height;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         return $this->total;
     }

@@ -3,10 +3,10 @@
 namespace Frontend\Modules\Commerce\CheckoutStep;
 
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\PaymentMethodQuote;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodType;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
-use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\Quote;
 use Common\Uri;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
@@ -15,11 +15,7 @@ use Symfony\Component\Form\Form;
 class PaymentMethodStep extends Step
 {
     public static string $stepIdentifier = 'paymentMethod';
-
-    /**
-     * @var Form
-     */
-    private $form;
+    private Form $form;
 
     public function init(): void
     {
@@ -35,6 +31,9 @@ class PaymentMethodStep extends Step
      */
     public function execute(): void
     {
+        // Clear previous payment methods on the cart because they are dependent on the shipping method!
+        $this->nextStep->invalidateStep();
+
         $paymentMethods = $this->getPaymentMethods();
         $this->form = $this->handleForm($this->getForm($paymentMethods), $paymentMethods);
 
@@ -59,7 +58,6 @@ class PaymentMethodStep extends Step
      */
     private function handleForm(Form $form, $paymentMethods): Form
     {
-        // Check if there are any errors in our submit
         if ($form->isSubmitted() && $form->isValid()) {
             $this->cart->setPaymentMethod($form->getNormData()->payment_method);
             $this->cart->setPaymentMethodData($paymentMethods[$form->getNormData()->payment_method]);
@@ -83,10 +81,15 @@ class PaymentMethodStep extends Step
         parent::invalidateStep();
     }
 
-    private function getForm($paymentMethods): Form
+    private function getForm(array $paymentMethods): Form
     {
         $formData = new CheckoutPaymentMethodDataTransferObject();
-        $formData->payment_method = $this->cart->getPaymentMethod();
+
+        // Pre-fill the payment method if available
+        $paymentMethod = $this->cart->getPaymentMethod();
+        if ($paymentMethod !== null) {
+            $formData->payment_method = $paymentMethod;
+        }
 
         // Load our form
         $form = $this->createForm(
@@ -108,22 +111,18 @@ class PaymentMethodStep extends Step
      */
     private function getPaymentMethods(): array
     {
-        /**
-         * @var PaymentMethodRepository $paymentMethodRepository
-         */
+        /** @var PaymentMethodRepository $paymentMethodRepository */
         $paymentMethodRepository = $this->get('commerce.repository.payment_method');
-        $availablePaymentMethods = $paymentMethodRepository->findEnabledPaymentMethodNames(Locale::frontendLanguage());
+        $availablePaymentMethods = $paymentMethodRepository->findEnabledPaymentMethods(Locale::frontendLanguage());
 
         $paymentMethods = [];
         foreach ($availablePaymentMethods as $paymentMethod) {
-            $className = "\\Backend\\Modules\\Commerce\\PaymentMethods\\{$paymentMethod}\\Checkout\\Quote";
+            $quoteClassName = $this->getPaymentMethodQuoteClass($paymentMethod->getModule());
 
-            /**
-             * @var Quote $class
-             */
-            $class = new $className($paymentMethod, $this->cart, $this->getPaymentAddress());
+            /** @var PaymentMethodQuote $class */
+            $class = new $quoteClassName($paymentMethod->getName(), $this->cart, $this->getPaymentAddress());
             foreach ($class->getQuote() as $key => $options) {
-                $paymentMethods[$paymentMethod . '.' . $key] = $options;
+                $paymentMethods[$paymentMethod->getModule() . '.' . $key] = $options;
             }
         }
 
@@ -142,5 +141,15 @@ class PaymentMethodStep extends Step
     public function getUrl(): ?string
     {
         return parent::getUrl() . '/' . Uri::getUrl(Language::lbl('PaymentMethod'));
+    }
+
+    /**
+     * We expect a Quote class to be implemented by the payment method module
+     */
+    private function getPaymentMethodQuoteClass(string $moduleName): string
+    {
+        $domainName = str_replace('Commerce', '', $moduleName);
+
+        return "\\Backend\\Modules\\$moduleName\\Domain\\$domainName\\Checkout\\Quote";
     }
 }

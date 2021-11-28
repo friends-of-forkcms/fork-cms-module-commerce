@@ -102,18 +102,18 @@ class AccountStep extends Step
             $createAccount = $form->getData();
 
             // When there is a password set check if the user exists
-            if ($createAccount->password && FrontendProfilesModel::existsByEmail($createAccount->email_address)) {
+            if (isset($createAccount->password) && FrontendProfilesModel::existsByEmail($createAccount->email_address)) {
                 $form->get('email_address')->addError(new FormError(Language::getError('EmailExists')));
 
                 return $form;
             }
 
-            if ($createAccount->password) {
+            if (isset($createAccount->password)) {
                 $profile = [
                     'email' => $createAccount->email_address,
                     'password' => FrontendProfilesModel::encryptPassword($createAccount->password),
                     'status' => 'active',
-                    'display_name' => '',
+                    'display_name' => $createAccount->first_name . ' ' . $createAccount->last_name,
                     'registered_on' => Model::getUTCDate(),
                     'last_login' => Model::getUTCDate(null, 0),
                     'url' => '',

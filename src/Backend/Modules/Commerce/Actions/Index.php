@@ -26,7 +26,7 @@ class Index extends BackendBaseActionIndex
     private ?Category $category = null;
 
     /**
-     * An sku number to filter on.
+     * The sku number to filter on.
      */
     private ?string $sku = null;
 
@@ -34,6 +34,7 @@ class Index extends BackendBaseActionIndex
     {
         parent::execute();
 
+        // Filters
         $categoryId = $this->getRequest()->query->getInt('category', null);
         $this->sku = $this->getRequest()->query->get('sku');
         $categoryRepository = $this->getCategoryRepository();

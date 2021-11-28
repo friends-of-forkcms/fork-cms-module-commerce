@@ -11,21 +11,15 @@ class CountryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
+        $builder
+            ->add('name', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Name',
-            ]
-        )->add(
-            'iso',
-            TextType::class,
-            [
+            ])
+            ->add('iso', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.IsoCode',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

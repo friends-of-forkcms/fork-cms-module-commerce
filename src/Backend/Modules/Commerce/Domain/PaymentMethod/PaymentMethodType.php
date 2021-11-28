@@ -11,10 +11,8 @@ abstract class PaymentMethodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'isEnabled',
-            ChoiceType::class,
-            [
+        $builder
+            ->add('isEnabled', ChoiceType::class, [
                 'required' => false,
                 'label' => 'lbl.Enabled',
                 'placeholder' => false,
@@ -22,8 +20,7 @@ abstract class PaymentMethodType extends AbstractType
                     'lbl.Yes' => true,
                     'lbl.No' => false,
                 ],
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

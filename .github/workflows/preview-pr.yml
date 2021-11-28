@@ -11,7 +11,7 @@ env:
 
 # Kill the previous job in progress, when multiple job start (e.g. committing multiple times)
 concurrency:
-  group: preview-pr-${{ github.head_ref }}
+  group: 'preview-pr-${{ github.head_ref || github.ref }}'
   cancel-in-progress: true
 
 # See: https://okteto.com/docs/tutorials/preview-environments/#step-2-create-the-github-workflow
@@ -33,6 +33,7 @@ jobs:
         with:
           name: ${{ env.DEPLOY_NAME }}
           timeout: 15m
+          variables: "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }},SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
 
       - name: Verify up and running
         uses: nev7n/wait_for_response@v1

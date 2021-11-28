@@ -19,50 +19,33 @@ class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
+        $builder
+            ->add('title', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->add(
-            'text',
-            EditorType::class,
-            [
+            ])
+            ->add('text', EditorType::class, [
                 'required' => false,
                 'label' => 'lbl.Description',
-            ]
-        )->add(
-            'intro',
-            EditorType::class,
-            [
+            ])
+            ->add('intro', EditorType::class, [
                 'required' => false,
                 'label' => 'lbl.Summary',
-            ]
-        )->add(
-            'image',
-            ImageType::class,
-            [
+            ])
+            ->add('image', ImageType::class, [
                 'required' => false,
                 'label' => 'lbl.Image',
                 'image_class' => Image::class,
-            ]
-        )->add(
-            'googleTaxonomyId',
-            ChoiceType::class,
-            [
+            ])
+            ->add('googleTaxonomyId', ChoiceType::class, [
                 'required' => false,
                 'label' => 'lbl.GoogleTaxonomyId',
                 'choices' => $options['google_taxonomies'],
                 'attr' => [
                     'class' => 'select2simple',
                 ],
-            ]
-        )->add(
-            'parent',
-            EntityType::class,
-            [
+            ])
+            ->add('parent', EntityType::class, [
                 'required' => false,
                 'label' => 'lbl.InCategory',
                 'placeholder' => 'lbl.None',
@@ -85,10 +68,8 @@ class CategoryType extends AbstractType
 
                     return $prefix . $category->getTitle();
                 },
-            ]
-        )->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $event->getForm()->add(
                     'meta',
                     MetaType::class,
@@ -103,8 +84,7 @@ class CategoryType extends AbstractType
                         ],
                     ]
                 );
-            }
-        );
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

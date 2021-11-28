@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Commerce\PaymentMethods\Base\Checkout;
+namespace Backend\Modules\Commerce\Domain\PaymentMethod\Checkout;
 
 use Common\Core\Model;
 use Common\ModulesSettings;

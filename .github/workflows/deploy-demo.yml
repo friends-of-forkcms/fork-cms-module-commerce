@@ -7,7 +7,7 @@ on:
     - cron: "30 18 * * *" # Runs at 18:30 UTC every day
 
 concurrency:
-  group: deploy-demo-${{ github.head_ref }}
+  group: 'deploy-demo-${{ github.head_ref || github.ref }}'
   cancel-in-progress: true
 
 name: Deploy Demo
@@ -32,6 +32,7 @@ jobs:
         with:
           name: "fork-cms-module-commerce-demo"
           timeout: 15m
+          variables: "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }},SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
 
       - name: Verify up and running
         uses: nev7n/wait_for_response@v1

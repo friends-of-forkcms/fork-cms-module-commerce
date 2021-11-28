@@ -11,6 +11,10 @@ class OrderAddressDataTransferObject
     protected ?OrderAddress $orderAddressEntity = null;
     public int $id;
     public ?Account $account = null;
+
+    /**
+     * @Assert\NotBlank(message="err.FieldIsRequired")
+     */
     public ?Country $country = null;
     public ?string $company_name = null;
 

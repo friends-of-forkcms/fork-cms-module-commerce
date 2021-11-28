@@ -1,97 +1,61 @@
-{% form_theme form with ["Commerce/Layout/Templates/FormHelper.html.twig", "Commerce/Layout/Templates/Checkout/Step/_partials/FormHelper.html.twig"] %}
+{#
+    This form is shown when the user chooses to add a new address or edit his existing address, during checkout.
+#}
 
-{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-<div class="row">
-  <div class="col-md-8 offset-md-2">
-    <div class="row form-group">
-      <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
-        <label class="m-0">{{ 'lbl.Name'|trans|ucfirst }}</label>
-      </div>
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-6">
-            {{ form_widget(form.first_name) }}
-            {{ form_errors(form.first_name) }}
-          </div>
-          <div class="col-md-6">
-            {{ form_widget(form.last_name) }}
-            {{ form_errors(form.last_name) }}
-          </div>
-        </div>
-      </div>
+{% form_theme form with ["Core/Layout/Templates/Form/tailwind_2_layout.html.twig"] %}
+
+<div class="relative grid grid-cols-1 mx-auto gap-x-16 max-w-7xl lg:px-8 lg:grid-cols-2 xl:gap-x-48">
+    <!-- Left panel -->
+    <div class="panel">
+        {{ form_start(form, { 'attr': {'class': 'space-y-10', 'novalidate': 'novalidate'}}) }}
+            {% set isAddForm = form.vars.value.first_name is null %}
+            <h2 class="mb-4 text-lg text-gray-600">
+                {% if isAddForm %}
+                    {{ 'msg.AddNewAddress'|trans|ucfirst }}
+                {% else %}
+                    {{ 'msg.EditAddress'|trans|ucfirst }}
+                {% endif %}
+            </h2>
+
+            <!-- Contact details -->
+            <fieldset>
+                <div class="grid grid-cols-1 mt-4 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+                    <div>{{ form_row(form.first_name) }}</div>
+                    <div>{{ form_row(form.last_name) }}</div>
+                    <div class="sm:col-span-2">{{ form_row(form.company_name) }}</div>
+                </div>
+            </fieldset>
+
+            <!-- address details -->
+            <fieldset>
+                <div class="grid grid-cols-1 mt-4 gap-y-6 sm:grid-cols-8 sm:gap-x-4">
+                    <div class="sm:col-span-4">{{ form_row(form.street) }}</div>
+                    <div class="sm:col-span-1">{{ form_row(form.house_number) }}</div>
+                    <div class="sm:col-span-3">{{ form_row(form.house_number_addition) }}</div>
+
+                    <div class="sm:col-span-2">{{ form_row(form.zip_code) }}</div>
+                    <div class="sm:col-span-6">{{ form_row(form.city) }}</div>
+
+                    <div class="sm:col-span-8">{{ form_row(form.country) }}</div>
+                </div>
+            </fieldset>
+
+            <div class="checkout-footer | py-10 my-20 border-t border-gray-200">
+                <ul class="flex items-center justify-between">
+                    <li>
+                        <a href="{{ geturlforblock('Commerce', 'Cart') }}/{{ 'lbl.Checkout'|trans }}">&larr; {{ 'lbl.PreviousStep'|trans|ucfirst }}</a>
+                    </li>
+                    <li>
+                        <button type="submit" class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600">
+                            {{ 'lbl.Save'|trans|ucfirst }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+        {{ form_end(form) }}
     </div>
-    <div class="row form-group">
-      <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
-        {{ form_label(form.company_name) }}
-      </div>
-      <div class="col-md-8">
-        {{ form_widget(form.company_name) }}
-        {{ form_errors(form.company_name) }}
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
-        <label class="m-0">{{ form_label(form.zip_code) }}</label>
-      </div>
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-4">
-            {{ form_widget(form.zip_code) }}
-            {{ form_errors(form.zip_code) }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
-        {{ form_label(form.house_number) }}
-      </div>
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-4">
-            {{ form_widget(form.house_number) }}
-            {{ form_errors(form.house_number) }}
-          </div>
-          <div class="col-md-4">
-            {{ form_widget(form.house_number_addition) }}
-            {{ form_errors(form.house_number_addition) }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
-        <label>
-          {{ 'lbl.Street'|trans|ucfirst }} + {{ 'lbl.City'|trans|ucfirst }}
-        </label>
-      </div>
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-6">
-            {{ form_widget(form.street) }}
-            {{ form_errors(form.street) }}
-          </div>
-          <div class="col-md-6">
-            {{ form_widget(form.city) }}
-            {{ form_errors(form.city) }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-md-4 text-right d-flex justify-content-end align-items-center">
-        {{ form_label(form.country) }}
-      </div>
-      <div class="col-md-8">
-          {{ form_widget(form.country) }}
-          {{ form_errors(form.country) }}
-      </div>
-    </div>
-  </div>
+
+    <!-- Right panel -->
+    {% include 'Commerce/Layout/Templates/Checkout/partials/CartSummary.html.twig' %}
 </div>
-<div class="row pb-5">
-  <div class="col-md-8 offset-md-2 text-right">
-    <button type="submit" class="btn btn-default" id="checkout-account">{{ 'lbl.Save'|trans|ucfirst }}</button>
-  </div>
-</div>
-{{ form_end(form) }}

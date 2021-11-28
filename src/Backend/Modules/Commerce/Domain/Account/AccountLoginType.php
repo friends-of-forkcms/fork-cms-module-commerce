@@ -12,28 +12,19 @@ class AccountLoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'email',
-            EmailType::class,
-            [
+        $builder
+            ->add('email', EmailType::class, [
                 'required' => true,
                 'label' => 'lbl.Email',
-            ]
-        )->add(
-            'password',
-            PasswordType::class,
-            [
+            ])
+            ->add('password', PasswordType::class, [
                 'required' => true,
                 'label' => 'lbl.Password',
-            ]
-        )->add(
-            'remember',
-            CheckboxType::class,
-            [
+            ])
+            ->add('remember', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.RememberMe',
-            ]
-        );
+            ]);
     }
 
     public function getBlockPrefix(): string

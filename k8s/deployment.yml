@@ -40,6 +40,10 @@ spec:
               value: $SITE_DOMAIN
             - name: FORK_DEBUG
               value: "1"
+            - name: SMTP_USERNAME
+              value: $SMTP_USERNAME # See GitHub secrets
+            - name: SMTP_PASSWORD
+              value: $SMTP_PASSWORD # See GitHub secrets
           # Container loads fixtures and prepares Fork CMS, we don't want to serve traffic until that finished
           readinessProbe:
             initialDelaySeconds: 90 # Wait 90s before first probe because of docker-entrypoint scripts

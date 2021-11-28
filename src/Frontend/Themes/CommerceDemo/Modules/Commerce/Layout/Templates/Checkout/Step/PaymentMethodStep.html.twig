@@ -1,0 +1,31 @@
+{#
+    The PaymentMethodStep is the step where the customer can choose a payment method
+#}
+
+{% form_theme form with ['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
+
+<div class="relative grid grid-cols-1 mx-auto gap-x-16 max-w-7xl lg:px-8 lg:grid-cols-2 xl:gap-x-48">
+
+    <!-- Left panel -->
+    <div class="panel">
+        {# prettier-ignore #}
+        {{ form_start(form, { attr: { novalidate: 'novalidate' }}) }}
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_widget(form.payment_method) }}
+                    {{ form_errors(form.payment_method) }}
+                </div>
+                <div class="col-md-12" id="payment_options">
+                    {{ form_rest(form) }}
+                </div>
+            </div>
+
+            {# prettier-ignore #}
+            {% include 'Commerce/Layout/Templates/Checkout/partials/StepFooter.html.twig' with { showPrevious : true } %}
+
+        {{ form_end(form) }}
+    </div>
+
+    <!-- Right panel -->
+    {% include 'Commerce/Layout/Templates/Checkout/partials/CartSummary.html.twig' %}
+</div>

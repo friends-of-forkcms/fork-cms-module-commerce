@@ -68,14 +68,14 @@ class PaymentMethodRepositoryTest extends BackendWebTestCase
         $enabledPaymentMethod = PaymentMethodFactory::new()->create(['isEnabled' => true]);
         $disabledPaymentMethod = PaymentMethodFactory::new()->create(['isEnabled' => false]);
 
-        /** @var string[] $results */
+        /** @var PaymentMethod[] $results */
         $results = $this->entityManager
             ->getRepository(PaymentMethod::class)
-            ->findEnabledPaymentMethodNames(Locale::fromString('en'));
+            ->findEnabledPaymentMethods(Locale::fromString('en'));
 
         // Assert
         $this->assertCount(1, $results);
-        $this->assertEquals($enabledPaymentMethod->getName(), $results[0]);
+        $this->assertEquals($enabledPaymentMethod->getName(), $results[0]->getName());
     }
 
     protected function tearDown(): void

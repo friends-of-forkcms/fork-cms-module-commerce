@@ -124,11 +124,11 @@
                 <tbody>
                 <tr>
                   <td>{{ 'lbl.SubTotal'|trans|ucfirst }}</td>
-                  <td>{{ order.subTotal|formatcurrency }}</td>
+                  <td>{{ order.subTotal|format_money(LANGUAGE) }}</td>
                 </tr>
                 <tr>
                   <td>{{ order.shipmentMethod }}</td>
-                  <td>{{ order.shipmentPrice|formatcurrency }}</td>
+                  <td>{{ order.shipmentPrice|format_money(LANGUAGE) }}</td>
                 </tr>
                 {% for rule in order.rules %}
                   <tr>
@@ -139,12 +139,12 @@
                 {% for vat in order.vats %}
                   <tr>
                     <td>{{ vat.title }}</td>
-                    <td>{{ vat.total|formatcurrency }}</td>
+                    <td>{{ vat.total|format_money(LANGUAGE) }}</td>
                   </tr>
                 {% endfor %}
                 <tr>
                   <td>{{ 'lbl.Total'|trans|ucfirst }}</td>
-                  <td>{{ order.total|formatcurrency }}</td>
+                  <td>{{ order.total|format_money(LANGUAGE) }}</td>
                 </tr>
                 </tbody>
               </table>

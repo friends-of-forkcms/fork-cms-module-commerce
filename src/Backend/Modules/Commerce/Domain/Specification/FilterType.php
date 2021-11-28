@@ -11,10 +11,8 @@ class FilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'specification',
-            EntityType::class,
-            [
+        $builder
+            ->add('specification', EntityType::class, [
                 'required' => false,
                 'label' => 'lbl.Specification',
                 'placeholder' => 'lbl.None',
@@ -28,8 +26,7 @@ class FilterType extends AbstractType
 
                     return $prefix . $specification->getTitle();
                 },
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

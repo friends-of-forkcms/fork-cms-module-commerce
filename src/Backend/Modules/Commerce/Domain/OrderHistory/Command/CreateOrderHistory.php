@@ -8,6 +8,8 @@ use Backend\Modules\Commerce\Domain\OrderHistory\OrderHistoryDataTransferObject;
 
 final class CreateOrderHistory extends OrderHistoryDataTransferObject
 {
+    public Locale $locale;
+
     public function __construct(Locale $locale = null)
     {
         parent::__construct();

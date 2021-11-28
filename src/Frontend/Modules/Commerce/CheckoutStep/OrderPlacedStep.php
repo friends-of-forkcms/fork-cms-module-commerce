@@ -10,6 +10,7 @@ use Frontend\Core\Language\Language;
 class OrderPlacedStep extends Step
 {
     public static string $stepIdentifier = 'orderPlaced';
+    protected bool $showInBreadcrumbs = false;
 
     public function init(): void
     {

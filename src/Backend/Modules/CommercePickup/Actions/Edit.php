@@ -47,9 +47,12 @@ class Edit extends ShipmentBaseActionEdit
 
     private function getForm(ShipmentMethod $shipmentMethod): Form
     {
+        $data = $this->shipmentMethodSettingsRepository->getShipmentMethodData(
+            new UpdatePickupShipmentMethod($shipmentMethod, Locale::workingLocale())
+        );
         $form = $this->createForm(
             PickupShipmentMethodType::class,
-            $this->getData(new UpdatePickupShipmentMethod($shipmentMethod, Locale::workingLocale())),
+            $data,
             [
                 'entityManager' => $this->entityManager,
             ]

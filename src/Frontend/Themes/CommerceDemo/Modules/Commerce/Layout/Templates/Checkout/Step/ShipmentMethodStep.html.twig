@@ -1,18 +1,28 @@
+{#
+    The ShipmentMethodStep is the step where the customer can choose a shipment method
+#}
+
 {% form_theme form with['Core/Layout/Templates/Form/tailwind_2_layout.html.twig'] %}
 
-<div>
-    {# prettier-ignore #}
-    {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
+<div class="container relative grid grid-cols-1 mx-auto gap-x-16 lg:px-8 lg:grid-cols-2 xl:gap-x-48">
+    <!-- Left panel -->
+    <div class="panel | container">
+        {# prettier-ignore #}
+        {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'} }) }}
 
-    <div class="row">
-        <div class="col-md-12">
-            {{ form_widget(form.shipment_method) }}
-            {{ form_errors(form.shipment_method) }}
-        </div>
+        <h2 class="mb-4 text-lg text-gray-600">
+            {{ 'lbl.PaymentMethod'|trans|ucfirst }}
+        </h2>
+
+        {{ form_widget(form.shipment_method) }}
+        {{ form_errors(form.shipment_method) }}
+
+        {# prettier-ignore #}
+        {% include 'Commerce/Layout/Templates/Checkout/partials/StepFooter.html.twig' with { showPrevious: true} %}
+
+        {{ form_end(form) }}
     </div>
-    {% include 'Commerce/Layout/Templates/Checkout/Step/_partials/StepFooter.html.twig' with {
-        checkoutStep: 'shipmentMethod',
-        checkoutStepValueSelector: '.radio input:checked + label'
-    } %}
-    {{ form_end(form) }}
+
+    <!-- Right panel -->
+    {% include 'Commerce/Layout/Templates/Checkout/partials/CartSummary.html.twig' %}
 </div>

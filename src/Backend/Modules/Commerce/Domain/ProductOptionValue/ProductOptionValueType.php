@@ -24,47 +24,32 @@ class ProductOptionValueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /**
-         * @var ProductOption $productOption
-         */
+        /** @var ProductOption $productOption */
         $productOption = $options['product_option'];
 
-        $builder->add(
-            'sub_title',
-            TextType::class,
-            [
+        $builder
+            ->add('sub_title', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.SubTitle',
-            ]
-        )->add(
-            'sku',
-            TextType::class,
-            [
+            ])
+            ->add('sku', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.ArticleNumber',
-            ]
-        )->add(
-            $builder->create(
-                'price',
-                MoneyType::class,
-                [
-                    'required' => false,
-                    'label' => 'lbl.Price',
-                ]
+            ])
+            ->add(
+                $builder
+                    ->create('price', MoneyType::class, [
+                        'required' => false,
+                        'label' => 'lbl.Price',
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
-            ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-        )->add(
-            'percentage',
-            NumberType::class,
-            [
+            ->add('percentage', NumberType::class, [
                 'required' => false,
                 'label' => 'lbl.Percentage',
                 'scale' => 1,
-            ]
-        )->add(
-            'impact_type',
-            ChoiceType::class,
-            [
+            ])
+            ->add('impact_type', ChoiceType::class, [
                 'required' => false,
                 'label' => 'lbl.ImpactType',
                 'placeholder' => false,
@@ -72,11 +57,8 @@ class ProductOptionValueType extends AbstractType
                     'lbl.Add' => ProductOptionValue::IMPACT_TYPE_ADD,
                     'lbl.Subtract' => ProductOptionValue::IMPACT_TYPE_SUBTRACT,
                 ],
-            ]
-        )->add(
-            'vat',
-            EntityType::class,
-            [
+            ])
+            ->add('vat', EntityType::class, [
                 'label' => 'lbl.Vat',
                 'class' => Vat::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -84,115 +66,92 @@ class ProductOptionValueType extends AbstractType
                         ->orderBy('i.sequence', 'ASC');
                 },
                 'choice_label' => 'title',
-            ]
-        )->add(
-            'default_value',
-            CheckboxType::class,
-            [
+            ])
+            ->add('default_value', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.DefaultValue',
-            ]
-        )->add(
-            $builder->create(
-                'dependencies',
-                CollectionType::class,
-                [
-                    'required' => false,
-                    'entry_type' => ProductOptionValueDependenciesType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label' => 'lbl.Specifications',
-                    'entry_options' => [
-                        'product_option' => $productOption,
-                    ],
-                ]
-            )
-                ->addModelTransformer(new CallbackTransformer(
-                    function ($entities) {
-                        return $entities;
-                    },
-                    function ($dataTransferObjects) {
-                        $entities = [];
+            ])
+            ->add(
+                $builder
+                    ->create(
+                        'dependencies',
+                        CollectionType::class,
+                        [
+                            'required' => false,
+                            'entry_type' => ProductOptionValueDependenciesType::class,
+                            'allow_add' => true,
+                            'allow_delete' => true,
+                            'by_reference' => false,
+                            'label' => 'lbl.Specifications',
+                            'entry_options' => [
+                                'product_option' => $productOption,
+                            ],
+                        ]
+                    )
+                    ->addModelTransformer(new CallbackTransformer(
+                        function ($entities) {
+                            return $entities;
+                        },
+                        function ($dataTransferObjects) {
+                            $entities = [];
 
-                        /**
-                         * @var ProductOptionValueDependencyDataTransferObject $dataTransferObject
-                         */
-                        foreach ($dataTransferObjects as $dataTransferObject) {
-                            $entities = [...$entities, ...$dataTransferObject->values];
+                            /**
+                             * @var ProductOptionValueDependencyDataTransferObject $dataTransferObject
+                             */
+                            foreach ($dataTransferObjects as $dataTransferObject) {
+                                $entities = [...$entities, ...$dataTransferObject->values];
+                            }
+
+                            return $entities;
                         }
-
-                        return $entities;
-                    }
-                ))
-        );
+                    ))
+            );
 
         if ($productOption->isBetweenType()) {
-            $builder->add(
-                'start',
-                NumberType::class,
-                [
+            $builder
+                ->add('start', NumberType::class, [
                     'required' => true,
                     'label' => 'lbl.Start',
                     'scale' => 0,
-                ]
-            )->add(
-                'end',
-                NumberType::class,
-                [
+                ])
+                ->add('end', NumberType::class, [
                     'required' => true,
                     'label' => 'lbl.End',
                     'scale' => 0,
-                ]
-            );
+                ]);
         } else {
-            $builder->add(
-                'title',
-                TextType::class,
-                [
+            $builder
+                ->add('title', TextType::class, [
                     'required' => true,
                     'label' => 'lbl.Title',
-                ]
-            );
+                ]);
         }
 
         if ($productOption->isColorType()) {
-            $builder->add(
-                'hex_value',
-                TextType::class,
-                [
+            $builder
+                ->add('hex_value', TextType::class, [
                     'required' => false,
                     'label' => 'lbl.HTMLHexValue',
-                ]
-            )->add(
-                'image',
-                MediaGroupType::class,
-                [
+                ])
+                ->add('image', MediaGroupType::class, [
                     'required' => false,
                     'label' => 'lbl.Image',
                     'maximum_items' => 1,
-                ]
-            );
+                ]);
         }
 
         if ($productOption->getProduct()->usesDimensions()) {
-            $builder->add(
-                'width',
-                NumberType::class,
-                [
+            $builder
+                ->add('width', NumberType::class, [
                     'required' => false,
                     'label' => 'lbl.Width',
                     'scale' => 0,
-                ]
-            )->add(
-                'height',
-                NumberType::class,
-                [
+                ])
+                ->add('height', NumberType::class, [
                     'required' => false,
                     'label' => 'lbl.Height',
                     'scale' => 0,
-                ]
-            );
+                ]);
         }
     }
 

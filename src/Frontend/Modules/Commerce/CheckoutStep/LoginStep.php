@@ -21,7 +21,6 @@ class LoginStep extends Step
 {
     public static string $stepIdentifier = 'login';
     protected bool $reachable = true;
-    protected bool $showInBreadcrumbs = true;
     private Form $loginForm;
 
     public function init(): void

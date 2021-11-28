@@ -1,0 +1,37 @@
+<!-- Checkout cart summary -->
+<section aria-labelledby="cart-summary-heading" class="row-start-1 px-4 pb-10 mb-12 bg-gray-50 sm:px-6 lg:px-0 lg:pb-16 lg:bg-transparent lg:col-start-2 lg:my-0 ">
+    <div class="lg:sticky lg:top-4 lg:p-0">
+        <h2 id="summary-heading" class="mb-4 text-lg text-gray-600">{{ 'lbl.Summary'|trans|ucfirst }}</h2>
+
+        <!-- Cart items -->
+        <ul role="list" class="text-sm font-medium text-gray-900 divide-y divide-gray-200">
+            {% for value in cart.values %}
+                <li class="flex items-start py-6 space-x-4">
+                    <!-- Thumbnail -->
+                    <a href="{{ value.product.url }}" target="_blank">
+                        <img src="{{ (value.product.thumbnail.getWebPath()) | imagine_filter('product_thumbnail') }}" alt="{{ value.product.title }}" class="flex-none object-cover object-center w-20 h-20 rounded-md">
+                    </a>
+                    <div class="flex-auto space-y-1">
+                        <!-- Product Title -->
+                        <a href="{{ value.product.url }}" target="_blank">
+                            <h4>{{ value.product.title }}</h4>
+                        </a>
+
+                        <!-- Product information -->
+                        <p class="text-gray-500">{{ value.quantity }} x {{ value.price|format_money }}</p>
+                        <p class="text-gray-500">
+                            {{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</strong> {{ value.product.sku }}
+                            {% for option in value.cartValueOptions %}
+                                <strong>{{ option.name }}:</strong> {{ option.value }}
+                                {% if not loop.last %}<br/>{% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+
+                    <!-- Total price -->
+                    <p class="flex-none text-base font-medium">{{ value.total|format_money }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    </section>

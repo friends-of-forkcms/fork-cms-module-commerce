@@ -13,10 +13,8 @@ class FilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'category',
-            EntityType::class,
-            [
+        $builder
+            ->add('category', EntityType::class, [
                 'required' => false,
                 'label' => 'lbl.ShowOnlyProductsInCategory',
                 'placeholder' => 'lbl.None',
@@ -30,15 +28,11 @@ class FilterType extends AbstractType
 
                     return $prefix . $category->getTitle();
                 },
-            ]
-        )->add(
-            'sku',
-            TextType::class,
-            [
+            ])
+            ->add('sku', TextType::class, [
                 'required' => false,
-                'label' => 'lbl.FilterOnSku',
-            ]
-        );
+                'label' => 'lbl.ArticleNumber',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

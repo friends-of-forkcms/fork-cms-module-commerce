@@ -1,0 +1,22 @@
+{#
+    Button footer bar (previous/continue) that is displayed during checkout
+#}
+<div class="checkout-footer | py-10 my-20 border-t border-gray-200">
+    <ul class="flex items-center justify-between">
+        {% if showPrevious is not defined or showPrevious %}
+            <li><a href="{{ step.previousStep.url }}">&larr; {{ 'lbl.PreviousStep'|trans|ucfirst }}</a></li>
+        {% else %}
+            <li></li>
+        {% endif %}
+
+        <li>
+            <button type="submit" class="flex items-center justify-center w-full px-20 py-2 text-white bg-gray-800 hover:bg-gray-600">
+                {% if buttonLabel is defined %}
+                    {{ buttonLabel|trans|ucfirst }}
+                {% else %}
+                    {{ 'lbl.Continue'|trans|ucfirst }}
+                {% endif %}
+            </button>
+        </li>
+    </ul>
+</div>

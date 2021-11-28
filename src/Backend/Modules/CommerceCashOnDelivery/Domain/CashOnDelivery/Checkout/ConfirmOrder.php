@@ -1,10 +1,10 @@
 <?php
 
-namespace Backend\Modules\CommerceCashOnDelivery\Checkout;
+namespace Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Checkout;
 
 use Backend\Modules\Commerce\Domain\Order\Event\OrderCreated;
 use Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory;
-use Backend\Modules\Commerce\PaymentMethods\Base\Checkout\ConfirmOrder as BaseConfirmOrder;
+use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\ConfirmOrder as BaseConfirmOrder;
 
 class ConfirmOrder extends BaseConfirmOrder
 {

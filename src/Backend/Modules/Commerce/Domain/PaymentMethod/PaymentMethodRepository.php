@@ -30,18 +30,20 @@ class PaymentMethodRepository extends EntityRepository
         return $paymentMethod;
     }
 
-    public function findEnabledPaymentMethodNames(Locale $locale): array
+    /**
+     * @param Locale $locale
+     * @return array<int, PaymentMethod>
+     */
+    public function findEnabledPaymentMethods(Locale $locale): array
     {
-        $result = $this
+        return $this
                     ->createQueryBuilder('i')
-                    ->select('i.name')
+                    ->select('i')
                     ->andWhere('i.locale = :locale')
                     ->andWhere('i.isEnabled = :isEnabled')
                     ->setParameter('locale', $locale)
                     ->setParameter('isEnabled', true)
                     ->getQuery()
-                    ->getScalarResult();
-
-        return array_column($result, 'name');
+                    ->getResult();
     }
 }

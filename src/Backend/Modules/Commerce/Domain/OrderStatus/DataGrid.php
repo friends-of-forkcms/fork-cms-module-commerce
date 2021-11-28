@@ -44,7 +44,7 @@ class DataGrid extends DataGridDatabase
 
         return <<<HTML
 <svg fill="$color" viewBox="0 0 8 8" style="width: 8px; height: 8px; margin-right: 2px;">
-  <circle cx="4" cy="4" r="3"></circle>
+  <circle cx="4" cy="4" r="4"></circle>
 </svg>
 <a href="$editUrl" title="$title">$title</a>
 HTML;

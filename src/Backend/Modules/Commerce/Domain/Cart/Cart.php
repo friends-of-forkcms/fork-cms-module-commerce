@@ -18,6 +18,7 @@ use Frontend\Core\Language\Locale;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JsonSerializable;
 use Money\Currencies\ISOCurrencies;
+use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 
@@ -260,7 +261,19 @@ class Cart implements JsonSerializable
 
     public function getShipmentMethodData(): ?array
     {
-        return $this->shipment_method_data;
+        $shipmentMethodData = $this->shipment_method_data;
+
+        // Make sure to return actual Money objects! These get lost when storing JSON in the db.
+        if (is_array($shipmentMethodData['price'])) {
+            ['amount' => $amount, 'currency' => $currency] = $shipmentMethodData['price'];
+            $shipmentMethodData['price'] = new Money($amount, new Currency($currency));
+        }
+        if (is_array($shipmentMethodData['vat']['price'])) {
+            ['amount' => $amount, 'currency' => $currency] = $shipmentMethodData['vat']['price'];
+            $shipmentMethodData['vat']['price'] = new Money($amount, new Currency($currency));
+        }
+
+        return $shipmentMethodData;
     }
 
     public function setShipmentMethodData(?array $shipment_method_data): void
@@ -413,8 +426,12 @@ class Cart implements JsonSerializable
         // Store the shipment data
         if (isset($this->shipment_method)) {
             $shipmentMethodData = $this->getShipmentMethodData();
-            $this->total = $this->total->add($shipmentMethodData['price'] + $shipmentMethodData['vat']['price']);
-            $this->addVat($shipmentMethodData['vat']['id'], $shipmentMethodData['vat']['price']);
+            /** @var Money $shipmentPrice */
+            $shipmentPrice = $shipmentMethodData['price'];
+            /** @var Money $shipmentVatPrice */
+            $shipmentVatPrice = $shipmentMethodData['vat']['price'];
+            $this->total = $this->total->add($shipmentPrice, $shipmentVatPrice);
+            $this->addVat($shipmentMethodData['vat']['id'], $shipmentVatPrice);
         }
     }
 

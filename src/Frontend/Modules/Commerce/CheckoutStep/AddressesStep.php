@@ -22,21 +22,8 @@ use Symfony\Component\Validator\Constraints\Required;
 class AddressesStep extends Step
 {
     public static string $stepIdentifier = 'addresses';
-
-    /**
-     * @var Form
-     */
-    private $form;
-
-    /**
-     * @var Form
-     */
-    private $addressForm;
-
-    /**
-     * @var OrderAddress
-     */
-    private $address;
+    private Form $form;
+    private OrderAddress $address;
 
     public function init(): void
     {
@@ -67,7 +54,7 @@ class AddressesStep extends Step
         }
 
         if ($this->getRequest()->query->has('add') || $this->getRequest()->query->has('edit')) {
-            $this->addressForm = $this->handleAddressForm($this->getAddressForm());
+            $this->handleAddressForm($this->getAddressForm());
 
             return;
         }
@@ -87,13 +74,14 @@ class AddressesStep extends Step
     {
         if ($this->getRequest()->query->has('add') || $this->getRequest()->query->has('edit')) {
             $this->template->assign('form', $this->getAddressForm()->createView());
-            $this->template->assign('address', $this->address);
+            $this->template->assign('address', $this->address ?? null);
             $this->template->assign('step', $this);
+            $this->templatePath = 'Commerce/Layout/Templates/Checkout/Step/AddressForm.html.twig';
 
-            return $this->template->getContent('Commerce/Layout/Templates/Checkout/Step/AddressForm.html.twig');
-        } else {
-            $this->template->assign('form', $this->form->createView());
+            return parent::render();
         }
+
+        $this->template->assign('form', $this->form->createView());
 
         return parent::render();
     }
@@ -143,10 +131,8 @@ class AddressesStep extends Step
 
     private function getForm(): Form
     {
-        $form = $this->createFormBuilder($this->getFormData())->add(
-            'shipment_address',
-            EntityType::class,
-            [
+        $form = $this->createFormBuilder($this->getFormData())
+            ->add('shipment_address', EntityType::class, [
                 'class' => OrderAddress::class,
                 'label' => 'lbl.ShipmentAddress',
                 'choice_label' => function (OrderAddress $address) {
@@ -158,12 +144,10 @@ class AddressesStep extends Step
                 'constraints' => [new Required(), new NotBlank()],
                 'attr' => [
                     'edit_link' => $this->getUrl() . '?edit=',
+                    'add_link' => $this->getUrl() . '?add',
                 ],
-            ]
-        )->add(
-            'invoice_address',
-            EntityType::class,
-            [
+            ])
+            ->add('invoice_address', EntityType::class, [
                 'class' => OrderAddress::class,
                 'label' => 'lbl.InvoiceAddress',
                 'choice_label' => function (OrderAddress $address) {
@@ -175,15 +159,12 @@ class AddressesStep extends Step
                 'attr' => [
                     'edit_link' => $this->getUrl() . '?edit=',
                 ],
-            ]
-        )->add(
-            'same_invoice_address',
-            CheckboxType::class,
-            [
+            ])
+            ->add('same_invoice_address', CheckboxType::class, [
                 'required' => false,
                 'label' => 'lbl.SameInvoiceAddress',
-            ]
-        )->getForm();
+            ])
+            ->getForm();
 
         // Assign current request to form
         $form->handleRequest($this->getRequest());
@@ -221,7 +202,7 @@ class AddressesStep extends Step
     {
         $addressData = new CreateOrderAddress();
 
-        if ($this->address) {
+        if (isset($this->address)) {
             $addressData = new UpdateOrderAddress($this->address);
         }
 

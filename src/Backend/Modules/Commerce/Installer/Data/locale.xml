@@ -1099,6 +1099,38 @@
         <translation language="nl"><![CDATA[winkelinstellingen]]></translation>
         <translation language="en"><![CDATA[shop settings]]></translation>
       </item>
+      <item type="label" name="Today">
+        <translation language="nl"><![CDATA[vandaag]]></translation>
+        <translation language="en"><![CDATA[today]]></translation>
+      </item>
+      <item type="label" name="Yesterday">
+        <translation language="nl"><![CDATA[gisteren]]></translation>
+        <translation language="en"><![CDATA[yesterday]]></translation>
+      </item>
+      <item type="label" name="Last7Days">
+        <translation language="nl"><![CDATA[laatste 7 dagen]]></translation>
+        <translation language="en"><![CDATA[last 7 days]]></translation>
+      </item>
+      <item type="label" name="Last30Days">
+        <translation language="nl"><![CDATA[laatste 30 dagen]]></translation>
+        <translation language="en"><![CDATA[last 30 days]]></translation>
+      </item>
+      <item type="label" name="ThisMonth">
+        <translation language="nl"><![CDATA[deze maand]]></translation>
+        <translation language="en"><![CDATA[this month]]></translation>
+      </item>
+      <item type="label" name="LastMonth">
+        <translation language="nl"><![CDATA[vorige maand]]></translation>
+        <translation language="en"><![CDATA[last month]]></translation>
+      </item>
+      <item type="label" name="Cancel">
+        <translation language="nl"><![CDATA[annuleer]]></translation>
+        <translation language="en"><![CDATA[cancel]]></translation>
+      </item>
+      <item type="label" name="Apply">
+        <translation language="nl"><![CDATA[toepassen]]></translation>
+        <translation language="en"><![CDATA[apply]]></translation>
+      </item>
     </Commerce>
     <Core>
       <item type="label" name="Commerce">
@@ -1120,6 +1152,10 @@
       <item type="label" name="EditOrder">
         <translation language="nl"><![CDATA[bewerk bestelling]]></translation>
         <translation language="en"><![CDATA[edit order]]></translation>
+      </item>
+      <item type="label" name="EditCountry">
+        <translation language="nl"><![CDATA[bewerk land]]></translation>
+        <translation language="en"><![CDATA[edit country]]></translation>
       </item>
       <item type="label" name="GoogleSiteSearch">
         <translation language="nl"><![CDATA[google site search]]></translation>
@@ -1474,6 +1510,10 @@
         <translation language="nl"><![CDATA[afrekenen]]></translation>
         <translation language="en"><![CDATA[checkout]]></translation>
       </item>
+      <item type="label" name="TermsAndConditions">
+        <translation language="nl"><![CDATA[algemene voorwaarden]]></translation>
+        <translation language="en"><![CDATA[terms and conditions]]></translation>
+      </item>
       <item type="label" name="IAcceptTermsAndConditions">
         <translation language="nl"><![CDATA[ik ga akkoord met de <a href="/algemene-voorwaarden" target="_blank">algemene voorwaarden</a>.]]></translation>
         <translation language="en"><![CDATA[i accept the <a href="/terms-and-conditions" target="_blank">terms and conditions</a>.]]></translation>
@@ -1609,6 +1649,10 @@
       <item type="label" name="OrderCancelled">
         <translation language="nl"><![CDATA[bestelling geannuleerd]]></translation>
         <translation language="en"><![CDATA[order cancelled]]></translation>
+      </item>
+      <item type="label" name="OrderCompleted">
+        <translation language="nl"><![CDATA[order afgerond]]></translation>
+        <translation language="en"><![CDATA[order completed]]></translation>
       </item>
       <item type="message" name="OrderThanksText">
         <translation language="nl"><![CDATA[Bedankt voor uw bestelling. Hieronder vind u een overzicht van de bestelgegevens. Bij vragen kunt u altijd antwoorden op deze email of bel ons.]]></translation>
@@ -1903,8 +1947,8 @@
         <translation language="en"><![CDATA[summary]]></translation>
       </item>
       <item type="label" name="AddAddress">
-        <translation language="nl"><![CDATA[adres toevoegen]]></translation>
-        <translation language="en"><![CDATA[add address]]></translation>
+        <translation language="nl"><![CDATA[voeg nieuw adres toe]]></translation>
+        <translation language="en"><![CDATA[add a new address]]></translation>
       </item>
       <item type="label" name="MyOrders">
         <translation language="nl"><![CDATA[mijn bestellingen]]></translation>
@@ -1934,6 +1978,10 @@
         <translation language="nl"><![CDATA[bekijken]]></translation>
         <translation language="en"><![CDATA[view]]></translation>
       </item>
+      <item type="label" name="Addresses">
+        <translation language="nl"><![CDATA[adressen]]></translation>
+        <translation language="en"><![CDATA[addresses]]></translation>
+      </item>
       <item type="label" name="MyAddresses">
         <translation language="nl"><![CDATA[mijn adressen]]></translation>
         <translation language="en"><![CDATA[my addresses]]></translation>
@@ -1949,6 +1997,14 @@
       <item type="label" name="AddAddress">
         <translation language="nl"><![CDATA[adres toevoegen]]></translation>
         <translation language="en"><![CDATA[add address]]></translation>
+      </item>
+      <item type="message" name="AddNewAddress">
+        <translation language="nl"><![CDATA[voeg nieuw adres toe]]></translation>
+        <translation language="en"><![CDATA[add a new address]]></translation>
+      </item>
+      <item type="message" name="EditAddress">
+        <translation language="nl"><![CDATA[bewerk een adres]]></translation>
+        <translation language="en"><![CDATA[edit an address]]></translation>
       </item>
       <item type="label" name="YourCompanyName">
         <translation language="nl"><![CDATA[jouw bedrijfsnaam]]></translation>

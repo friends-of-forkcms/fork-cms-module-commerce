@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Money;
 
 /**
  * @ORM\Table(name="commerce_orders")
@@ -63,9 +64,9 @@ class Order
     private string $shipment_method;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $shipment_price;
+    private Money $shipment_price;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -128,14 +129,14 @@ class Order
     private Collection $history;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $sub_total;
+    private Money $sub_total;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Embedded(class="\Money\Money")
      */
-    private float $total;
+    private Money $total;
 
     private function __construct(
         Account $account,
@@ -143,21 +144,21 @@ class Order
         DateTimeInterface $createdOn,
         string $paymentMethod,
         string $shipment_method,
-        string $shipment_price,
+        Money $shipment_price,
         ?string $comment,
-        float $sub_total,
-        float $total,
+        Money $sub_total,
+        Money $total,
         OrderAddress $invoiceAddress,
         OrderAddress $shipmentAddress,
         ArrayCollection $rules,
         ArrayCollection $products,
         ArrayCollection $vats,
         ?string $invoiceNumber,
-        ?DateTime $invoiceDate
+        ?DateTimeInterface $invoiceDate
     ) {
         $this->account = $account;
         $this->cart = $cart;
-        $this->$createdOn = $createdOn;
+        $this->createdOn = $createdOn;
         $this->payment_method = $paymentMethod;
         $this->shipment_method = $shipment_method;
         $this->shipment_price = $shipment_price;
@@ -239,7 +240,7 @@ class Order
         return $this->shipment_method;
     }
 
-    public function getShipmentPrice(): ?string
+    public function getShipmentPrice(): ?Money
     {
         return $this->shipment_price;
     }
@@ -254,12 +255,12 @@ class Order
         return $this->createdOn;
     }
 
-    public function getSubTotal(): float
+    public function getSubTotal(): Money
     {
         return $this->sub_total;
     }
 
-    public function getTotal(): float
+    public function getTotal(): Money
     {
         return $this->total;
     }
@@ -312,7 +313,7 @@ class Order
 
         $order->account = $dataTransferObject->account;
         $order->cart = $dataTransferObject->cart;
-        $order->date = $dataTransferObject->createdOn;
+        $order->createdOn = $dataTransferObject->createdOn;
         $order->total = $dataTransferObject->total;
         $order->invoice_number = $dataTransferObject->invoiceNumber;
         $order->invoice_date = $dataTransferObject->invoiceDate;

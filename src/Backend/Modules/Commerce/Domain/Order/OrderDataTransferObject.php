@@ -13,6 +13,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Money\Money;
 
 class OrderDataTransferObject
 {
@@ -22,11 +23,11 @@ class OrderDataTransferObject
     public ?Cart $cart = null;
     public ?string $paymentMethod = null;
     public string $shipment_method;
-    public ?string $shipment_price = null;
+    public ?Money $shipment_price = null;
     public DateTimeInterface $createdOn;
     public ?string $comment = null;
-    public float $sub_total;
-    public float $total;
+    public Money $sub_total;
+    public Money $total;
     public ?string $invoiceNumber = null;
     public ?DateTimeInterface $invoiceDate = null;
     public OrderAddress $invoiceAddress;

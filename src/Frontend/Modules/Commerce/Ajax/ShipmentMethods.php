@@ -129,7 +129,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
          * @var ShipmentMethodRepository $shipmentMethodRepository
          */
         $shipmentMethodRepository = $this->get('commerce.repository.shipment_method');
-        $availableShipmentMethods = $shipmentMethodRepository->findInstalledShipmentMethods(Locale::frontendLanguage());
+        $availableShipmentMethods = $shipmentMethodRepository->findEnabledShipmentMethods(Locale::frontendLanguage());
         $cart = $this->getActiveCart();
 
         $shipmentMethods = [];

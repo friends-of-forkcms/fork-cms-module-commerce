@@ -1,5 +1,17 @@
-<h1>Bestelling afgerond</h1>
-<p>Bedankt voor uw bestelling. We brengen u op de hoogte zodra er wijzigingen zijn.</p>
+{#
+    The OrderPlacedStep is shown when the order is completed and we say thanks.
+#}
+
+<div class="pb-20 mx-auto max-w-7xl lg:px-8">
+    <h2 class="mb-4 text-lg text-gray-600">
+        {{ 'lbl.OrderCompleted'|trans|ucfirst }}
+    </h2>
+    <p>
+        {{ 'lbl.ThankYouForYourOrder'|trans|ucfirst }}
+    </p>
+</div>
+
+{# prettier-ignore #}
 <script type="text/javascript">
   function updateCart() {
     if (typeof ga === 'undefined') {
@@ -15,14 +27,14 @@
       'name': '{{ value.product.title }}',
       'category': '{{ value.product.category.title }}',
       'brand': '{{ value.product.brand.title }}',
-      'price': '{{ value.price }}',
+      'price': '{{ value.price|format_money_decimal }}',
       'quantity': {{ value.quantity }}
     });
     {% endfor %}
 
     ga('ec:setAction', 'purchase', {
       id: '{{ cart.order.id }}',
-      revenue: '{{ cart.total }}',
+      revenue: '{{ cart.total|format_money_decimal }}',
       tax: '{{ cart.vatTotals }}',
       shipping: '0.00'
     });

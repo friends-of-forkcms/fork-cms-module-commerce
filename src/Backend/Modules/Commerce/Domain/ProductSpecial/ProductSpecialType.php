@@ -13,31 +13,23 @@ class ProductSpecialType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            $builder->create(
-                'price',
-                MoneyType::class,
-                [
-                    'required' => true,
-                    'label' => 'lbl.Price',
-                ]
+        $builder
+            ->add(
+                $builder
+                    ->create('price', MoneyType::class, [
+                        'required' => true,
+                        'label' => 'lbl.Price',
+                    ])
+                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
             )
-            ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-        )->add(
-            'start_date',
-            DateType::class,
-            [
+            ->add('start_date', DateType::class, [
                 'required' => true,
                 'label' => 'lbl.StartDate',
-            ]
-        )->add(
-            'end_date',
-            DateType::class,
-            [
+            ])
+            ->add('end_date', DateType::class, [
                 'required' => false,
                 'label' => 'lbl.EndDate',
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

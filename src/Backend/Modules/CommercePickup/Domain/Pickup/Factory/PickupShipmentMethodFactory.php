@@ -31,7 +31,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  *
  * @codeCoverageIgnore
  */
-final class PickupFactory extends ModelFactory
+final class PickupShipmentMethodFactory extends ModelFactory
 {
     /**
      * Our entities use private properties, no setters and a private constructor. Therefore, we have to use a DTO

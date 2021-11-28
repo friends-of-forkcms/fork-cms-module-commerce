@@ -14,16 +14,12 @@ class SpecificationValueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'value',
-            TextType::class,
-            [
+        $builder
+            ->add('value', TextType::class, [
                 'required' => true,
                 'label' => 'lbl.Title',
-            ]
-        )->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $event->getForm()->add(
                     'meta',
                     MetaType::class,
@@ -38,8 +34,7 @@ class SpecificationValueType extends AbstractType
                         ],
                     ]
                 );
-            }
-        );
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

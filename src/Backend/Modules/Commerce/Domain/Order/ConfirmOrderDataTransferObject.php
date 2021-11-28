@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ConfirmOrderDataTransferObject
 {
     /**
-     * @Assert\NotBlank(message="err.FieldIsRequired")
+     * @Assert\IsTrue (message="err.FieldIsRequired")
      */
-    public string $accept_terms_and_conditions;
+    public bool $accept_terms_and_conditions = false;
 }
