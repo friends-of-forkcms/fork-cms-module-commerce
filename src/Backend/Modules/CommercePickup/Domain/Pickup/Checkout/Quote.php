@@ -27,7 +27,7 @@ class Quote extends ShipmentMethodQuote
 
         return [
             $this->name => [
-                'label' => $this->name . ' (' . $moneyFormatter->format($price) . ')',
+                'label' => "{$this->name} ({$moneyFormatter->format($price)}",
                 'name' => $this->name,
                 'price' => $price,
                 'vat' => $this->getVatPrice($price),
