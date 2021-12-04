@@ -3,7 +3,6 @@
 namespace Backend\Modules\CommercePickup\Tests\Actions;
 
 use Backend\Core\Tests\BackendWebTestCase;
-use Backend\Modules\Commerce\Domain\OrderStatus\Factory\OrderStatusFactory;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Factory\PaymentMethodFactory;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
 use Backend\Modules\Extensions\Engine\Model as BackendExtensionsModel;
