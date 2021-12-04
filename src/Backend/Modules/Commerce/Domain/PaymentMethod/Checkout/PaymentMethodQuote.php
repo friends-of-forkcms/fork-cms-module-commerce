@@ -36,6 +36,9 @@ abstract class PaymentMethodQuote
         );
     }
 
+    /**
+     * Check that - based on the shipment method - this is a valid payment method to proceed with.
+     */
     protected function isAllowedPaymentMethod(): bool
     {
         $shipmentMethod = $this->getShipmentMethod();
