@@ -3,7 +3,6 @@
 namespace Backend\Modules\CommercePickup\Domain\Pickup\Factory;
 
 use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethod;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\ShipmentMethodRepository;
 use Backend\Modules\CommercePickup\Domain\Pickup\PickupShipmentMethodDataTransferObject;

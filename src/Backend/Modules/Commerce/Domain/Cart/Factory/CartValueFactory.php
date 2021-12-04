@@ -2,28 +2,10 @@
 
 namespace Backend\Modules\Commerce\Domain\Cart\Factory;
 
-use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Cart\CartValue;
 use Backend\Modules\Commerce\Domain\Cart\CartValueRepository;
-use Backend\Modules\Commerce\Domain\Category\Category;
-use Backend\Modules\Commerce\Domain\Category\CategoryDataTransferObject;
-use Backend\Modules\Commerce\Domain\Category\Image;
-use Backend\Modules\Commerce\Domain\Cart\Cart;
-use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\Product\Factory\ProductFactory;
-use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
-use Backend\Modules\Commerce\Domain\StockStatus\StockStatusDataTransferObject;
-use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\Domain\Vat\VatDataTransferObject;
-use Common\Doctrine\Entity\Meta;
-use Common\Doctrine\ValueObject\SEOFollow;
-use Common\Doctrine\ValueObject\SEOIndex;
-use Common\Uri;
-use DateTime;
-use DateTimeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Money\Money;
-use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;

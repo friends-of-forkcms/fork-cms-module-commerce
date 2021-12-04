@@ -3,7 +3,6 @@
 namespace Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Factory;
 
 use Backend\Core\Language\Locale;
-use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\CashOnDeliveryPaymentMethodDataTransferObject;
