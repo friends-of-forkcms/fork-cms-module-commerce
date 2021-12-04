@@ -1,3 +1,4 @@
+# https://github.com/doctrine-extensions/DoctrineExtensions/blob/main/doc/symfony2.md#doctrine-extension-listener-services
 services:
   gedmo.listener.timestampable:
     class: Gedmo\Timestampable\TimestampableListener
@@ -12,3 +13,11 @@ services:
       - { name: doctrine.event_subscriber, connection: default }
     calls:
       - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+
+  gedmo.listener.sortable:
+    class: Gedmo\Sortable\SortableListener
+    tags:
+        - { name: doctrine.event_subscriber, connection: default }
+    calls:
+        - [ setAnnotationReader, [ "@annotation_reader" ] ]

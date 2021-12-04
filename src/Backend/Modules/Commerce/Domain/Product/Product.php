@@ -55,6 +55,7 @@ class Product
     private ?Meta $meta;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Category\Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -149,6 +150,7 @@ class Product
     private $cart_values;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
@@ -284,6 +286,7 @@ class Product
     protected ?MediaGroup $downloads;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
     private ?int $sequence;
@@ -334,7 +337,7 @@ class Product
         string $summary,
         ?string $text,
         ?string $dimension_instructions,
-        int $sequence,
+        ?int $sequence,
         MediaGroup $images,
         MediaGroup $downloads,
         $specification_values,
