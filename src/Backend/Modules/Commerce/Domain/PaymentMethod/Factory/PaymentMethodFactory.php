@@ -49,6 +49,11 @@ final class PaymentMethodFactory extends ModelFactory
         ];
     }
 
+    public function isCashOnDelivery(): self
+    {
+        return $this->addState(['name' => 'Cash on delivery', 'module' => 'CommerceCashOnDelivery']);
+    }
+
     protected static function getClass(): string
     {
         return PaymentMethod::class;

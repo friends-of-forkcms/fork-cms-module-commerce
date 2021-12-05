@@ -25,7 +25,7 @@ final class CartValueFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'product' => ProductFactory::new(),
+            'product' => ProductFactory::new()->withVat(0.21),
             'quantity' => self::faker()->numberBetween(1, 10),
             'total' => Money::EUR((string) self::faker()->randomFloat(2, 1, 1000) * 100),
         ];

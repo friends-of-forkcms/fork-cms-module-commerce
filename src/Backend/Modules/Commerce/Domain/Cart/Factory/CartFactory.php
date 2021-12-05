@@ -27,11 +27,8 @@ final class CartFactory extends ModelFactory
         return [
             'shipment_address' => OrderAddressFactory::new(),
             'values' => CartValueFactory::new()->many(self::faker()->numberBetween(1, 5)),
-            'total_quantity' => self::faker()->numberBetween(1, 10),
             'ip' => self::faker()->ipv4(),
-            'session_id' => self::faker()->uuid(),
-            'createdOn' => new DateTime(),
-            'editedOn' => new DateTime(),
+            'session_id' => self::faker()->uuid()
         ];
     }
 

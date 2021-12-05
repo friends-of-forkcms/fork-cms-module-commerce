@@ -122,15 +122,11 @@ final class ProductFactory extends ModelFactory
         return $this->addState(['price' => Money::EUR($moneyTransformer->reverseTransform($price))]);
     }
 
-    public function withVat(float $percentage): self
+    public function withVat(float $percentage, int $id = 1): self
     {
-        $vatDTO = new VatDataTransferObject();
-        $vatDTO->title = "$percentage %";
-        $vatDTO->percentage = $percentage;
-        $vatDTO->sequence = 1;
-        $vatDTO->locale = Locale::fromString('en');
-
-        return $this->addState(['vat' => Vat::fromDataTransferObject($vatDTO)]);
+        $vat = VatFactory::new()->withPercentage($percentage)->create();
+        $vat->forceSet('id', $id); // ID is a private property, but we need to set it to a value
+        return $this->addState(['vat' => $vat]);
     }
 
     public function withNewSpecial(

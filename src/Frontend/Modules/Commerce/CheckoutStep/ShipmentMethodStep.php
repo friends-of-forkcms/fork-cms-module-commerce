@@ -2,6 +2,7 @@
 
 namespace Frontend\Modules\Commerce\CheckoutStep;
 
+use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\CheckoutShipmentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\CheckoutShipmentMethodType;
@@ -112,6 +113,7 @@ class ShipmentMethodStep extends Step
      */
     private function getShipmentMethods(): array
     {
+        $commerceModuleSettingsRepository = new CommerceModuleSettingsRepository($this->get('fork.settings'), Locale::frontendLanguage());
         /** @var ShipmentMethodRepository $shipmentMethodRepository */
         $shipmentMethodRepository = $this->get('commerce.repository.shipment_method');
         $availableShipmentMethods = $shipmentMethodRepository->findEnabledShipmentMethods(Locale::frontendLanguage());
@@ -121,7 +123,12 @@ class ShipmentMethodStep extends Step
             $quoteClassName = $this->getShipmentMethodQuoteClass($shipmentMethod->getModule());
 
             /** @var ShipmentMethodQuote $class */
-            $class = new $quoteClassName($shipmentMethod->getName(), $this->cart, $this->cart->getShipmentAddress());
+            $class = new $quoteClassName(
+                $shipmentMethod->getName(),
+                $this->cart,
+                $this->cart->getShipmentAddress(),
+                $commerceModuleSettingsRepository
+            );
             foreach ($class->getQuote() as $key => $options) {
                 $shipmentMethods[$shipmentMethod->getModule() . '.' . $key] = $options;
             }

@@ -42,9 +42,9 @@ final class PickupShipmentMethodFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'name' => 'Pickup in the store',
+            'name' => 'Pickup shipment',
             'isEnabled' => true,
-            'vatId' => "",
+            'vatId' => 1,
         ];
     }
 

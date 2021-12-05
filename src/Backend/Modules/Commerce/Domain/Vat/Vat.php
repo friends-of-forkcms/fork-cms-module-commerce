@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
+use RuntimeException;
 
 /**
  * @ORM\Table(name="commerce_vats")

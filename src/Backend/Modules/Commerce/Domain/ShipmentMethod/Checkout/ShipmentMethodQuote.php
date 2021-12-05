@@ -21,16 +21,17 @@ abstract class ShipmentMethodQuote
     protected ?Locale $language;
     protected CommerceModuleSettingsRepository $shipmentMethodSettingsRepository;
 
-    public function __construct(string $name, Cart $cart, OrderAddress $address)
-    {
+    public function __construct(
+        string $name,
+        Cart $cart,
+        OrderAddress $address,
+        CommerceModuleSettingsRepository $commerceModuleSettingsRepository
+    ) {
         $this->name = $name;
         $this->cart = $cart;
         $this->address = $address;
         $this->language = Locale::frontendLanguage();
-        $this->shipmentMethodSettingsRepository = new CommerceModuleSettingsRepository(
-            Model::get('fork.settings'),
-            Locale::frontendLanguage()
-        );
+        $this->shipmentMethodSettingsRepository = $commerceModuleSettingsRepository;
     }
 
     /**
@@ -42,12 +43,4 @@ abstract class ShipmentMethodQuote
      * Calculate the vat price based on the given price.
      */
     abstract protected function getVatPrice(Money $price): array;
-
-    /**
-     * Get the vat repository.
-     */
-    protected function getVatRepository(): VatRepository
-    {
-        return Model::get('commerce.repository.vat');
-    }
 }

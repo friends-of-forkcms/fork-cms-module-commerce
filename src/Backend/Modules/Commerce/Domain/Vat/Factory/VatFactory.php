@@ -54,6 +54,14 @@ final class VatFactory extends ModelFactory
         ];
     }
 
+    public function withPercentage(float $percentage): self
+    {
+        return $this->addState([
+            'title' => $percentage . '%',
+            'percentage' => $percentage,
+        ]);
+    }
+
     protected static function getClass(): string
     {
         return Vat::class;

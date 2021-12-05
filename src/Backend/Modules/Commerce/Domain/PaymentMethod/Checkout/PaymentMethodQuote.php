@@ -24,16 +24,13 @@ abstract class PaymentMethodQuote
     protected ModulesSettings $settings;
     protected CommerceModuleSettingsRepository $commerceModuleSettingsRepository;
 
-    public function __construct(string $name, Cart $cart, OrderAddress $address)
+    public function __construct(string $name, Cart $cart, OrderAddress $address, $commerceModuleSettingsRepository)
     {
         $this->name = $name;
         $this->cart = $cart;
         $this->address = $address;
         $this->language = Locale::frontendLanguage();
-        $this->commerceModuleSettingsRepository = new CommerceModuleSettingsRepository(
-            Model::get('fork.settings'),
-            Locale::frontendLanguage()
-        );
+        $this->commerceModuleSettingsRepository = $commerceModuleSettingsRepository;
     }
 
     /**
@@ -70,7 +67,12 @@ abstract class PaymentMethodQuote
         }
 
         /** @var ShipmentMethodQuote $class */
-        $class = new $quoteClassName($optionName, $this->cart, $this->cart->getShipmentAddress());
+        $class = new $quoteClassName(
+            $optionName,
+            $this->cart,
+            $this->cart->getShipmentAddress(),
+            $this->commerceModuleSettingsRepository
+        );
 
         return $class->getQuote()[$optionName];
     }
