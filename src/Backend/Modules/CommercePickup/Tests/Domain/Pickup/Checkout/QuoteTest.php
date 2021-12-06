@@ -40,7 +40,7 @@ class QuoteTest extends TestCase
         $container
             ->method('get')
             ->willReturnMap([
-                ['fork.settings', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $forkSettings]
+                ['fork.settings', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $forkSettings],
             ]);
         BaseModel::setContainer($container);
     }
@@ -69,7 +69,7 @@ class QuoteTest extends TestCase
                 'price' => Money::EUR(0),
                 'vat' => ['id' => 1, 'price' => Money::EUR(0)],
                 'available_payment_methods' => new ArrayCollection([$paymentMethod]),
-            ]
+            ],
         ], $checkoutQuote->getQuote());
     }
 
@@ -99,7 +99,7 @@ class QuoteTest extends TestCase
             ->getMock();
         $commerceModuleSettingsRepositoryMock
             ->method('getSetting')
-            ->willReturnCallback(function($moduleName, $property) use ($availablePaymentMethods, $price, $vat) {
+            ->willReturnCallback(function ($moduleName, $property) use ($availablePaymentMethods, $price, $vat) {
                 switch ($property) {
                     case 'availablePaymentMethods':
                         return $availablePaymentMethods;
@@ -109,6 +109,7 @@ class QuoteTest extends TestCase
                         return $vat;
                 }
             });
+
         return $commerceModuleSettingsRepositoryMock;
     }
 }
