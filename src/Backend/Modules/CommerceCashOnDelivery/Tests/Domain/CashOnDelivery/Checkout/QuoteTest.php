@@ -10,6 +10,7 @@ use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Checkout\Quote;
+use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Factory\CashOnDeliveryPaymentMethodFactory;
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
 use ForkCMS\App\BaseModel;
@@ -67,7 +68,7 @@ class QuoteTest extends TestCase
     public function it_returns_a_quote_if_payment_is_allowed_based_on_shipment_method(): void
     {
         /** @var PaymentMethod $paymentMethod */
-        $paymentMethod = PaymentMethodFactory::new()->isCashOnDelivery()->create()->object();
+        $paymentMethod = CashOnDeliveryPaymentMethodFactory::new()->create()->object();
         /** @var Cart $cart */
         $cart = CartFactory::new()->create(['shipment_method' => 'CommercePickup.Pickup shipment'])->object();
         $address = $cart->getShipmentAddress();

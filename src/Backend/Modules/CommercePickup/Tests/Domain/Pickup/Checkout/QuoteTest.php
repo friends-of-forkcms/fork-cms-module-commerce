@@ -10,6 +10,7 @@ use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Factory\CashOnDeliveryPaymentMethodFactory;
 use Backend\Modules\CommercePickup\Domain\Pickup\Checkout\Quote;
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,7 +50,7 @@ class QuoteTest extends TestCase
     public function it_returns_a_quote_for_a_pickup_shipment(): void
     {
         /** @var PaymentMethod $paymentMethod */
-        $paymentMethod = PaymentMethodFactory::new()->isCashOnDelivery()->create()->object();
+        $paymentMethod = CashOnDeliveryPaymentMethodFactory::new()->create()->object();
         /** @var Cart $cart */
         $cart = CartFactory::new()->create()->object();
         $address = $cart->getShipmentAddress();
