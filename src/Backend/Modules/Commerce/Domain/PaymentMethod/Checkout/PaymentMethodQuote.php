@@ -7,7 +7,6 @@ use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
-use Common\Core\Model;
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
 use Frontend\Core\Language\Locale;

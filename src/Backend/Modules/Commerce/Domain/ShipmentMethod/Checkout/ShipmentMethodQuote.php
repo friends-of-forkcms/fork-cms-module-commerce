@@ -5,8 +5,6 @@ namespace Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
-use Backend\Modules\Commerce\Domain\Vat\VatRepository;
-use Common\Core\Model;
 use Frontend\Core\Language\Locale;
 use Money\Money;
 

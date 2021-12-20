@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Domain\Cart\Factory;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\Cart\CartRepository;
 use Backend\Modules\Commerce\Domain\OrderAddress\Factory\OrderAddressFactory;
-use DateTime;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -28,7 +27,7 @@ final class CartFactory extends ModelFactory
             'shipment_address' => OrderAddressFactory::new(),
             'values' => CartValueFactory::new()->many(self::faker()->numberBetween(1, 5)),
             'ip' => self::faker()->ipv4(),
-            'session_id' => self::faker()->uuid()
+            'session_id' => self::faker()->uuid(),
         ];
     }
 

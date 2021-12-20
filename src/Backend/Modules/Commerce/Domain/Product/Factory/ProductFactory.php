@@ -13,8 +13,6 @@ use Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatusDataTransferObject;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
-use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\Domain\Vat\VatDataTransferObject;
 use Common\Doctrine\Entity\Meta;
 use Common\Doctrine\ValueObject\SEOFollow;
 use Common\Doctrine\ValueObject\SEOIndex;
@@ -126,6 +124,7 @@ final class ProductFactory extends ModelFactory
     {
         $vat = VatFactory::new()->withPercentage($percentage)->create();
         $vat->forceSet('id', $id); // ID is a private property, but we need to set it to a value
+
         return $this->addState(['vat' => $vat]);
     }
 
