@@ -4,7 +4,6 @@ namespace Backend\Modules\CommerceCashOnDelivery\Tests\Domain\CashOnDelivery\Che
 
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\Cart\Factory\CartFactory;
-use Backend\Modules\Commerce\Domain\PaymentMethod\Factory\PaymentMethodFactory;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
