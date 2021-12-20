@@ -14,5 +14,5 @@ deploy:
   # Use envsubst to replace env values in our k8s files, e.g. for injecting the SITE_DOMAIN.
   - |
     export K8S_APP_NAME="preview-module-commerce"
-    export SITE_DOMAIN="https://${K8S_APP_NAME}-${OKTETO_NAMESPACE}.cloud.okteto.net"
+    export SITE_DOMAIN="${K8S_APP_NAME}-${OKTETO_NAMESPACE}.cloud.okteto.net"
     kustomize build ./k8s | envsubst | kubectl apply -f -
