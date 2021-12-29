@@ -20,7 +20,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @see: https://symfony.com/index.php/bundles/ZenstruckFoundryBundle/current/index.html
  * @codeCoverageIgnore
  */
-final class PaymentMethodFactory extends ModelFactory
+class PaymentMethodFactory extends ModelFactory
 {
     /**
      * Our entities use private properties, no setters and a private constructor. Therefore, we have to use a DTO
