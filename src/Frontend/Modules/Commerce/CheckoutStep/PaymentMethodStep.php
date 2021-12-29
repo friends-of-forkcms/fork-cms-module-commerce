@@ -7,6 +7,8 @@ use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\PaymentMethodQuote;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodDataTransferObject;
 use Backend\Modules\Commerce\Domain\PaymentMethod\CheckoutPaymentMethodType;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodRepository;
+use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
+use Common\Core\Model;
 use Common\Uri;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
@@ -114,13 +116,23 @@ class PaymentMethodStep extends Step
         /** @var PaymentMethodRepository $paymentMethodRepository */
         $paymentMethodRepository = $this->get('commerce.repository.payment_method');
         $availablePaymentMethods = $paymentMethodRepository->findEnabledPaymentMethods(Locale::frontendLanguage());
+        $commerceModuleSettingsRepository = new CommerceModuleSettingsRepository(
+            Model::get('fork.settings'),
+            Locale::frontendLanguage()
+        );
 
         $paymentMethods = [];
         foreach ($availablePaymentMethods as $paymentMethod) {
             $quoteClassName = $this->getPaymentMethodQuoteClass($paymentMethod->getModule());
 
             /** @var PaymentMethodQuote $class */
-            $class = new $quoteClassName($paymentMethod->getName(), $this->cart, $this->getPaymentAddress());
+            $class = new $quoteClassName(
+                $paymentMethod->getName(),
+                $this->cart,
+                $this->getPaymentAddress(),
+                $commerceModuleSettingsRepository,
+                $this->get('tbbc_money.formatter.money_formatter')
+            );
             foreach ($class->getQuote() as $key => $options) {
                 $paymentMethods[$paymentMethod->getModule() . '.' . $key] = $options;
             }

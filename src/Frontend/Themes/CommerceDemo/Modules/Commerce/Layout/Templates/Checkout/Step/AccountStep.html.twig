@@ -18,7 +18,7 @@
                 <div>{{ form_row(accountForm.first_name) }}</div>
                 <div>{{ form_row(accountForm.last_name) }}</div>
                 <div class="sm:col-span-2">{{ form_row(accountForm.company_name) }}</div>
-                <div class="sm:col-span-2">{{ form_row(accountForm.email_address) }}</div>
+                <div class="sm:col-span-2">{{ form_row(accountForm.email_address, {'attr' : {'autocomplete' : 'username'}}) }}</div>
                 <div>{{ form_row(accountForm.phone) }}</div>
             </div>
         </fieldset>
@@ -65,7 +65,9 @@
             <p class="small">({{ 'lbl.Optional'|trans|ucfirst }})</p>
 
             <div class="grid grid-cols-1 mt-4 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
-                <div class="space-y-6 sm:col-span-2">{{ form_row(accountForm.password) }}</div>
+                <div class="space-y-6 sm:col-span-2">
+                    {{ form_row(accountForm.password, {'attr' : {'autocomplete' : 'new-password'}}) }}
+                </div>
             </div>
         </fieldset>
 

@@ -13,21 +13,11 @@ use Zenstruck\Foundry\RepositoryProxy;
 /**
  * @extends ModelFactory<ShipmentMethod>
  *
- * @method static ShipmentMethod|Proxy createOne(array $attributes = [])
  * @method static ShipmentMethod[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static ShipmentMethod|Proxy find(object|array|mixed $criteria)
- * @method static ShipmentMethod|Proxy findOrCreate(array $attributes)
- * @method static ShipmentMethod|Proxy first(string $sortedField = 'id')
- * @method static ShipmentMethod|Proxy last(string $sortedField = 'id')
- * @method static ShipmentMethod|Proxy random(array $attributes = [])
- * @method static ShipmentMethod|Proxy randomOrCreate(array $attributes = []))
- * @method static ShipmentMethod[]|Proxy[] all()
- * @method static ShipmentMethod[]|Proxy[] findBy(array $attributes)
- * @method static ShipmentMethod[]|Proxy[] randomSet(int $number, array $attributes = []))
- * @method static ShipmentMethod[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static ShipmentMethodRepository|RepositoryProxy repository()
  * @method ShipmentMethod|Proxy create(array|callable $attributes = [])
  *
+ * @see: https://symfony.com/index.php/bundles/ZenstruckFoundryBundle/current/index.html
  * @codeCoverageIgnore
  */
 final class ShipmentMethodFactory extends ModelFactory

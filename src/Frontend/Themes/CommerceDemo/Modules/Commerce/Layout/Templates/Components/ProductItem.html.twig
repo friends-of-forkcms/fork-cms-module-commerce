@@ -27,7 +27,7 @@
             </a>
         </div>
         <p class="pt-1 text-gray-900 group-hover:opacity-0">
-            {{ product.price|format_money() }}
+            {{ product.price|money_localized_format }}
         </p>
         <div class="product-look-actions | absolute bottom-0 left-0 opacity-0 text-sm border-b border-gray-300 transition duration-200 ease-out group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 pb-1">
             <a href="{{ product.url }}" class="text-gray-900 transition-colors duration-200 hover:text-yellow-500">

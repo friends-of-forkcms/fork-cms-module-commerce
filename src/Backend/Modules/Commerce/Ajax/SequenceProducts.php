@@ -34,7 +34,7 @@ class SequenceProducts extends BackendBaseAJAXAction
         foreach ($ids as $i => $id) {
             // update sequence
             if ($product = $productRepository->findOneByIdAndLocale($id, Locale::workingLocale())) {
-                $updateProduct = new UpdateProduct($product);
+                $updateProduct = new UpdateProduct($product, Locale::workingLocale());
                 $updateProduct->sequence = $offset + $i + 1;
 
                 $this->get('command_bus')->handle($updateProduct);

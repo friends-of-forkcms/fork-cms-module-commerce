@@ -12,8 +12,7 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatusDataTransferObject;
-use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\Domain\Vat\VatDataTransferObject;
+use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
 use Common\Doctrine\Entity\Meta;
 use Common\Doctrine\ValueObject\SEOFollow;
 use Common\Doctrine\ValueObject\SEOIndex;
@@ -29,21 +28,11 @@ use Zenstruck\Foundry\RepositoryProxy;
 /**
  * @extends ModelFactory<Product>
  *
- * @method static Product|Proxy createOne(array $attributes = [])
  * @method static Product[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Product|Proxy find(object|array|mixed $criteria)
- * @method static Product|Proxy findOrCreate(array $attributes)
- * @method static Product|Proxy first(string $sortedField = 'id')
- * @method static Product|Proxy last(string $sortedField = 'id')
- * @method static Product|Proxy random(array $attributes = [])
- * @method static Product|Proxy randomOrCreate(array $attributes = []))
- * @method static Product[]|Proxy[] all()
- * @method static Product[]|Proxy[] findBy(array $attributes)
- * @method static Product[]|Proxy[] randomSet(int $number, array $attributes = []))
- * @method static Product[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static ProductRepository|RepositoryProxy repository()
  * @method Product|Proxy create(array|callable $attributes = [])
  *
+ * @see: https://symfony.com/index.php/bundles/ZenstruckFoundryBundle/current/index.html
  * @codeCoverageIgnore
  */
 final class ProductFactory extends ModelFactory
@@ -74,6 +63,7 @@ final class ProductFactory extends ModelFactory
                 $dto->summary = $attributes['summary'];
                 $dto->text = $attributes['text'];
                 $dto->specials = $attributes['specials'];
+                $dto->vat = $attributes['vat'];
 
                 return Product::fromDataTransferObject($dto);
             });
@@ -101,7 +91,7 @@ final class ProductFactory extends ModelFactory
             'meta' => new Meta($title, false, $title, false, $title, false, Uri::getUrl($title), false, null, false, null, SEOFollow::none(), SEOIndex::none()),
             'category' => Category::fromDataTransferObject($category),
             'brand' => null,
-            'vat' => null,
+            'vat' => VatFactory::new(),
             'stock_status' => StockStatus::fromDataTransferObject($stockStatus),
             'hidden' => false,
             'type' => Product::TYPE_DEFAULT,
@@ -130,15 +120,12 @@ final class ProductFactory extends ModelFactory
         return $this->addState(['price' => Money::EUR($moneyTransformer->reverseTransform($price))]);
     }
 
-    public function withVat(float $percentage): self
+    public function withVat(float $percentage, int $id = 1): self
     {
-        $vatDTO = new VatDataTransferObject();
-        $vatDTO->title = "$percentage %";
-        $vatDTO->percentage = $percentage;
-        $vatDTO->sequence = 1;
-        $vatDTO->locale = Locale::fromString('en');
+        $vat = VatFactory::new()->withPercentage($percentage)->create();
+        $vat->forceSet('id', $id); // ID is a private property, but we need to set it to a value
 
-        return $this->addState(['vat' => Vat::fromDataTransferObject($vatDTO)]);
+        return $this->addState(['vat' => $vat]);
     }
 
     public function withNewSpecial(

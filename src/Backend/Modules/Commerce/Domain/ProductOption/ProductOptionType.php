@@ -5,17 +5,16 @@ namespace Backend\Modules\Commerce\Domain\ProductOption;
 use Backend\Form\Type\EditorType;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotificationType;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
-use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tbbc\MoneyBundle\Form\Type\MoneyType;
 
 class ProductOptionType extends AbstractType
 {
@@ -44,14 +43,10 @@ class ProductOptionType extends AbstractType
                 'required' => false,
                 'label' => 'lbl.CustomValueAllowed',
             ])
-            ->add(
-                $builder
-                    ->create('custom_value_price', MoneyType::class, [
-                        'required' => false,
-                        'label' => 'lbl.CustomValuePrice',
-                    ])
-                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-            )
+            ->add('custom_value_price', MoneyType::class, [
+                'required' => false,
+                'label' => 'lbl.CustomValuePrice',
+            ])
             ->add('placeholder', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Placeholder',

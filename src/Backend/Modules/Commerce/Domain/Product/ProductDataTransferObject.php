@@ -141,12 +141,7 @@ class ProductDataTransferObject
     public Collection $remove_related_products;
     public MediaGroup $images;
     public MediaGroup $downloads;
-
-    /**
-     * @Assert\NotBlank(message="err.FieldIsRequired")
-     * @Assert\GreaterThanOrEqual(value=1, message="err.SequenceInvalid")
-     */
-    public int $sequence;
+    public ?int $sequence;
 
     public function __construct(Product $product = null, Locale $locale)
     {
@@ -168,7 +163,7 @@ class ProductDataTransferObject
         $this->images = MediaGroup::create(MediaGroupType::fromString(Type::IMAGE));
         $this->downloads = MediaGroup::create(MediaGroupType::fromString(Type::FILE));
         $this->weight = 0.00;
-        $this->sequence = $this->getProductRepository()->getNextSequence($this->locale, $this->category);
+        $this->sequence = null;
 
         if (!$this->hasExistingProduct()) {
             return;
@@ -324,10 +319,5 @@ class ProductDataTransferObject
     public function removeDimensionNotification(ProductDimensionNotification $dimensionNotification): void
     {
         $this->remove_dimension_notifications->add($dimensionNotification);
-    }
-
-    private function getProductRepository(): ProductRepository
-    {
-        return Model::get('commerce.repository.product');
     }
 }

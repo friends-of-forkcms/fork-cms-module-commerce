@@ -8,12 +8,11 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\ModulesSettings;
 use DOMDocument;
 use DOMElement;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\DecimalMoneyFormatter;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 class GenerateMerchantFeed extends Command
 {
@@ -24,17 +23,20 @@ class GenerateMerchantFeed extends Command
     private ModulesSettings $settings;
     private string $kernelRootDir;
     private DOMDocument $domDocument;
+    private MoneyFormatter $moneyFormatter;
 
     public function __construct(
         ProductRepository $productRepository,
         LoggerInterface $logger,
         ModulesSettings $settings,
+        MoneyFormatter $moneyFormatter,
         string $kernelRootDir
     ) {
         $this->productRepository = $productRepository;
         $this->logger = $logger;
         $this->settings = $settings;
         $this->kernelRootDir = $kernelRootDir;
+        $this->moneyFormatter = $moneyFormatter;
 
         parent::__construct();
     }
@@ -51,7 +53,6 @@ class GenerateMerchantFeed extends Command
         $domLink->setAttribute('href', SITE_URL);
         $domFeed->appendChild($domLink);
         $domFeed->appendChild($this->domDocument->createElement('updated', date('Y-m-d\TH:i:s\Z')));
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         foreach ($this->settings->get('Core', 'active_languages') as $activeLanguage) {
             $locale = Locale::fromString($activeLanguage);
@@ -102,7 +103,7 @@ class GenerateMerchantFeed extends Command
                 if ($product->hasActiveSpecialPrice()) {
                     $item->appendChild($this->domDocument->createElement(
                         'g:sale_price',
-                        $moneyFormatter->format($product->getActivePrice(false)) . ' EUR'
+                        $this->moneyFormatter->asFloat($product->getActivePrice(false)) . ' EUR'
                     ));
                 }
 

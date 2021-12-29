@@ -144,31 +144,6 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line.
-     *
-     * @param Category $category
-     *
-     * @throws NonUniqueResultException
-     */
-    public function getNextSequence(Locale $locale, ?Category $category): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-        $query_builder->select('MAX(i.sequence) as sequence')
-            ->where('i.locale = :locale')
-            ->setParameter('locale', $locale);
-
-        // Include the parent if is set
-        if ($category) {
-            $query_builder->andWhere('i.category = :category');
-            $query_builder->setParameter('category', $category);
-        }
-
-        // Return the new sequence
-        return $query_builder->getQuery()
-                ->getSingleScalarResult() + 1;
-    }
-
-    /**
      * Count the products.
      *
      * @throws NonUniqueResultException

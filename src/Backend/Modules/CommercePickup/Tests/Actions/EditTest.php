@@ -45,7 +45,7 @@ class EditTest extends BackendWebTestCase
         $form = $this->getFormForSubmitButton($client, 'Save');
         $client->submit($form, [
             'pickup_shipment_method[name]' => 'Pickup in store (EditTest)',
-            'pickup_shipment_method[price]' => 10.00,
+            'pickup_shipment_method[price][tbbc_amount]' => 10.00,
             'pickup_shipment_method[vatId]' => (string) $vat->getId(),
             'pickup_shipment_method[isEnabled]' => true,
             'pickup_shipment_method[availablePaymentMethods][0]' => true,
@@ -64,7 +64,7 @@ class EditTest extends BackendWebTestCase
         self::assertResponseHasContent($client->getResponse(), $vat->getTitle());
         $formValues = $this->getFormForSubmitButton($client, 'Save')->getValues();
         self::assertEquals('Pickup in store (EditTest)', $formValues['pickup_shipment_method[name]']);
-        self::assertEquals(10.00, $formValues['pickup_shipment_method[price]']);
+        self::assertEquals(10.00, $formValues['pickup_shipment_method[price][tbbc_amount]']);
         self::assertEquals('1', $formValues['pickup_shipment_method[isEnabled]']);
     }
 }

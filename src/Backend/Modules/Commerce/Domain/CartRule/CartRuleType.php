@@ -2,17 +2,14 @@
 
 namespace Backend\Modules\Commerce\Domain\CartRule;
 
-use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
-use Money\Money;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tbbc\MoneyBundle\Form\Type\MoneyType;
 
 class CartRuleType extends AbstractType
 {
@@ -46,39 +43,18 @@ class CartRuleType extends AbstractType
                 'required' => false,
                 'label' => 'lbl.DiscountCode',
             ])
-            ->add(
-                $builder
-                    ->create(
-                        'minimum_price',
-                        MoneyType::class,
-                        [
-                            'required' => false,
-                            'label' => 'lbl.MinimumAmount',
-                        ]
-                    )
-                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-            )
+            ->add('minimum_price', MoneyType::class, [
+                'required' => false,
+                'label' => 'lbl.MinimumAmount',
+            ])
             ->add('reduction_percentage', PercentType::class, [
                 'required' => false,
                 'label' => 'lbl.ReductionPercentage',
             ])
-            ->add(
-                $builder
-                    ->create(
-                        'reduction_price',
-                        MoneyType::class,
-                        [
-                            'required' => false,
-                            'label' => 'lbl.ReductionAmount',
-                        ]
-                    )
-                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-                    ->addModelTransformer(new CallbackTransformer(
-                        // Store an 0 euro object as NULL in the DTO
-                        fn ($value): ?string => $value,
-                        fn ($value): ?Money => $value instanceof Money && $value->isZero() ? null : $value
-                    ))
-            );
+            ->add('reduction_price', MoneyType::class, [
+                'required' => false,
+                'label' => 'lbl.ReductionAmount',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

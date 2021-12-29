@@ -18,10 +18,11 @@
             {{ form_start(loginForm, { 'attr': {'class': 'space-y-6'} }) }}
 
             <!-- email address -->
-            {{ form_row(loginForm.email) }}
+            {# Use the correct autocomplete properties for password managers! https://web.dev/sign-in-form-best-practices #}
+            {{ form_row(loginForm.email, {'attr' : {'autocomplete' : 'username'}}) }}
 
             <!-- password -->
-            {{ form_row(loginForm.password) }}
+            {{ form_row(loginForm.password, {'attr' : {'autocomplete' : 'current-password'}}) }}
 
             <!-- Remember me & forget password -->
             <div class="flex items-center justify-between">

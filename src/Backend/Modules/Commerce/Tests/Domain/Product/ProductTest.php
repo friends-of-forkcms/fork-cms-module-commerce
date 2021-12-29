@@ -4,7 +4,6 @@ namespace Backend\Modules\Commerce\Tests\Domain\Product;
 
 use Backend\Modules\Commerce\Domain\Product\Factory\ProductFactory;
 use Backend\Modules\Commerce\Domain\Product\Product;
-use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\ModulesSettings;
 use DateTime;
 use ForkCMS\App\BaseModel;
@@ -23,8 +22,6 @@ class ProductTest extends TestCase
         // The ProductDTO reaches out to the container for fork settings and the product repository, so we have to mock this.
         $forkSettings = $this->getMockBuilder(ModulesSettings::class)->disableOriginalConstructor()->getMock();
         $forkSettings->method('get')->with('Core', 'languages', ['en'])->willReturn(['en']);
-        $productRepository = $this->getMockBuilder(ProductRepository::class)->disableOriginalConstructor()->getMock();
-        $productRepository->method('getNextSequence')->willReturn(1);
 
         // Let the container return our mocks
         $container = $this->getMockBuilder(ContainerInterface::class)->disableOriginalConstructor()->getMock();
@@ -32,7 +29,6 @@ class ProductTest extends TestCase
             ->method('get')
             ->willReturnMap([
                     ['fork.settings', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $forkSettings],
-                    ['commerce.repository.product', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $productRepository],
             ]);
         BaseModel::setContainer($container);
     }

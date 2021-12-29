@@ -1,3 +1,28 @@
+{# Format a tbbc_money_widget to show a prefixed currency (like Symfony MoneyType does) #}
+{% block tbbc_money_widget %}
+  <div class="input-group">
+    {% set currency = form.vars.value.tbbc_currency %}
+    {% if currency is defined and currency is not null %}
+      <span class="input-group-addon">{{ currency|currency_symbol }}</span>
+    {% else %}
+      <span class="input-group-addon">&euro;</span>
+    {% endif %}
+
+    {% for child in form %}
+      {{ form_widget(child) | spaceless }}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{# Do not render the Money currency dropdown because we stick to one fixed currency #}
+{% block tbbc_currency_widget %}
+  {% for child in form %}
+    <div style="display: none;">
+      {{ form_widget(child) | spaceless }}
+    </div>
+  {% endfor %}
+{% endblock %}
+
 {% block _product_specification_values_entry_widget %}
   <div class="row">
     <div class="col-md-5">

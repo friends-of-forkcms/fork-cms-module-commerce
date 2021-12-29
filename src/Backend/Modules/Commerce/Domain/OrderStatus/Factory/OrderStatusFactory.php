@@ -12,21 +12,11 @@ use Zenstruck\Foundry\RepositoryProxy;
 /**
  * @extends ModelFactory<OrderStatus>
  *
- * @method static OrderStatus|Proxy createOne(array $attributes = [])
  * @method static OrderStatus[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static OrderStatus|Proxy find(object|array|mixed $criteria)
- * @method static OrderStatus|Proxy findOrCreate(array $attributes)
- * @method static OrderStatus|Proxy first(string $sortedField = 'id')
- * @method static OrderStatus|Proxy last(string $sortedField = 'id')
- * @method static OrderStatus|Proxy random(array $attributes = [])
- * @method static OrderStatus|Proxy randomOrCreate(array $attributes = []))
- * @method static OrderStatus[]|Proxy[] all()
- * @method static OrderStatus[]|Proxy[] findBy(array $attributes)
- * @method static OrderStatus[]|Proxy[] randomSet(int $number, array $attributes = []))
- * @method static OrderStatus[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static OrderStatusRepository|RepositoryProxy repository()
  * @method OrderStatus|Proxy create(array|callable $attributes = [])
  *
+ * @see: https://symfony.com/index.php/bundles/ZenstruckFoundryBundle/current/index.html
  * @codeCoverageIgnore
  */
 final class OrderStatusFactory extends ModelFactory

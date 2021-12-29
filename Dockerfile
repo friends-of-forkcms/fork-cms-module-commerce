@@ -71,7 +71,7 @@ RUN apt-get update && apt-get install -y libzip-dev zip && \
     docker-php-ext-install zip && \
     rm -rf /var/lib/apt/lists/*
 
-# Install intl
+# Install intl and set locale to en_US.UTF-8 e.g. for money formatting
 RUN apt-get update && apt-get install -y --no-install-recommends \
     g++ \
     libicu-dev \
@@ -79,6 +79,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 # Enable pcov for test coverage
 RUN pecl install pcov && \
@@ -101,7 +103,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 WORKDIR /var/www/html
 
 # Download Fork CMS as base to test our module
-RUN curl -sL https://github.com/forkcms/forkcms/archive/5.10.0.tar.gz | tar xz --strip-components 1
+RUN curl -sL https://github.com/forkcms/forkcms/archive/5.11.0.tar.gz | tar xz --strip-components 1
 
 # Install the Fork CMS composer dependencies
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress

@@ -5,10 +5,9 @@ namespace Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
-use Backend\Modules\Commerce\Domain\Vat\VatRepository;
-use Common\Core\Model;
 use Frontend\Core\Language\Locale;
 use Money\Money;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * The quote class helps to calculate the shipping costs for a shipping method
@@ -20,17 +19,21 @@ abstract class ShipmentMethodQuote
     protected OrderAddress $address;
     protected ?Locale $language;
     protected CommerceModuleSettingsRepository $shipmentMethodSettingsRepository;
+    protected MoneyFormatter $moneyFormatter;
 
-    public function __construct(string $name, Cart $cart, OrderAddress $address)
-    {
+    public function __construct(
+        string $name,
+        Cart $cart,
+        OrderAddress $address,
+        CommerceModuleSettingsRepository $commerceModuleSettingsRepository,
+        MoneyFormatter $moneyFormatter
+    ) {
         $this->name = $name;
         $this->cart = $cart;
         $this->address = $address;
         $this->language = Locale::frontendLanguage();
-        $this->shipmentMethodSettingsRepository = new CommerceModuleSettingsRepository(
-            Model::get('fork.settings'),
-            Locale::frontendLanguage()
-        );
+        $this->shipmentMethodSettingsRepository = $commerceModuleSettingsRepository;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -42,12 +45,4 @@ abstract class ShipmentMethodQuote
      * Calculate the vat price based on the given price.
      */
     abstract protected function getVatPrice(Money $price): array;
-
-    /**
-     * Get the vat repository.
-     */
-    protected function getVatRepository(): VatRepository
-    {
-        return Model::get('commerce.repository.vat');
-    }
 }

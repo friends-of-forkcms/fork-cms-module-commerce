@@ -7,10 +7,10 @@ use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
-use Common\Core\Model;
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
 use Frontend\Core\Language\Locale;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * The quote class helps to calculate the transaction cost for a payment method
@@ -23,19 +23,26 @@ abstract class PaymentMethodQuote
     protected ?Locale $language;
     protected ModulesSettings $settings;
     protected CommerceModuleSettingsRepository $commerceModuleSettingsRepository;
+    protected MoneyFormatter $moneyFormatter;
 
-    public function __construct(string $name, Cart $cart, OrderAddress $address)
-    {
+    public function __construct(
+        string $name,
+        Cart $cart,
+        OrderAddress $address,
+        $commerceModuleSettingsRepository,
+        MoneyFormatter $moneyFormatter
+    ) {
         $this->name = $name;
         $this->cart = $cart;
         $this->address = $address;
         $this->language = Locale::frontendLanguage();
-        $this->commerceModuleSettingsRepository = new CommerceModuleSettingsRepository(
-            Model::get('fork.settings'),
-            Locale::frontendLanguage()
-        );
+        $this->commerceModuleSettingsRepository = $commerceModuleSettingsRepository;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
+    /**
+     * Check that - based on the shipment method - this is a valid payment method to proceed with.
+     */
     protected function isAllowedPaymentMethod(): bool
     {
         $shipmentMethod = $this->getShipmentMethod();
@@ -67,7 +74,13 @@ abstract class PaymentMethodQuote
         }
 
         /** @var ShipmentMethodQuote $class */
-        $class = new $quoteClassName($optionName, $this->cart, $this->cart->getShipmentAddress());
+        $class = new $quoteClassName(
+            $optionName,
+            $this->cart,
+            $this->cart->getShipmentAddress(),
+            $this->commerceModuleSettingsRepository,
+            $this->moneyFormatter
+        );
 
         return $class->getQuote()[$optionName];
     }

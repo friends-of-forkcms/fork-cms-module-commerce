@@ -9,11 +9,9 @@ use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus;
 use DateTimeInterface;
-use Money\Currencies\ISOCurrencies;
 use Money\Currency;
-use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use NumberFormatter;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
@@ -115,12 +113,9 @@ class DataGrid extends DataGridDatabase
     public static function getFormattedMoney(int $amount, string $currencyCode): string
     {
         $money = new Money($amount, new Currency($currencyCode));
-        $currencies = new ISOCurrencies();
+        $moneyFormatter = new MoneyFormatter();
 
-        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
-
-        return $moneyFormatter->format($money);
+        return $moneyFormatter->localizedFormatMoney($money);
     }
 
     /**

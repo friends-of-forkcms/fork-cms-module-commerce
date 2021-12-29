@@ -13,21 +13,11 @@ use Zenstruck\Foundry\RepositoryProxy;
 /**
  * @extends ModelFactory<Vat>
  *
- * @method static Vat|Proxy createOne(array $attributes = [])
  * @method static Vat[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Vat|Proxy find(object|array|mixed $criteria)
- * @method static Vat|Proxy findOrCreate(array $attributes)
- * @method static Vat|Proxy first(string $sortedField = 'id')
- * @method static Vat|Proxy last(string $sortedField = 'id')
- * @method static Vat|Proxy random(array $attributes = [])
- * @method static Vat|Proxy randomOrCreate(array $attributes = []))
- * @method static Vat[]|Proxy[] all()
- * @method static Vat[]|Proxy[] findBy(array $attributes)
- * @method static Vat[]|Proxy[] randomSet(int $number, array $attributes = []))
- * @method static Vat[]|Proxy[] randomRange(int $min, int $max, array $attributes = []))
  * @method static VatRepository|RepositoryProxy repository()
  * @method Vat|Proxy create(array|callable $attributes = [])
  *
+ * @see: https://symfony.com/index.php/bundles/ZenstruckFoundryBundle/current/index.html
  * @codeCoverageIgnore
  */
 final class VatFactory extends ModelFactory
@@ -41,6 +31,7 @@ final class VatFactory extends ModelFactory
         return $this
             ->instantiateWith(function (array $attributes) {
                 $dto = new VatDataTransferObject();
+                $dto->id = $attributes['id'];
                 $dto->title = $attributes['title'];
                 $dto->percentage = $attributes['percentage'];
                 $dto->locale = $attributes['locale'];
@@ -55,11 +46,20 @@ final class VatFactory extends ModelFactory
         $percentage = 21.0;
 
         return [
+            'id' => self::faker()->numberBetween(1),
             'title' => $percentage . '%',
             'percentage' => $percentage,
             'locale' => Locale::fromString('en'),
             'sequence' => 1,
         ];
+    }
+
+    public function withPercentage(float $percentage): self
+    {
+        return $this->addState([
+            'title' => $percentage . '%',
+            'percentage' => $percentage,
+        ]);
     }
 
     protected static function getClass(): string

@@ -18,7 +18,7 @@
                         </a>
 
                         <!-- Product information -->
-                        <p class="text-gray-500">{{ value.quantity }} x {{ value.price|format_money }}</p>
+                        <p class="text-gray-500">{{ value.quantity }} x {{ value.price|money_localized_format }}</p>
                         <p class="text-gray-500">
                             {{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</strong> {{ value.product.sku }}
                             {% for option in value.cartValueOptions %}
@@ -29,7 +29,7 @@
                     </div>
 
                     <!-- Total price -->
-                    <p class="flex-none text-base font-medium">{{ value.total|format_money }}</p>
+                    <p class="flex-none text-base font-medium">{{ value.total|money_localized_format }}</p>
                 </li>
             {% endfor %}
         </ul>

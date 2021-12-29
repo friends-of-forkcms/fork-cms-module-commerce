@@ -3,10 +3,7 @@
 namespace Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Checkout;
 
 use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\PaymentMethodQuote;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use NumberFormatter;
 
 class Quote extends PaymentMethodQuote
 {
@@ -23,9 +20,7 @@ class Quote extends PaymentMethodQuote
         $label = $this->name;
         $price = $this->commerceModuleSettingsRepository->getSetting('CommerceCashOnDelivery', 'price');
         if ($price !== null) {
-            $numberFormatter = new NumberFormatter($this->language->getLocale(), NumberFormatter::CURRENCY);
-            $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
-            $label .= ' (' . $moneyFormatter->format($price) . ')';
+            $label .= ' (' . $this->moneyFormatter->localizedFormatMoney($price) . ')';
         }
 
         return [

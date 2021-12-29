@@ -2,26 +2,21 @@
 
 namespace Backend\Modules\Commerce\Domain\ProductSpecial;
 
-use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tbbc\MoneyBundle\Form\Type\MoneyType;
 
 class ProductSpecialType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add(
-                $builder
-                    ->create('price', MoneyType::class, [
-                        'required' => true,
-                        'label' => 'lbl.Price',
-                    ])
-                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-            )
+            ->add('price', MoneyType::class, [
+                'required' => true,
+                'label' => 'lbl.Price',
+            ])
             ->add('start_date', DateType::class, [
                 'required' => true,
                 'label' => 'lbl.StartDate',

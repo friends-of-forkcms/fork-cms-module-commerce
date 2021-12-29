@@ -14,7 +14,7 @@ composer require knplabs/knp-snappy-bundle "v1.6.0"
 composer require h4cc/wkhtmltopdf-amd64 "^0.12.4"
 composer require gedmo/doctrine-extensions "^3.0"
 composer require jeroendesloovere/sitemap-bundle "^2.0"
-composer require moneyphp/money "v3.3.1"
+composer require tbbc/money-bundle ^4.1"
 
 # In case you want to load the demo fixtures or run tests
 composer require --dev doctrine/doctrine-fixtures-bundle
@@ -33,7 +33,7 @@ public function registerBundles()
         new \Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         new \Backend\Modules\Sitemaps\Sitemaps(),
         new \JeroenDesloovere\SitemapBundle\SitemapBundle(),
-        //...
+        new \Tbbc\MoneyBundle\TbbcMoneyBundle(),
     ];
 }
 ```
