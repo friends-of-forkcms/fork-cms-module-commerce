@@ -10,7 +10,6 @@ use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationRepository extends EntityRepository
 {

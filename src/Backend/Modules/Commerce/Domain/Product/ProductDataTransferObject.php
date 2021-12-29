@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\Product;
 
-use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Brand\Brand;
 use Backend\Modules\Commerce\Domain\Category\Category;
@@ -10,7 +9,6 @@ use Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
-use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueRepository;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Commerce\Domain\Vat\Vat;

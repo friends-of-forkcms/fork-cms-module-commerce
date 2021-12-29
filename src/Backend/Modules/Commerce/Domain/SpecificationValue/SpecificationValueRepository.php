@@ -8,7 +8,6 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\Exception\SpecificationVa
 use Common\Doctrine\Entity\Meta;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationValueRepository extends EntityRepository
 {
