@@ -6,7 +6,6 @@ use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaItem\MediaItem;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
