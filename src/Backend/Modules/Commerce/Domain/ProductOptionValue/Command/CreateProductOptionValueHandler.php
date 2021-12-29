@@ -16,10 +16,6 @@ final class CreateProductOptionValueHandler
 
     public function handle(CreateProductOptionValue $createProductOptionValue): void
     {
-        $createProductOptionValue->sequence = $this->productOptionValueRepository->getNextSequence(
-            $createProductOptionValue->productOption
-        );
-
         $productOptionValue = ProductOptionValue::fromDataTransferObject($createProductOptionValue);
         $this->productOptionValueRepository->add($productOptionValue);
 

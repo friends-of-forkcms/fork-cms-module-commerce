@@ -30,6 +30,7 @@ class ProductOptionValue
     private int $id;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="product_option_values")
      * @ORM\JoinColumn(name="product_option_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -136,9 +137,10 @@ class ProductOptionValue
     private ?string $hex_value;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer")
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -169,7 +171,7 @@ class ProductOptionValue
         ?int $impact_type,
         bool $default_value,
         ?string $hex_value,
-        int $sequence
+        ?int $sequence
     ) {
         $this->product_option = $product_option;
         $this->image = $image;
