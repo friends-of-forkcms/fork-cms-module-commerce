@@ -7,7 +7,6 @@ use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -46,6 +45,7 @@ class Category
     private ?int $googleTaxonomyId;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
@@ -71,11 +71,13 @@ class Category
     private Image $image;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
     private ?int $sequence;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
@@ -126,7 +128,7 @@ class Category
         ?string $intro,
         ?string $text,
         ?Image $image,
-        int $sequence,
+        ?int $sequence,
         Meta $meta,
         ?Category $parent
     ) {

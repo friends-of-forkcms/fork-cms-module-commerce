@@ -23,11 +23,12 @@ class CategoryDataTransferObject
     public ?Meta $meta = null;
     public Image $image;
     public ?int $googleTaxonomyId = null;
-    public int $sequence;
+    public ?int $sequence;
 
     public function __construct(Category $category = null)
     {
         $this->categoryEntity = $category;
+        $this->sequence = null;
 
         if (!$this->hasExistingCategory()) {
             return;

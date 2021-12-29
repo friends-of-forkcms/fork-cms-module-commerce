@@ -83,29 +83,6 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line.
-     *
-     * @param Category $parent
-     */
-    public function getNextSequence(Locale $locale, Category $parent = null): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-        $query_builder->select('MAX(i.sequence) as sequence')
-                      ->where('i.locale = :locale');
-
-        $query_builder->setParameter('locale', $locale);
-
-        // Include the parent if is set
-        if ($parent) {
-            $query_builder->andWhere('i.parent = :parent');
-            $query_builder->setParameter('parent', $parent);
-        }
-
-        // Return the new sequence
-        return $query_builder->getQuery()->getSingleScalarResult() + 1;
-    }
-
-    /**
      * Get an tree of categories.
      *
      * @return array
