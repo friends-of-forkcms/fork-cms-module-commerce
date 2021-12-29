@@ -17,6 +17,7 @@ use ForkCMS\App\BaseModel;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 use Zenstruck\Foundry\Test\Factories;
 
 class QuoteTest extends TestCase
@@ -61,7 +62,13 @@ class QuoteTest extends TestCase
             VatFactory::new()->create()->forceSet('id', 1)->object()
         );
 
-        $checkoutQuote = new Quote('Pickup shipment', $cart, $address, $commerceModuleSettingsRepositoryMock);
+        $checkoutQuote = new Quote(
+            'Pickup shipment',
+            $cart,
+            $address,
+            $commerceModuleSettingsRepositoryMock,
+            new MoneyFormatter()
+        );
         $this->assertEquals([
             'Pickup shipment' => [
                 'label' => 'Pickup shipment (€0.00)',
@@ -87,7 +94,13 @@ class QuoteTest extends TestCase
             null // invalid VAT
         );
 
-        $checkoutQuote = new Quote('Pickup shipment', $cart, $address, $commerceModuleSettingsRepositoryMock);
+        $checkoutQuote = new Quote(
+            'Pickup shipment',
+            $cart,
+            $address,
+            $commerceModuleSettingsRepositoryMock,
+            new MoneyFormatter()
+        );
         $this->expectException(VatNotFound::class);
         $checkoutQuote->getQuote();
     }

@@ -87,7 +87,13 @@ class QuoteTest extends TestCase
         );
 
         // Create a quote
-        $checkoutQuote = new Quote($paymentMethod->getName(), $cart, $address, $commerceModuleSettingsRepositoryMock);
+        $checkoutQuote = new Quote(
+            $paymentMethod->getName(),
+            $cart,
+            $address,
+            $commerceModuleSettingsRepositoryMock,
+            new MoneyFormatter()
+        );
         $this->assertEquals([
             'Cash on delivery' => [
                 'label' => 'Cash on delivery (€0.00)',

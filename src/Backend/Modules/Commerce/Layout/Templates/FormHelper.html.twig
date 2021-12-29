@@ -16,8 +16,12 @@
 
 {# Do not render the Money currency dropdown because we stick to one fixed currency #}
 {% block tbbc_currency_widget %}
+  {% for child in form %}
+    <div style="display: none;">
+      {{ form_widget(child) | spaceless }}
+    </div>
+  {% endfor %}
 {% endblock %}
-
 
 {% block _product_specification_values_entry_widget %}
   <div class="row">
