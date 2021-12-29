@@ -53,7 +53,7 @@ class Specification
      * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11)
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @ORM\Column(type="boolean")
