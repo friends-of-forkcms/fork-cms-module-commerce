@@ -1,6 +1,8 @@
---- app/config/config_old.yml	2021-12-28 21:10:05.000000000 +0100
-+++ app/config/config.yml	2021-12-29 02:20:31.000000000 +0100
-@@ -28,6 +28,8 @@
+diff --git a/app/config/config.yml b/app/config/config.yml
+index ec29007a4..742444ebe 100644
+--- a/app/config/config.yml
++++ b/app/config/config.yml
+@@ -28,6 +28,8 @@ framework:
                  adapter: cache.app
                  public: true
                  default_lifetime: 3600
@@ -9,10 +11,10 @@
  
  # Assetic Configuration
  assetic:
-@@ -126,6 +128,35 @@
+@@ -125,6 +127,34 @@ liip_imagine:
+                 strip: ~
  
                  thumbnail: { size : [1600, 500], mode : inbound }
- 
 +        product_thumbnail:
 +            filters:
 +                # auto rotate the image using EXIF metadata and then strip the metadata (privacy)
@@ -41,11 +43,10 @@
 +    currencies: ["USD", "EUR"]
 +    reference_currency: "EUR"
 +    decimals: 2
-+
+ 
  services:
      templating.name_parser.public:
-         alias: templating.name_parser
-@@ -278,3 +309,12 @@
+@@ -278,3 +308,12 @@ services:
      ForkCMS\ImagineController:
          public: true
          autowire: true

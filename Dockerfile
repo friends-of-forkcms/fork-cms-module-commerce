@@ -101,7 +101,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 WORKDIR /var/www/html
 
 # Download Fork CMS as base to test our module
-RUN curl -sL https://github.com/forkcms/forkcms/archive/5.10.0.tar.gz | tar xz --strip-components 1
+RUN curl -sL https://github.com/forkcms/forkcms/archive/5.11.0.tar.gz | tar xz --strip-components 1
 
 # Install the Fork CMS composer dependencies
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress

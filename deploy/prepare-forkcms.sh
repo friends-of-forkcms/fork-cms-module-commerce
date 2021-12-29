@@ -52,10 +52,11 @@ mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} <
 
 # Apply a patch to add our bundles to AppKernel and configure the config.yml
 # This will become a lot easier with Symfony 4+
-# You can regenerate these by comparing an old version of the file:
-# diff --text --unified --new-file app/config/config_old.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.patch
-patch -p0 --force < deploy/patches/AppKernel.patch
-patch -p0 --force < deploy/patches/config.patch
+# You can regenerate these by doing:
+# git diff forkcms/master:app/AppKernel.php app/AppKernel.php > ../fork-cms-module-commerce/deploy/patches/AppKernel.php.patch
+# git diff forkcms/master:app/config/config.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.yml.patch
+patch -p1 --force < deploy/patches/AppKernel.php.patch
+patch -p1 --force < deploy/patches/config.yml.patch
 
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce
