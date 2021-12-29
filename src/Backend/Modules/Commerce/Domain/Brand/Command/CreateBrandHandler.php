@@ -16,10 +16,6 @@ final class CreateBrandHandler
 
     public function handle(CreateBrand $createBrand): void
     {
-        $createBrand->sequence = $this->brandRepository->getNextSequence(
-            $createBrand->locale
-        );
-
         $brand = Brand::fromDataTransferObject($createBrand);
         $this->brandRepository->add($brand);
 

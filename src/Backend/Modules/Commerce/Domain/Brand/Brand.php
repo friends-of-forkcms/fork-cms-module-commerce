@@ -5,7 +5,6 @@ namespace Backend\Modules\Commerce\Domain\Brand;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Common\Doctrine\Entity\Meta;
 use Common\Locale;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,6 +31,7 @@ class Brand
     private ?Meta $meta;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
@@ -52,6 +52,7 @@ class Brand
     private Image $image;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11, nullable=true)
      */
     private ?int $sequence;
@@ -81,7 +82,7 @@ class Brand
         string $title,
         ?string $text,
         ?Image $image,
-        int $sequence,
+        ?int $sequence,
         Meta $meta
     ) {
         $this->locale = $locale;

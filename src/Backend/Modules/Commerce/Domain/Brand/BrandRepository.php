@@ -61,20 +61,6 @@ class BrandRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line.
-     */
-    public function getNextSequence(Locale $locale): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-
-        return $query_builder->select('MAX(i.sequence) as sequence')
-                             ->where('i.locale = :locale')
-                             ->setParameter('locale', $locale)
-                             ->getQuery()
-                             ->getSingleScalarResult() + 1;
-    }
-
-    /**
      * @param string $url
      * @param int    $id
      *
