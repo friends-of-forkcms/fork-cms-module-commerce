@@ -22,5 +22,4 @@ imports:
   - { resource: specification_commands.yml }
   - { resource: specification_value_commands.yml }
   - { resource: stock_status_commands.yml }
-  - { resource: twig.yml }
   - { resource: vat_commands.yml }

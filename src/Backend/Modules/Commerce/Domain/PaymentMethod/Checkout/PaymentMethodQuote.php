@@ -10,6 +10,7 @@ use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFo
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
 use Frontend\Core\Language\Locale;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * The quote class helps to calculate the transaction cost for a payment method
@@ -22,14 +23,21 @@ abstract class PaymentMethodQuote
     protected ?Locale $language;
     protected ModulesSettings $settings;
     protected CommerceModuleSettingsRepository $commerceModuleSettingsRepository;
+    protected MoneyFormatter $moneyFormatter;
 
-    public function __construct(string $name, Cart $cart, OrderAddress $address, $commerceModuleSettingsRepository)
-    {
+    public function __construct(
+        string $name,
+        Cart $cart,
+        OrderAddress $address,
+        $commerceModuleSettingsRepository,
+        MoneyFormatter $moneyFormatter
+    ) {
         $this->name = $name;
         $this->cart = $cart;
         $this->address = $address;
         $this->language = Locale::frontendLanguage();
         $this->commerceModuleSettingsRepository = $commerceModuleSettingsRepository;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -70,7 +78,8 @@ abstract class PaymentMethodQuote
             $optionName,
             $this->cart,
             $this->cart->getShipmentAddress(),
-            $this->commerceModuleSettingsRepository
+            $this->commerceModuleSettingsRepository,
+            $this->moneyFormatter
         );
 
         return $class->getQuote()[$optionName];

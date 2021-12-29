@@ -23,9 +23,7 @@ class Quote extends PaymentMethodQuote
         $label = $this->name;
         $price = $this->commerceModuleSettingsRepository->getSetting('CommerceCashOnDelivery', 'price');
         if ($price !== null) {
-            $numberFormatter = new NumberFormatter($this->language->getLocale(), NumberFormatter::CURRENCY);
-            $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
-            $label .= ' (' . $moneyFormatter->format($price) . ')';
+            $label .= ' (' . $this->moneyFormatter->localizedFormatMoney($price) . ')';
         }
 
         return [

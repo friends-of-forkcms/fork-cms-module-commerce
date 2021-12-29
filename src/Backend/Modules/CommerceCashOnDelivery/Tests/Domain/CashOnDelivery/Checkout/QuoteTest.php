@@ -16,6 +16,7 @@ use ForkCMS\App\BaseModel;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 use Zenstruck\Foundry\Test\Factories;
 
 class QuoteTest extends TestCase
@@ -59,7 +60,13 @@ class QuoteTest extends TestCase
         );
 
         // Create a quote. Should be empty because the shipment method does not allow any payment method
-        $checkoutQuote = new Quote('CommerceCashOnDelivery', $cart, $address, $commerceModuleSettingsRepositoryMock);
+        $checkoutQuote = new Quote(
+            'CommerceCashOnDelivery',
+            $cart,
+            $address,
+            $commerceModuleSettingsRepositoryMock,
+            new MoneyFormatter()
+        );
         $this->assertEmpty($checkoutQuote->getQuote());
     }
 

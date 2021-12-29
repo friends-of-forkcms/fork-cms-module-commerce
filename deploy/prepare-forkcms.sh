@@ -32,7 +32,7 @@ composer require --no-scripts \
     'h4cc/wkhtmltopdf-amd64:^0.12.4' \
     'gedmo/doctrine-extensions:^3.0' \
     'jeroendesloovere/sitemap-bundle:^2.0' \
-    'moneyphp/money:v3.3.1'
+    'tbbc/money-bundle:^4.1'
 composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
 
 # Install the necessary modules
@@ -50,7 +50,11 @@ envsubst < deploy/prepare-forkcms-db.sql.tmp > deploy/prepare-forkcms-db.sql
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
 
 # Apply a patch to add our bundles to AppKernel and configure the config.yml
-patch -p1 < deploy/prepare-forkcms-php.patch
+# This will become a lot easier with Symfony 4+
+# You can regenerate these by comparing an old version of the file:
+# diff --text --unified --new-file app/config/config_old.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.patch
+patch -p1 < deploy/patches/AppKernel.patch
+patch -p1 < deploy/patches/config.patch
 
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce

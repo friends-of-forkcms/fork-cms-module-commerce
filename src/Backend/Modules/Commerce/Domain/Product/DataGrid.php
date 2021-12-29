@@ -14,6 +14,7 @@ use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use NumberFormatter;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
@@ -22,16 +23,16 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(Locale $locale, ?Category $category, ?string $sku, int $offset = 0)
     {
-        $query = 'SELECT 
-                    i.id, 
-                    i.title AS title, 
-                    i.sku, 
-                    i.category_id, 
-                    b.title AS brand, 
-                    i.price_amount AS price, 
+        $query = 'SELECT
+                    i.id,
+                    i.title AS title,
+                    i.sku,
+                    i.category_id,
+                    b.title AS brand,
+                    i.price_amount AS price,
                     i.price_currency_code,
-                    i.stock, 
-                    i.sequence, 
+                    i.stock,
+                    i.sequence,
                     i.hidden
                 FROM commerce_products AS i
                 LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
@@ -42,16 +43,16 @@ class DataGrid extends DataGridDatabase
         ];
 
         if ($category) {
-            $query = 'SELECT 
-                        i.id, 
-                        i.title AS title, 
-                        i.sku, 
+            $query = 'SELECT
+                        i.id,
+                        i.title AS title,
+                        i.sku,
                         i.category_id,
-                        b.title AS brand, 
+                        b.title AS brand,
                         i.price_amount AS price,
                         i.price_currency_code,
-                        i.stock, 
-                        i.sequence, 
+                        i.stock,
+                        i.sequence,
                         i.hidden
                     FROM commerce_products AS i
                     LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
@@ -140,11 +141,7 @@ class DataGrid extends DataGridDatabase
     public static function getFormattedMoney(int $amount, string $currencyCode): string
     {
         $money = new Money($amount, new Currency($currencyCode));
-        $currencies = new ISOCurrencies();
-
-        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
-
-        return $moneyFormatter->format($money);
+        $moneyFormatter = new MoneyFormatter();
+        return $moneyFormatter->localizedFormatMoney($money);
     }
 }

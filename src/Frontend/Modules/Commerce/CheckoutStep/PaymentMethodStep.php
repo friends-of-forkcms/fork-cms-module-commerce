@@ -130,7 +130,8 @@ class PaymentMethodStep extends Step
                 $paymentMethod->getName(),
                 $this->cart,
                 $this->getPaymentAddress(),
-                $commerceModuleSettingsRepository
+                $commerceModuleSettingsRepository,
+                $this->get('tbbc_money.formatter.money_formatter')
             );
             foreach ($class->getQuote() as $key => $options) {
                 $paymentMethods[$paymentMethod->getModule() . '.' . $key] = $options;

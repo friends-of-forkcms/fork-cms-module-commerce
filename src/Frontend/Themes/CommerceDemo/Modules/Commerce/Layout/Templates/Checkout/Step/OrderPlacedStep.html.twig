@@ -27,14 +27,14 @@
       'name': '{{ value.product.title }}',
       'category': '{{ value.product.category.title }}',
       'brand': '{{ value.product.brand.title }}',
-      'price': '{{ value.price|format_money_decimal }}',
+      'price': '{{ value.price|money_as_float }}',
       'quantity': {{ value.quantity }}
     });
     {% endfor %}
 
     ga('ec:setAction', 'purchase', {
       id: '{{ cart.order.id }}',
-      revenue: '{{ cart.total|format_money_decimal }}',
+      revenue: '{{ cart.total|money_as_float }}',
       tax: '{{ cart.vatTotals }}',
       shipping: '0.00'
     });

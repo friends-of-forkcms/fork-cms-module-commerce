@@ -24,7 +24,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,6 +31,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tbbc\MoneyBundle\Form\Type\MoneyType;
+use Tbbc\MoneyBundle\Form\Type\SimpleMoneyType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ProductType extends AbstractType
@@ -55,18 +56,10 @@ class ProductType extends AbstractType
                 'required' => false,
                 'label' => 'lbl.Weight',
             ])
-            ->add(
-                $builder
-                    ->create(
-                        'price',
-                        MoneyType::class,
-                        [
-                            'required' => true,
-                            'label' => 'lbl.Price',
-                        ]
-                    )
-                    ->addModelTransformer(new MoneyToLocalizedStringTransformer())
-            )
+            ->add('price', MoneyType::class, [
+                'required' => false,
+                'label' => 'lbl.Price',
+            ])
             ->add('order_quantity', NumberType::class, [
                 'required' => true,
                 'label' => 'lbl.OrderQuantity',

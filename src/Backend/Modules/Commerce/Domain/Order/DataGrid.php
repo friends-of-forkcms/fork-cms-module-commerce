@@ -14,6 +14,7 @@ use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use NumberFormatter;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
@@ -115,12 +116,8 @@ class DataGrid extends DataGridDatabase
     public static function getFormattedMoney(int $amount, string $currencyCode): string
     {
         $money = new Money($amount, new Currency($currencyCode));
-        $currencies = new ISOCurrencies();
-
-        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
-
-        return $moneyFormatter->format($money);
+        $moneyFormatter = new MoneyFormatter();
+        return $moneyFormatter->localizedFormatMoney($money);
     }
 
     /**

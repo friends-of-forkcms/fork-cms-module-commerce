@@ -35,16 +35,16 @@
                             {# Discounts #}
                             {% if product.hasActiveSpecialPrice %}
                                 <p class="price-old | line-through text-sm inline align-top">
-                                    <del>{{ product.oldPrice(false)|format_money() }}</del>
+                                    <del>{{ product.oldPrice(false)|money_localized_format }}</del>
                                 </p>
                                 <p class="price-new | text-xl text-yellow-500 font-semibold inline">
-                                    <span>{{ product.activePrice(false)|format_money() }}</span>
+                                    <span>{{ product.activePrice(false)|money_localized_format }}</span>
                                 </p>
 
                                 <div class="inline-block px-2 py-1 ml-2 text-xs text-gray-500 align-top border border-gray-500 rounded-full">{{ product.discountPercentageFormatted }}</div>
                             {% else %}
                                 <p class="price | text-xl text-yellow-500 font-semibold inline">
-                                    <span>{{ product.activePrice(false)|format_money() }}</span>
+                                    <span>{{ product.activePrice(false)|money_localized_format }}</span>
                                 </p>
                             {% endif %}
                             <p class="price-btw">
@@ -54,7 +54,7 @@
                                             |trans
                                             |format(
                                                 product.vat.percentage|formatnumber(0)|e,
-                                                product.activePrice(true)|format_money|e,
+                                                product.activePrice(true)|money_localized_format|e,
                                                 product.vat.percentage|number_format(0, ',', '.')|e
                                             )
                                             |raw
@@ -242,7 +242,7 @@
   "offers": {
     "@type": "Offer",
     "priceCurrency": "EUR",
-    "price": "{{ product.activePrice(false)|format_money_decimal() }}",
+    "price": "{{ product.activePrice(false)|money_as_float }}",
     "itemCondition": "http://schema.org/NewCondition",
     {% if product.inStock %}
     "availability": "http://schema.org/InStock",

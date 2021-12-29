@@ -1,0 +1,19 @@
+--- app/AppKernel_old.php	2021-12-28 21:05:19.000000000 +0100
++++ app/AppKernel.php	2021-12-28 21:05:35.000000000 +0100
+@@ -33,11 +33,16 @@
+             new \MailMotor\Bundle\MailChimpBundle\MailMotorMailChimpBundle(),
+             new \MailMotor\Bundle\CampaignMonitorBundle\MailMotorCampaignMonitorBundle(),
+             new \Liip\ImagineBundle\LiipImagineBundle(),
++            new \Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
++            new \Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
++            new \JeroenDesloovere\SitemapBundle\SitemapBundle(),
++            new \Tbbc\MoneyBundle\TbbcMoneyBundle(),
+         ];
+ 
+         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
+             $bundles[] = new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+             $bundles[] = new \Symfony\Bundle\DebugBundle\DebugBundle();
++            $bundles[] = new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+         }
+ 
+         return $bundles;

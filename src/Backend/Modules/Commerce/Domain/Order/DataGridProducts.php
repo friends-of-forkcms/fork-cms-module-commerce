@@ -12,6 +12,7 @@ use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use NumberFormatter;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 class DataGridProducts extends DataGridDatabase
 {
@@ -23,17 +24,17 @@ class DataGridProducts extends DataGridDatabase
     public function __construct(Order $order)
     {
         $query = '
-            SELECT 
-                i.id, 
-                i.title as product, 
-                i.sku as article_number, 
+            SELECT
+                i.id,
+                i.title as product,
+                i.sku as article_number,
                 i.amount,
                 i.price_amount AS price,
                 i.price_currency_code,
                 i.total_amount AS total,
                 i.total_currency_code
-            FROM commerce_order_products i 
-            WHERE i.order_id = ? 
+            FROM commerce_order_products i
+            WHERE i.order_id = ?
             ORDER BY i.id ASC';
 
         parent::__construct($query, [$order->getId()]);
@@ -99,11 +100,7 @@ class DataGridProducts extends DataGridDatabase
     public static function getFormattedMoney(int $amount, string $currencyCode): string
     {
         $money = new Money($amount, new Currency($currencyCode));
-        $currencies = new ISOCurrencies();
-
-        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
-
-        return $moneyFormatter->format($money);
+        $moneyFormatter = new MoneyFormatter();
+        return $moneyFormatter->localizedFormatMoney($money);
     }
 }

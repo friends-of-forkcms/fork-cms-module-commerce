@@ -127,7 +127,8 @@ class ShipmentMethodStep extends Step
                 $shipmentMethod->getName(),
                 $this->cart,
                 $this->cart->getShipmentAddress(),
-                $commerceModuleSettingsRepository
+                $commerceModuleSettingsRepository,
+                $this->get('tbbc_money.formatter.money_formatter')
             );
             foreach ($class->getQuote() as $key => $options) {
                 $shipmentMethods[$shipmentMethod->getModule() . '.' . $key] = $options;

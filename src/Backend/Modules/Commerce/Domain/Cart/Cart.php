@@ -7,9 +7,7 @@ use Backend\Modules\Commerce\Domain\Account\Account;
 use Backend\Modules\Commerce\Domain\CartRule\CartRule;
 use Backend\Modules\Commerce\Domain\Order\Order;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
-use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Vat\VatRepository;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,10 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Frontend\Core\Language\Locale;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JsonSerializable;
-use Money\Currencies\ISOCurrencies;
 use Money\Currency;
-use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * @ORM\Table(name="commerce_carts")
@@ -129,11 +126,13 @@ class Cart implements JsonSerializable
     private bool $allProductsInStock;
     private float $totalWeight;
     private array $cartRuleTotals = [];
+    private MoneyFormatter $moneyFormatter;
 
     public function __construct()
     {
         $this->values = new ArrayCollection();
         $this->cart_rules = new ArrayCollection();
+        $this->moneyFormatter = new MoneyFormatter();
     }
 
     public function getId(): int
@@ -541,29 +540,29 @@ class Cart implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
+        $this->moneyFormatter = new MoneyFormatter();
         $this->recalculateCart();
-        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
         return [
             'totalQuantity' => $this->getTotalQuantity(),
-            'cartRules' => array_map(function (CartRule $item) use ($moneyFormatter) {
+            'cartRules' => array_map(function (CartRule $item) {
                 return [
                     'id' => $item->getId(),
                     'title' => $item->getTitle(),
                     'code' => $item->getCode(),
-                    'total' => $this->getCartRuleTotal($item) !== null ? (float) $moneyFormatter->format($this->getCartRuleTotal($item)) : null,
+                    'total' => $this->getCartRuleTotal($item) !== null ? $this->moneyFormatter->asFloat($this->getCartRuleTotal($item)) : null,
                 ];
             }, $this->getCartRules()->toArray()),
-            'subTotal' => (float) $moneyFormatter->format($this->getSubTotal()),
-            'vats' => array_map(function ($item) use ($moneyFormatter) {
+            'subTotal' => $this->moneyFormatter->asFloat($this->getSubTotal()),
+            'vats' => array_map(function ($item) {
                 return [
                     'id' => $item['id'],
                     'title' => $item['title'],
-                    'total' => (float) $moneyFormatter->format($item['total']), // Convert Money to plain string
+                    'total' => $this->moneyFormatter->asFloat($item['total']), // Convert Money to plain string
                 ];
             }, array_values($this->getVats())),
-            'total' => (float) $moneyFormatter->format($this->getTotal()),
-            'items' => array_map(function (CartValue $cartValue) use ($moneyFormatter) {
+            'total' => $this->moneyFormatter->asFloat($this->getTotal()),
+            'items' => array_map(function (CartValue $cartValue) {
                 return [
                     'id' => $cartValue->getId(),
                     'sku' => $cartValue->getProduct()->getSku(),
@@ -572,9 +571,9 @@ class Cart implements JsonSerializable
                     'thumbnail' => $cartValue->getProduct()->getThumbnail()->getWebPath('product_thumbnail'),
                     'category' => $cartValue->getProduct()->getCategory()->getFullCategoryPath(),
                     'brand' => $cartValue->getProduct()->getBrand()->getTitle(),
-                    'price' => (float) $moneyFormatter->format($cartValue->getProduct()->getActivePrice(false)),
+                    'price' => $this->moneyFormatter->asFloat($cartValue->getProduct()->getActivePrice(false)),
                     'quantity' => $cartValue->getQuantity(),
-                    'total' => (float) $moneyFormatter->format($cartValue->getTotal()),
+                    'total' => $this->moneyFormatter->asFloat($cartValue->getTotal()),
                 ];
             }, $this->getValues()->toArray()),
         ];
