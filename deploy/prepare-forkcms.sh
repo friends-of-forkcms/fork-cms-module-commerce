@@ -54,8 +54,8 @@ mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} <
 # This will become a lot easier with Symfony 4+
 # You can regenerate these by comparing an old version of the file:
 # diff --text --unified --new-file app/config/config_old.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.patch
-patch -p0 < deploy/patches/AppKernel.patch
-patch -p0 < deploy/patches/config.patch
+patch -p0 --force < deploy/patches/AppKernel.patch
+patch -p0 --force < deploy/patches/config.patch
 
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce
