@@ -21,7 +21,7 @@ class SpecificationDataTransferObject
     public string $title;
     public Locale $locale;
     public ?Meta $meta = null;
-    public int $sequence;
+    public ?int $sequence;
 
     /**
      * @var Collection|SpecificationValue[]
@@ -35,6 +35,7 @@ class SpecificationDataTransferObject
         $this->specificationEntity = $specification;
         $this->specification_values = new ArrayCollection();
         $this->filter = false;
+        $this->sequence = null;
 
         if (!$this->hasExistingSpecification()) {
             return;

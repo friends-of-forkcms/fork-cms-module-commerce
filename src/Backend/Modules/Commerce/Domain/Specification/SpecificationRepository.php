@@ -54,22 +54,6 @@ class SpecificationRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line.
-     *
-     * @throws NonUniqueResultException
-     */
-    public function getNextSequence(Locale $locale): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-
-        return $query_builder->select('MAX(i.sequence) as sequence')
-                ->where('i.locale = :locale')
-                ->setParameter('locale', $locale)
-                ->getQuery()
-                ->getSingleScalarResult() + 1;
-    }
-
-    /**
      * @param string $url
      * @param int    $id
      *

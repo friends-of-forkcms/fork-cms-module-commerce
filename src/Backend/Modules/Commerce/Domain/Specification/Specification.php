@@ -39,6 +39,7 @@ class Specification
     private Collection $specification_values;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
@@ -49,6 +50,7 @@ class Specification
     private string $title;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11)
      */
     private int $sequence;
@@ -75,7 +77,7 @@ class Specification
     private function __construct(
         Locale $locale,
         string $title,
-        int $sequence,
+        ?int $sequence,
         Meta $meta,
         bool $filter,
         $specification_values
