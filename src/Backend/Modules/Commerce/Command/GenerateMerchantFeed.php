@@ -8,8 +8,6 @@ use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Common\ModulesSettings;
 use DOMDocument;
 use DOMElement;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\DecimalMoneyFormatter;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

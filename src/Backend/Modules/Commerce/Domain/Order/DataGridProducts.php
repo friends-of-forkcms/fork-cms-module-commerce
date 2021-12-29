@@ -7,11 +7,8 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct;
 use Backend\Modules\Commerce\Domain\Product\Product;
-use Money\Currencies\ISOCurrencies;
 use Money\Currency;
-use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use NumberFormatter;
 use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 class DataGridProducts extends DataGridDatabase
@@ -101,6 +98,7 @@ class DataGridProducts extends DataGridDatabase
     {
         $money = new Money($amount, new Currency($currencyCode));
         $moneyFormatter = new MoneyFormatter();
+
         return $moneyFormatter->localizedFormatMoney($money);
     }
 }

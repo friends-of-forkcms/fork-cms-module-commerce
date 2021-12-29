@@ -5,10 +5,7 @@ namespace Backend\Modules\CommercePickup\Domain\Pickup\Checkout;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use NumberFormatter;
 
 class Quote extends ShipmentMethodQuote
 {

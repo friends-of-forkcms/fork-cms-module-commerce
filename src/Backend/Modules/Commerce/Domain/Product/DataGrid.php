@@ -9,11 +9,8 @@ use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
-use Money\Currencies\ISOCurrencies;
 use Money\Currency;
-use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use NumberFormatter;
 use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
@@ -142,6 +139,7 @@ class DataGrid extends DataGridDatabase
     {
         $money = new Money($amount, new Currency($currencyCode));
         $moneyFormatter = new MoneyFormatter();
+
         return $moneyFormatter->localizedFormatMoney($money);
     }
 }

@@ -3,10 +3,7 @@
 namespace Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Checkout;
 
 use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\PaymentMethodQuote;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use NumberFormatter;
 
 class Quote extends PaymentMethodQuote
 {

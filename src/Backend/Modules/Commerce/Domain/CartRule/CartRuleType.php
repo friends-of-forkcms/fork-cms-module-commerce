@@ -2,10 +2,7 @@
 
 namespace Backend\Modules\Commerce\Domain\CartRule;
 
-use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
-use Money\Money;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;

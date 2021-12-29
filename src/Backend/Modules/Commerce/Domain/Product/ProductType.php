@@ -16,7 +16,6 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\ProductSpecificationValue
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProductType;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
-use Backend\Modules\Commerce\Form\DataTransformer\MoneyToLocalizedStringTransformer;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroupType;
 use Common\Form\CollectionType;
 use Doctrine\ORM\EntityRepository;
@@ -32,7 +31,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tbbc\MoneyBundle\Form\Type\MoneyType;
-use Tbbc\MoneyBundle\Form\Type\SimpleMoneyType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ProductType extends AbstractType
