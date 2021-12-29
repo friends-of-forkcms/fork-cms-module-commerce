@@ -46,9 +46,10 @@ bin/console forkcms:install:module CommercePickup
 
 # Setup the CMS for our demo (install demo theme, add widgets, ...)
 # Use envsubst to fill in the secrets based on env vars in the file
-mv deploy/prepare-forkcms-db.sql deploy/prepare-forkcms-db.sql.tmp
-envsubst < deploy/prepare-forkcms-db.sql.tmp > deploy/prepare-forkcms-db.sql
-mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
+mv deploy/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
+envsubst < /tmp/prepare-forkcms-db.sql.tmp > /tmp/prepare-forkcms-db.sql
+mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < /tmp/prepare-forkcms-db.sql
+rm /tmp/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
 
 # Apply a patch to add our bundles to AppKernel and configure the config.yml
 # This will become a lot easier with Symfony 4+
