@@ -23,6 +23,7 @@ class Vat
     private int $id;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
@@ -38,9 +39,10 @@ class Vat
     private float $percentage;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11)
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -58,7 +60,7 @@ class Vat
         Locale $locale,
         string $title,
         float $percentage,
-        int $sequence
+        ?int $sequence
     ) {
         $this->locale = $locale;
         $this->title = $title;
