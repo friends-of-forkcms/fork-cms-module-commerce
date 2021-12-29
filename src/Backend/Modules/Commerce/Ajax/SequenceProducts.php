@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Alters the sequence of Commerce products.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class SequenceProducts extends BackendBaseAJAXAction
 {

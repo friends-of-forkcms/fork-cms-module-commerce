@@ -11,9 +11,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the settings action, it will display a form to set general commerce settings.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Settings extends BackendBaseActionEdit
 {

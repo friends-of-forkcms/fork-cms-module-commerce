@@ -9,9 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Alters the sequence of Commerce categories.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class SequenceBrands extends BackendBaseAJAXAction
 {

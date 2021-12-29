@@ -14,9 +14,6 @@ use Common\Exception\RedirectException;
 
 /**
  * This is the index-action (default), it will display the overview of products.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Index extends BackendBaseActionIndex
 {

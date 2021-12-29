@@ -13,9 +13,6 @@ use Backend\Modules\Commerce\Domain\Category\FilterType;
 
 /**
  * This is the categories-action, it will display the overview of categories.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Categories extends BackendBaseActionIndex
 {

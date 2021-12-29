@@ -16,8 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit order-status-action, it will display a form to edit a order status.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditOrderStatus extends BackendBaseActionEdit
 {

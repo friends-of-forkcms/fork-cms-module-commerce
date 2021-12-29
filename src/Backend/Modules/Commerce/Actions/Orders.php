@@ -13,9 +13,6 @@ use DateTime;
 
 /**
  * This is the orders-action, it will display the overview of orders.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Orders extends BackendBaseActionIndex
 {

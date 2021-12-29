@@ -16,8 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit stock-status-action, it will display a form to edit a stock status.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditStockStatus extends BackendBaseActionEdit
 {

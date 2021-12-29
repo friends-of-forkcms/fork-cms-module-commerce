@@ -11,9 +11,6 @@ use Frontend\Core\Language\Locale;
 
 /**
  * This is a widget with the Commerce-categories.
- *
- * @author Waldo Cosman <waldo@comsa.be>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Category extends FrontendBaseWidget
 {

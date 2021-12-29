@@ -16,9 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit-action, it will display a form to edit an existing item.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditOrder extends BackendBaseActionEdit
 {

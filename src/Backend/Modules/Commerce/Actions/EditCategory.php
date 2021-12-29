@@ -17,9 +17,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit category action, it will display a form to edit an existing category.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditCategory extends BackendBaseActionEdit
 {

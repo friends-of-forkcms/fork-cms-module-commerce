@@ -13,9 +13,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add-action, it will display a form to create a new product.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Add extends BackendBaseActionAdd
 {

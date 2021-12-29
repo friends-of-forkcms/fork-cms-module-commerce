@@ -16,8 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit productoption-action, it will display a form to edit a product option.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditProductOption extends BackendBaseActionEdit
 {

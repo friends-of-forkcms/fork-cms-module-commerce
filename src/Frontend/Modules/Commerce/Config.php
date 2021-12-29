@@ -6,8 +6,6 @@ use Frontend\Core\Engine\Base\Config as FrontendBaseConfig;
 
 /**
  * This is the configuration-object for the Commerce module.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class Config extends FrontendBaseConfig
 {

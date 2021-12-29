@@ -9,9 +9,6 @@ use Frontend\Core\Language\Locale;
 
 /**
  * This is a widget with the Commerce-categories.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Categories extends FrontendBaseWidget
 {

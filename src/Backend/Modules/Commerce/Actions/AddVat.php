@@ -11,8 +11,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add vat-action, it will display a form to create a new vat.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddVat extends BackendBaseActionAdd
 {

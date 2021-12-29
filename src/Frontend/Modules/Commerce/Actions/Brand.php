@@ -6,11 +6,6 @@ use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
 use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
 
-/**
- * This is the category-action, it will display the overview of products/subcategories within a category.
- *
- * @author Waldo Cosman <waldo_cosman@hotmail.com>
- */
 class Brand extends FrontendBaseBlock
 {
     private array $record;

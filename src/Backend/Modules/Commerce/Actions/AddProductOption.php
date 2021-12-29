@@ -18,8 +18,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add product option-action, it will display a form to create a new product option.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddProductOption extends BackendBaseActionAdd
 {

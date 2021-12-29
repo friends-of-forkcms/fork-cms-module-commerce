@@ -8,8 +8,6 @@ use Backend\Modules\Commerce\Domain\Country\DataGrid;
 
 /**
  * This is the countries action, it will display the overview of countries.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Countries extends BackendBaseActionIndex
 {

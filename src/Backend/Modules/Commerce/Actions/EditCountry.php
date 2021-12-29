@@ -16,8 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit country-action, it will display a form to edit a country.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditCountry extends BackendBaseActionEdit
 {

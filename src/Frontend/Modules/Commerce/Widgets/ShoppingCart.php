@@ -9,9 +9,6 @@ use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
 
 /**
  * This is a widget for the shopping cart.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class ShoppingCart extends FrontendBaseWidget
 {

@@ -29,8 +29,6 @@ use RuntimeException;
 
 /**
  * This is the cart-action, it will display the cart.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Cart extends FrontendBaseBlock
 {

@@ -13,9 +13,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add category-action, it will display a form to create a new category.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddCategory extends BackendBaseActionAdd
 {

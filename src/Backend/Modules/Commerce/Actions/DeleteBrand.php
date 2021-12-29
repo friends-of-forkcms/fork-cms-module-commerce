@@ -14,9 +14,6 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * This action will delete a brand.
- *
- * @author Waldo Cosman <waldo@comsa.be>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class DeleteBrand extends BackendBaseActionDelete
 {

@@ -11,8 +11,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add country-action, it will display a form to create a new country.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddCountry extends BackendBaseActionAdd
 {

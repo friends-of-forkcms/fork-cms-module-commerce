@@ -11,8 +11,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add stock-status-action, it will display a form to create a new stock status.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddStockStatus extends BackendBaseActionAdd
 {

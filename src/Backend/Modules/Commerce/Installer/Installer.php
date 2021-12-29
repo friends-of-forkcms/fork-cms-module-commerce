@@ -40,9 +40,6 @@ use Common\ModuleExtraType;
 
 /**
  * Installer for the Commerce module.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam (Jacob van Dam ICT) <j.vandam@jvdict.nl>
  */
 class Installer extends ModuleInstaller
 {
