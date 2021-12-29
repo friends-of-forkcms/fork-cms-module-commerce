@@ -30,6 +30,9 @@ class QuoteTest extends TestCase
             define('FRONTEND_LANGUAGE', 'en');
         }
 
+        $default = \Locale::getDefault();
+        var_dump($default);
+
         // The ProductDTO reaches out to the container for fork settings and the product repository, so we have to mock this.
         $forkSettings = $this->getMockBuilder(ModulesSettings::class)->disableOriginalConstructor()->getMock();
         $forkSettings->method('get')->willReturn(['en']); // both for language and active_language
