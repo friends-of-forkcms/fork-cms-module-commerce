@@ -6,7 +6,6 @@ use Backend\Modules\Commerce\Domain\Cart\CartValueOption;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -38,6 +37,7 @@ class ProductOption
     private int $id;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="product_options")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -103,9 +103,10 @@ class ProductOption
     private int $type;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer")
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -143,7 +144,7 @@ class ProductOption
         bool $custom_value_allowed,
         Money $custom_value_price,
         int $type,
-        int $sequence,
+        ?int $sequence,
         ?string $placeholder,
         ?string $prefix,
         ?string $suffix,

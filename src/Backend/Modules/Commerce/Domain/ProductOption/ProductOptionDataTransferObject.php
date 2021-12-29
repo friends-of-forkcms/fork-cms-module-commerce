@@ -39,7 +39,7 @@ class ProductOptionDataTransferObject
     public ?string $placeholder = null;
     public ?string $prefix = null;
     public ?string $suffix = null;
-    public int $sequence;
+    public ?int $sequence;
 
     public function __construct(ProductOption $productOption = null)
     {
@@ -49,6 +49,7 @@ class ProductOptionDataTransferObject
         $this->dimension_notifications = new ArrayCollection();
         $this->remove_dimension_notifications = new ArrayCollection();
         $this->custom_value_price = Money::EUR(0);
+        $this->sequence = null;
 
         if (!$this->hasExistingProductOption()) {
             return;
