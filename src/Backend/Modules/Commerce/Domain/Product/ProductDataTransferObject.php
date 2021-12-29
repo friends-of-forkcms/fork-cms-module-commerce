@@ -240,16 +240,6 @@ class ProductDataTransferObject
 
     public function addSpecificationValue(SpecificationValue $value): void
     {
-        // If the specification value has no entity save a new one
-        if (!$value->getId()) {
-            /**
-             * @var SpecificationValueRepository $specificationValueRepository
-             */
-            $specificationValueRepository = Model::get('commerce.repository.specification_value');
-
-            $value->setSequence($specificationValueRepository->getNextSequence($value));
-        }
-
         $this->specification_values->add($value);
     }
 

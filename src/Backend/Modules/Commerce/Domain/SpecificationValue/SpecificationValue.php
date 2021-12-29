@@ -25,6 +25,7 @@ class SpecificationValue
     private int $id;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Specification\Specification", inversedBy="specification_values")
      * @ORM\JoinColumn(name="specification_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -54,9 +55,10 @@ class SpecificationValue
     public string $value;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11)
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @Gedmo\Timestampable(on="create")
