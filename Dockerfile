@@ -80,7 +80,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
 ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
 
 # Enable pcov for test coverage
 RUN pecl install pcov && \

@@ -23,12 +23,6 @@ services:
       - SMTP_PASSWORD=dummy_smtp_password___1234567890
     volumes:
       - ./deploy:/var/www/html/deploy
-    restart: unless-stopped
-    healthcheck:
-      interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
 
   db:
     image: "mariadb:10"
