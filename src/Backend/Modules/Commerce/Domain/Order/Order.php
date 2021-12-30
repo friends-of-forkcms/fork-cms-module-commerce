@@ -20,53 +20,52 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_orders")
  * @ORM\Entity(repositoryClass="OrderRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Order
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Account\Account", inversedBy="orders")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="accountId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Account $account;
 
     /**
      * @ORM\OneToOne(targetEntity="Backend\Modules\Commerce\Domain\Cart\Cart", inversedBy="order")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="cartId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Cart $cart;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $invoice_number;
+    private ?string $invoiceNumber;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTimeInterface $invoice_date;
+    private ?DateTimeInterface $invoiceDate;
 
     /**
      * @ORM\Column(type="string")
      */
-    private string $payment_method;
+    private string $paymentMethod;
 
     /**
      * @ORM\Column(type="string")
      */
-    private string $shipment_method;
+    private string $shipmentMethod;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="shipmentPrice")
      */
-    private Money $shipment_price;
+    private Money $shipmentPrice;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -75,15 +74,15 @@ class Order
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     /**
      * @var Collection|OrderRule[]
@@ -109,44 +108,44 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
-     * @ORM\JoinColumn(name="invoice_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="invoiceAddressId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private OrderAddress $invoice_address;
+    private OrderAddress $invoiceAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
-     * @ORM\JoinColumn(name="shipment_address_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="shipmentAddressId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private OrderAddress $shipment_address;
+    private OrderAddress $shipmentAddress;
 
     /**
      * @var Collection|OrderHistory[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="order")
-     * @ORM\JoinColumn(name="order_id")
-     * @ORM\OrderBy({"createdOn": "DESC"}))
+     * @ORM\JoinColumn(name="orderId")
+     * @ORM\OrderBy({"createdAt": "DESC"}))
      */
     private Collection $history;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="subTotal")
      */
-    private Money $sub_total;
+    private Money $subTotal;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="total")
      */
     private Money $total;
 
     private function __construct(
         Account $account,
         ?Cart $cart,
-        DateTimeInterface $createdOn,
+        DateTimeInterface $createdAt,
         string $paymentMethod,
-        string $shipment_method,
-        Money $shipment_price,
+        string $shipmentMethod,
+        Money $shipmentPrice,
         ?string $comment,
-        Money $sub_total,
+        Money $subTotal,
         Money $total,
         OrderAddress $invoiceAddress,
         OrderAddress $shipmentAddress,
@@ -158,20 +157,20 @@ class Order
     ) {
         $this->account = $account;
         $this->cart = $cart;
-        $this->createdOn = $createdOn;
-        $this->payment_method = $paymentMethod;
-        $this->shipment_method = $shipment_method;
-        $this->shipment_price = $shipment_price;
+        $this->createdAt = $createdAt;
+        $this->paymentMethod = $paymentMethod;
+        $this->shipmentMethod = $shipmentMethod;
+        $this->shipmentPrice = $shipmentPrice;
         $this->comment = $comment;
-        $this->sub_total = $sub_total;
+        $this->subTotal = $subTotal;
         $this->total = $total;
-        $this->invoice_address = $invoiceAddress;
-        $this->shipment_address = $shipmentAddress;
+        $this->invoiceAddress = $invoiceAddress;
+        $this->shipmentAddress = $shipmentAddress;
         $this->rules = $rules;
         $this->products = $products;
         $this->vats = $vats;
-        $this->invoice_number = $invoiceNumber;
-        $this->invoice_date = $invoiceDate;
+        $this->invoiceNumber = $invoiceNumber;
+        $this->invoiceDate = $invoiceDate;
     }
 
     public static function fromDataTransferObject(OrderDataTransferObject $dataTransferObject): Order
@@ -188,7 +187,7 @@ class Order
         return new self(
             $dataTransferObject->account,
             $dataTransferObject->cart,
-            $dataTransferObject->createdOn,
+            $dataTransferObject->createdAt,
             $dataTransferObject->paymentMethod,
             $dataTransferObject->shipment_method,
             $dataTransferObject->shipment_price,
@@ -222,27 +221,27 @@ class Order
 
     public function getInvoiceNumber(): ?string
     {
-        return $this->invoice_number;
+        return $this->invoiceNumber;
     }
 
     public function getInvoiceDate(): ?DateTimeInterface
     {
-        return $this->invoice_date;
+        return $this->invoiceDate;
     }
 
     public function getPaymentMethod(): ?string
     {
-        return $this->payment_method;
+        return $this->paymentMethod;
     }
 
     public function getShipmentMethod(): string
     {
-        return $this->shipment_method;
+        return $this->shipmentMethod;
     }
 
     public function getShipmentPrice(): ?Money
     {
-        return $this->shipment_price;
+        return $this->shipmentPrice;
     }
 
     public function getComment(): ?string
@@ -250,14 +249,14 @@ class Order
         return $this->comment;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
     public function getSubTotal(): Money
     {
-        return $this->sub_total;
+        return $this->subTotal;
     }
 
     public function getTotal(): Money
@@ -291,12 +290,12 @@ class Order
 
     public function getInvoiceAddress(): OrderAddress
     {
-        return $this->invoice_address;
+        return $this->invoiceAddress;
     }
 
     public function getShipmentAddress(): OrderAddress
     {
-        return $this->shipment_address;
+        return $this->shipmentAddress;
     }
 
     /**
@@ -313,14 +312,14 @@ class Order
 
         $order->account = $dataTransferObject->account;
         $order->cart = $dataTransferObject->cart;
-        $order->createdOn = $dataTransferObject->createdOn;
+        $order->createdAt = $dataTransferObject->createdAt;
         $order->total = $dataTransferObject->total;
-        $order->invoice_number = $dataTransferObject->invoiceNumber;
-        $order->invoice_date = $dataTransferObject->invoiceDate;
-        $order->shipment_method = $dataTransferObject->shipment_method;
-        $order->shipment_price = $dataTransferObject->shipment_price;
-        $order->shipment_address = $dataTransferObject->shipmentAddress;
-        $order->payment_method = $dataTransferObject->paymentMethod;
+        $order->invoiceNumber = $dataTransferObject->invoiceNumber;
+        $order->invoiceDate = $dataTransferObject->invoiceDate;
+        $order->shipmentMethod = $dataTransferObject->shipment_method;
+        $order->shipmentPrice = $dataTransferObject->shipment_price;
+        $order->shipmentAddress = $dataTransferObject->shipmentAddress;
+        $order->paymentMethod = $dataTransferObject->paymentMethod;
         $order->rules = $dataTransferObject->rules;
 
         return $order;

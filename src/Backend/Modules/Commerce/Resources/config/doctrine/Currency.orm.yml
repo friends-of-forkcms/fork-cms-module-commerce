@@ -6,3 +6,4 @@ Money\Currency:
     code:
       type: string
       length: 3
+      column: Code

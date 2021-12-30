@@ -59,8 +59,8 @@ class CartRepository extends EntityRepository
         $query_builder = $this->createQueryBuilder('i');
 
         try {
-            $entity = $query_builder->where('i.session_id = :session_id')
-                ->setParameter('session_id', $hash)
+            $entity = $query_builder->where('i.sessionId = :sessionId')
+                ->setParameter('sessionId', $hash)
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {

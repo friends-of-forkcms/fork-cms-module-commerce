@@ -24,23 +24,23 @@ class Category
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
-     * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="metaId", referencedColumnName="id")
      */
     private ?Meta $meta;
 
     /**
-     * @ORM\Column(type="integer", name="extra_id")
+     * @ORM\Column(type="integer")
      */
     private int $extraId;
 
     /**
-     * @ORM\Column(type="integer", name="google_taxonomy_id", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $googleTaxonomyId;
 
@@ -79,7 +79,7 @@ class Category
     /**
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="parentId", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private ?Category $parent;
 
@@ -100,15 +100,15 @@ class Category
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     /**
      * This is used to determine the path of our children for a display.
@@ -245,7 +245,7 @@ class Category
         $this->image->upload();
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
@@ -281,14 +281,14 @@ class Category
         return $this->meta;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     /**

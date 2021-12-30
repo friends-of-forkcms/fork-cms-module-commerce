@@ -202,7 +202,7 @@ class ProductDataTransferObject
         $this->images = $this->productEntity->getImages();
         $this->downloads = $this->productEntity->getDownloads();
         $this->related_products = $this->productEntity->getRelatedProducts();
-        $this->up_sell_products = $this->productEntity->getUpSellProducts();
+        $this->up_sell_products = $this->productEntity->getUpsellProducts();
 
         // just a fallback
         if (!$this->images instanceof MediaGroup) {

@@ -27,7 +27,6 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_products")
  * @ORM\Entity(repositoryClass="ProductRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
@@ -44,40 +43,40 @@ class Product
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     public int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
-     * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="metaId", referencedColumnName="id")
      */
     private ?Meta $meta;
 
     /**
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Category\Category", inversedBy="products")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Category $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Brand\Brand", inversedBy="products")
-     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="brandId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Brand $brand;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Vat\Vat")
-     * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="vatId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Vat $vat;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\StockStatus\StockStatus")
-     * @ORM\JoinColumn(name="stock_status_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="stockStatusId", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?StockStatus $stock_status;
+    private ?StockStatus $stockStatus;
 
     /**
      * @var ProductOption[]
@@ -85,7 +84,7 @@ class Product
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", mappedBy="product", cascade={"remove", "persist"})
      * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $product_options;
+    private $productOptions;
 
     /**
      * @var SpecificationValue[]
@@ -93,12 +92,12 @@ class Product
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue", inversedBy="products", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="commerce_products_specification_values",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="productId", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="specificationValueId", referencedColumnName="id")}
      * )
      * @ORM\OrderBy({"value": "ASC"})
      */
-    private $specification_values;
+    private $specificationValues;
 
     /**
      * @var Collection<int, ProductSpecial>
@@ -120,7 +119,7 @@ class Product
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="product", cascade={"remove", "persist"})
      * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
      */
-    private $dimension_notifications;
+    private $dimensionNotifications;
 
     /**
      * Many Products may have many related products.
@@ -129,25 +128,25 @@ class Product
      *
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(name="commerce_related_products",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="related_product_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="productId", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="relatedProductId", referencedColumnName="id")}
      * )
      * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private $related_products;
+    private $relatedProducts;
 
     /**
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct", mappedBy="product", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sequence": "ASC"})
      */
-    protected $up_sell_products;
+    protected $upsellProducts;
 
     /**
      * @var Collection<CartValue>
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValue", mappedBy="product", cascade={"remove", "persist"})
      */
-    private $cart_values;
+    private $cartValues;
 
     /**
      * @Gedmo\SortableGroup
@@ -168,32 +167,32 @@ class Product
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private int $min_width;
+    private int $minWidth;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private int $min_height;
+    private int $minHeight;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private int $max_width;
+    private int $maxWidth;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private int $max_height;
+    private int $maxHeight;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private int $extra_production_width;
+    private int $extraProductionWidth;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private int $extra_production_height;
+    private int $extraProductionHeight;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -221,7 +220,7 @@ class Product
     private ?float $weight;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="price")
      */
     private Money $price;
 
@@ -233,12 +232,12 @@ class Product
     /**
      * @ORM\Column(type="integer")
      */
-    private int $order_quantity;
+    private int $orderQuantity;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $from_stock;
+    private bool $fromStock;
 
     /**
      * @ORM\Column(type="text")
@@ -253,34 +252,18 @@ class Product
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $dimension_instructions;
+    private ?string $dimensionInstructions;
 
     /**
-     * @ORM\OneToOne(
-     *     targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
-     * @ORM\JoinColumn(
-     *     name="imageGroupId",
-     *     referencedColumnName="id",
-     *     onDelete="cascade"
-     * )
+     * @ORM\OneToOne(targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="imageGroupId", referencedColumnName="id", onDelete="cascade")
      * @ORM\OrderBy({"sequence": "ASC"})
      */
     protected ?MediaGroup $images;
 
     /**
-     * @ORM\OneToOne(
-     *     targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
-     * @ORM\JoinColumn(
-     *     name="downloadGroupId",
-     *     referencedColumnName="id",
-     *     onDelete="cascade"
-     * )
+     * @ORM\OneToOne(targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="downloadGroupId", referencedColumnName="id", onDelete="cascade")
      * @ORM\OrderBy({"sequence": "ASC"})
      */
     protected ?MediaGroup $downloads;
@@ -293,15 +276,15 @@ class Product
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     /**
      * Current object active price.
@@ -315,61 +298,61 @@ class Product
         Category $category,
         ?Brand $brand,
         ?Vat $vat,
-        StockStatus $stock_status,
+        StockStatus $stockStatus,
         Locale $locale,
         bool $hidden,
         int $type,
-        int $min_width,
-        int $min_height,
-        int $max_width,
-        int $max_height,
-        int $extra_production_width,
-        int $extra_production_height,
+        int $minWidth,
+        int $minHeight,
+        int $maxWidth,
+        int $maxHeight,
+        int $extraProductionWidth,
+        int $extraProductionHeight,
         string $title,
         float $weight,
         Money $price,
         int $stock,
-        int $order_quantity,
-        bool $from_stock,
+        int $orderQuantity,
+        bool $fromStock,
         string $sku,
         ?string $ean13,
         ?string $isbn,
         string $summary,
         ?string $text,
-        ?string $dimension_instructions,
+        ?string $dimensionInstructions,
         ?int $sequence,
         MediaGroup $images,
         MediaGroup $downloads,
-        $specification_values,
+        $specificationValues,
         $specials,
-        $related_products,
-        $up_sell_products,
+        $relatedProducts,
+        $upsellProducts,
         $dimensions,
-        $dimension_notifications
+        $dimensionNotifications
     ) {
-        $this->cart_values = new ArrayCollection();
+        $this->cartValues = new ArrayCollection();
         $this->meta = $meta;
         $this->category = $category;
         $this->brand = $brand;
         $this->vat = $vat;
-        $this->stock_status = $stock_status;
+        $this->stockStatus = $stockStatus;
         $this->locale = $locale;
         $this->hidden = $hidden;
         $this->type = $type;
-        $this->dimension_instructions = $dimension_instructions;
-        $this->min_width = $min_width;
-        $this->min_height = $min_height;
-        $this->max_width = $max_width;
-        $this->max_height = $max_height;
-        $this->extra_production_width = $extra_production_width;
-        $this->extra_production_height = $extra_production_height;
+        $this->dimensionInstructions = $dimensionInstructions;
+        $this->minWidth = $minWidth;
+        $this->minHeight = $minHeight;
+        $this->maxWidth = $maxWidth;
+        $this->maxHeight = $maxHeight;
+        $this->extraProductionWidth = $extraProductionWidth;
+        $this->extraProductionHeight = $extraProductionHeight;
         $this->type = $type;
         $this->title = $title;
         $this->weight = $weight;
         $this->price = $price;
         $this->stock = $stock;
-        $this->order_quantity = $order_quantity;
-        $this->from_stock = $from_stock;
+        $this->orderQuantity = $orderQuantity;
+        $this->fromStock = $fromStock;
         $this->sku = $sku;
         $this->ean13 = $ean13;
         $this->isbn = $isbn;
@@ -378,12 +361,12 @@ class Product
         $this->sequence = $sequence;
         $this->images = $images;
         $this->downloads = $downloads;
-        $this->specification_values = $specification_values;
+        $this->specificationValues = $specificationValues;
         $this->specials = $specials;
-        $this->related_products = $related_products;
-        $this->up_sell_products = $up_sell_products;
+        $this->relatedProducts = $relatedProducts;
+        $this->upsellProducts = $upsellProducts;
         $this->dimensions = $dimensions;
-        $this->dimension_notifications = $dimension_notifications;
+        $this->dimensionNotifications = $dimensionNotifications;
     }
 
     public static function fromDataTransferObject(ProductDataTransferObject $dataTransferObject): Product
@@ -466,7 +449,7 @@ class Product
 
     public function getStockStatus(): StockStatus
     {
-        return $this->stock_status;
+        return $this->stockStatus;
     }
 
     /**
@@ -475,9 +458,9 @@ class Product
     public function getProductOptions(): Collection
     {
         $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->isNull('parent_product_option_value'));
+        $criteria->where(Criteria::expr()->isNull('parentProductOptionValue'));
 
-        return $this->product_options->matching($criteria);
+        return $this->productOptions->matching($criteria);
     }
 
     /**
@@ -485,7 +468,7 @@ class Product
      */
     public function getProductOptionsWithSubOptions(): Collection
     {
-        return $this->product_options;
+        return $this->productOptions;
     }
 
     public function getLocale(): Locale
@@ -505,32 +488,32 @@ class Product
 
     public function getMinWidth(): int
     {
-        return $this->min_width;
+        return $this->minWidth;
     }
 
     public function getMinHeight(): int
     {
-        return $this->min_height;
+        return $this->minHeight;
     }
 
     public function getMaxWidth(): int
     {
-        return $this->max_width;
+        return $this->maxWidth;
     }
 
     public function getMaxHeight(): int
     {
-        return $this->max_height;
+        return $this->maxHeight;
     }
 
     public function getExtraProductionWidth(): int
     {
-        return $this->extra_production_width;
+        return $this->extraProductionWidth;
     }
 
     public function getExtraProductionHeight(): int
     {
-        return $this->extra_production_height;
+        return $this->extraProductionHeight;
     }
 
     public function getTitle(): string
@@ -563,17 +546,17 @@ class Product
 
     public function getOrderQuantity(): int
     {
-        return $this->order_quantity;
+        return $this->orderQuantity;
     }
 
     public function isFromStock(): bool
     {
-        return $this->from_stock;
+        return $this->fromStock;
     }
 
-    public function setFromStock(bool $from_stock)
+    public function setFromStock(bool $fromStock)
     {
-        $this->from_stock = $from_stock;
+        $this->fromStock = $fromStock;
     }
 
     public function getSku(): string
@@ -618,7 +601,7 @@ class Product
      */
     public function getDimensionInstructions(): ?string
     {
-        return $this->dimension_instructions;
+        return $this->dimensionInstructions;
     }
 
     /**
@@ -637,7 +620,7 @@ class Product
         return $this->downloads;
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
@@ -652,12 +635,12 @@ class Product
      */
     public function getSpecificationValues()
     {
-        return $this->specification_values;
+        return $this->specificationValues;
     }
 
     public function removeSpecificationValue(SpecificationValue $specificationValue)
     {
-        $this->specification_values->removeElement($specificationValue);
+        $this->specificationValues->removeElement($specificationValue);
     }
 
     /**
@@ -682,9 +665,9 @@ class Product
     public function getDimensionNotifications(): Collection
     {
         $expr = Criteria::expr();
-        $criteria = Criteria::create()->where($expr->isNull('product_option'));
+        $criteria = Criteria::create()->where($expr->isNull('productOption'));
 
-        return $this->dimension_notifications->matching($criteria);
+        return $this->dimensionNotifications->matching($criteria);
     }
 
     /**
@@ -692,35 +675,35 @@ class Product
      */
     public function getRelatedProducts()
     {
-        return $this->related_products;
+        return $this->relatedProducts;
     }
 
     /**
      * @return Product[]
      */
-    public function getUpSellProducts()
+    public function getUpsellProducts()
     {
-        return $this->up_sell_products;
+        return $this->upsellProducts;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     public function addRelatedProduct(Product $product)
     {
-        $this->related_products->add($product);
+        $this->relatedProducts->add($product);
     }
 
     public function removeRelatedProduct(Product $product)
     {
-        $this->related_products->removeElement($product);
+        $this->relatedProducts->removeElement($product);
     }
 
     /**
@@ -728,7 +711,7 @@ class Product
      */
     public function getCartValues(): array
     {
-        return $this->cart_values;
+        return $this->cartValues;
     }
 
     private static function update(ProductDataTransferObject $dataTransferObject)
@@ -739,37 +722,37 @@ class Product
         $product->category = $dataTransferObject->category;
         $product->brand = $dataTransferObject->brand;
         $product->vat = $dataTransferObject->vat;
-        $product->stock_status = $dataTransferObject->stock_status;
+        $product->stockStatus = $dataTransferObject->stock_status;
         $product->locale = $dataTransferObject->locale;
         $product->hidden = $dataTransferObject->hidden;
         $product->type = $dataTransferObject->type;
-        $product->min_width = $dataTransferObject->min_width;
-        $product->min_height = $dataTransferObject->min_height;
-        $product->max_width = $dataTransferObject->max_width;
-        $product->max_height = $dataTransferObject->max_height;
-        $product->extra_production_width = $dataTransferObject->extra_production_width;
-        $product->extra_production_height = $dataTransferObject->extra_production_height;
+        $product->minWidth = $dataTransferObject->min_width;
+        $product->minHeight = $dataTransferObject->min_height;
+        $product->maxWidth = $dataTransferObject->max_width;
+        $product->maxHeight = $dataTransferObject->max_height;
+        $product->extraProductionWidth = $dataTransferObject->extra_production_width;
+        $product->extraProductionHeight = $dataTransferObject->extra_production_height;
         $product->title = $dataTransferObject->title;
         $product->weight = $dataTransferObject->weight;
         $product->price = $dataTransferObject->price;
         $product->stock = $dataTransferObject->stock;
-        $product->order_quantity = $dataTransferObject->order_quantity;
-        $product->from_stock = $dataTransferObject->from_stock;
+        $product->orderQuantity = $dataTransferObject->order_quantity;
+        $product->fromStock = $dataTransferObject->from_stock;
         $product->sku = $dataTransferObject->sku;
         $product->ean13 = $dataTransferObject->ean13;
         $product->isbn = $dataTransferObject->isbn;
         $product->summary = $dataTransferObject->summary;
         $product->text = $dataTransferObject->text;
-        $product->dimension_instructions = $dataTransferObject->dimension_instructions;
+        $product->dimensionInstructions = $dataTransferObject->dimension_instructions;
         $product->sequence = $dataTransferObject->sequence;
         $product->images = $dataTransferObject->images;
         $product->downloads = $dataTransferObject->downloads;
-        $product->specification_values = $dataTransferObject->specification_values;
+        $product->specificationValues = $dataTransferObject->specification_values;
         $product->specials = $dataTransferObject->specials;
-        $product->related_products = $dataTransferObject->related_products;
-        $product->up_sell_products = $dataTransferObject->up_sell_products;
+        $product->relatedProducts = $dataTransferObject->related_products;
+        $product->upsellProducts = $dataTransferObject->up_sell_products;
         $product->dimensions = $dataTransferObject->dimensions;
-        $product->dimension_notifications = $dataTransferObject->dimension_notifications;
+        $product->dimensionNotifications = $dataTransferObject->dimension_notifications;
 
         return $product;
     }
@@ -935,9 +918,9 @@ class Product
             ->orderBy(['width' => Criteria::DESC, 'height' => Criteria::DESC])
             ->setMaxResults(1);
 
-        $dimensionNotifications = $this->dimension_notifications->matching($criteria)->first();
+        $dimensionNotifications = $this->dimensionNotifications->matching($criteria)->first();
 
-        return $dimensionNotifications ? $dimensionNotifications : null;
+        return $dimensionNotifications ?: null;
     }
 
     /**
@@ -955,7 +938,7 @@ class Product
             $notifications[] = $notification;
         }
 
-        foreach ($this->product_options as $productOption) {
+        foreach ($this->productOptions as $productOption) {
             $notifications = [...$notifications, ...$productOption->getAllDimensionNotificationsByDimension($width, $height)];
         }
 

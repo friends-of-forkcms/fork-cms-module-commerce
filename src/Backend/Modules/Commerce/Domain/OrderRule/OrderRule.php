@@ -12,31 +12,30 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_order_rules")
  * @ORM\Entity(repositoryClass="OrderRuleRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class OrderRule
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", inversedBy="rules")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="orderId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private Order $order;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\CartRule\CartRule")
-     * @ORM\JoinColumn(name="cart_rule_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="cartRuleId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private ?CartRule $cart_rule;
+    private ?CartRule $cartRule;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="total")
      */
     private Money $total;
 
@@ -57,9 +56,9 @@ class OrderRule
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     private function __construct(
         Order $order,
@@ -70,7 +69,7 @@ class OrderRule
         string $value
     ) {
         $this->order = $order;
-        $this->cart_rule = $cartRule;
+        $this->cartRule = $cartRule;
         $this->total = $total;
         $this->title = $title;
         $this->code = $code;
@@ -120,7 +119,7 @@ class OrderRule
 
     public function getCartRule(): ?CartRule
     {
-        return $this->cart_rule;
+        return $this->cartRule;
     }
 
     public function getTotal(): Money

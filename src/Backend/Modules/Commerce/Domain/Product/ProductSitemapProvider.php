@@ -21,7 +21,7 @@ class ProductSitemapProvider extends SitemapProvider implements SitemapProviderI
     {
         $products = $this->productRepository->findActive();
         foreach ($products as $product) {
-            $this->createItem($product->getUrl(), $product->getEditedOn(), ChangeFrequency::daily());
+            $this->createItem($product->getUrl(), $product->getUpdatedAt(), ChangeFrequency::daily());
         }
     }
 }

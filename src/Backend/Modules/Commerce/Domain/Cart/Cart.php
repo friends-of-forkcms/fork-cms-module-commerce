@@ -22,34 +22,33 @@ use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 /**
  * @ORM\Table(name="commerce_carts")
  * @ORM\Entity(repositoryClass="CartRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Cart implements JsonSerializable
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Account\Account", inversedBy="carts")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="accountId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Account $account;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
-     * @ORM\JoinColumn(name="shipment_address_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="shipmentAddressId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private ?OrderAddress $shipment_address;
+    private ?OrderAddress $shipmentAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress")
-     * @ORM\JoinColumn(name="invoice_address_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="invoiceAddressId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private ?OrderAddress $invoice_address;
+    private ?OrderAddress $invoiceAddress;
 
     /**
      * @var Collection<int, CartValue>
@@ -61,16 +60,16 @@ class Cart implements JsonSerializable
      * @var Collection<int, CartRule>|CartRule[]
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\CartRule\CartRule")
      * @ORM\JoinTable(name="commerce_cart_cart_rules",
-     *     joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="cart_rule_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="cartId", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="cartRuleId", referencedColumnName="id")}
      * )
      */
-    private Collection $cart_rules;
+    private Collection $cartRules;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $total_quantity = 0;
+    private int $totalQuantity = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -80,39 +79,39 @@ class Cart implements JsonSerializable
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $session_id;
+    private string $sessionId;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $shipment_method;
+    private ?string $shipmentMethod;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private ?array $shipment_method_data;
+    private ?array $shipmentMethodData;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $payment_method;
+    private ?string $paymentMethod;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private ?array $payment_method_data;
+    private ?array $paymentMethodData;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     /**
      * @ORM\OneToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", mappedBy="cart")
@@ -131,7 +130,7 @@ class Cart implements JsonSerializable
     public function __construct()
     {
         $this->values = new ArrayCollection();
-        $this->cart_rules = new ArrayCollection();
+        $this->cartRules = new ArrayCollection();
         $this->moneyFormatter = new MoneyFormatter();
     }
 
@@ -157,22 +156,22 @@ class Cart implements JsonSerializable
 
     public function getShipmentAddress(): ?OrderAddress
     {
-        return $this->shipment_address;
+        return $this->shipmentAddress;
     }
 
-    public function setShipmentAddress(OrderAddress $shipment_address): void
+    public function setShipmentAddress(OrderAddress $shipmentAddress): void
     {
-        $this->shipment_address = $shipment_address;
+        $this->shipmentAddress = $shipmentAddress;
     }
 
     public function getInvoiceAddress(): ?OrderAddress
     {
-        return $this->invoice_address;
+        return $this->invoiceAddress;
     }
 
-    public function setInvoiceAddress(?OrderAddress $invoice_address): void
+    public function setInvoiceAddress(?OrderAddress $invoiceAddress): void
     {
-        $this->invoice_address = $invoice_address;
+        $this->invoiceAddress = $invoiceAddress;
     }
 
     /**
@@ -204,12 +203,12 @@ class Cart implements JsonSerializable
      */
     public function getCartRules(): Collection
     {
-        return $this->cart_rules;
+        return $this->cartRules;
     }
 
     public function addCartRule(CartRule $cartRule): void
     {
-        $this->cart_rules->add($cartRule);
+        $this->cartRules->add($cartRule);
 
         // Recalculate
         $this->recalculateCart();
@@ -217,7 +216,7 @@ class Cart implements JsonSerializable
 
     public function removeCartRule(CartRule $cartRule): void
     {
-        $this->cart_rules->removeElement($cartRule);
+        $this->cartRules->removeElement($cartRule);
 
         // Recalculate
         $this->recalculateCart();
@@ -225,7 +224,7 @@ class Cart implements JsonSerializable
 
     public function getTotalQuantity(): int
     {
-        return $this->total_quantity;
+        return $this->totalQuantity;
     }
 
     public function getIp(): string
@@ -240,27 +239,27 @@ class Cart implements JsonSerializable
 
     public function getSessionId(): string
     {
-        return $this->session_id;
+        return $this->sessionId;
     }
 
-    public function setSessionId(string $session_id): void
+    public function setSessionId(string $sessionId): void
     {
-        $this->session_id = $session_id;
+        $this->sessionId = $sessionId;
     }
 
     public function getShipmentMethod(): ?string
     {
-        return $this->shipment_method;
+        return $this->shipmentMethod;
     }
 
-    public function setShipmentMethod(?string $shipment_method): void
+    public function setShipmentMethod(?string $shipmentMethod): void
     {
-        $this->shipment_method = $shipment_method;
+        $this->shipmentMethod = $shipmentMethod;
     }
 
     public function getShipmentMethodData(): ?array
     {
-        $shipmentMethodData = $this->shipment_method_data;
+        $shipmentMethodData = $this->shipmentMethodData;
 
         // Make sure to return actual Money objects! These get lost when storing JSON in the db.
         if (is_array($shipmentMethodData['price'])) {
@@ -275,44 +274,44 @@ class Cart implements JsonSerializable
         return $shipmentMethodData;
     }
 
-    public function setShipmentMethodData(?array $shipment_method_data): void
+    public function setShipmentMethodData(?array $shipmentMethodData): void
     {
-        $this->shipment_method_data = $shipment_method_data;
+        $this->shipmentMethodData = $shipmentMethodData;
     }
 
     public function getPaymentMethod(): ?string
     {
-        return $this->payment_method;
+        return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(?string $payment_method): void
+    public function setPaymentMethod(?string $paymentMethod): void
     {
-        $this->payment_method = $payment_method;
+        $this->paymentMethod = $paymentMethod;
     }
 
     public function getPaymentMethodData(): ?array
     {
-        return $this->payment_method_data;
+        return $this->paymentMethodData;
     }
 
-    public function setPaymentMethodData(?array $payment_method_data): void
+    public function setPaymentMethodData(?array $paymentMethodData): void
     {
-        $this->payment_method_data = $payment_method_data;
+        $this->paymentMethodData = $paymentMethodData;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function setCreatedOn(DateTimeInterface $createdOn): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
-        $this->createdOn = $createdOn;
+        $this->createdAt = $createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     public function getOrder(): ?Order
@@ -423,7 +422,7 @@ class Cart implements JsonSerializable
         $this->calculateCartRules();
 
         // Store the shipment data
-        if (isset($this->shipment_method)) {
+        if (isset($this->shipmentMethod)) {
             $shipmentMethodData = $this->getShipmentMethodData();
             /** @var Money $shipmentPrice */
             $shipmentPrice = $shipmentMethodData['price'];
@@ -471,7 +470,7 @@ class Cart implements JsonSerializable
             $totalQuantity += $value->getQuantity();
         }
 
-        $this->total_quantity = $totalQuantity;
+        $this->totalQuantity = $totalQuantity;
     }
 
     /**
@@ -496,7 +495,7 @@ class Cart implements JsonSerializable
 
     private function calculateCartRules(): void
     {
-        foreach ($this->cart_rules as $cartRule) {
+        foreach ($this->cartRules as $cartRule) {
             if ($cartRule->getReductionPercentage() !== null) {
                 $total = $this->applyPercentageDiscount($cartRule->getReductionPercentage());
 

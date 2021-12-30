@@ -56,12 +56,13 @@ class CategoryRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('i');
 
-        return $queryBuilder->where('i.parent IS NULL')
-                            ->andWhere('i.locale = :locale')
-                            ->setParameter('locale', $locale)
-                            ->orderBy('i.sequence', 'ASC')
-                            ->getQuery()
-                            ->getResult();
+        return $queryBuilder
+            ->where('i.parent IS NULL')
+            ->andWhere('i.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('i.sequence', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findByLocaleAndUrl(Locale $locale, string $url): ?Category
@@ -94,12 +95,13 @@ class CategoryRepository extends EntityRepository
         /**
          * @var Category[] $query_result
          */
-        $queryResult = $queryBuilder->where('i.locale = :locale')
-                                    ->andWhere('i.parent IS NULL')
-                                    ->setParameter('locale', $locale)
-                                    ->orderBy('i.sequence', 'asc')
-                                    ->getQuery()
-                                    ->getResult();
+        $queryResult = $queryBuilder
+            ->where('i.locale = :locale')
+            ->andWhere('i.parent IS NULL')
+            ->setParameter('locale', $locale)
+            ->orderBy('i.sequence', 'asc')
+            ->getQuery()
+            ->getResult();
 
         $treeResult = [];
 

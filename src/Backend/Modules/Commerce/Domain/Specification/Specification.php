@@ -13,20 +13,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_specifications")
  * @ORM\Entity(repositoryClass="SpecificationRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Specification
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
-     * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="metaId", referencedColumnName="id")
      */
     private ?Meta $meta;
 
@@ -36,7 +35,7 @@ class Specification
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue", mappedBy="specification", cascade={"remove", "persist"})
      * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private Collection $specification_values;
+    private Collection $specificationValues;
 
     /**
      * @Gedmo\SortableGroup
@@ -62,15 +61,15 @@ class Specification
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     public const TYPE_TEXTBOX = 1;
 
@@ -80,14 +79,14 @@ class Specification
         ?int $sequence,
         Meta $meta,
         bool $filter,
-        $specification_values
+        $specificationValues
     ) {
         $this->locale = $locale;
         $this->title = $title;
         $this->sequence = $sequence;
         $this->meta = $meta;
         $this->filter = $filter;
-        $this->specification_values = $specification_values;
+        $this->specificationValues = $specificationValues;
     }
 
     public static function fromDataTransferObject(SpecificationDataTransferObject $dataTransferObject): Specification
@@ -126,7 +125,7 @@ class Specification
         return $this->title;
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
@@ -151,7 +150,7 @@ class Specification
      */
     public function getSpecificationValues(): Collection
     {
-        return $this->specification_values;
+        return $this->specificationValues;
     }
 
     private static function update(SpecificationDataTransferObject $dataTransferObject): Specification
@@ -163,7 +162,7 @@ class Specification
         $specification->sequence = $dataTransferObject->sequence;
         $specification->meta = $dataTransferObject->meta;
         $specification->filter = $dataTransferObject->filter;
-        $specification->specification_values = $dataTransferObject->specification_values;
+        $specification->specificationValues = $dataTransferObject->specification_values;
 
         return $specification;
     }

@@ -35,7 +35,8 @@ class Quote extends ShipmentMethodQuote
      */
     protected function getVatPrice(Money $price): array
     {
-        $vat = $this->shipmentMethodSettingsRepository->getSetting('CommercePickup', 'vat');
+        $vatId = $this->shipmentMethodSettingsRepository->getSetting('CommercePickup', 'vatId');
+        $vat = $this->vatRepository->find($vatId);
         if (!$vat instanceof Vat) {
             throw VatNotFound::forEmptyId();
         }

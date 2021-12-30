@@ -17,10 +17,10 @@ class DataGrid extends DataGridDatabase
     {
         parent::__construct(
             'SELECT b.id, b.title, COUNT(p.id) AS num_products, b.sequence
-		 FROM commerce_brands AS b
-		 LEFT JOIN commerce_products AS p ON p.brand_id = b.id
-		 WHERE b.language = :language
-		 GROUP BY b.id',
+            FROM commerce_brands AS b
+            LEFT JOIN commerce_products AS p ON p.brandId = b.id
+            WHERE b.language = :language
+            GROUP BY b.id',
             ['language' => $locale]
         );
 

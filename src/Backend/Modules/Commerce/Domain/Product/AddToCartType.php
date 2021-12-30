@@ -123,18 +123,18 @@ class AddToCartType extends AbstractType
 
         $this->addProductOptions($product->getProductOptions(), $builder);
 
-        if ($product->getUpSellProducts()->count() > 0) {
+        if ($product->getUpsellProducts()->count() > 0) {
             $builder
                 ->add('up_sell', EntityType::class, [
                     'required' => false,
                     'label' => 'Optionele accessoires',
                     'class' => UpSellProduct::class,
-                    'choices' => $product->getUpSellProducts(),
+                    'choices' => $product->getUpsellProducts(),
                     'choice_label' => function (UpSellProduct $upSellProduct) {
-                        return $upSellProduct->getUpSellProduct()->getTitle();
+                        return $upSellProduct->getUpsellProduct()->getTitle();
                     },
                     'choice_value' => function (UpSellProduct $upSellProduct) {
-                        return $upSellProduct->getUpSellProduct()->getId();
+                        return $upSellProduct->getUpsellProduct()->getId();
                     },
                     'expanded' => true,
                     'multiple' => true,

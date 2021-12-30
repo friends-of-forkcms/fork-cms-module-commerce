@@ -16,11 +16,11 @@ class DataGrid extends DataGridDatabase
     public function __construct(Locale $locale)
     {
         parent::__construct(
-            'SELECT c.id, c.title, c.code as discount_code, c.quantity, c.till_date as `till`
-					 FROM commerce_cart_rules AS c
-					 WHERE c.language = :language
-					 GROUP BY c.id
-					 ORDER BY c.title ASC',
+            'SELECT c.id, c.title, c.code as discountCode, c.quantity, c.tillDate as `till`
+             FROM commerce_cart_rules AS c
+             WHERE c.language = :language
+             GROUP BY c.id
+             ORDER BY c.title ASC',
             ['language' => $locale]
         );
 

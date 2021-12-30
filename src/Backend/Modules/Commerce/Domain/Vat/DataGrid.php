@@ -17,9 +17,9 @@ class DataGrid extends DataGridDatabase
     {
         parent::__construct(
             'SELECT c.id, c.title, c.percentage, c.sequence
-					 FROM commerce_vats AS c
-					 WHERE c.language = :language
-					 GROUP BY c.id',
+             FROM commerce_vats AS c
+             WHERE c.language = :language
+             GROUP BY c.id',
             ['language' => $locale]
         );
 

@@ -24,15 +24,15 @@ class DataGrid extends DataGridDatabase
                     i.id,
                     i.title AS title,
                     i.sku,
-                    i.category_id,
+                    i.categoryId,
                     b.title AS brand,
-                    i.price_amount AS price,
-                    i.price_currency_code,
+                    i.priceAmount AS price,
+                    i.priceCurrencyCode,
                     i.stock,
                     i.sequence,
                     i.hidden
                 FROM commerce_products AS i
-                LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
+                LEFT JOIN commerce_brands AS b ON b.id = i.brandId
                 WHERE i.language = :language';
 
         $parameters = [
@@ -44,16 +44,16 @@ class DataGrid extends DataGridDatabase
                         i.id,
                         i.title AS title,
                         i.sku,
-                        i.category_id,
+                        i.categoryId,
                         b.title AS brand,
-                        i.price_amount AS price,
-                        i.price_currency_code,
+                        i.priceAmount AS price,
+                        i.priceCurrencyCode,
                         i.stock,
                         i.sequence,
                         i.hidden
                     FROM commerce_products AS i
-                    LEFT JOIN commerce_brands AS b ON b.id = i.brand_id
-                    WHERE i.language = :language AND i.category_id = :category';
+                    LEFT JOIN commerce_brands AS b ON b.id = i.brandId
+                    WHERE i.language = :language AND i.categoryId = :category';
 
             $parameters['category'] = $category->getId();
         }
@@ -76,17 +76,17 @@ class DataGrid extends DataGridDatabase
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
-        $this->setColumnsHidden(['sequence', 'price_currency_code']);
-        $this->setColumnFunction([self::class, 'categoryName'], ['[category_id]'], 'category_id');
+        $this->setColumnsHidden(['sequence', 'priceCurrencyCode']);
+        $this->setColumnFunction([self::class, 'categoryName'], ['[categoryId]'], 'categoryId');
         $this->setHeaderLabels(
             [
-                'category_id' => ucfirst(Language::lbl('Category')),
+                'categoryId' => ucfirst(Language::lbl('Category')),
                 'sku' => ucfirst(Language::lbl('ArticleNumber')),
             ]
         );
 
         // Format price column properly
-        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[price_currency_code]'], 'price', true);
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[priceCurrencyCode]'], 'price', true);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('Edit')) {

@@ -17,8 +17,8 @@ class DataGrid extends DataGridDatabase
     {
         parent::__construct(
             'SELECT c.id, c.name, c.iso as iso_code
-					 FROM commerce_countries AS c
-					 WHERE c.language = :language',
+             FROM commerce_countries AS c
+             WHERE c.language = :language',
             ['language' => $locale]
         );
 

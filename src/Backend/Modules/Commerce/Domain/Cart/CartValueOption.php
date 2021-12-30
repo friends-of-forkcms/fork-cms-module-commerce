@@ -13,55 +13,54 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_cart_value_options")
  * @ORM\Entity(repositoryClass="CartValueOptionRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class CartValueOption
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CartValue", inversedBy="cart_value_options")
-     * @ORM\JoinColumn(name="cart_value_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="CartValue", inversedBy="cartValueOptions")
+     * @ORM\JoinColumn(name="cartValueId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private CartValue $cart_value;
+    private CartValue $cartValue;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="cart_value_options")
-     * @ORM\JoinColumn(name="product_option_id", referencedColumnName="id", nullable=true, onDelete="set null")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="cartValueOptions")
+     * @ORM\JoinColumn(name="productOptionId", referencedColumnName="id", nullable=true, onDelete="set null")
      */
-    private ?ProductOption $product_option;
+    private ?ProductOption $productOption;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue")
-     * @ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="productOptionValueId", referencedColumnName="id", nullable=true)
      */
-    private ?ProductOptionValue $product_option_value;
+    private ?ProductOptionValue $productOptionValue;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Vat\Vat")
-     * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="vatId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Vat $vat;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="price")
      */
     private Money $price;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $impact_type;
+    private int $impactType;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="vatPrice")
      */
-    private Money $vat_price;
+    private Money $vatPrice;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -75,9 +74,9 @@ class CartValueOption
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     public function getId(): int
     {
@@ -86,32 +85,32 @@ class CartValueOption
 
     public function getCartValue(): CartValue
     {
-        return $this->cart_value;
+        return $this->cartValue;
     }
 
-    public function setCartValue(CartValue $cart_value): void
+    public function setCartValue(CartValue $cartValue): void
     {
-        $this->cart_value = $cart_value;
+        $this->cartValue = $cartValue;
     }
 
     public function getProductOption(): ProductOption
     {
-        return $this->product_option;
+        return $this->productOption;
     }
 
-    public function setProductOption(ProductOption $product_option): void
+    public function setProductOption(ProductOption $productOption): void
     {
-        $this->product_option = $product_option;
+        $this->productOption = $productOption;
     }
 
     public function getProductOptionValue(): ?ProductOptionValue
     {
-        return $this->product_option_value;
+        return $this->productOptionValue;
     }
 
-    public function setProductOptionValue(ProductOptionValue $product_option_value): void
+    public function setProductOptionValue(ProductOptionValue $productOptionValue): void
     {
-        $this->product_option_value = $product_option_value;
+        $this->productOptionValue = $productOptionValue;
     }
 
     public function getPrice(): Money
@@ -126,16 +125,16 @@ class CartValueOption
 
     public function getImpactType(): int
     {
-        if (!$this->impact_type) {
-            $this->impact_type = ProductOptionValue::IMPACT_TYPE_ADD;
+        if (!$this->impactType) {
+            $this->impactType = ProductOptionValue::IMPACT_TYPE_ADD;
         }
 
-        return $this->impact_type;
+        return $this->impactType;
     }
 
-    public function setImpactType(int $impact_type): void
+    public function setImpactType(int $impactType): void
     {
-        $this->impact_type = $impact_type;
+        $this->impactType = $impactType;
     }
 
     public function isImpactTypeAdd(): bool
@@ -160,12 +159,12 @@ class CartValueOption
 
     public function getVatPrice(): Money
     {
-        return $this->vat_price;
+        return $this->vatPrice;
     }
 
-    public function setVatPrice(Money $vat_price): void
+    public function setVatPrice(Money $vatPrice): void
     {
-        $this->vat_price = $vat_price;
+        $this->vatPrice = $vatPrice;
     }
 
     public function getName(): ?string
@@ -190,6 +189,6 @@ class CartValueOption
 
     public function getTotal(): Money
     {
-        return $this->getPrice()->multiply($this->cart_value->getQuantity());
+        return $this->getPrice()->multiply($this->cartValue->getQuantity());
     }
 }

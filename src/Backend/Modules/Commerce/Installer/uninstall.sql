@@ -43,16 +43,16 @@ DELETE FROM backend_navigation WHERE label = 'Commerce';
 DELETE FROM backend_navigation WHERE url LIKE '%commerce%';
 
 -- Remove from groups_rights
-DELETE FROM groups_rights_actions WHERE module = 'Commerce';
-DELETE FROM groups_rights_modules WHERE module = 'Commerce';
+DELETE FROM groups_rights_actions WHERE module LIKE 'Commerce%';
+DELETE FROM groups_rights_modules WHERE module LIKE 'Commerce%';
 
 -- Remove from locale
-DELETE FROM locale WHERE module = 'Commerce';
+DELETE FROM locale WHERE module LIKE 'Commerce%';
 DELETE FROM locale WHERE module = 'core' AND name LIKE 'Commerce%';
 
 -- Remove from modules
-DELETE FROM modules WHERE name = 'Commerce';
-DELETE FROM modules_extras WHERE module = 'Commerce';
-DELETE FROM modules_settings WHERE module = 'Commerce';
+DELETE FROM modules WHERE name LIKE 'Commerce%';
+DELETE FROM modules_extras WHERE module LIKE 'Commerce%';
+DELETE FROM modules_settings WHERE module LIKE 'Commerce%';
 
 -- Don't forget to clear cache: bin/console c:c

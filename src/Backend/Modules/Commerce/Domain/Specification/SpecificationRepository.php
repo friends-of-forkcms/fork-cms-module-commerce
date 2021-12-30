@@ -94,7 +94,7 @@ class SpecificationRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
 
         return $queryBuilder->select(['s', 'sv'])
-            ->leftJoin('s.specification_values', 'sv')
+            ->leftJoin('s.specificationValues', 'sv')
             ->leftJoin('sv.products', 'p')
             ->where('s.filter = :filter')
             ->andWhere('p.category = :category')
@@ -113,7 +113,7 @@ class SpecificationRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
 
         return $queryBuilder->select(['s', 'sv'])
-            ->innerJoin('s.specification_values', 'sv')
+            ->innerJoin('s.specificationValues', 'sv')
             ->innerJoin('sv.products', 'p')
             ->where('p.id = :product')
             ->orderBy('s.sequence', 'ASC')
@@ -130,7 +130,7 @@ class SpecificationRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
 
         return $queryBuilder->select(['s', 'sv'])
-            ->leftJoin('s.specification_values', 'sv')
+            ->leftJoin('s.specificationValues', 'sv')
             ->leftJoin('sv.products', 'p')
             ->where('s.filter = :filter')
             ->andWhere($queryBuilder->expr()->orX(

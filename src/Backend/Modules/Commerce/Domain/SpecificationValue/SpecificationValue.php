@@ -13,38 +13,37 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_specification_values")
  * @ORM\Entity(repositoryClass="SpecificationValueRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class SpecificationValue
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @Gedmo\SortableGroup
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Specification\Specification", inversedBy="specification_values")
-     * @ORM\JoinColumn(name="specification_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Specification\Specification", inversedBy="specificationValues")
+     * @ORM\JoinColumn(name="specificationId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Specification $specification;
 
     /**
      * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
-     * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="metaId", referencedColumnName="id")
      */
     private ?Meta $meta;
 
     /**
      * @var Collection|Product[]
      *
-     * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", mappedBy="specification_values")
+     * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", mappedBy="specificationValues")
      * @ORM\JoinTable(
      *     name="commerce_products_specification_values",
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
-     *     joinColumns={@ORM\JoinColumn(name="specification_value_id", referencedColumnName="id")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="productId", referencedColumnName="id")},
+     *     joinColumns={@ORM\JoinColumn(name="specificationValueId", referencedColumnName="id")}
      * )
      */
     private Collection $products;
@@ -62,15 +61,15 @@ class SpecificationValue
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     public function getId(): ?int
     {
@@ -110,7 +109,7 @@ class SpecificationValue
         $this->value = $value;
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }

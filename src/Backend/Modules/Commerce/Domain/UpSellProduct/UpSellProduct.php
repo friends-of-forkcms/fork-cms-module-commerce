@@ -10,28 +10,27 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_up_sell_products")
  * @ORM\Entity(repositoryClass="UpSellProductRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class UpSellProduct
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="up_sell_products")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="upsellProducts")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Product $product;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product")
-     * @ORM\JoinColumn(name="up_sell_product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="upsellProductId", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?Product $upSellProduct;
+    private ?Product $upsellProduct;
 
     /**
      * @ORM\Column(type="integer", length=11, nullable=true)
@@ -40,15 +39,15 @@ class UpSellProduct
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     public function getId(): int
     {
@@ -65,14 +64,14 @@ class UpSellProduct
         $this->product = $product;
     }
 
-    public function getUpSellProduct(): ?Product
+    public function getUpsellProduct(): ?Product
     {
-        return $this->upSellProduct;
+        return $this->upsellProduct;
     }
 
-    public function setUpSellProduct(Product $upSellProduct): void
+    public function setUpsellProduct(Product $upsellProduct): void
     {
-        $this->upSellProduct = $upSellProduct;
+        $this->upsellProduct = $upsellProduct;
     }
 
     public function getSequence(): ?int

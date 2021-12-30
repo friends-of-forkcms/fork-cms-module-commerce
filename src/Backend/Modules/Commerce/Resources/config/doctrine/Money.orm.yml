@@ -5,6 +5,8 @@ Money\Money:
   fields:
     amount:
       type: bigint
+      column: Amount
   embedded:
     currency:
       class: Money\Currency
+      columnPrefix: Currency

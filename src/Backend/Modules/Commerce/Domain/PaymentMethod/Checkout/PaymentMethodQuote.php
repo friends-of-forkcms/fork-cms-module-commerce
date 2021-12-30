@@ -7,6 +7,7 @@ use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout\ShipmentMethodQuote;
 use Backend\Modules\Commerce\Domain\ShipmentMethod\Exception\ShipmentMethodNotFound;
+use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use Common\ModulesSettings;
 use Doctrine\Common\Collections\ArrayCollection;
 use Frontend\Core\Language\Locale;
@@ -23,6 +24,7 @@ abstract class PaymentMethodQuote
     protected ?Locale $language;
     protected ModulesSettings $settings;
     protected CommerceModuleSettingsRepository $commerceModuleSettingsRepository;
+    protected VatRepository $vatRepository;
     protected MoneyFormatter $moneyFormatter;
 
     public function __construct(
@@ -30,7 +32,8 @@ abstract class PaymentMethodQuote
         Cart $cart,
         OrderAddress $address,
         $commerceModuleSettingsRepository,
-        MoneyFormatter $moneyFormatter
+        MoneyFormatter $moneyFormatter,
+        VatRepository $vatRepository
     ) {
         $this->name = $name;
         $this->cart = $cart;
@@ -38,6 +41,7 @@ abstract class PaymentMethodQuote
         $this->language = Locale::frontendLanguage();
         $this->commerceModuleSettingsRepository = $commerceModuleSettingsRepository;
         $this->moneyFormatter = $moneyFormatter;
+        $this->vatRepository = $vatRepository;
     }
 
     /**
@@ -79,7 +83,8 @@ abstract class PaymentMethodQuote
             $this->cart,
             $this->cart->getShipmentAddress(),
             $this->commerceModuleSettingsRepository,
-            $this->moneyFormatter
+            $this->moneyFormatter,
+            $this->vatRepository
         );
 
         return $class->getQuote()[$optionName];

@@ -35,7 +35,7 @@ class CategorySitemapProvider extends SitemapProvider implements SitemapProvider
 
     private function addItem(Category $category): void
     {
-        $this->createItem($category->getUrl(), $category->getEditedOn(), ChangeFrequency::monthly());
+        $this->createItem($category->getUrl(), $category->getUpdatedAt(), ChangeFrequency::monthly());
 
         foreach ($category->getChildren() as $subCategory) {
             $this->addItem($subCategory);

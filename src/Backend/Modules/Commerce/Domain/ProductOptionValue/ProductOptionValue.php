@@ -15,7 +15,6 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_product_option_values")
  * @ORM\Entity(repositoryClass="ProductOptionValueRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class ProductOptionValue
 {
@@ -25,54 +24,46 @@ class ProductOptionValue
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @Gedmo\SortableGroup
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="product_option_values")
-     * @ORM\JoinColumn(name="product_option_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="productOptionValues")
+     * @ORM\JoinColumn(name="productOptionId", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?ProductOption $product_option;
+    private ?ProductOption $productOption;
 
     /**
      * @var Collection|ProductOption[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", mappedBy="parent_product_option_value", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", mappedBy="parentProductOptionValue", cascade={"remove", "persist"})
      * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private Collection $product_options;
+    private Collection $productOptions;
 
     /**
      * @var Collection|ProductOptionValue[]
      *
      * @ORM\ManyToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", cascade={"remove", "persist"})
      * @ORM\JoinTable(name="commerce_product_option_values_dependencies",
-     *     joinColumns={@ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_option_value_dependency_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="productOptionValueId", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="productOptionValueDependencyId", referencedColumnName="id")}
      * )
      */
     private Collection $dependencies;
 
     /**
-     * @ORM\OneToOne(
-     *     targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
-     * @ORM\JoinColumn(
-     *     name="imageGroupId",
-     *     referencedColumnName="id",
-     *     onDelete="cascade"
-     * )
+     * @ORM\OneToOne(targetEntity="Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="imageGroupId", referencedColumnName="id", onDelete="cascade")
      * @ORM\OrderBy({"sequence": "ASC"})
      */
     protected ?MediaGroup $image;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Vat\Vat")
-     * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="vatId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Vat $vat;
 
@@ -94,7 +85,7 @@ class ProductOptionValue
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $sub_title;
+    private ?string $subTitle;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -102,7 +93,7 @@ class ProductOptionValue
     private ?string $sku;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="price")
      */
     private Money $price;
 
@@ -124,17 +115,17 @@ class ProductOptionValue
     /**
      * @ORM\Column(type="integer")
      */
-    private int $impact_type;
+    private int $impactType;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $default_value;
+    private bool $defaultValue;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $hex_value;
+    private ?string $hexValue;
 
     /**
      * @Gedmo\SortablePosition
@@ -144,51 +135,51 @@ class ProductOptionValue
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     private function __construct(
-        ProductOption $product_option,
+        ProductOption $productOption,
         ?MediaGroup $image,
         Vat $vat,
         $dependencies,
         ?string $title,
         ?int $start,
         ?int $end,
-        ?string $sub_title,
+        ?string $subTitle,
         ?string $sku,
         ?Money $price,
         ?float $percentage,
         ?int $width,
         ?int $height,
-        ?int $impact_type,
-        bool $default_value,
-        ?string $hex_value,
+        ?int $impactType,
+        bool $defaultValue,
+        ?string $hexValue,
         ?int $sequence
     ) {
-        $this->product_option = $product_option;
+        $this->productOption = $productOption;
         $this->image = $image;
         $this->vat = $vat;
         $this->dependencies = $dependencies;
         $this->title = $title;
         $this->start = $start;
         $this->end = $end;
-        $this->sub_title = $sub_title;
+        $this->subTitle = $subTitle;
         $this->sku = $sku;
         $this->price = $price ?? Money::EUR(0);
         $this->percentage = $percentage;
         $this->width = $width;
         $this->height = $height;
-        $this->impact_type = $impact_type;
-        $this->default_value = $default_value;
-        $this->hex_value = $hex_value;
+        $this->impactType = $impactType;
+        $this->defaultValue = $defaultValue;
+        $this->hexValue = $hexValue;
         $this->sequence = $sequence;
     }
 
@@ -199,7 +190,7 @@ class ProductOptionValue
 
     public function getProductOption(): ProductOption
     {
-        return $this->product_option;
+        return $this->productOption;
     }
 
     /**
@@ -207,7 +198,7 @@ class ProductOptionValue
      */
     public function getProductOptions(): Collection
     {
-        return $this->product_options;
+        return $this->productOptions;
     }
 
     public function getImage(): ?MediaGroup
@@ -245,7 +236,7 @@ class ProductOptionValue
 
     public function getSubTitle(): ?string
     {
-        return $this->sub_title;
+        return $this->subTitle;
     }
 
     public function getSku(): ?string
@@ -275,11 +266,11 @@ class ProductOptionValue
 
     public function getImpactType(): int
     {
-        if (!$this->impact_type) {
-            $this->impact_type = self::IMPACT_TYPE_ADD;
+        if (!$this->impactType) {
+            $this->impactType = self::IMPACT_TYPE_ADD;
         }
 
-        return $this->impact_type;
+        return $this->impactType;
     }
 
     public function isImpactTypeAdd(): bool
@@ -294,27 +285,27 @@ class ProductOptionValue
 
     public function isDefaultValue(): bool
     {
-        return $this->default_value;
+        return $this->defaultValue;
     }
 
     public function getHexValue(): ?string
     {
-        return $this->hex_value;
+        return $this->hexValue;
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     public static function fromDataTransferObject(ProductOptionValueDataTransferObject $dataTransferObject): ProductOptionValue
@@ -353,22 +344,22 @@ class ProductOptionValue
     {
         $productOptionValue = $dataTransferObject->getProductOptionValueEntity();
 
-        $productOptionValue->product_option = $dataTransferObject->productOption;
+        $productOptionValue->productOption = $dataTransferObject->productOption;
         $productOptionValue->image = $dataTransferObject->image;
         $productOptionValue->vat = $dataTransferObject->vat;
         $productOptionValue->dependencies = $dataTransferObject->dependencies;
         $productOptionValue->title = $dataTransferObject->title;
         $productOptionValue->start = $dataTransferObject->start;
         $productOptionValue->end = $dataTransferObject->end;
-        $productOptionValue->sub_title = $dataTransferObject->sub_title;
+        $productOptionValue->subTitle = $dataTransferObject->sub_title;
         $productOptionValue->sku = $dataTransferObject->sku;
         $productOptionValue->price = $dataTransferObject->price;
         $productOptionValue->percentage = $dataTransferObject->percentage;
         $productOptionValue->width = $dataTransferObject->width;
         $productOptionValue->height = $dataTransferObject->height;
-        $productOptionValue->impact_type = $dataTransferObject->impact_type;
-        $productOptionValue->default_value = $dataTransferObject->default_value;
-        $productOptionValue->hex_value = $dataTransferObject->hex_value;
+        $productOptionValue->impactType = $dataTransferObject->impact_type;
+        $productOptionValue->defaultValue = $dataTransferObject->default_value;
+        $productOptionValue->hexValue = $dataTransferObject->hex_value;
         $productOptionValue->sequence = $dataTransferObject->sequence;
 
         return $productOptionValue;

@@ -12,14 +12,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_order_statuses")
  * @ORM\Entity(repositoryClass="OrderStatusRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class OrderStatus
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
@@ -36,12 +35,12 @@ class OrderStatus
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $mail_subject;
+    private ?string $mailSubject;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $company_mail_subject;
+    private ?string $companyMailSubject;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -51,12 +50,12 @@ class OrderStatus
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private bool $pdf_invoice;
+    private bool $pdfInvoice;
 
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private bool $pdf_packing_slip;
+    private bool $pdfPackingSlip;
 
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
@@ -71,17 +70,17 @@ class OrderStatus
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private bool $download_invoice;
+    private bool $downloadInvoice;
 
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private bool $send_email;
+    private bool $sendEmail;
 
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private bool $send_company_email;
+    private bool $sendCompanyEmail;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -91,58 +90,58 @@ class OrderStatus
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $company_template;
+    private ?string $companyTemplate;
 
     /**
      * @var Collection|OrderHistory[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="order_status")
-     * @ORM\JoinColumn(name="order_status_id")
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\OrderHistory\OrderHistory", mappedBy="orderStatus")
+     * @ORM\JoinColumn(name="orderStatusId")
      */
-    private Collection $order_histories;
+    private Collection $orderHistories;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     private function __construct(
         Locale $locale,
         string $title,
-        ?string $mail_subject,
-        ?string $company_mail_subject,
+        ?string $mailSubject,
+        ?string $companyMailSubject,
         ?string $color,
-        bool $pdf_invoice,
-        bool $pdf_packing_slip,
+        bool $pdfInvoice,
+        bool $pdfPackingSlip,
         bool $paid,
         bool $shipped,
-        bool $download_invoice,
-        bool $send_email,
-        bool $send_company_email,
+        bool $downloadInvoice,
+        bool $sendEmail,
+        bool $sendCompanyEmail,
         ?string $template,
-        ?string $company_template
+        ?string $companyTemplate
     ) {
         $this->locale = $locale;
         $this->title = $title;
-        $this->mail_subject = $mail_subject;
-        $this->company_mail_subject = $company_mail_subject;
+        $this->mailSubject = $mailSubject;
+        $this->companyMailSubject = $companyMailSubject;
         $this->color = $color;
-        $this->pdf_invoice = $pdf_invoice;
-        $this->pdf_packing_slip = $pdf_packing_slip;
+        $this->pdfInvoice = $pdfInvoice;
+        $this->pdfPackingSlip = $pdfPackingSlip;
         $this->paid = $paid;
         $this->shipped = $shipped;
-        $this->download_invoice = $download_invoice;
-        $this->send_email = $send_email;
-        $this->send_company_email = $send_company_email;
+        $this->downloadInvoice = $downloadInvoice;
+        $this->sendEmail = $sendEmail;
+        $this->sendCompanyEmail = $sendCompanyEmail;
         $this->template = $template;
-        $this->company_template = $company_template;
+        $this->companyTemplate = $companyTemplate;
     }
 
     public static function fromDataTransferObject(OrderStatusDataTransferObject $dataTransferObject): OrderStatus
@@ -180,18 +179,18 @@ class OrderStatus
 
         $orderStatus->locale = $dataTransferObject->locale;
         $orderStatus->title = $dataTransferObject->title;
-        $orderStatus->mail_subject = $dataTransferObject->mail_subject;
-        $orderStatus->company_mail_subject = $dataTransferObject->company_mail_subject;
+        $orderStatus->mailSubject = $dataTransferObject->mail_subject;
+        $orderStatus->companyMailSubject = $dataTransferObject->company_mail_subject;
         $orderStatus->color = $dataTransferObject->color;
-        $orderStatus->pdf_invoice = $dataTransferObject->pdf_invoice;
-        $orderStatus->pdf_packing_slip = $dataTransferObject->pdf_packing_slip;
+        $orderStatus->pdfInvoice = $dataTransferObject->pdf_invoice;
+        $orderStatus->pdfPackingSlip = $dataTransferObject->pdf_packing_slip;
         $orderStatus->paid = $dataTransferObject->paid;
         $orderStatus->shipped = $dataTransferObject->shipped;
-        $orderStatus->download_invoice = $dataTransferObject->download_invoice;
-        $orderStatus->send_email = $dataTransferObject->send_email;
-        $orderStatus->send_company_email = $dataTransferObject->send_company_email;
+        $orderStatus->downloadInvoice = $dataTransferObject->download_invoice;
+        $orderStatus->sendEmail = $dataTransferObject->send_email;
+        $orderStatus->sendCompanyEmail = $dataTransferObject->send_company_email;
         $orderStatus->template = $dataTransferObject->template;
-        $orderStatus->company_template = $dataTransferObject->company_template;
+        $orderStatus->companyTemplate = $dataTransferObject->company_template;
 
         return $orderStatus;
     }
@@ -218,12 +217,12 @@ class OrderStatus
 
     public function getMailSubject(): ?string
     {
-        return $this->mail_subject;
+        return $this->mailSubject;
     }
 
     public function getCompanyMailSubject(): ?string
     {
-        return $this->company_mail_subject;
+        return $this->companyMailSubject;
     }
 
     public function getColor(): ?string
@@ -233,12 +232,12 @@ class OrderStatus
 
     public function isPdfInvoice(): bool
     {
-        return $this->pdf_invoice;
+        return $this->pdfInvoice;
     }
 
     public function isPdfPackingSlip(): bool
     {
-        return $this->pdf_packing_slip;
+        return $this->pdfPackingSlip;
     }
 
     public function isPaid(): bool
@@ -253,17 +252,17 @@ class OrderStatus
 
     public function isDownloadInvoice(): bool
     {
-        return $this->download_invoice;
+        return $this->downloadInvoice;
     }
 
     public function isSendEmail(): bool
     {
-        return $this->send_email;
+        return $this->sendEmail;
     }
 
     public function isSendCompanyEmail(): bool
     {
-        return $this->send_company_email;
+        return $this->sendCompanyEmail;
     }
 
     public function getTemplate(): ?string
@@ -273,7 +272,7 @@ class OrderStatus
 
     public function getCompanyTemplate(): ?string
     {
-        return $this->company_template;
+        return $this->companyTemplate;
     }
 
     /**
@@ -281,6 +280,6 @@ class OrderStatus
      */
     public function getOrderHistories(): Collection
     {
-        return $this->order_histories;
+        return $this->orderHistories;
     }
 }

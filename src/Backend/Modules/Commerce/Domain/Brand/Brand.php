@@ -20,13 +20,13 @@ class Brand
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Common\Doctrine\Entity\Meta", cascade={"remove", "persist"})
-     * @ORM\JoinColumn(name="meta_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="metaId", referencedColumnName="id")
      */
     private ?Meta $meta;
 
@@ -59,15 +59,15 @@ class Brand
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     /**
      * @var Collection|Product[]
@@ -157,7 +157,7 @@ class Brand
         $this->image->upload();
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
@@ -167,14 +167,14 @@ class Brand
         return $this->meta;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     /**

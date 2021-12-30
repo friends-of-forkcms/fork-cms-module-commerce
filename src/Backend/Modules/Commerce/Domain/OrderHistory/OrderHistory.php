@@ -11,43 +11,42 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_order_histories")
  * @ORM\Entity(repositoryClass="OrderHistoryRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class OrderHistory
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", inversedBy="history")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="orderId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private Order $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus", inversedBy="order_histories")
-     * @ORM\JoinColumn(name="order_status_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderStatus\OrderStatus", inversedBy="orderHistories")
+     * @ORM\JoinColumn(name="orderStatusId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private OrderStatus $order_status;
+    private OrderStatus $orderStatus;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     private function __construct(
         Order $order,
-        OrderStatus $order_status,
-        DateTimeInterface $createdOn
+        OrderStatus $orderStatus,
+        DateTimeInterface $createdAt
     ) {
         $this->order = $order;
-        $this->order_status = $order_status;
-        $this->createdOn = $createdOn;
+        $this->orderStatus = $orderStatus;
+        $this->createdAt = $createdAt;
     }
 
     public static function fromDataTransferObject(OrderHistoryDataTransferObject $dataTransferObject): OrderHistory
@@ -60,7 +59,7 @@ class OrderHistory
         return new self(
             $dataTransferObject->order,
             $dataTransferObject->orderStatus,
-            $dataTransferObject->createdOn
+            $dataTransferObject->createdAt
         );
     }
 
@@ -76,12 +75,12 @@ class OrderHistory
 
     public function getOrderStatus(): OrderStatus
     {
-        return $this->order_status;
+        return $this->orderStatus;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
     public function getDataTransferObject(): OrderHistoryDataTransferObject

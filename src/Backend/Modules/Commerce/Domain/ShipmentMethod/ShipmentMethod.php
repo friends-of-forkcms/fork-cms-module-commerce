@@ -10,24 +10,23 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_shipment_methods")
  * @ORM\Entity(repositoryClass="ShipmentMethodRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class ShipmentMethod
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     public int $id;
 
     /**
-     * @ORM\Column(type="string", name="name", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private string $name;
 
     /**
-     * @ORM\Column(type="string", name="module", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private string $module;
 
@@ -37,21 +36,21 @@ class ShipmentMethod
     private Locale $locale;
 
     /**
-     * @ORM\Column(type="boolean", name="is_enabled", options={"default": false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private bool $isEnabled;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     public function __construct(
         string $name,
