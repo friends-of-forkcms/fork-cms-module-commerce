@@ -18,12 +18,12 @@ class OrderHistoryDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public OrderStatus $orderStatus;
-    public DateTimeInterface $createdOn;
+    public DateTimeInterface $createdAt;
 
     public function __construct(OrderHistory $orderHistory = null)
     {
         $this->orderHistoryEntity = $orderHistory;
-        $this->createdOn = new DateTime();
+        $this->createdAt = new DateTime();
 
         if (!$this->hasExistingOrderHistory()) {
             return;
@@ -32,7 +32,7 @@ class OrderHistoryDataTransferObject
         $this->id = $this->orderHistoryEntity->getId();
         $this->order = $this->orderHistoryEntity->getOrder();
         $this->orderStatus = $this->orderHistoryEntity->getOrderStatus();
-        $this->createdOn = $this->orderHistoryEntity->getCreatedOn();
+        $this->createdAt = $this->orderHistoryEntity->getCreatedAt();
     }
 
     public function getOrderHistoryEntity(): OrderHistory

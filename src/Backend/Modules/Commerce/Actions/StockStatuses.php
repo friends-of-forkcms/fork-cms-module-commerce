@@ -8,8 +8,6 @@ use Backend\Modules\Commerce\Domain\StockStatus\DataGrid;
 
 /**
  * This is the vats action, it will display the overview of vats.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class StockStatuses extends BackendBaseActionIndex
 {

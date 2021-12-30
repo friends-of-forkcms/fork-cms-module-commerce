@@ -10,7 +10,6 @@ use Common\Doctrine\Entity\Meta;
 use Common\Locale;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationRepository extends EntityRepository
 {
@@ -51,22 +50,6 @@ class SpecificationRepository extends EntityRepository
             },
             (array) $this->findBy(['id' => $id, 'locale' => $locale])
         );
-    }
-
-    /**
-     * Get the next sequence in line.
-     *
-     * @throws NonUniqueResultException
-     */
-    public function getNextSequence(Locale $locale): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-
-        return $query_builder->select('MAX(i.sequence) as sequence')
-                ->where('i.locale = :locale')
-                ->setParameter('locale', $locale)
-                ->getQuery()
-                ->getSingleScalarResult() + 1;
     }
 
     /**
@@ -111,7 +94,7 @@ class SpecificationRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
 
         return $queryBuilder->select(['s', 'sv'])
-            ->leftJoin('s.specification_values', 'sv')
+            ->leftJoin('s.specificationValues', 'sv')
             ->leftJoin('sv.products', 'p')
             ->where('s.filter = :filter')
             ->andWhere('p.category = :category')
@@ -130,7 +113,7 @@ class SpecificationRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
 
         return $queryBuilder->select(['s', 'sv'])
-            ->innerJoin('s.specification_values', 'sv')
+            ->innerJoin('s.specificationValues', 'sv')
             ->innerJoin('sv.products', 'p')
             ->where('p.id = :product')
             ->orderBy('s.sequence', 'ASC')
@@ -147,7 +130,7 @@ class SpecificationRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
 
         return $queryBuilder->select(['s', 'sv'])
-            ->leftJoin('s.specification_values', 'sv')
+            ->leftJoin('s.specificationValues', 'sv')
             ->leftJoin('sv.products', 'p')
             ->where('s.filter = :filter')
             ->andWhere($queryBuilder->expr()->orX(

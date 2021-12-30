@@ -9,9 +9,6 @@ use Frontend\Core\Language\Locale;
 
 /**
  * This is a widget with the Commerce-brands.
- *
- * @author Waldo Cosman <waldo_cosman@hotmail.com>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Brands extends FrontendBaseWidget
 {

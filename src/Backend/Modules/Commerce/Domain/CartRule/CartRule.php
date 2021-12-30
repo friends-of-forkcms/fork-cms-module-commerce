@@ -12,14 +12,13 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_cart_rules")
  * @ORM\Entity(repositoryClass="CartRuleRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class CartRule
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
@@ -34,14 +33,14 @@ class CartRule
     private string $title;
 
     /**
-     * @ORM\Column(type="date", name="from_date")
+     * @ORM\Column(type="date")
      */
-    private DateTimeInterface $from;
+    private DateTimeInterface $fromDate;
 
     /**
-     * @ORM\Column(type="date", name="till_date", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private ?DateTimeInterface $till;
+    private ?DateTimeInterface $tillDate;
 
     /**
      * @ORM\Column(type="integer")
@@ -51,7 +50,7 @@ class CartRule
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $quantity_per_user;
+    private ?int $quantityPerUser;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -61,27 +60,27 @@ class CartRule
     /**
      * @ORM\Column(type="bigint", nullable=true)
      */
-    private ?int $minimum_price_amount;
+    private ?int $minimumPriceAmount;
 
     /**
      * @ORM\Column(type="string", length=3, nullable=true, options={"collation":"utf8mb4_unicode_ci", "charset":"utf8mb4"})
      */
-    private ?string $minimum_price_currency_code;
+    private ?string $minimumPriceCurrencyCode;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=1, nullable=true)
      */
-    private ?float $reduction_percentage;
+    private ?float $reductionPercentage;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
      */
-    private ?int $reduction_price_amount;
+    private ?int $reductionPriceAmount;
 
     /**
      * @ORM\Column(type="string", length=3, nullable=true, options={"collation":"utf8mb4_unicode_ci", "charset":"utf8mb4"})
      */
-    private ?string $reduction_price_currency_code;
+    private ?string $reductionPriceCurrencyCode;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -90,47 +89,47 @@ class CartRule
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     private function __construct(
         Locale $locale,
         string $title,
-        DateTimeInterface $from,
-        ?DateTimeInterface $till,
+        DateTimeInterface $fromDate,
+        ?DateTimeInterface $tillDate,
         int $quantity,
-        ?int $quantity_per_user,
+        ?int $quantityPerUser,
         string $code,
-        ?Money $minimum_price,
-        ?float $reduction_percentage,
-        ?Money $reduction_price,
+        ?Money $minimumPrice,
+        ?float $reductionPercentage,
+        ?Money $reductionPrice,
         bool $hidden
     ) {
         $this->locale = $locale;
         $this->title = $title;
-        $this->from = $from;
-        $this->till = $till;
+        $this->fromDate = $fromDate;
+        $this->tillDate = $tillDate;
         $this->quantity = $quantity;
-        $this->quantity_per_user = $quantity_per_user;
+        $this->quantityPerUser = $quantityPerUser;
         $this->code = $code;
-        $this->reduction_percentage = $reduction_percentage;
+        $this->reductionPercentage = $reductionPercentage;
         $this->hidden = $hidden;
 
-        if ($minimum_price !== null) {
-            $this->minimum_price_amount = $minimum_price->getAmount();
-            $this->minimum_price_currency_code = 'EUR';
+        if ($minimumPrice !== null) {
+            $this->minimumPriceAmount = $minimumPrice->getAmount();
+            $this->minimumPriceCurrencyCode = 'EUR';
         }
 
-        if ($reduction_price !== null) {
-            $this->reduction_price_amount = $reduction_price->getAmount();
-            $this->reduction_price_currency_code = 'EUR';
+        if ($reductionPrice !== null) {
+            $this->reductionPriceAmount = $reductionPrice->getAmount();
+            $this->reductionPriceCurrencyCode = 'EUR';
         }
     }
 
@@ -166,22 +165,22 @@ class CartRule
 
         $cartRule->locale = $dataTransferObject->locale;
         $cartRule->title = $dataTransferObject->title;
-        $cartRule->from = $dataTransferObject->from;
-        $cartRule->till = $dataTransferObject->till;
+        $cartRule->fromDate = $dataTransferObject->from;
+        $cartRule->tillDate = $dataTransferObject->till;
         $cartRule->quantity = $dataTransferObject->quantity;
-        $cartRule->quantity_per_user = $dataTransferObject->quantity_per_user;
+        $cartRule->quantityPerUser = $dataTransferObject->quantity_per_user;
         $cartRule->code = $dataTransferObject->code;
-        $cartRule->reduction_percentage = $dataTransferObject->reduction_percentage;
+        $cartRule->reductionPercentage = $dataTransferObject->reduction_percentage;
         $cartRule->hidden = $dataTransferObject->hidden;
 
         if ($dataTransferObject->minimum_price !== null) {
-            $cartRule->minimum_price_amount = $dataTransferObject->minimum_price->getAmount();
-            $cartRule->minimum_price_currency_code = 'EUR';
+            $cartRule->minimumPriceAmount = $dataTransferObject->minimum_price->getAmount();
+            $cartRule->minimumPriceCurrencyCode = 'EUR';
         }
 
         if ($dataTransferObject->reduction_price !== null) {
-            $cartRule->reduction_price_amount = $dataTransferObject->reduction_price->getAmount();
-            $cartRule->reduction_price_currency_code = 'EUR';
+            $cartRule->reductionPriceAmount = $dataTransferObject->reduction_price->getAmount();
+            $cartRule->reductionPriceCurrencyCode = 'EUR';
         }
 
         return $cartRule;
@@ -207,14 +206,14 @@ class CartRule
         return $this->title;
     }
 
-    public function getFrom(): DateTimeInterface
+    public function getFromDate(): DateTimeInterface
     {
-        return $this->from;
+        return $this->fromDate;
     }
 
-    public function getTill(): ?DateTimeInterface
+    public function getTillDate(): ?DateTimeInterface
     {
-        return $this->till;
+        return $this->tillDate;
     }
 
     public function getQuantity(): int
@@ -224,7 +223,7 @@ class CartRule
 
     public function getQuantityPerUser(): ?int
     {
-        return $this->quantity_per_user;
+        return $this->quantityPerUser;
     }
 
     public function getCode(): string
@@ -238,21 +237,21 @@ class CartRule
      */
     public function getMinimumPrice(): ?Money
     {
-        if ($this->minimum_price_amount === null || $this->minimum_price_currency_code === null) {
+        if ($this->minimumPriceAmount === null || $this->minimumPriceCurrencyCode === null) {
             return null;
         }
 
-        return new Money($this->minimum_price_amount, new Currency($this->minimum_price_currency_code));
+        return new Money($this->minimumPriceAmount, new Currency($this->minimumPriceCurrencyCode));
     }
 
     public function getReductionPercentage(): ?float
     {
-        return $this->reduction_percentage;
+        return $this->reductionPercentage;
     }
 
     public function getHumanReadableReductionPercentage(): ?string
     {
-        if ($this->reduction_percentage === null) {
+        if ($this->reductionPercentage === null) {
             return null;
         }
 
@@ -265,11 +264,11 @@ class CartRule
      */
     public function getReductionPrice(): ?Money
     {
-        if ($this->reduction_price_amount === null || $this->reduction_price_currency_code === null) {
+        if ($this->reductionPriceAmount === null || $this->reductionPriceCurrencyCode === null) {
             return null;
         }
 
-        return new Money($this->reduction_price_amount, new Currency($this->reduction_price_currency_code));
+        return new Money($this->reductionPriceAmount, new Currency($this->reductionPriceCurrencyCode));
     }
 
     public function isHidden(): bool

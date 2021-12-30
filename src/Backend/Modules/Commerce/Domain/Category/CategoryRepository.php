@@ -56,12 +56,13 @@ class CategoryRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('i');
 
-        return $queryBuilder->where('i.parent IS NULL')
-                            ->andWhere('i.locale = :locale')
-                            ->setParameter('locale', $locale)
-                            ->orderBy('i.sequence', 'ASC')
-                            ->getQuery()
-                            ->getResult();
+        return $queryBuilder
+            ->where('i.parent IS NULL')
+            ->andWhere('i.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('i.sequence', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findByLocaleAndUrl(Locale $locale, string $url): ?Category
@@ -83,29 +84,6 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * Get the next sequence in line.
-     *
-     * @param Category $parent
-     */
-    public function getNextSequence(Locale $locale, Category $parent = null): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-        $query_builder->select('MAX(i.sequence) as sequence')
-                      ->where('i.locale = :locale');
-
-        $query_builder->setParameter('locale', $locale);
-
-        // Include the parent if is set
-        if ($parent) {
-            $query_builder->andWhere('i.parent = :parent');
-            $query_builder->setParameter('parent', $parent);
-        }
-
-        // Return the new sequence
-        return $query_builder->getQuery()->getSingleScalarResult() + 1;
-    }
-
-    /**
      * Get an tree of categories.
      *
      * @return array
@@ -117,12 +95,13 @@ class CategoryRepository extends EntityRepository
         /**
          * @var Category[] $query_result
          */
-        $queryResult = $queryBuilder->where('i.locale = :locale')
-                                    ->andWhere('i.parent IS NULL')
-                                    ->setParameter('locale', $locale)
-                                    ->orderBy('i.sequence', 'asc')
-                                    ->getQuery()
-                                    ->getResult();
+        $queryResult = $queryBuilder
+            ->where('i.locale = :locale')
+            ->andWhere('i.parent IS NULL')
+            ->setParameter('locale', $locale)
+            ->orderBy('i.sequence', 'asc')
+            ->getQuery()
+            ->getResult();
 
         $treeResult = [];
 

@@ -2,7 +2,6 @@
 
 namespace Backend\Modules\Commerce\Domain\Product;
 
-use Backend\Core\Engine\Model;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Brand\Brand;
 use Backend\Modules\Commerce\Domain\Category\Category;
@@ -10,7 +9,6 @@ use Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductSpecial\ProductSpecial;
 use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValue;
-use Backend\Modules\Commerce\Domain\SpecificationValue\SpecificationValueRepository;
 use Backend\Modules\Commerce\Domain\StockStatus\StockStatus;
 use Backend\Modules\Commerce\Domain\UpSellProduct\UpSellProduct;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
@@ -204,7 +202,7 @@ class ProductDataTransferObject
         $this->images = $this->productEntity->getImages();
         $this->downloads = $this->productEntity->getDownloads();
         $this->related_products = $this->productEntity->getRelatedProducts();
-        $this->up_sell_products = $this->productEntity->getUpSellProducts();
+        $this->up_sell_products = $this->productEntity->getUpsellProducts();
 
         // just a fallback
         if (!$this->images instanceof MediaGroup) {
@@ -240,16 +238,6 @@ class ProductDataTransferObject
 
     public function addSpecificationValue(SpecificationValue $value): void
     {
-        // If the specification value has no entity save a new one
-        if (!$value->getId()) {
-            /**
-             * @var SpecificationValueRepository $specificationValueRepository
-             */
-            $specificationValueRepository = Model::get('commerce.repository.specification_value');
-
-            $value->setSequence($specificationValueRepository->getNextSequence($value));
-        }
-
         $this->specification_values->add($value);
     }
 

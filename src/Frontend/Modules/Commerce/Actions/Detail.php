@@ -10,9 +10,6 @@ use Frontend\Core\Language\Locale;
 
 /**
  * This is the detail-action, it will display a product.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Detail extends FrontendBaseBlock
 {

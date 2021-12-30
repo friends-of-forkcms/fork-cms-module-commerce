@@ -131,7 +131,8 @@ class PaymentMethodStep extends Step
                 $this->cart,
                 $this->getPaymentAddress(),
                 $commerceModuleSettingsRepository,
-                $this->get('tbbc_money.formatter.money_formatter')
+                $this->get('tbbc_money.formatter.money_formatter'),
+                $this->get('commerce.repository.vat')
             );
             foreach ($class->getQuote() as $key => $options) {
                 $paymentMethods[$paymentMethod->getModule() . '.' . $key] = $options;

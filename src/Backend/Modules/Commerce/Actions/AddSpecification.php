@@ -11,9 +11,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add specification-action, it will display a form to create a new specification.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Willem van Dam <w.vandam@jvdict.nl>
  */
 class AddSpecification extends BackendBaseActionAdd
 {

@@ -14,10 +14,6 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * This action will delete a specification.
- *
- * @author Tijs Verkoyen <tijs@verkoyen.eu>
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Willem van Dam <w.vandam@jvdict.nl>
  */
 class DeleteSpecification extends BackendBaseActionDelete
 {

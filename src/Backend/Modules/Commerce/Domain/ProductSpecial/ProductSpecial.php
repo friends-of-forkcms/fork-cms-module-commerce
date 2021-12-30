@@ -14,50 +14,49 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @ORM\Table(name="commerce_product_specials")
  * @ORM\Entity(repositoryClass="ProductRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class ProductSpecial
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="specials")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Product $product;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="price")
      */
     private Money $price;
 
     /**
-     * @ORM\Column(type="datetime", name="start_date")
+     * @ORM\Column(type="datetime")
      */
     private DateTimeInterface $startDate;
 
     /**
-     * @ORM\Column(type="datetime", name="end_date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTimeInterface $endDate;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     public function __construct()
     {
@@ -142,7 +141,7 @@ class ProductSpecial
 
             if ($difference->invert === 0 && $difference->days > 0) {
                 $context->buildViolation('err.EndDateAfterStartDate')
-                        ->atPath('end_date')
+                        ->atPath('endDate')
                         ->addViolation();
             }
         }

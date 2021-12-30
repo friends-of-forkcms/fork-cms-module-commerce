@@ -7,8 +7,6 @@ use SpoonFilter;
 
 /**
  * In this file we store all generic functions that we will be using in the Commerce module.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class Model
 {
@@ -68,11 +66,11 @@ class Model
      */
     public static function getOrder($id)
     {
-        return (array) BackendModel::getContainer()->get('database')->getRecord('SELECT i.*, UNIX_TIMESTAMP(i.created_on) AS ordered_on,
+        return (array) BackendModel::getContainer()->get('database')->getRecord('SELECT i.*, UNIX_TIMESTAMP(i.createdAt) AS ordered_on,
              p.amount AS amount_of_product, c.title AS product_title
              FROM commerce_orders AS i
-             INNER JOIN commerce_orders_values AS p ON i.id = p.order_id
-             INNER JOIN commerce_products AS c ON p.product_id = c.id
+             INNER JOIN commerce_orders_values AS p ON i.id = p.orderId
+             INNER JOIN commerce_products AS c ON p.productId = c.id
              WHERE i.id = ?
              LIMIT 1', [(int) $id]);
     }
@@ -95,7 +93,7 @@ class Model
             // already exists
             if ((bool) $db->getVar('SELECT 1
                  FROM commerce_products AS i
-                 INNER JOIN meta AS m ON i.meta_id = m.id
+                 INNER JOIN meta AS m ON i.metaId = m.id
                  WHERE i.language = ? AND m.url = ?
                  LIMIT 1', [BL::getWorkingLanguage(), $url])
             ) {
@@ -108,7 +106,7 @@ class Model
             // already exists
             if ((bool) $db->getVar('SELECT 1
                  FROM commerce_products AS i
-                 INNER JOIN meta AS m ON i.meta_id = m.id
+                 INNER JOIN meta AS m ON i.metaId = m.id
                  WHERE i.language = ? AND m.url = ? AND i.id != ?
                  LIMIT 1', [BL::getWorkingLanguage(), $url, $id])
             ) {

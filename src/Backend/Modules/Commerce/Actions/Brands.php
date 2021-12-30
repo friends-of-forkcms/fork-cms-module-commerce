@@ -8,9 +8,6 @@ use Backend\Modules\Commerce\Domain\Brand\DataGrid;
 
 /**
  * This is the categories-action, it will display the overview of categories.
- *
- * @author Wado Cosman <waldo@comsa.be>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Brands extends BackendBaseActionIndex
 {

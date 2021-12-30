@@ -64,22 +64,6 @@ class ProductOptionValueRepository extends EntityRepository
         );
     }
 
-    /**
-     * Get the next sequence in line.
-     *
-     * @throws
-     */
-    public function getNextSequence(ProductOption $productOption): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-
-        return (int) $query_builder->select('MAX(i.sequence) as sequence')
-                ->where('i.product_option = :product_option')
-                ->setParameter('product_option', $productOption)
-                ->getQuery()
-                ->getSingleScalarResult() + 1;
-    }
-
     public function findForAutoComplete(
         string $query,
         int $productOptionId,

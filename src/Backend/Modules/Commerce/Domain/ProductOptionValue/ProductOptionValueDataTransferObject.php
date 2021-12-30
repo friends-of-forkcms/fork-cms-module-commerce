@@ -60,7 +60,7 @@ class ProductOptionValueDataTransferObject
     public bool $default_value;
     public ?string $hex_value = null;
     public MediaGroup $image;
-    public int $sequence;
+    public ?int $sequence;
     public Meta $meta;
 
     /**
@@ -75,6 +75,7 @@ class ProductOptionValueDataTransferObject
         $this->image = MediaGroup::create(MediaGroupType::fromString(MediaGroupType::IMAGE));
         $this->dependencies = new ArrayCollection();
         $this->price = Money::EUR(0);
+        $this->sequence = null;
 
         if (!$this->hasExistingProductOptionValue()) {
             return;

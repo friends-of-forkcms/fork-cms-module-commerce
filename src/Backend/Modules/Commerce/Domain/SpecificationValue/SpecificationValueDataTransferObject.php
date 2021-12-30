@@ -18,12 +18,13 @@ class SpecificationValueDataTransferObject
      */
     public ?string $value = null;
     public Product $product;
-    public int $sequence;
+    public ?int $sequence;
     public ?Meta $meta;
 
     public function __construct(SpecificationValue $specificationValue = null)
     {
         $this->specificationValueEntity = $specificationValue;
+        $this->sequence = null;
 
         if (!$this->hasExistingSpecificationValue()) {
             return;

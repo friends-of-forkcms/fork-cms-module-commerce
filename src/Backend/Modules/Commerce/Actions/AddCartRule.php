@@ -11,8 +11,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the add order-status-action, it will display a form to create a new order status.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class AddCartRule extends BackendBaseActionAdd
 {

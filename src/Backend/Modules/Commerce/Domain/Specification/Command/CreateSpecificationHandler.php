@@ -16,10 +16,6 @@ final class CreateSpecificationHandler
 
     public function handle(CreateSpecification $createSpecification): void
     {
-        $createSpecification->sequence = $this->specificationRepository->getNextSequence(
-            $createSpecification->locale
-        );
-
         $specification = Specification::fromDataTransferObject($createSpecification);
         $this->specificationRepository->add($specification);
 

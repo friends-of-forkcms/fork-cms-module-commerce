@@ -12,8 +12,6 @@ use Frontend\Modules\Commerce\Engine\Model as FrontendCommerceModel;
 
 /**
  * This is the personal-data-action (default), it will display a personal data form.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class PersonalData extends FrontendBaseBlock
 {

@@ -8,7 +8,6 @@ use Backend\Modules\Commerce\Domain\SpecificationValue\Exception\SpecificationVa
 use Common\Doctrine\Entity\Meta;
 use Common\Uri;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 
 class SpecificationValueRepository extends EntityRepository
 {
@@ -49,24 +48,6 @@ class SpecificationValueRepository extends EntityRepository
             },
             (array) $this->findBy(['id' => $id])
         );
-    }
-
-    /**
-     * Get the next sequence in line.
-     */
-    public function getNextSequence(SpecificationValue $specificationValue): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-
-        try {
-            return $query_builder->select('MAX(i.sequence) as sequence')
-                    ->where('i.specification = :specification')
-                    ->setParameter('specification', $specificationValue->getSpecification())
-                    ->getQuery()
-                    ->getSingleScalarResult() + 1;
-        } catch (NonUniqueResultException $e) {
-            return 0;
-        }
     }
 
     public function findForAutoComplete(

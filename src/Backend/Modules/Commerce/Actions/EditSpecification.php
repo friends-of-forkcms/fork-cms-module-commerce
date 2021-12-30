@@ -17,10 +17,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit specification-action, it will display a form to edit a specification.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Willem van Dam <w.vandam@jvdict.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditSpecification extends BackendBaseActionEdit
 {

@@ -8,8 +8,6 @@ use Frontend\Core\Language\Locale;
 
 /**
  * This is a widget with recent products.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class RecentProducts extends FrontendBaseWidget
 {

@@ -14,8 +14,6 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * This action will delete a stock status.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class DeleteStockStatus extends BackendBaseActionDelete
 {

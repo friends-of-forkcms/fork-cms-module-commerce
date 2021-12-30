@@ -14,8 +14,6 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * This action will delete a category.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class DeleteCategory extends BackendBaseActionDelete
 {

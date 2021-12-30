@@ -150,9 +150,9 @@ class ProductRepository extends EntityRepository
      */
     public function getCount(Locale $locale): int
     {
-        $query_builder = $this->createQueryBuilder('i');
+        $queryBuilder = $this->createQueryBuilder('i');
 
-        return $query_builder->select('COUNT(i.id)')
+        return $queryBuilder->select('COUNT(i.id)')
             ->where('i.locale = :locale')
             ->setParameter('locale', $locale)
             ->getQuery()
@@ -222,10 +222,10 @@ class ProductRepository extends EntityRepository
     public function getUrl($url, Locale $locale, $id)
     {
         $url = Uri::getUrl((string) $url);
-        $query_builder = $this->createQueryBuilder('i');
-        $query_builder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
-            ->where($query_builder->expr()->eq('m.url', ':url'))
-            ->andWhere($query_builder->expr()->eq('i.locale', ':locale'))
+        $queryBuilder = $this->createQueryBuilder('i');
+        $queryBuilder->join(Meta::class, 'm', 'WITH', 'm = i.meta')
+            ->where($queryBuilder->expr()->eq('m.url', ':url'))
+            ->andWhere($queryBuilder->expr()->eq('i.locale', ':locale'))
             ->setParameters(
                 [
                     'url' => $url,
@@ -234,11 +234,11 @@ class ProductRepository extends EntityRepository
             );
 
         if ($id !== null) {
-            $query_builder->andWhere($query_builder->expr()->neq('i.id', ':id'))
+            $queryBuilder->andWhere($queryBuilder->expr()->neq('i.id', ':id'))
                 ->setParameter('id', $id);
         }
 
-        if (count($query_builder->getQuery()->getResult())) {
+        if (count($queryBuilder->getQuery()->getResult())) {
             $url = Model::addNumber($url);
 
             return self::getURL($url, $locale, $id);
@@ -254,7 +254,7 @@ class ProductRepository extends EntityRepository
      */
     public function findLimitedByCategory(Category $category, int $limit, int $offset = 0, string $sorting = Product::SORT_STANDARD)
     {
-        $sql = 'SELECT p.* FROM commerce_products p WHERE p.category_id = :category AND p.hidden = :hidden';
+        $sql = 'SELECT p.* FROM commerce_products p WHERE p.categoryId = :category AND p.hidden = :hidden';
         $parameters = [
             'category' => $category,
             'hidden' => false,
@@ -277,7 +277,7 @@ class ProductRepository extends EntityRepository
      */
     public function filterProducts(array $filters, Category $category, int $limit, int $offset, string $sorting): array
     {
-        $sql = 'SELECT p.* FROM commerce_products p WHERE p.category_id = :category AND p.hidden = :hidden';
+        $sql = 'SELECT p.* FROM commerce_products p WHERE p.categoryId = :category AND p.hidden = :hidden';
         $parameters = [
             'category' => $category,
             'hidden' => false,
@@ -301,7 +301,7 @@ class ProductRepository extends EntityRepository
      */
     public function filterProductsCount(array $filters, Category $category): int
     {
-        $sql = 'SELECT count(p.id) as total_products FROM commerce_products p WHERE p.category_id = :category AND p.hidden = :hidden';
+        $sql = 'SELECT count(p.id) as total_products FROM commerce_products p WHERE p.categoryId = :category AND p.hidden = :hidden';
         $parameters = [
             'category' => $category->getId(),
             'hidden' => false,
@@ -441,12 +441,12 @@ class ProductRepository extends EntityRepository
             }
 
             $sql .= ' AND p.id IN(
-                SELECT psv.product_id
+                SELECT psv.productId
                 FROM commerce_specification_values sv
-                INNER JOIN commerce_products_specification_values psv ON psv.specification_value_id = sv.id
-                INNER JOIN meta svmeta ON svmeta.id = sv.meta_id
-                INNER JOIN commerce_specifications s ON s.id = sv.`specification_id`
-                INNER JOIN meta smeta ON smeta.id = s.meta_id
+                INNER JOIN commerce_products_specification_values psv ON psv.specificationValueId = sv.id
+                INNER JOIN meta svmeta ON svmeta.id = sv.metaId
+                INNER JOIN commerce_specifications s ON s.id = sv.specificationId
+                INNER JOIN meta smeta ON smeta.id = s.metaId
                 WHERE s.filter = 1
                 AND smeta.url = :specification' . $i . '
                 AND svmeta.url IN (' . implode(', ', $specificationValuesPlaceholder) . ')
@@ -466,15 +466,15 @@ class ProductRepository extends EntityRepository
 
                 break;
             case Product::SORT_PRICE_ASC:
-                $query .= ' ORDER BY p.price_amount ASC';
+                $query .= ' ORDER BY p.priceAmount ASC';
 
                 break;
             case Product::SORT_PRICE_DESC:
-                $query .= ' ORDER BY p.price_amount DESC';
+                $query .= ' ORDER BY p.priceAmount DESC';
 
                 break;
             case Product::SORT_CREATED_AT:
-                $query .= ' ORDER BY p.created_on DESC';
+                $query .= ' ORDER BY p.createdAt DESC';
 
                 break;
         }
@@ -527,9 +527,9 @@ class ProductRepository extends EntityRepository
      */
     public function getActiveCount(Locale $locale): int
     {
-        $query_builder = $this->createQueryBuilder('i');
+        $queryBuilder = $this->createQueryBuilder('i');
 
-        return $query_builder->select('COUNT(i.id)')
+        return $queryBuilder->select('COUNT(i.id)')
             ->where('i.locale = :locale')
             ->andWhere('i.hidden = :hidden')
             ->setParameters([
@@ -549,7 +549,7 @@ class ProductRepository extends EntityRepository
     {
         return $this->createQueryBuilder('i')
             ->where('i.locale = :locale')
-            ->orderBy('i.createdOn', 'DESC')
+            ->orderBy('i.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->setParameters(['locale' => $locale])
             ->getQuery()
@@ -571,16 +571,16 @@ class ProductRepository extends EntityRepository
             SELECT
                 p.id,
                 p.title,
-                p.category_id,
+                p.categoryId AS category_id,
                 p.text,
-                p.price_amount,
+                p.priceAmount AS price_amount,
                 m.url AS url,
                 CONCAT(:detailUrl, "/", m2.url, "/", m.url) AS full_url,
                 MIN(mgmi.mediaItemId) AS media_item_id
             FROM commerce_products AS p
-            INNER JOIN meta AS m ON m.id = p.meta_id
-            LEFT JOIN commerce_categories AS cc ON cc.id = p.category_id
-            LEFT JOIN meta AS m2 ON m2.id = cc.meta_id
+            INNER JOIN meta AS m ON m.id = p.metaId
+            LEFT JOIN commerce_categories AS cc ON cc.id = p.categoryId
+            LEFT JOIN meta AS m2 ON m2.id = cc.metaId
             LEFT JOIN MediaGroupMediaItem AS mgmi ON mgmi.mediaGroupId = p.imageGroupId AND mgmi.sequence = 0
             WHERE
                 p.hidden = 0

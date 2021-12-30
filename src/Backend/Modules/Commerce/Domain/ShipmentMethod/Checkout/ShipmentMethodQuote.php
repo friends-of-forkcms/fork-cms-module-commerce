@@ -5,6 +5,7 @@ namespace Backend\Modules\Commerce\Domain\ShipmentMethod\Checkout;
 use Backend\Modules\Commerce\Domain\Cart\Cart;
 use Backend\Modules\Commerce\Domain\OrderAddress\OrderAddress;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
+use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use Frontend\Core\Language\Locale;
 use Money\Money;
 use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
@@ -20,13 +21,15 @@ abstract class ShipmentMethodQuote
     protected ?Locale $language;
     protected CommerceModuleSettingsRepository $shipmentMethodSettingsRepository;
     protected MoneyFormatter $moneyFormatter;
+    protected VatRepository $vatRepository;
 
     public function __construct(
         string $name,
         Cart $cart,
         OrderAddress $address,
         CommerceModuleSettingsRepository $commerceModuleSettingsRepository,
-        MoneyFormatter $moneyFormatter
+        MoneyFormatter $moneyFormatter,
+        VatRepository $vatRepository
     ) {
         $this->name = $name;
         $this->cart = $cart;
@@ -34,6 +37,7 @@ abstract class ShipmentMethodQuote
         $this->language = Locale::frontendLanguage();
         $this->shipmentMethodSettingsRepository = $commerceModuleSettingsRepository;
         $this->moneyFormatter = $moneyFormatter;
+        $this->vatRepository = $vatRepository;
     }
 
     /**

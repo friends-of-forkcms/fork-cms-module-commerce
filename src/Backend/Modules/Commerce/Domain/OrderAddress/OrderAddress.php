@@ -12,7 +12,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 /**
  * @ORM\Table(name="commerce_order_addresses")
  * @ORM\Entity(repositoryClass="OrderAddressRepository")
- * @ORM\HasLifecycleCallbacks
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
  */
 class OrderAddress
@@ -22,41 +21,41 @@ class OrderAddress
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Account\Account", inversedBy="addresses")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="accountId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Account $account;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Country\Country")
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="countryId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Country $country;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $company_name;
+    private ?string $companyName;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $first_name;
+    private ?string $firstName;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $last_name;
+    private ?string $lastName;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $email_address;
+    private ?string $emailAddress;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -71,12 +70,12 @@ class OrderAddress
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $house_number;
+    private ?string $houseNumber;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $house_number_addition;
+    private ?string $houseNumberAddition;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -86,34 +85,34 @@ class OrderAddress
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $zip_code;
+    private ?string $zipCode;
 
     private function __construct(
         ?Account $account,
         ?Country $country,
-        ?string $company_name,
-        ?string $first_name,
-        ?string $last_name,
-        ?string $email_address,
+        ?string $companyName,
+        ?string $firstName,
+        ?string $lastName,
+        ?string $emailAddress,
         ?string $phone,
         ?string $street,
-        ?string $house_number,
-        ?string $house_number_addition,
+        ?string $houseNumber,
+        ?string $houseNumberAddition,
         ?string $city,
-        ?string $zip_code
+        ?string $zipCode
     ) {
         $this->account = $account;
         $this->country = $country;
-        $this->company_name = $company_name;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->email_address = $email_address;
+        $this->companyName = $companyName;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->emailAddress = $emailAddress;
         $this->phone = $phone;
         $this->street = $street;
-        $this->house_number = $house_number;
-        $this->house_number_addition = $house_number_addition;
+        $this->houseNumber = $houseNumber;
+        $this->houseNumberAddition = $houseNumberAddition;
         $this->city = $city;
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
     }
 
     public function getId(): int
@@ -138,22 +137,22 @@ class OrderAddress
 
     public function getCompanyName(): ?string
     {
-        return $this->company_name;
+        return $this->companyName;
     }
 
     public function getFirstName(): string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
     public function getEmailAddress(): ?string
     {
-        return $this->email_address;
+        return $this->emailAddress;
     }
 
     public function getPhone(): ?string
@@ -168,12 +167,12 @@ class OrderAddress
 
     public function getHouseNumber(): ?string
     {
-        return $this->house_number;
+        return $this->houseNumber;
     }
 
     public function getHouseNumberAddition(): ?string
     {
-        return $this->house_number_addition;
+        return $this->houseNumberAddition;
     }
 
     public function getCity(): ?string
@@ -183,20 +182,20 @@ class OrderAddress
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     public static function fromDataTransferObject(OrderAddressDataTransferObject $dataTransferObject): OrderAddress
     {
@@ -229,16 +228,16 @@ class OrderAddress
     {
         $orderAddress = $dataTransferObject->getOrderAddressEntity();
         $orderAddress->country = $dataTransferObject->country;
-        $orderAddress->company_name = $dataTransferObject->company_name;
-        $orderAddress->first_name = $dataTransferObject->first_name;
-        $orderAddress->last_name = $dataTransferObject->last_name;
-        $orderAddress->email_address = $dataTransferObject->email_address;
+        $orderAddress->companyName = $dataTransferObject->company_name;
+        $orderAddress->firstName = $dataTransferObject->first_name;
+        $orderAddress->lastName = $dataTransferObject->last_name;
+        $orderAddress->emailAddress = $dataTransferObject->email_address;
         $orderAddress->phone = $dataTransferObject->phone;
         $orderAddress->street = $dataTransferObject->street;
-        $orderAddress->house_number = $dataTransferObject->house_number;
-        $orderAddress->house_number_addition = $dataTransferObject->house_number_addition;
+        $orderAddress->houseNumber = $dataTransferObject->house_number;
+        $orderAddress->houseNumberAddition = $dataTransferObject->house_number_addition;
         $orderAddress->city = $dataTransferObject->city;
-        $orderAddress->zip_code = $dataTransferObject->zip_code;
+        $orderAddress->zipCode = $dataTransferObject->zip_code;
 
         return $orderAddress;
     }

@@ -10,22 +10,21 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_order_product_notifications")
  * @ORM\Entity(repositoryClass="OrderProductNotificationRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class OrderProductNotification
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct", inversedBy="product_notifications")
-     * @ORM\JoinColumn(name="order_product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\OrderProduct\OrderProduct", inversedBy="productNotifications")
+     * @ORM\JoinColumn(name="orderProductId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private OrderProduct $order_product;
+    private OrderProduct $orderProduct;
 
     /**
      * @ORM\Column(type="string")
@@ -34,9 +33,9 @@ class OrderProductNotification
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     public function getDataTransferObject(): OrderProductNotificationDataTransferObject
     {
@@ -50,12 +49,12 @@ class OrderProductNotification
 
     public function getOrderProduct(): OrderProduct
     {
-        return $this->order_product;
+        return $this->orderProduct;
     }
 
-    public function setOrderProduct(OrderProduct $order_product): void
+    public function setOrderProduct(OrderProduct $orderProduct): void
     {
-        $this->order_product = $order_product;
+        $this->orderProduct = $orderProduct;
     }
 
     public function getMessage(): string

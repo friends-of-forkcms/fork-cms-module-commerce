@@ -19,10 +19,6 @@ final class CreateCategoryHandler
     public function handle(CreateCategory $createCategory): void
     {
         $createCategory->extraId = $this->getNewExtraId();
-        $createCategory->sequence = $this->categoryRepository->getNextSequence(
-            $createCategory->locale,
-            $createCategory->parent
-        );
 
         $category = Category::fromDataTransferObject($createCategory);
         $this->categoryRepository->add($category);

@@ -14,41 +14,40 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_cart_values")
  * @ORM\Entity(repositoryClass="CartValueRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class CartValue
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Cart", inversedBy="values")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="cartId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private Cart $cart;
 
     /**
      * @var Collection<int, CartValueOption>
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="cart_value", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="cartValue", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private Collection $cart_value_options;
+    private Collection $cartValueOptions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="cart_values")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="cartValues")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private ?Product $product;
 
     /**
      * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductDimension\ProductDimension")
-     * @ORM\JoinColumn(name="product_dimension_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="productDimensionId", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
-    private ?ProductDimension $product_dimension;
+    private ?ProductDimension $productDimension;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
@@ -63,12 +62,12 @@ class CartValue
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private int $order_width = 0;
+    private int $orderWidth = 0;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private int $order_height = 0;
+    private int $orderHeight = 0;
 
     /**
      * @ORM\Column(type="integer", length=11, nullable=true)
@@ -76,22 +75,22 @@ class CartValue
     private int $quantity = 0;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="total")
      */
     private Money $total;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     private ?Money $price;
     private bool $isInStock;
 
     public function __construct()
     {
-        $this->cart_value_options = new ArrayCollection();
+        $this->cartValueOptions = new ArrayCollection();
         $this->total = Money::EUR(0);
     }
 
@@ -115,21 +114,21 @@ class CartValue
      */
     public function getCartValueOptions(): Collection
     {
-        return $this->cart_value_options;
+        return $this->cartValueOptions;
     }
 
     public function addCartValueOption(CartValueOption $cartValueOption): void
     {
-        $this->cart_value_options->add($cartValueOption);
+        $this->cartValueOptions->add($cartValueOption);
     }
 
     public function removeCartValueOption(CartValueOption $cartValueOption): void
     {
-        if (!$this->cart_value_options->contains($cartValueOption)) {
+        if (!$this->cartValueOptions->contains($cartValueOption)) {
             return;
         }
 
-        $this->cart_value_options->removeElement($cartValueOption);
+        $this->cartValueOptions->removeElement($cartValueOption);
     }
 
     public function getProduct(): ?Product
@@ -144,12 +143,12 @@ class CartValue
 
     public function getProductDimension(): ?ProductDimension
     {
-        return $this->product_dimension;
+        return $this->productDimension;
     }
 
-    public function setProductDimension(ProductDimension $product_dimension): void
+    public function setProductDimension(ProductDimension $productDimension): void
     {
-        $this->product_dimension = $product_dimension;
+        $this->productDimension = $productDimension;
     }
 
     public function getWidth(): ?float
@@ -174,22 +173,22 @@ class CartValue
 
     public function getOrderWidth(): ?float
     {
-        return $this->order_width;
+        return $this->orderWidth;
     }
 
-    public function setOrderWidth(float $order_width): void
+    public function setOrderWidth(float $orderWidth): void
     {
-        $this->order_width = $order_width;
+        $this->orderWidth = $orderWidth;
     }
 
     public function getOrderHeight(): ?float
     {
-        return $this->order_height;
+        return $this->orderHeight;
     }
 
-    public function setOrderHeight(float $order_height): void
+    public function setOrderHeight(float $orderHeight): void
     {
-        $this->order_height = $order_height;
+        $this->orderHeight = $orderHeight;
     }
 
     public function getQuantity(): int
@@ -238,7 +237,7 @@ class CartValue
         }
 
         if ($this->product->usesDimensions()) {
-            $this->price = $this->product_dimension->getPrice();
+            $this->price = $this->productDimension->getPrice();
         } else {
             $this->price = $this->product->getActivePrice(false);
         }
@@ -260,7 +259,7 @@ class CartValue
     public function getVatPrice(): Money
     {
         if ($this->product->usesDimensions()) {
-            return $this->product_dimension->getVatPrice();
+            return $this->productDimension->getVatPrice();
         }
 
         return $this->product->getVatPrice();

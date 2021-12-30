@@ -8,9 +8,6 @@ use Backend\Modules\Commerce\Domain\Specification\DataGrid;
 
 /**
  * This is the specifications action, it will display the overview of specifications.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Willem van Dam <w.vandam@jvdict.nl>
  */
 class Specifications extends BackendBaseActionIndex
 {

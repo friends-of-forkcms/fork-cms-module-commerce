@@ -45,20 +45,4 @@ class ProductOptionRepository extends EntityRepository
             (array) $this->findBy(['id' => $id])
         );
     }
-
-    /**
-     * Get the next sequence in line.
-     *
-     * @throws
-     */
-    public function getNextSequence(Product $product): int
-    {
-        $query_builder = $this->createQueryBuilder('i');
-
-        return (int) $query_builder->select('MAX(i.sequence) as sequence')
-                ->where('i.product = :product')
-                ->setParameter('product', $product)
-                ->getQuery()
-                ->getSingleScalarResult() + 1;
-    }
 }

@@ -26,7 +26,7 @@ class AccountRepository extends EntityRepository
         }
 
         /** @var Account $account */
-        $account = $this->findOneBy(['profile_id' => $profile->getId()]);
+        $account = $this->findOneBy(['profileId' => $profile->getId()]);
 
         if ($account === null) {
             throw AccountNotFound::forId($profile->getId());

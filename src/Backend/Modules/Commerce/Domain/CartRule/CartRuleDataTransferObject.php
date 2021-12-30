@@ -63,8 +63,8 @@ class CartRuleDataTransferObject
         $this->id = $this->cartRuleEntity->getId();
         $this->locale = $this->cartRuleEntity->getLocale();
         $this->title = $this->cartRuleEntity->getTitle();
-        $this->from = $this->cartRuleEntity->getFrom();
-        $this->till = $this->cartRuleEntity->getTill();
+        $this->from = $this->cartRuleEntity->getFromDate();
+        $this->till = $this->cartRuleEntity->getTillDate();
         $this->quantity = $this->cartRuleEntity->getQuantity();
         $this->quantity_per_user = $this->cartRuleEntity->getQuantityPerUser();
         $this->code = $this->cartRuleEntity->getCode();

@@ -18,12 +18,10 @@ class DataGrid extends DataGridDatabase
         if ($category) {
             parent::__construct(
                 'SELECT c.id, c.title, COUNT(i.id) AS num_products, c.sequence
-		 FROM commerce_categories AS c
-		 LEFT OUTER JOIN commerce_products AS i
-			ON c.id = i.category_id
-			AND i.language = c.language
-		 WHERE c.parent_id = :category AND c.language = :language
-		 GROUP BY c.id',
+                 FROM commerce_categories AS c
+                 LEFT OUTER JOIN commerce_products AS i ON c.id = i.categoryId AND i.language = c.language
+                 WHERE c.parentId = :category AND c.language = :language
+                 GROUP BY c.id',
                 ['category' => $category->getId(), 'language' => $locale]
             );
 
@@ -31,12 +29,10 @@ class DataGrid extends DataGridDatabase
         } else {
             parent::__construct(
                 'SELECT c.id, c.title, COUNT(i.id) AS num_products, c.sequence
-		 FROM commerce_categories AS c
-		 LEFT OUTER JOIN commerce_products AS i
-			ON c.id = i.category_id
-			AND i.language = c.language
-		 WHERE c.language = :language
-		 GROUP BY c.id',
+                 FROM commerce_categories AS c
+                 LEFT OUTER JOIN commerce_products AS i ON c.id = i.categoryId AND i.language = c.language
+                 WHERE c.language = :language
+                 GROUP BY c.id',
                 ['language' => $locale]
             );
         }

@@ -18,8 +18,6 @@ use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationExceptio
 
 /**
  * This controller allows to the user to register.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Register extends FrontendBaseBlock
 {

@@ -26,6 +26,7 @@ mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} -
 
 # Install the module's dependencies
 echo "Installing module composer dependencies..."
+composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
 composer require --no-scripts \
     'php:^7.4' \
     'tetranz/select2entity-bundle:v2.10.1' \
@@ -34,7 +35,14 @@ composer require --no-scripts \
     'gedmo/doctrine-extensions:^3.0' \
     'jeroendesloovere/sitemap-bundle:^2.0' \
     'tbbc/money-bundle:^4.1'
-composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
+
+# Apply a patch to add our bundles to AppKernel and configure the config.yml
+# This will become a lot easier with Symfony 4+
+# You can regenerate these by doing:
+# git diff forkcms/master:app/AppKernel.php app/AppKernel.php > ../fork-cms-module-commerce/deploy/patches/AppKernel.php.patch
+# git diff forkcms/master:app/config/config.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.yml.patch
+patch -p1 --force < deploy/patches/AppKernel.php.patch
+patch -p1 --force < deploy/patches/config.yml.patch
 
 # Install the necessary modules
 curl -sL https://github.com/friends-of-forkcms/fork-cms-module-sitemaps/archive/master.tar.gz | tar xz --strip-components 1
@@ -46,17 +54,10 @@ bin/console forkcms:install:module CommercePickup
 
 # Setup the CMS for our demo (install demo theme, add widgets, ...)
 # Use envsubst to fill in the secrets based on env vars in the file
-mv deploy/prepare-forkcms-db.sql deploy/prepare-forkcms-db.sql.tmp
-envsubst < deploy/prepare-forkcms-db.sql.tmp > deploy/prepare-forkcms-db.sql
-mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/prepare-forkcms-db.sql
-
-# Apply a patch to add our bundles to AppKernel and configure the config.yml
-# This will become a lot easier with Symfony 4+
-# You can regenerate these by doing:
-# git diff forkcms/master:app/AppKernel.php app/AppKernel.php > ../fork-cms-module-commerce/deploy/patches/AppKernel.php.patch
-# git diff forkcms/master:app/config/config.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.yml.patch
-patch -p1 --force < deploy/patches/AppKernel.php.patch
-patch -p1 --force < deploy/patches/config.yml.patch
+mv deploy/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
+envsubst < /tmp/prepare-forkcms-db.sql.tmp > /tmp/prepare-forkcms-db.sql
+mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < /tmp/prepare-forkcms-db.sql
+rm /tmp/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
 
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce

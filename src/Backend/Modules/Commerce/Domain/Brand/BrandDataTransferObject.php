@@ -19,11 +19,12 @@ class BrandDataTransferObject
     public Locale $locale;
     public ?Meta $meta = null;
     public Image $image;
-    public int $sequence;
+    public ?int $sequence;
 
     public function __construct(Brand $brand = null)
     {
         $this->brandEntity = $brand;
+        $this->sequence = null;
 
         if (!$this->hasExistingBrand()) {
             return;

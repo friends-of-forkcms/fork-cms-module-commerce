@@ -8,8 +8,6 @@ use Backend\Modules\Commerce\Domain\OrderStatus\DataGrid;
 
 /**
  * This is the vats action, it will display the overview of vats.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class OrderStatuses extends BackendBaseActionIndex
 {

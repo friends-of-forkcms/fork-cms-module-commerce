@@ -16,10 +16,6 @@ final class CreateVatHandler
 
     public function handle(CreateVat $createVat): void
     {
-        $createVat->sequence = $this->vatRepository->getNextSequence(
-            $createVat->locale
-        );
-
         $vat = Vat::fromDataTransferObject($createVat);
         $this->vatRepository->add($vat);
 

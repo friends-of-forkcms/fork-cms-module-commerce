@@ -8,10 +8,6 @@ use Backend\Modules\Commerce\Engine\Model as BackendCommerceModel;
 
 /**
  * This action will delete a comment.
- *
- * @author Tijs Verkoyen <tijs@verkoyen.eu>
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Willem van Dam <w.vandam@jvdict.nl>
  */
 class DeleteCompleted extends BackendBaseActionDelete
 {

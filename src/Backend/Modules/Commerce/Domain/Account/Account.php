@@ -13,14 +13,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Table(name="commerce_account")
  * @ORM\Entity(repositoryClass="AccountRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Account
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
@@ -35,7 +34,7 @@ class Account
      * @var Collection|Order[]
      *
      * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Order\Order", mappedBy="account")
-     * @ORM\OrderBy({"createdOn": "DESC"})
+     * @ORM\OrderBy({"createdAt": "DESC"})
      */
     private Collection $orders;
 
@@ -49,7 +48,7 @@ class Account
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $profile_id;
+    private ?int $profileId;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,44 +63,44 @@ class Account
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $company_name;
+    private ?string $companyName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $first_name;
+    private string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $last_name;
+    private string $lastName;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     private function __construct(
-        ?int $profile_id,
+        ?int $profileId,
         string $email,
         ?string $phone,
-        ?string $company_name,
-        string $first_name,
-        string $last_name
+        ?string $companyName,
+        string $firstName,
+        string $lastName
     ) {
-        $this->profile_id = $profile_id;
+        $this->profileId = $profileId;
         $this->email = $email;
         $this->phone = $phone;
-        $this->company_name = $company_name;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
+        $this->companyName = $companyName;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
     }
 
     public function getId(): int
@@ -138,7 +137,7 @@ class Account
      */
     public function getProfileId(): ?int
     {
-        return $this->profile_id;
+        return $this->profileId;
     }
 
     public function getEmail(): string
@@ -159,7 +158,7 @@ class Account
      */
     public function getCompanyName(): ?string
     {
-        return $this->company_name;
+        return $this->companyName;
     }
 
     /**
@@ -167,7 +166,7 @@ class Account
      */
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
     /**
@@ -175,17 +174,17 @@ class Account
      */
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     public static function fromDataTransferObject(AccountCustomerDataTransferObject $dataTransferObject): Account
@@ -218,12 +217,12 @@ class Account
     {
         $account = $dataTransferObject->getAccountEntity();
 
-        $account->profile_id = $dataTransferObject->profile_id;
+        $account->profileId = $dataTransferObject->profile_id;
         $account->email = $dataTransferObject->email_address;
         $account->phone = $dataTransferObject->phone;
-        $account->company_name = $dataTransferObject->company_name;
-        $account->first_name = $dataTransferObject->first_name;
-        $account->last_name = $dataTransferObject->last_name;
+        $account->companyName = $dataTransferObject->company_name;
+        $account->firstName = $dataTransferObject->first_name;
+        $account->lastName = $dataTransferObject->last_name;
 
         return $account;
     }

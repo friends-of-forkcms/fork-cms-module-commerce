@@ -6,4 +6,5 @@ services:
             - "@commerce.repository.product"
             - "@logger"
             - "@fork.settings"
+            - "@tbbc_money.formatter.money_formatter"
             - "%kernel.root_dir%"

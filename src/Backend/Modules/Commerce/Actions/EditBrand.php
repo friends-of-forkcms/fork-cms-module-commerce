@@ -16,9 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit brand action, it will display a form to edit an existing brand.
- *
- * @author Waldo Cosman <waldo@comsa.be>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditBrand extends BackendBaseActionEdit
 {

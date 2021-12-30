@@ -7,8 +7,6 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
 
 /**
  * In this file we store all generic functions that we will be using in the Commerce module.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class Model
 {

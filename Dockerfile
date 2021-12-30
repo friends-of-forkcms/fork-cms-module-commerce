@@ -71,7 +71,7 @@ RUN apt-get update && apt-get install -y libzip-dev zip && \
     docker-php-ext-install zip && \
     rm -rf /var/lib/apt/lists/*
 
-# Install intl and set locale to en_US.UTF-8 e.g. for money formatting
+# Install intl and set locale to en_US.UTF-8 for consistency in unit tests. E.g. for money formatting
 RUN apt-get update && apt-get install -y --no-install-recommends \
     g++ \
     libicu-dev \
@@ -80,7 +80,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install intl && \
     rm -rf /var/lib/apt/lists/*
 ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
 
 # Enable pcov for test coverage
 RUN pecl install pcov && \

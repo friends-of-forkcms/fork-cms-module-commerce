@@ -17,9 +17,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit-action, it will display a form with the product data to edit.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class Edit extends BackendBaseActionEdit
 {

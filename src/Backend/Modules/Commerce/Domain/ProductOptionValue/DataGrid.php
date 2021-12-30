@@ -18,18 +18,18 @@ class DataGrid extends DataGridDatabase
     {
         parent::__construct(
             '
-            SELECT 
-                c.id, 
-                IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title, 
-                c.impact_type, 
-                c.percentage, 
-                c.price, 
-                c.default_value, 
+            SELECT
+                c.id,
+                IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title,
+                c.impactType,
+                c.percentage,
+                c.price,
+                c.defaultValue,
                 c.sequence,
-                (SELECT(count(*)) FROM commerce_product_options i WHERE i.product_option_value_id = c.id) as sub_options
+                (SELECT(count(*)) FROM commerce_product_options i WHERE i.productOptionValueId = c.id) as sub_options
             FROM commerce_product_option_values AS c
-            INNER JOIN commerce_product_options AS po ON po.id = c.product_option_id
-            WHERE c.product_option_id = :product_option',
+            INNER JOIN commerce_product_options AS po ON po.id = c.productOptionId
+            WHERE c.productOptionId = :product_option',
             [
                 'titleSeparator' => ' - ',
                 'typeBetween' => ProductOption::DISPLAY_TYPE_BETWEEN,
@@ -38,8 +38,8 @@ class DataGrid extends DataGridDatabase
         );
 
         // Data grid options
-        $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[default_value]'], 'default_value');
-        $this->setColumnFunction([self::class, 'getImpactTypeText'], ['[impact_type]'], 'impact_type');
+        $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[defaultValue]'], 'defaultValue');
+        $this->setColumnFunction([self::class, 'getImpactTypeText'], ['[impactType]'], 'impactType');
         $this->setColumnsHidden(['sequence']);
         $this->enableSequenceByDragAndDrop();
         $this->setAttributes(['data-action' => 'SequenceProductOptionValues']);

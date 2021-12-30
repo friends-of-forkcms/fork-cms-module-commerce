@@ -26,12 +26,12 @@ class DataGridProducts extends DataGridDatabase
                 i.title as product,
                 i.sku as article_number,
                 i.amount,
-                i.price_amount AS price,
-                i.price_currency_code,
-                i.total_amount AS total,
-                i.total_currency_code
+                i.priceAmount AS price,
+                i.priceCurrencyCode,
+                i.totalAmount AS total,
+                i.totalCurrencyCode
             FROM commerce_order_products i
-            WHERE i.order_id = ?
+            WHERE i.orderId = ?
             ORDER BY i.id ASC';
 
         parent::__construct($query, [$order->getId()]);
@@ -39,10 +39,10 @@ class DataGridProducts extends DataGridDatabase
         // assign column functions
         $this->setColumnHidden('id');
         $this->setColumnFunction([self::class, 'getProductOptions'], ['[product]', '[id]'], 'product', true);
-        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[total]', '[total_currency_code]'], 'total', true);
-        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[price_currency_code]'], 'price', true);
-        $this->setColumnsHidden(['total_currency_code']);
-        $this->setColumnsHidden(['price_currency_code']);
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[total]', '[totalCurrencyCode]'], 'total', true);
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[priceCurrencyCode]'], 'price', true);
+        $this->setColumnsHidden(['totalCurrencyCode']);
+        $this->setColumnsHidden(['priceCurrencyCode']);
     }
 
     public static function getHtml(Order $order): string

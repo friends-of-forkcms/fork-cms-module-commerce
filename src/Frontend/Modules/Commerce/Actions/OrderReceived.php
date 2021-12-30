@@ -9,8 +9,6 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
 
 /**
  * This is the personal-data-action (default), it will display a personal data form.
- *
- * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
 class OrderReceived extends FrontendBaseBlock
 {

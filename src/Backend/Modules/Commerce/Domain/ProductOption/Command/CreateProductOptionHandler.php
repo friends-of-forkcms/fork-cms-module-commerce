@@ -16,7 +16,6 @@ final class CreateProductOptionHandler
 
     public function handle(CreateProductOption $createProductOption): void
     {
-        $createProductOption->sequence = $this->productOptionRepository->getNextSequence($createProductOption->product);
         if ($createProductOption->custom_value_price === null) {
             $createProductOption->custom_value_price = 0.00;
         }

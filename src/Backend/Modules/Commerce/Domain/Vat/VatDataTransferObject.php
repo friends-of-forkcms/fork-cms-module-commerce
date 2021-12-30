@@ -20,12 +20,13 @@ class VatDataTransferObject
      */
     public int $percentage;
     public Locale $locale;
-    public int $sequence;
+    public ?int $sequence;
     public int $type;
 
     public function __construct(Vat $vat = null)
     {
         $this->vatEntity = $vat;
+        $this->sequence = null;
 
         if (!$this->hasExistingVat()) {
             return;

@@ -21,7 +21,7 @@ class DataGrid extends DataGridArray
     {
         parent::__construct($this->getPaymentMethods($locale));
 
-        $this->setColumnsSequence(['id', 'name', 'description', 'version', 'is_enabled']);
+        $this->setColumnsSequence(['id', 'name', 'description', 'version', 'isEnabled']);
         $this->setColumnsHidden(['module']);
 
         // our JS needs to know an id, so we can highlight it
@@ -30,15 +30,15 @@ class DataGrid extends DataGridArray
         // Add some columns
         $this->setColumnFunction(
             [new DataGridFunctions(), 'showBool'],
-            ['[is_enabled]'],
-            'is_enabled',
+            ['[isEnabled]'],
+            'isEnabled',
             true
         );
 
         // Overwrite header labels
         $this->setHeaderLabels(
             [
-                'is_enabled' => ucfirst(Language::lbl('Enabled')),
+                'isEnabled' => ucfirst(Language::lbl('Enabled')),
             ]
         );
 
@@ -62,8 +62,7 @@ class DataGrid extends DataGridArray
     private function getPaymentMethods(Locale $locale): array
     {
         $paymentMethodsData = BackendModel::get('database')->getRecords(
-            '
-            SELECT pm.id, pm.name, pm.module, pm.is_enabled
+            'SELECT pm.id, pm.name, pm.module, pm.isEnabled
             FROM commerce_payment_methods AS pm
             WHERE pm.language = :language',
             ['language' => $locale]

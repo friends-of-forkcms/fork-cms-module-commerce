@@ -6,7 +6,6 @@ use Backend\Modules\Commerce\Domain\Cart\CartValueOption;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -17,7 +16,6 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_product_options")
  * @ORM\Entity(repositoryClass="ProductOptionRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class ProductOption
 {
@@ -33,44 +31,45 @@ class ProductOption
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="product_options")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Gedmo\SortableGroup
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="productOptions")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Product $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", inversedBy="product_options")
-     * @ORM\JoinColumn(name="product_option_value_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", inversedBy="productOptions")
+     * @ORM\JoinColumn(name="productOptionValueId", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
-    private ?ProductOptionValue $parent_product_option_value;
+    private ?ProductOptionValue $parentProductOptionValue;
 
     /**
      * @var Collection|ProductOptionValue[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", mappedBy="product_option", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue", mappedBy="productOption", cascade={"remove", "persist"})
      * @ORM\OrderBy({"sequence": "ASC"})
      */
-    private Collection $product_option_values;
+    private Collection $productOptionValues;
 
     /**
      * @var Collection|ProductDimensionNotification[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="product_option", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\ProductDimensionNotification\ProductDimensionNotification", mappedBy="productOption", cascade={"remove", "persist"})
      * @ORM\OrderBy({"width": "ASC", "height": "ASC"})
      */
-    private Collection $dimension_notifications;
+    private Collection $dimensionNotifications;
 
     /**
      * @var Collection|CartValueOption[]
      *
-     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="product_option", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Backend\Modules\Commerce\Domain\Cart\CartValueOption", mappedBy="productOption", cascade={"remove", "persist"})
      */
-    private Collection $cart_value_options;
+    private Collection $cartValueOptions;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -90,12 +89,12 @@ class ProductOption
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $custom_value_allowed;
+    private bool $customValueAllowed;
 
     /**
-     * @ORM\Embedded(class="\Money\Money")
+     * @ORM\Embedded(class="\Money\Money", columnPrefix="customValuePrice")
      */
-    private Money $custom_value_price;
+    private Money $customValuePrice;
 
     /**
      * @ORM\Column(type="integer")
@@ -103,9 +102,10 @@ class ProductOption
     private int $type;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer")
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -124,44 +124,44 @@ class ProductOption
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     private function __construct(
         Product $product,
-        ?ProductOptionValue $parent_product_option_value,
+        ?ProductOptionValue $parentProductOptionValue,
         string $title,
         ?string $text,
         bool $required,
-        bool $custom_value_allowed,
-        Money $custom_value_price,
+        bool $customValueAllowed,
+        Money $customValuePrice,
         int $type,
-        int $sequence,
+        ?int $sequence,
         ?string $placeholder,
         ?string $prefix,
         ?string $suffix,
-        $dimension_notifications
+        $dimensionNotifications
     ) {
         $this->product = $product;
-        $this->parent_product_option_value = $parent_product_option_value;
+        $this->parentProductOptionValue = $parentProductOptionValue;
         $this->title = $title;
         $this->text = $text;
         $this->required = $required;
-        $this->custom_value_allowed = $custom_value_allowed;
-        $this->custom_value_price = $custom_value_price;
+        $this->customValueAllowed = $customValueAllowed;
+        $this->customValuePrice = $customValuePrice;
         $this->type = $type;
         $this->sequence = $sequence;
         $this->placeholder = $placeholder;
         $this->prefix = $prefix;
         $this->suffix = $suffix;
-        $this->dimension_notifications = $dimension_notifications;
+        $this->dimensionNotifications = $dimensionNotifications;
     }
 
     public static function fromDataTransferObject(ProductOptionDataTransferObject $dataTransferObject): ProductOption
@@ -197,18 +197,18 @@ class ProductOption
         $productOption = $dataTransferObject->getProductOptionEntity();
 
         $productOption->product = $dataTransferObject->product;
-        $productOption->parent_product_option_value = $dataTransferObject->parent_product_option_value;
+        $productOption->parentProductOptionValue = $dataTransferObject->parent_product_option_value;
         $productOption->title = $dataTransferObject->title;
         $productOption->text = $dataTransferObject->text;
         $productOption->required = $dataTransferObject->required;
-        $productOption->custom_value_allowed = $dataTransferObject->custom_value_allowed;
-        $productOption->custom_value_price = $dataTransferObject->custom_value_price;
+        $productOption->customValueAllowed = $dataTransferObject->custom_value_allowed;
+        $productOption->customValuePrice = $dataTransferObject->custom_value_price;
         $productOption->type = $dataTransferObject->type;
         $productOption->sequence = $dataTransferObject->sequence;
         $productOption->placeholder = $dataTransferObject->placeholder;
         $productOption->prefix = $dataTransferObject->prefix;
         $productOption->suffix = $dataTransferObject->suffix;
-        $productOption->dimension_notifications = $dataTransferObject->dimension_notifications;
+        $productOption->dimensionNotifications = $dataTransferObject->dimension_notifications;
 
         return $productOption;
     }
@@ -225,7 +225,7 @@ class ProductOption
 
     public function getParentProductOptionValue(): ?ProductOptionValue
     {
-        return $this->parent_product_option_value;
+        return $this->parentProductOptionValue;
     }
 
     /**
@@ -233,7 +233,7 @@ class ProductOption
      */
     public function getProductOptionValues(): Collection
     {
-        return $this->product_option_values;
+        return $this->productOptionValues;
     }
 
     /**
@@ -241,7 +241,7 @@ class ProductOption
      */
     public function getDimensionNotifications()
     {
-        return $this->dimension_notifications;
+        return $this->dimensionNotifications;
     }
 
     /**
@@ -249,7 +249,7 @@ class ProductOption
      */
     public function getCartValueOptions(): Collection
     {
-        return $this->cart_value_options;
+        return $this->cartValueOptions;
     }
 
     public function getTitle(): string
@@ -269,12 +269,12 @@ class ProductOption
 
     public function isCustomValueAllowed(): bool
     {
-        return $this->custom_value_allowed;
+        return $this->customValueAllowed;
     }
 
     public function getCustomValuePrice(): Money
     {
-        return $this->custom_value_price;
+        return $this->customValuePrice;
     }
 
     public function getType(): int
@@ -282,7 +282,7 @@ class ProductOption
         return $this->type;
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
@@ -302,14 +302,14 @@ class ProductOption
         return $this->suffix;
     }
 
-    public function getCreatedOn(): DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->createdOn;
+        return $this->createdAt;
     }
 
-    public function getEditedOn(): DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
-        return $this->editedOn;
+        return $this->updatedAt;
     }
 
     public function getDataTransferObject(): ProductOptionDataTransferObject
@@ -323,10 +323,10 @@ class ProductOption
     public function getDefaultProductOptionValue(): ?ProductOptionValue
     {
         $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('default_value', true))
+        $criteria->where(Criteria::expr()->eq('defaultValue', true))
             ->setMaxResults(1);
 
-        $values = $this->product_option_values->matching($criteria);
+        $values = $this->productOptionValues->matching($criteria);
 
         if ($value = $values->first()) {
             return $value;
@@ -368,7 +368,7 @@ class ProductOption
             ->orderBy(['width' => Criteria::DESC, 'height' => Criteria::DESC])
             ->setMaxResults(1);
 
-        $dimensionNotifications = $this->dimension_notifications->matching($criteria)->first();
+        $dimensionNotifications = $this->dimensionNotifications->matching($criteria)->first();
 
         return $dimensionNotifications ?: null;
     }
@@ -381,7 +381,7 @@ class ProductOption
             $notifications[] = $notification;
         }
 
-        foreach ($this->product_option_values as $productOptionValue) {
+        foreach ($this->productOptionValues as $productOptionValue) {
             foreach ($productOptionValue->getProductOptions() as $productOption) {
                 $notifications = [...$notifications, ...$productOption->getAllDimensionNotificationsByDimension($width, $height)];
             }

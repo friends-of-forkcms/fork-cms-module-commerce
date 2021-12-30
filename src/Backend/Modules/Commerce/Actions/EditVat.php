@@ -16,8 +16,6 @@ use Symfony\Component\Form\Form;
 
 /**
  * This is the edit vat-action, it will display a form to edit a vat.
- *
- * @author Jacob van Dam <j.vandam@jvdict.nl>
  */
 class EditVat extends BackendBaseActionEdit
 {

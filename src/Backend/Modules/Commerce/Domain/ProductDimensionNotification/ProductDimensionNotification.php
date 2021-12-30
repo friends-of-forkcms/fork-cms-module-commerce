@@ -11,28 +11,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="commerce_product_dimension_notification")
  * @ORM\Entity(repositoryClass="ProductRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class ProductDimensionNotification
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="dimension_notifications")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\Product\Product", inversedBy="dimensionNotifications")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?Product $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="dimension_notifications")
-     * @ORM\JoinColumn(name="product_option_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Backend\Modules\Commerce\Domain\ProductOption\ProductOption", inversedBy="dimensionNotifications")
+     * @ORM\JoinColumn(name="productOptionId", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?ProductOption $product_option;
+    private ?ProductOption $productOption;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -52,9 +51,9 @@ class ProductDimensionNotification
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     public function __construct()
     {
@@ -84,12 +83,12 @@ class ProductDimensionNotification
 
     public function getProductOption(): ?ProductOption
     {
-        return $this->product_option;
+        return $this->productOption;
     }
 
-    public function setProductOption(ProductOption $product_option): void
+    public function setProductOption(ProductOption $productOption): void
     {
-        $this->product_option = $product_option;
+        $this->productOption = $productOption;
     }
 
     /**

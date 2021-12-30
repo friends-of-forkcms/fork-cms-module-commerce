@@ -11,18 +11,18 @@ use Money\Money;
 /**
  * @ORM\Table(name="commerce_vats")
  * @ORM\Entity(repositoryClass="VatRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Vat
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\Column(type="locale", name="language")
      */
     private Locale $locale;
@@ -38,27 +38,28 @@ class Vat
     private float $percentage;
 
     /**
+     * @Gedmo\SortablePosition
      * @ORM\Column(type="integer", length=11)
      */
-    private int $sequence;
+    private ?int $sequence;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $createdOn;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="edited_on", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private DateTimeInterface $editedOn;
+    private DateTimeInterface $updatedAt;
 
     private function __construct(
         Locale $locale,
         string $title,
         float $percentage,
-        int $sequence
+        ?int $sequence
     ) {
         $this->locale = $locale;
         $this->title = $title;
@@ -127,7 +128,7 @@ class Vat
         return $amount->add($this->calculateVatFor($amount));
     }
 
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }

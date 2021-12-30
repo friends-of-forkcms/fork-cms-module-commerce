@@ -17,18 +17,19 @@ class DataGrid extends DataGridDatabase
 {
     public function __construct(Product $product, ProductOptionValue $productOptionValue = null)
     {
-        $query = 'SELECT i.id, i.title, i.type, i.required, i.custom_value_allowed, i.sequence
-		        FROM commerce_product_options AS i
-		        WHERE i.product_id = :product';
+        $query = '
+            SELECT i.id, i.title, i.type, i.required, i.customValueAllowed, i.sequence
+            FROM commerce_product_options AS i
+            WHERE i.productId = :product';
         $parameters = [
             'product' => $product->getId(),
         ];
 
         if ($productOptionValue) {
-            $query .= ' AND i.product_option_value_id = :product_option_value_id ';
-            $parameters['product_option_value_id'] = $productOptionValue->getId();
+            $query .= ' AND i.productOptionValueId = :productOptionValueId ';
+            $parameters['productOptionValueId'] = $productOptionValue->getId();
         } else {
-            $query .= ' AND i.product_option_value_id IS NULL ';
+            $query .= ' AND i.productOptionValueId IS NULL ';
         }
 
         parent::__construct($query, $parameters);
@@ -36,7 +37,7 @@ class DataGrid extends DataGridDatabase
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[required]'], 'required');
-        $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[custom_value_allowed]'], 'custom_value_allowed');
+        $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[customValueAllowed]'], 'customValueAllowed');
         $this->setColumnFunction([self::class, 'getType'], ['[type]'], 'type');
         $this->setColumnsHidden(['sequence']);
         $this->enableSequenceByDragAndDrop();
