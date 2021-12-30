@@ -8,6 +8,7 @@ use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Checkout\Quote;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Factory\CashOnDeliveryPaymentMethodFactory;
 use Common\ModulesSettings;
@@ -51,13 +52,16 @@ class QuoteTest extends TestCase
         /** @var Cart $cart */
         $cart = CartFactory::new()->create(['shipment_method' => 'CommercePickup.Pickup shipment'])->object();
         $address = $cart->getShipmentAddress();
+        $vat = VatFactory::new()->create()->forceSet('id', 1)->object();
 
         // Mock the repository that fetches payment method & shipment method data from modules_settings
         $commerceModuleSettingsRepositoryMock = $this->getModuleSettingsMock(
             new ArrayCollection([]),
             Money::EUR(0),
-            VatFactory::new()->create()->forceSet('id', 1)->object()
+            $vat
         );
+        $vatRepositoryMock = $this->getMockBuilder(VatRepository::class)->disableOriginalConstructor()->getMock();
+        $vatRepositoryMock->method('find')->willReturn($vat);
 
         // Create a quote. Should be empty because the shipment method does not allow any payment method
         $checkoutQuote = new Quote(
@@ -65,7 +69,8 @@ class QuoteTest extends TestCase
             $cart,
             $address,
             $commerceModuleSettingsRepositoryMock,
-            new MoneyFormatter()
+            new MoneyFormatter(),
+            $vatRepositoryMock
         );
         $this->assertEmpty($checkoutQuote->getQuote());
     }
@@ -78,13 +83,16 @@ class QuoteTest extends TestCase
         /** @var Cart $cart */
         $cart = CartFactory::new()->create(['shipment_method' => 'CommercePickup.Pickup shipment'])->object();
         $address = $cart->getShipmentAddress();
+        $vat = VatFactory::new()->create()->forceSet('id', 1)->object();
 
         // Mock the repository that fetches payment method & shipment method data from modules_settings
         $commerceModuleSettingsRepositoryMock = $this->getModuleSettingsMock(
             new ArrayCollection([$paymentMethod]),
             Money::EUR(0),
-            VatFactory::new()->create()->forceSet('id', 1)->object()
+            $vat
         );
+        $vatRepositoryMock = $this->getMockBuilder(VatRepository::class)->disableOriginalConstructor()->getMock();
+        $vatRepositoryMock->method('find')->willReturn($vat);
 
         // Create a quote
         $checkoutQuote = new Quote(
@@ -92,7 +100,8 @@ class QuoteTest extends TestCase
             $cart,
             $address,
             $commerceModuleSettingsRepositoryMock,
-            new MoneyFormatter()
+            new MoneyFormatter(),
+            $vatRepositoryMock
         );
         $this->assertEquals([
             'Cash on delivery' => [
@@ -116,8 +125,8 @@ class QuoteTest extends TestCase
                         return $availablePaymentMethods;
                     case 'price':
                         return $price;
-                    case 'vat':
-                        return $vat;
+                    case 'vatId':
+                        return $vat->getId();
                 }
             });
 

@@ -9,6 +9,7 @@ use Backend\Modules\Commerce\Domain\Settings\CommerceModuleSettingsRepository;
 use Backend\Modules\Commerce\Domain\Vat\Exception\VatNotFound;
 use Backend\Modules\Commerce\Domain\Vat\Factory\VatFactory;
 use Backend\Modules\Commerce\Domain\Vat\Vat;
+use Backend\Modules\Commerce\Domain\Vat\VatRepository;
 use Backend\Modules\CommerceCashOnDelivery\Domain\CashOnDelivery\Factory\CashOnDeliveryPaymentMethodFactory;
 use Backend\Modules\CommercePickup\Domain\Pickup\Checkout\Quote;
 use Common\ModulesSettings;
@@ -54,20 +55,24 @@ class QuoteTest extends TestCase
         /** @var Cart $cart */
         $cart = CartFactory::new()->create()->object();
         $address = $cart->getShipmentAddress();
+        $vat = VatFactory::new()->create()->forceSet('id', 1)->object();
 
         // Mock the repository that fetches payment method & shipment method data from modules_settings
         $commerceModuleSettingsRepositoryMock = $this->getModuleSettingsMock(
             new ArrayCollection([$paymentMethod]),
             Money::EUR(0),
-            VatFactory::new()->create()->forceSet('id', 1)->object()
+            $vat
         );
+        $vatRepositoryMock = $this->getMockBuilder(VatRepository::class)->disableOriginalConstructor()->getMock();
+        $vatRepositoryMock->method('find')->willReturn($vat);
 
         $checkoutQuote = new Quote(
             'Pickup shipment',
             $cart,
             $address,
             $commerceModuleSettingsRepositoryMock,
-            new MoneyFormatter()
+            new MoneyFormatter(),
+            $vatRepositoryMock
         );
         $this->assertEquals([
             'Pickup shipment' => [
@@ -93,13 +98,15 @@ class QuoteTest extends TestCase
             Money::EUR(0),
             null // invalid VAT
         );
+        $vatRepositoryMock = $this->getMockBuilder(VatRepository::class)->disableOriginalConstructor()->getMock();
 
         $checkoutQuote = new Quote(
             'Pickup shipment',
             $cart,
             $address,
             $commerceModuleSettingsRepositoryMock,
-            new MoneyFormatter()
+            new MoneyFormatter(),
+            $vatRepositoryMock
         );
         $this->expectException(VatNotFound::class);
         $checkoutQuote->getQuote();
