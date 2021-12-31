@@ -1,5 +1,7 @@
 # Installation
 
+Take a look at `deploy/prepare-fork-cms.sh` which executes these steps as part of the demo app.
+
 ## 1. Upload the module
 
 Install this module as usual, by copying the `Commerce` folder from the `Backend` and `Frontend` folders to your project.
@@ -16,12 +18,18 @@ composer require gedmo/doctrine-extensions "^3.0"
 composer require jeroendesloovere/sitemap-bundle "^2.0"
 composer require tbbc/money-bundle ^4.1"
 
-# In case you want to load the demo fixtures or run tests
+# In case you want to load the demo fixtures or run unit tests
 composer require --dev doctrine/doctrine-fixtures-bundle
 composer require --dev zenstruck/foundry
 ```
 
-Enable bundles in your kernel:
+On macOS you can skip installing `h4cc/wkhtmltopdf-amd64` and install `wkhtmltopdf` using:
+
+```
+brew install --cask wkhtmltopdf
+```
+
+Enable the bundles in your kernel:
 
 ```php
 // app/AppKernel.php
@@ -48,13 +56,15 @@ knp_snappy:
     binary: %wkhtmltopdf.binary%
 ```
 
-And update your parameters.yml with the following:
+And update your `parameters.yml` with the following:
 
 ```yaml
-wkhtmltopdf.binary: %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64
-```
+    # After installing h4cc/wkhtmltopdf-amd64
+    wkhtmltopdf.binary: %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64
 
-You may edit this value match your needs.
+    # Or when installing wkhtmltopdf via brew on macOS:
+    wkhtmltopdf.binary:     /usr/local/bin/wkhtmltopdf
+```
 
 ## 3. Configure LiipImagineBundle filters
 

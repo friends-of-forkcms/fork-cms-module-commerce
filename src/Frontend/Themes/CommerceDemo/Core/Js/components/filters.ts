@@ -6,7 +6,7 @@ const filtersSelector = '.js-product-filters';
  * This file implements basic webshop filtering logic. It parses the checked filter checkboxes and sort dropdown
  * and updates the url accordingly.
  */
-export default (): void => {
+export const filters = (): void => {
     // Early return if we do not have filters or sorting on this page.
     const sortElement = document.querySelector<HTMLInputElement>(sortDropdownSelector);
     const filterElements = document.querySelectorAll<HTMLInputElement>(`${filtersSelector} input`);

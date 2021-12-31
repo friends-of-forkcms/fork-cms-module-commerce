@@ -15,39 +15,11 @@ ln -sf ~/Code/fork-cms/modules/fork-cms-module-commerce/src/Frontend/Themes/Comm
 
 This is optional of course, but it's far easier than having to copy the module code from/to your Fork CMS installation each time you're ready to commit.
 
-⚠️ One downside is that PhpStorm's `Run with Coverage` button will not work properly. The test coverage will be calculated on the original files,
-but PhpStorm only knows the symlinked folders. One way to overcome this is written below:
-
-<details>
-<summary>Synchronize folders between git repo and fork cms demo locally</summary>
-
-```bash
-# Install macFuse and bindfs
-brew install --cask macfuse
-brew install gromgit/fuse/bindfs-mac
-
-# Create the empty module folder structure in a new Fork CMS project 
-cd fork-cms-module-commerce-demo
-mkdir -p src/Backend/Modules/{Commerce,CommerceCashOnDelivery,CommercePickup} src/Frontend/Modules/Commerce src/Frontend/Themes/CommerceDemo
-
-# Bind mount the folders from the source (git repo) to our Fork CMS demo project.
-bindfs -o volname=Commerce ../fork-cms-module-commerce/src/Backend/Modules/Commerce src/Backend/Modules/Commerce
-bindfs -o volname=CommerceCashOnDelivery ../fork-cms-module-commerce/src/Backend/Modules/CommerceCashOnDelivery src/Backend/Modules/CommerceCashOnDelivery
-bindfs -o volname=CommercePickup ../fork-cms-module-commerce/src/Backend/Modules/CommercePickup src/Backend/Modules/CommercePickup
-bindfs -o volname=Commerce ../fork-cms-module-commerce/src/Frontend/Modules/Commerce src/Frontend/Modules/Commerce
-bindfs -o volname=CommerceDemo ../fork-cms-module-commerce/src/Frontend/Themes/CommerceDemo src/Frontend/Themes/CommerceDemo
-```
-
-Feel welcome to suggest a better solution.
-
-</details>
-
 ## Setup Fork CMS
 
 See [installation](installation.md) on how to install and configure the module in your new Fork CMS installation.
 
 ## Unit testing
-
 ### Fixtures
 
 We use [DoctrineFixturesBundle](https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html) to reset and reload fixtures data in our local DB. Execute this command with the `--append` flag to prevent erasing the whole database:

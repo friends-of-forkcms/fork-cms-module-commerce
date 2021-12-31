@@ -1,0 +1,78 @@
+<div class="container px-6 py-3 mx-auto mb-12">
+    <h1 class="block mb-10 text-2xl text-black">
+        {{ 'lbl.Wishlist'|trans|ucfirst }}
+    </h1>
+
+    {% if products is not empty %}
+        <table class="w-full mt-6 border-b border-gray-200">
+            <thead class="text-left uppercase">
+            <tr class="text-sm tracking-wider text-black border-b-2 border-gray-200">
+                <th colspan="3" class="py-3 pr-3">
+                    {{ 'lbl.Description'|trans|ucfirst }}
+                </th>
+                <th class="p-3 text-right">
+                    {{ 'lbl.Price'|trans|ucfirst }}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr x-data="{}" x-ref="wishlistRow">
+                    <!-- Thumbnail -->
+                    <td class="td-thumb | py-3 pr-3 w-20 border-t border-gray-200 align-middle">
+                        <a class="thumb" href="{{ product.url }}" title="{{ product.title }}">
+                            <img class="w-20" loading="lazy"
+                                 src="{{ product.thumbnail.getWebPath()|imagine_filter('product_thumbnail') }}"
+                                 alt="{{ product.title }}">
+                        </a>
+                    </td>
+
+                    <!-- Product name -->
+                    <td class="td-product | p-3 border-t border-gray-200 align-middle" colspan="2">
+                        <a href="{{ product.url }}" title="{{ product.name }}">{{ product.title }}</a>
+                        <div class="text-xs">
+                            <span>{{ 'lbl.ArticleNumberAbbreviation'|trans|ucfirst }}</span>:
+                            <span>{{ product.sku }}</span>
+                        </div>
+                        <button
+                            class="block my-2 text-xs text-gray-400 hover:text-red-600"
+                            type="button"
+                            title="{{ 'msg.ConfirmDelete'|trans|format(product.title|e) }}"
+                            @click="$store.wishlist.remove({{ product.id }}); $refs.wishlistRow.remove()"
+                        >
+                            {{ 'lbl.Delete'|trans|ucfirst }}
+                        </button>
+                    </td>
+
+                    <!-- Price -->
+                    <td class="p-3 align-middle border-t border-gray-200 tabular-nums text-right">
+                        {% if product.hasActiveSpecialPrice %}
+                            <span class="price-old | line-through inline">
+                                <del aria-hidden="true">{{ product.oldPrice(false)|money_localized_format }}</del>
+                            </span>
+                            <span class="price-new | text-yellow-500 inline">
+                                {{ product.activePrice(false)|money_localized_format }}
+                            </span>
+                        {% else %}
+                            <span>{{ product.activePrice(false)|money_localized_format }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="flex justify-center my-10">
+            <form id="webshop-wishlist-form" method="post" target="_blank">
+                <input type="hidden" name="action" value="create-pdf">
+                <button class="inline-flex items-center justify-center px-20 py-2 text-white bg-gray-800 hover:bg-gray-600">
+                    {{ 'lbl.OpenAndSavePDF'|trans|ucfirst }}
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <p>
+            {{ 'msg.NoProductsInWishlist'|trans }}
+        </p>
+    {% endif %}
+</div>

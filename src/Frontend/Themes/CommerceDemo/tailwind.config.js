@@ -12,24 +12,18 @@ we've done our very best to explain each section.
 
 View the full documentation at https://tailwindcss.com.
 */
+const colors = require('tailwindcss/colors');
+
 // See defaults: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-    mode: 'jit',
-    purge: {
-        // We use the plugin "tailwindcss-forms" which adds reset styles for form elements. However, since purgecss cannot find
-        // any html input fields in our Twig templates (form directives), it strips the styles. Therefore, we don't allow purging the
-        // Base layer of Tailwind. @see https://github.com/tailwindlabs/tailwindcss-forms/issues/43#issuecomment-791465128
-        layers: ['components', 'utilities'],
-
-        // Purge our generated CSS and only leave the css classes found in these files.
-        content: [
-            './Core/Layout/Templates/**/*.{twig,html}',
-            './Core/Layout/EditorTemplates/**/*.{twig,html}',
-            './Core/Js/**/*.{js,jsx,ts,tsx}',
-            './Modules/**/Layout/{Templates,Widgets}/**/*.{twig,html}',
-        ],
-    },
+    // Purge our generated CSS and only leave the css classes found in these files.
+    content: [
+        './Core/Layout/Templates/**/*.{twig,html}',
+        './Core/Layout/EditorTemplates/**/*.{twig,html}',
+        './Core/Js/**/*.{js,jsx,ts,tsx}',
+        './Modules/**/Layout/{Templates,Widgets}/**/*.{twig,html}',
+    ],
     theme: {
         screens: {
             sm: '640px',
@@ -53,17 +47,11 @@ module.exports = {
         },
         extend: {
             colors: {
-                // eslint-disable-next-line
-                gray: require('tailwindcss/colors').trueGray, // Override our gray with trueGray
+                gray: colors.neutral,
             },
             cursor: {
                 'zoom-in': 'zoom-in', // Add a zoom cursor for e.g. image to photoswipe
             },
-        },
-    },
-    variants: {
-        extend: {
-            translate: ['group-hover'],
         },
     },
     plugins: [require('tailwindcss-multi-column')(), require('@tailwindcss/forms')],

@@ -35,7 +35,7 @@
                             {# Discounts #}
                             {% if product.hasActiveSpecialPrice %}
                                 <p class="price-old | line-through text-sm inline align-top">
-                                    <del>{{ product.oldPrice(false)|money_localized_format }}</del>
+                                    <del aria-hidden="true">{{ product.oldPrice(false)|money_localized_format }}</del>
                                 </p>
                                 <p class="price-new | text-xl text-yellow-500 font-semibold inline">
                                     <span>{{ product.activePrice(false)|money_localized_format }}</span>
@@ -88,11 +88,7 @@
                     </div>
 
                     <!-- Add to wishlist -->
-                    <div>
-                        <a class="block w-5 text-gray-400 transition-colors duration-200 hover:text-yellow-500">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M20.84 4.61l1.9475e-07 1.94841e-07c-2.14738-2.14839-5.62979-2.14921-7.77817-.00182601 -.000608683.000608398-.00121722.00121694-.00182562.00182562l-1.06 1.06 -1.06-1.06 3.78705e-07 3.78706e-07c-2.14839-2.14839-5.63161-2.14839-7.78-7.57411e-07 -2.14839 2.14839-2.14839 5.63161-7.57411e-07 7.78 0 0 1.77636e-15 1.77636e-15 1.77636e-15 1.77636e-15l1.06 1.06 7.78 7.78 7.78-7.78 1.06-1.06 9.88459e-08-9.87995e-08c2.14839-2.14738 2.1492-5.62979.00182542-7.77817 -.000608398-.000608683-.00121694-.00121722-.00182562-.00182562Z" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="currentColor" stroke-linejoin="round"></path></svg>
-                        </a>
-                    </div>
+                    {% include 'Commerce/Layout/Templates/Components/WishlistButton.html.twig' %}
 
                     {{ form_end(form) }}
                 </div>

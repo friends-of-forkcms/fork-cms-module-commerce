@@ -45,6 +45,7 @@ class Installer extends ModuleInstaller
 {
     private int $commerceBlockId;
     private int $commerceCartBlockId;
+    private int $commerceWishlistBlockId;
 
     public function install(): void
     {
@@ -341,6 +342,7 @@ class Installer extends ModuleInstaller
         $this->commerceBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), "Commerce");
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Brand', 'Brand');
         $this->commerceCartBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Cart', 'Cart');
+        $this->commerceWishlistBlockId = $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Wishlist', 'Wishlist');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'Register', 'Register');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerOrders', 'CustomerOrders');
         $this->insertExtra($this->getModule(), ModuleExtraType::block(), 'CustomerAddresses', 'CustomerAddresses');
@@ -367,7 +369,7 @@ class Installer extends ModuleInstaller
             BackendLocaleModel::buildCache($language, 'Backend');
             Language::setLocale($language);
 
-            // check if a page with the commerce block already exists in this language
+            // check if a page with the commerce block already exists in this language, and create the page
             if (!$this->hasPageWithBlockOrWidget($language, $this->commerceBlockId)) {
                 $this->insertPage(
                     ['title' => ucfirst(Language::lbl('Shop', $this->getModule())), 'language' => $language],
@@ -376,12 +378,21 @@ class Installer extends ModuleInstaller
                 );
             }
 
-            // check if a page with the cart block already exists in this language
+            // check if a page with the cart block already exists in this language, and create the page
             if (!$this->hasPageWithBlockOrWidget($language, $this->commerceCartBlockId)) {
                 $this->insertPage(
-                    ['title' => ucfirst(Language::lbl('Cart', $this->getModule())), 'language' => $language, 'parent_id' => 3],
+                    ['title' => ucfirst(Language::lbl('Cart', $this->getModule())), 'language' => $language, 'type' => 'root'],
                     null,
                     ['extra_id' => $this->commerceCartBlockId, 'position' => 'main'],
+                );
+            }
+
+            // check if a page with the wishlist block already exists in this language, and create the page
+            if (!$this->hasPageWithBlockOrWidget($language, $this->commerceWishlistBlockId)) {
+                $this->insertPage(
+                    ['title' => ucfirst(Language::lbl('Wishlist', $this->getModule())), 'language' => $language, 'type' => 'root'],
+                    null,
+                    ['extra_id' => $this->commerceWishlistBlockId, 'position' => 'main'],
                 );
             }
         }
