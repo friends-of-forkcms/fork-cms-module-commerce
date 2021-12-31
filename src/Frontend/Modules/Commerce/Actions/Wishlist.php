@@ -68,7 +68,7 @@ class Wishlist extends FrontendBaseBlock
         $pdf = $this->get('knp_snappy.pdf');
 
         // Generate HTML
-        $this->loadTemplate(null, true);
+        $this->loadTemplate('Commerce/Layout/Templates/WishlistPdfDownload.html.twig', true);
         $html = $this->getContent();
 
         // Create filename

@@ -9,6 +9,9 @@
         {{ meta|raw }}
         {{ metaCustom|raw }}
 
+        {# Set a base URL to fix relative URL's in PDF generation #}
+        <base href="{{ SITE_URL }}" >
+
         <title>
             {{ pageTitle }}
         </title>

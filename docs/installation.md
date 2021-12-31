@@ -21,6 +21,12 @@ composer require --dev doctrine/doctrine-fixtures-bundle
 composer require --dev zenstruck/foundry
 ```
 
+On macOS you can install `wkhtmltopdf` using:
+
+```
+brew install --cask wkhtmltopdf
+```
+
 Enable bundles in your kernel:
 
 ```php

@@ -388,7 +388,7 @@ class Installer extends ModuleInstaller
             }
 
             // check if a page with the wishlist block already exists in this language, and create the page
-            if (!$this->hasPageWithBlockOrWidget($language, $this->commerceCartBlockId)) {
+            if (!$this->hasPageWithBlockOrWidget($language, $this->commerceWishlistBlockId)) {
                 $this->insertPage(
                     ['title' => ucfirst(Language::lbl('Wishlist', $this->getModule())), 'language' => $language],
                     null,
