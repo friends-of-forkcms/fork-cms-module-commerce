@@ -5,7 +5,6 @@ namespace Frontend\Modules\Commerce\Actions;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Backend\Modules\Commerce\Domain\Product\ProductRepository;
 use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
-use Frontend\Core\Engine\TwigTemplate;
 use Frontend\Core\Language\Language;
 use Frontend\Core\Language\Locale;
 use JsonException;
@@ -78,6 +77,7 @@ class Wishlist extends FrontendBaseBlock
 
         // Create pdf response
         $pdf->setOption('viewport-size', '1280x1024');
+
         return new Response(
             $pdf->getOutputFromHtml($html),
             200,
