@@ -2,7 +2,7 @@ icon: https://raw.githubusercontent.com/friends-of-forkcms/fork-cms-module-comme
 deploy:
   # Build & push docker image on okteto.com. Then override the container image tag with this one using kustomize
   - |
-    IMAGE_TAG=$(if [[ "$OKTETO_GIT_BRANCH" == "master" ]]; then echo "latest"; else echo $OKTETO_GIT_COMMIT; fi)
+    IMAGE_TAG=$OKTETO_GIT_COMMIT
     okteto build \
       --build-arg THEME_NAME=CommerceDemo \
       --cache-from ghcr.io/friends-of-forkcms/fork-cms-module-commerce:latest \
