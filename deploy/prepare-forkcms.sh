@@ -14,7 +14,7 @@ yq eval --inplace '.parameters."database.password" = "%env(DB_PASSWORD)%"' app/c
 yq eval --inplace '.parameters."session.cookie_secure" = true' app/config/parameters.yml
 yq eval --inplace '.parameters."site.domain" = "%env(SITE_DOMAIN)%"' app/config/parameters.yml
 yq eval --inplace '.parameters."site.protocol" = "https"' app/config/parameters.yml
-yq eval --inplace '.parameters."wkhtmltopdf.binary" = "/usr/local/bin/wkhtmltopdf"' app/config/parameters.yml
+yq eval --inplace '.parameters."wkhtmltopdf.binary" = "/usr/bin/wkhtmltopdf"' app/config/parameters.yml
 
 # Prepare a god avatar. The god avatar is normally installed during the installation process.
 echo "Restore the missing god avatar"
