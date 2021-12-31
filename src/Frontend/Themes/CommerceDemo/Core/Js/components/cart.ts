@@ -35,7 +35,7 @@ interface CartData {
     items: CartItem[];
 }
 
-export default (): void => {
+export const cart = (): void => {
     window.Alpine.data('cart', () => ({
         // Cart state
         data: null as CartData | null,

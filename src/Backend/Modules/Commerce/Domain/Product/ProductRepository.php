@@ -65,13 +65,17 @@ class ProductRepository extends EntityRepository
         return $product;
     }
 
-    /**
-     * @return Product[]
-     */
-    public function findActive()
+    /** @return array<int,Product> */
+    public function findActive(): array
     {
         /* @var Product $product */
         return $this->findBy(['hidden' => false]);
+    }
+
+    /** @return array<int,Product> */
+    public function findActiveByIds(array $ids): array
+    {
+        return $this->findBy(['id' => $ids, 'hidden' => false]);
     }
 
     /**

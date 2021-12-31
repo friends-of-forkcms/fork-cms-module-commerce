@@ -1265,6 +1265,10 @@
         <translation language="nl"><![CDATA[volg bestelling als gast]]></translation>
         <translation language="en"><![CDATA[guest order tracking]]></translation>
       </item>
+      <item type="label" name="Wishlist">
+        <translation language="nl"><![CDATA[verlanglijstje]]></translation>
+        <translation language="en"><![CDATA[wishlist]]></translation>
+      </item>
     </Core>
     <Pages>
       <item type="label" name="Brand">
@@ -1450,10 +1454,6 @@
         <translation language="nl"><![CDATA[Terug naar overzicht]]></translation>
         <translation language="en"><![CDATA[Back to overview]]></translation>
       </item>
-      <item type="message" name="NoProductsInShoppingCart">
-        <translation language="nl"><![CDATA[Er zijn nog geen producten in de winkelwagen geplaatst.]]></translation>
-        <translation language="en"><![CDATA[There are no products added to the shopping cart yet.]]></translation>
-      </item>
       <item type="message" name="NoCategories">
         <translation language="nl"><![CDATA[Er zijn nog geen categorieën toegevoegd.]]></translation>
         <translation language="en"><![CDATA[There are no categories added yet.]]></translation>
@@ -1493,6 +1493,10 @@
       <item type="message" name="NoProductsInCart">
         <translation language="nl"><![CDATA[Er bevinden zich geen producten in uw winkelwagen.]]></translation>
         <translation language="en"><![CDATA[There are no products in your shopping cart.]]></translation>
+      </item>
+      <item type="message" name="NoProductsInWishlist">
+        <translation language="nl"><![CDATA[Er bevinden zich geen producten in uw verlanglijstje.]]></translation>
+        <translation language="en"><![CDATA[There are no products in your wishing list.]]></translation>
       </item>
       <item type="label" name="Previous">
         <translation language="nl"><![CDATA[vorige]]></translation>
@@ -2245,6 +2249,22 @@
       <item type="message" name="SearchPlaceholder">
         <translation language="nl"><![CDATA[Zoek op product, merk, id...]]></translation>
         <translation language="en"><![CDATA[Search by product, brand, id...]]></translation>
+      </item>
+      <item type="label" name="Wishlist">
+        <translation language="nl"><![CDATA[verlanglijstje]]></translation>
+        <translation language="en"><![CDATA[wishlist]]></translation>
+      </item>
+      <item type="label" name="AddToWishlist">
+        <translation language="nl"><![CDATA[Toevoegen aan verlanglijstje]]></translation>
+        <translation language="en"><![CDATA[Add to Wishlist]]></translation>
+      </item>
+      <item type="label" name="RemoveFromWishlist">
+        <translation language="nl"><![CDATA[Verwijder van verlanglijstje]]></translation>
+        <translation language="en"><![CDATA[Remove from Wishlist]]></translation>
+      </item>
+      <item type="label" name="OpenAndSavePDF">
+        <translation language="nl"><![CDATA[Open en/of bewaar PDF]]></translation>
+        <translation language="en"><![CDATA[Open and/or save PDF]]></translation>
       </item>
     </Core>
   </Frontend>

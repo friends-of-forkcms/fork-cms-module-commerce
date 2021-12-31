@@ -38,7 +38,7 @@ declare module 'alpinejs' {
     function store<R>(storeName: string): R;
     function directive(directiveName: string, cb: AlpineDirectiveCallback);
     function plugin(alpineRootCallBack: AlpineRootCallback): void;
-    function data(dataName: string, dataInitializer: () => Record<string, V>): void;
+    function data(dataName: string, dataInitializer: (...args: any) => Record<string, V>): void;
     function effect(effectCallback: () => void): void;
     function reactive<T>(initialData: Record<string, T>): Record<string, T>;
     function magic(magicName: string, callback: (el: HTMLElement, alpineObj: { Alpine: Alpine }) => any): void;

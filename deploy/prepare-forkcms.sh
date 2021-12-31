@@ -14,7 +14,7 @@ yq eval --inplace '.parameters."database.password" = "%env(DB_PASSWORD)%"' app/c
 yq eval --inplace '.parameters."session.cookie_secure" = true' app/config/parameters.yml
 yq eval --inplace '.parameters."site.domain" = "%env(SITE_DOMAIN)%"' app/config/parameters.yml
 yq eval --inplace '.parameters."site.protocol" = "https"' app/config/parameters.yml
-yq eval --inplace '.parameters."wkhtmltopdf.binary" = "/usr/local/bin/wkhtmltopdf"' app/config/parameters.yml
+yq eval --inplace '.parameters."wkhtmltopdf.binary" = "/usr/bin/wkhtmltopdf"' app/config/parameters.yml
 
 # Prepare a god avatar. The god avatar is normally installed during the installation process.
 echo "Restore the missing god avatar"
@@ -31,7 +31,6 @@ composer require --no-scripts \
     'php:^7.4' \
     'tetranz/select2entity-bundle:v2.10.1' \
     'knplabs/knp-snappy-bundle:v1.6.0' \
-    'h4cc/wkhtmltopdf-amd64:^0.12.4' \
     'gedmo/doctrine-extensions:^3.0' \
     'jeroendesloovere/sitemap-bundle:^2.0' \
     'tbbc/money-bundle:^4.1'
@@ -54,7 +53,7 @@ bin/console forkcms:install:module CommercePickup
 
 # Setup the CMS for our demo (install demo theme, add widgets, ...)
 # Use envsubst to fill in the secrets based on env vars in the file
-mv deploy/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
+cp deploy/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
 envsubst < /tmp/prepare-forkcms-db.sql.tmp > /tmp/prepare-forkcms-db.sql
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < /tmp/prepare-forkcms-db.sql
 rm /tmp/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp

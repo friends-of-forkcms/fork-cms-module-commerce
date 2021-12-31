@@ -18,17 +18,27 @@
             <h3 class="m-0 text-base font-normal tracking-normal text-gray-500 normal-case transition-colors duration-200 hover:text-gray-800">
                 <a href="{{ product.url }}" class="">{{ product.title }}</a>
             </h3>
-            <a href="#" class="text-white hover:text-black">
-                <svg class="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" stroke="#000">
-                    <path fill-rule="evenodd"
-                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                        clip-rule="evenodd" />
-                </svg>
-            </a>
+
+            <!-- Add to wishlist -->
+            {% include 'Commerce/Layout/Templates/Components/WishlistButton.html.twig' %}
         </div>
-        <p class="pt-1 text-gray-900 group-hover:opacity-0">
-            {{ product.price|money_localized_format }}
-        </p>
+
+        <div class="pt-1 text-gray-900 group-hover:opacity-0">
+            {# Price + discount #}
+            {% if product.hasActiveSpecialPrice %}
+                <span class="price-old | line-through inline">
+                    <del aria-hidden="true">{{ product.oldPrice(false)|money_localized_format }}</del>
+                </span>
+                <span class="price-new | text-yellow-500 inline">
+                    {{ product.activePrice(false)|money_localized_format }}
+                </span>
+            {% else %}
+                {# Regular price #}
+                <span>
+                    {{ product.activePrice(false)|money_localized_format }}
+                </span>
+            {% endif %}
+        </div>
         <div class="product-look-actions | absolute bottom-0 left-0 opacity-0 text-sm border-b border-gray-300 transition duration-200 ease-out group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 pb-1">
             <a href="{{ product.url }}" class="text-gray-900 transition-colors duration-200 hover:text-yellow-500">
                 {{ 'lbl.ShowMore'|trans|ucfirst }}
