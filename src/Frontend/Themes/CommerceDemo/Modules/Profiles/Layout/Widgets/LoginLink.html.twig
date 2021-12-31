@@ -4,7 +4,7 @@
             {% block block_is_logged_in %}
                 <!-- Profile dropdown -->
                 <div
-                    x-data="Alpine.menu({ open: false })"
+                    x-data="menu({ open: false })"
                     x-init="init()"
                     @keydown.escape.stop="open = false; focusButton()"
                     @click.away="onClickAway($event)"

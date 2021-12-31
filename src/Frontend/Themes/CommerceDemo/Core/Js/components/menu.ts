@@ -1,3 +1,5 @@
+import Alpine from 'alpinejs';
+
 type Menu = {
     activeDescendant: any;
     activeIndex: any;
@@ -19,7 +21,7 @@ type This = Menu & AlpineMagicProperties;
  * Based on the menu Alpine component from https://tailwindui.com/js/components-v2.js
  */
 export const menu = (): void => {
-    window.Alpine.menu = function (e = { open: false }): Menu {
+    Alpine.data('menu', function (e = { open: false }): Menu {
         return {
             activeDescendant: null,
             activeIndex: null,
@@ -107,5 +109,5 @@ export const menu = (): void => {
                 }
             },
         };
-    };
+    });
 };

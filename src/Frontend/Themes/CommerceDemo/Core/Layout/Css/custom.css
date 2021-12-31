@@ -10,6 +10,37 @@ h3 {
     @apply mb-4 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline;
 }
 
+/**
+    Tailwindcss Forms, add default accent color and focus ring
+    https://github.com/tailwindlabs/tailwindcss-forms
+**/
+select {
+    @apply w-full border-gray-300 focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50;
+}
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+input[type='url'],
+input[type='date'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='week'],
+input[type='time'],
+input[type='search'],
+input[type='tel'],
+input[type='checkbox'],
+input[type='radio'],
+textarea {
+    @apply border-gray-300 focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50;
+}
+input[type='checkbox'] {
+    @apply text-yellow-500 rounded focus:ring-offset-0;
+}
+input[type='radio'] {
+    @apply text-yellow-500 focus:ring-offset-0;
+}
+
 /* E.g. for terms and conditions label link */
 label a {
     @apply text-yellow-600 transition-colors duration-200 hover:text-gray-900;
@@ -76,7 +107,7 @@ button.is-submitting::before {
     width: auto !important;
 
     &:hover {
-        @apply hover:text-yellow-500;
+        @apply hover:text-black !important;
     }
 }
 .aa-DetachedSearchButtonIcon .aa-SubmitIcon {
