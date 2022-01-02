@@ -7,8 +7,9 @@
 </div>
 
 ![CI](https://github.com/jessedobbelaere/fork-cms-vite-boilerplate/actions/workflows/ci.yml/badge.svg)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 [![codecov](https://codecov.io/gh/friends-of-forkcms/fork-cms-module-commerce/branch/master/graph/badge.svg?token=CUmo5dnTA3)](https://codecov.io/gh/friends-of-forkcms/fork-cms-module-commerce)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+[![huntr](https://cdn.huntr.dev/huntr_security_badge_mono.svg)](https://huntr.dev)
 
 Bring e-commerce capabilities to Fork CMS with the commerce module. Manage your product catalog, create facet filters, discounts and categories.
 Add a shopping cart and checkout process to your website, and follow-up with incoming orders via the CMS.
