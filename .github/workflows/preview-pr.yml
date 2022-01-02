@@ -1,8 +1,6 @@
 on:
-  # Instead of running against the workflow and code from the merge commit, the event runs against the workflow and
-  # code from the base of the pull request. This means the workflow is running from a trusted source and is given access
-  # to a read/write token as well as secrets enabling the maintainer to safely comment on or label a pull request.
-  pull_request_target:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
     branches:
       - master
 
