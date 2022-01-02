@@ -1,5 +1,5 @@
 <div class="container px-6 py-3 mx-auto mb-12">
-    <h1 class="block mb-10 text-2xl text-black">
+    <h1 class="block mb-10 text-2xl text-black text-center">
         {{ 'lbl.Wishlist'|trans|ucfirst }}
     </h1>
 
@@ -71,8 +71,19 @@
             </form>
         </div>
     {% else %}
-        <p>
-            {{ 'msg.NoProductsInWishlist'|trans }}
-        </p>
+        <div class="text-center">
+            <p class="mb-2">
+                {{ 'msg.NoProductsInWishlist'|trans|ucfirst }}
+            </p>
+            <p class="mb-8">
+                {{ 'msg.NoProductsInWishlistHelpText'|trans|ucfirst }}
+            </p>
+            <a
+                href="{{ geturlforblock('Commerce') }}"
+                class="inline-flex items-center justify-center px-20 py-2 text-white bg-gray-800 hover:bg-gray-600"
+            >
+                {{ 'lbl.GoToProducts'|trans|ucfirst }}
+            </a>
+        </div>
     {% endif %}
 </div>

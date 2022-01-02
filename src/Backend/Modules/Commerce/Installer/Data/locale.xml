@@ -1356,6 +1356,10 @@
         <translation language="nl"><![CDATA[naar persoonlijke gegevens]]></translation>
         <translation language="en"><![CDATA[to personal data]]></translation>
       </item>
+      <item type="label" name="GoToProducts">
+        <translation language="nl"><![CDATA[Ga naar onze producten]]></translation>
+        <translation language="en"><![CDATA[Go to our products]]></translation>
+      </item>
       <item type="label" name="ContinueShopping">
         <translation language="nl"><![CDATA[verder winkelen]]></translation>
         <translation language="en"><![CDATA[continue shopping]]></translation>
@@ -1495,8 +1499,12 @@
         <translation language="en"><![CDATA[There are no products in your shopping cart.]]></translation>
       </item>
       <item type="message" name="NoProductsInWishlist">
-        <translation language="nl"><![CDATA[Er bevinden zich geen producten in uw verlanglijstje.]]></translation>
-        <translation language="en"><![CDATA[There are no products in your wishing list.]]></translation>
+        <translation language="nl"><![CDATA[U heeft nog geen producten toegevoegd aan uw verlanglijstje.]]></translation>
+        <translation language="en"><![CDATA[You haven't added any product to your wish list.]]></translation>
+      </item>
+      <item type="message" name="NoProductsInWishlistHelpText">
+        <translation language="nl"><![CDATA[Klik op het ♥ om een product toe te voegen aan je verlanglijstje.]]></translation>
+        <translation language="en"><![CDATA[Click the ♥ to add a product to the wishlist.]]></translation>
       </item>
       <item type="label" name="Previous">
         <translation language="nl"><![CDATA[vorige]]></translation>

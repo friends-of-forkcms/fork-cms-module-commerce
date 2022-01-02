@@ -17,7 +17,7 @@ class Wishlist extends FrontendBaseBlock
     private const WISHLIST_COOKIE_NAME = 'wishlist-ids';
 
     /** @var array<int,Product> */
-    private array $products;
+    private array $products = [];
 
     public function execute(): void
     {
