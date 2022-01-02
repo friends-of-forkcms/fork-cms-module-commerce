@@ -1,0 +1,22 @@
+# If someone with write access comments "/ok-to-test" on a pull request, emit a repository_dispatch event
+# to trigger the preview-pr.yml action. This is needed because a fork-based PR that triggers preview-pr.yml cannot read
+# the GitHub secret "OKTETO_TOKEN". See: https://github.com/imjohnbo/ok-to-test/
+on:
+  issue_comment:
+    types: [created]
+
+name: Ok To Test
+jobs:
+  ok-to-test:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request }} # Only run for PRs, not issue comments
+    steps:
+      - name: Slash Command Dispatch
+        uses: peter-evans/slash-command-dispatch@v1
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN_OK_TO_TEST }}
+          reaction-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-type: pull-request
+          commands: ok-to-test
+          named-args: true
+          permission: write

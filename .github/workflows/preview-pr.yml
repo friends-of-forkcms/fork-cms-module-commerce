@@ -1,14 +1,18 @@
 on:
+  # Run the preview-PR action when creating a pull request from a branch on the same repository. This does not work for fork-based PRs.
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
     branches:
       - master
+  # Run after /ok-to-test approval. Needed because fork-based PR's do not have access to the OKTETO_TOKEN secret, so
+  # a maintainer has to write "/ok to test" and dispatch an event. See https://github.com/imjohnbo/ok-to-test/
+  repository_dispatch:
+    types: [ok-to-test-command]
 
 env:
   # Name of the preview environment in okteto.com
   # Will be prefixed with the actual deploy name. Must be suffixed with the github ID!
   # e.g. end result: https://preview-module-commerce-pr-26-jessedobbelaere.cloud.okteto.net
-  DEPLOY_NAME: pr-${{ github.event.number }}-jessedobbelaere
+  DEPLOY_NAME: pr-${{ github.event.number || github.event.client_payload.pull_request.number}}-jessedobbelaere
 
 # Kill the previous job in progress, when multiple job start (e.g. committing multiple times)
 concurrency:
@@ -20,6 +24,7 @@ name: Deploy Preview PR
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     timeout-minutes: 15
     steps:
       - name: Login
@@ -43,3 +48,71 @@ jobs:
           responseCode: 200
           timeout: 600000 # 10min
           interval: 5000 # 5s
+
+  deploy-preview-from-fork:
+    runs-on: ubuntu-latest
+    if:
+      github.event_name == 'repository_dispatch' &&
+      github.event.client_payload.slash_command.sha != '' &&
+      contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.sha)
+    timeout-minutes: 15
+    steps:
+      # Check out the merge commit from the fork-based PR
+      - name: Fork based /ok-to-test checkout
+        uses: actions/checkout@v2
+        with:
+          ref: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
+
+      - name: Login
+        uses: okteto/login@master
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: Deploy preview environment
+        uses: okteto/deploy-preview@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REF: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
+        with:
+          name: ${{ env.DEPLOY_NAME }}
+          timeout: 15m
+          variables: "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }},SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
+
+      - name: Verify up and running
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "https://preview-module-commerce-${{ env.DEPLOY_NAME }}.cloud.okteto.net/en"
+          responseCode: 200
+          timeout: 600000 # 10min
+          interval: 5000 # 5s
+
+      # Update check run called "deploy-preview-from-fork"
+      # https://github.com/imjohnbo/ok-to-test/blob/master/.github/workflows/integration.yml#L42
+      - uses: actions/github-script@v5
+        id: update-check-run
+        if: ${{ always() }}
+        env:
+          number: ${{ github.event.client_payload.pull_request.number }}
+          job: ${{ github.job }}
+          # Conveniently, job.status maps to https://developer.github.com/v3/checks/runs/#update-a-check-run
+          conclusion: ${{ job.status }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: pull } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: process.env.number
+            });
+            const ref = pull.head.sha;
+            const { data: checks } = await github.rest.checks.listForRef({
+              ...context.repo,
+              ref
+            });
+            const check = checks.check_runs.filter(c => c.name === process.env.job);
+            const { data: result } = await github.rest.checks.update({
+              ...context.repo,
+              check_run_id: check[0].id,
+              status: 'completed',
+              conclusion: process.env.conclusion
+            });
+            return result;
