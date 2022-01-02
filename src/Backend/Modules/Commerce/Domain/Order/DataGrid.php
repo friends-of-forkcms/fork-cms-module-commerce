@@ -73,6 +73,10 @@ class DataGrid extends DataGridDatabase
         parent::__construct($query, $params);
 
         // assign column functions
+        $this->setColumnFunction('htmlspecialchars', ['[name]'], 'name', false);
+        $this->setColumnFunction('htmlspecialchars', ['[orderStatus]'], 'orderStatus', false);
+        $this->setColumnFunction('htmlspecialchars', ['[orderStatusColor]'], 'orderStatusColor', false);
+        $this->setColumnFunction('htmlspecialchars', ['[companyName]'], 'companyName', false);
         $this->setColumnsHidden(['companyName', 'orderNumber', 'orderStatusColor']);
         $this->setColumnFunction([new DataGridFunctions(), 'getLongDate'], '[orderDate]', 'orderDate', true);
         $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[total]', '[totalCurrencyCode]'], 'total', true);

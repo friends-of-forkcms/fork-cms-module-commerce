@@ -24,6 +24,9 @@ class DataGrid extends DataGridDatabase
             ['language' => $locale]
         );
 
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
+        $this->setColumnFunction('htmlspecialchars', ['[discountCode]'], 'discountCode', false);
+
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditCartRule')) {
             $editUrl = Model::createUrlForAction('EditCartRule', null, null, ['id' => '[id]'], false);

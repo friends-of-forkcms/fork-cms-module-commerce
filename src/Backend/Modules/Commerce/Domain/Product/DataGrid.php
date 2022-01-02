@@ -74,6 +74,12 @@ class DataGrid extends DataGridDatabase
             ]
         );
 
+        // Escape values
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
+        $this->setColumnFunction('htmlspecialchars', ['[sku]'], 'sku', false);
+        $this->setColumnFunction('htmlspecialchars', ['[brand]'], 'brand', false);
+
+
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
         $this->setColumnsHidden(['sequence', 'priceCurrencyCode']);

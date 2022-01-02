@@ -38,6 +38,7 @@ class DataGrid extends DataGridDatabase
         );
 
         // Data grid options
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[defaultValue]'], 'defaultValue');
         $this->setColumnFunction([self::class, 'getImpactTypeText'], ['[impactType]'], 'impactType');
         $this->setColumnsHidden(['sequence']);

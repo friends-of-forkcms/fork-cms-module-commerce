@@ -38,6 +38,8 @@ class DataGridProducts extends DataGridDatabase
 
         // assign column functions
         $this->setColumnHidden('id');
+        $this->setColumnFunction('htmlspecialchars', ['[product]'], 'product', false);
+        $this->setColumnFunction('htmlspecialchars', ['[sku]'], 'sku', false);
         $this->setColumnFunction([self::class, 'getProductOptions'], ['[product]', '[id]'], 'product', true);
         $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[total]', '[totalCurrencyCode]'], 'total', true);
         $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[priceCurrencyCode]'], 'price', true);

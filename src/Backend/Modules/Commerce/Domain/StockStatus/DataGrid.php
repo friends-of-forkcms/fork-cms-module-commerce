@@ -24,6 +24,8 @@ class DataGrid extends DataGridDatabase
             ['language' => $locale]
         );
 
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
+
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditStockStatus')) {
             $editUrl = Model::createUrlForAction('EditStockStatus', null, null, ['id' => '[id]'], false);

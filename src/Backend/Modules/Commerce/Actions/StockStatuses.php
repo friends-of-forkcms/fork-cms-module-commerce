@@ -6,9 +6,6 @@ use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\StockStatus\DataGrid;
 
-/**
- * This is the vats action, it will display the overview of vats.
- */
 class StockStatuses extends BackendBaseActionIndex
 {
     public function execute(): void

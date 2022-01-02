@@ -27,13 +27,11 @@ class DataGrid extends DataGridArray
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
 
-        // Add some columns
-        $this->setColumnFunction(
-            [new DataGridFunctions(), 'showBool'],
-            ['[isEnabled]'],
-            'isEnabled',
-            true
-        );
+        // Modify column values
+        $this->setColumnFunction('htmlspecialchars', ['[name]'], 'name', false);
+        $this->setColumnFunction('htmlspecialchars', ['[description]'], 'description', false);
+        $this->setColumnFunction('htmlspecialchars', ['[version]'], 'version', false);
+        $this->setColumnFunction([new DataGridFunctions(), 'showBool'], ['[isEnabled]'], 'isEnabled', true);
 
         // Overwrite header labels
         $this->setHeaderLabels(

@@ -22,6 +22,9 @@ class DataGrid extends DataGridDatabase
             ['language' => $locale]
         );
 
+        $this->setColumnFunction('htmlspecialchars', ['[name]'], 'name', false);
+        $this->setColumnFunction('htmlspecialchars', ['[iso_code]'], 'iso_code', false);
+
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditCountry')) {
             $editUrl = Model::createUrlForAction('EditCountry', null, null, ['id' => '[id]'], false);

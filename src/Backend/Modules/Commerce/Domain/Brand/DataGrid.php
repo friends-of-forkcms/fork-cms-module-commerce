@@ -27,6 +27,7 @@ class DataGrid extends DataGridDatabase
         // sequence
         $this->enableSequenceByDragAndDrop();
         $this->setAttributes(['data-action' => 'SequenceBrands']);
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditBrand')) {

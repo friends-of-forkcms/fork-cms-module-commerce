@@ -28,6 +28,7 @@ class DataGrid extends DataGridDatabase
         // sequence
         $this->enableSequenceByDragAndDrop();
         $this->setAttributes(['data-action' => 'SequenceSpecificationValues']);
+        $this->setColumnFunction('htmlspecialchars', ['[value]'], 'value', false);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditSpecificationValue')) {

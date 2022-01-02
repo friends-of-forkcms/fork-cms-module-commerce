@@ -36,6 +36,7 @@ class DataGrid extends DataGridDatabase
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[required]'], 'required');
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[customValueAllowed]'], 'customValueAllowed');
         $this->setColumnFunction([self::class, 'getType'], ['[type]'], 'type');

@@ -242,7 +242,7 @@
             <span class="modal-title h4">{{ 'lbl.Delete'|trans|ucfirst }}</span>
           </div>
           <div class="modal-body">
-            <p>{{ 'msg.ConfirmDelete'|trans|format(product.title)|raw }}</p>
+            <p>{{ 'msg.ConfirmDelete'|trans|format(product.title|escape)|raw }}</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -269,7 +269,7 @@
             <span class="modal-title h4">{{ 'lbl.Copy'|trans|ucfirst }}</span>
           </div>
           <div class="modal-body">
-            <p>{{ 'Weet je zeker dat je "%s" wilt kopieëren naar een nieuw product?'|trans|format(product.title)|raw }}</p>
+            <p>{{ 'Weet je zeker dat je "%s" wilt kopiëren naar een nieuw product?'|trans|format(product.title|escape)|raw }}</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">

@@ -24,6 +24,7 @@ class DataGridOrderHistory extends DataGridDatabase
 
         // assign column functions
         $this->setColumnFunction([new DataGridFunctions(), 'getDate'], '[date]', 'date', true);
+        $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
     }
 
     public static function getHtml(Order $order): string
