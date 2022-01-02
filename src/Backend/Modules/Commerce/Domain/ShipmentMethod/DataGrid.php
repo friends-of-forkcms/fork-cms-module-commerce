@@ -28,12 +28,10 @@ class DataGrid extends DataGridArray
         $this->setRowAttributes(['id' => 'row-[id]']);
 
         // Add some columns
-        $this->setColumnFunction(
-            [new DataGridFunctions(), 'showBool'],
-            ['[isEnabled]'],
-            'isEnabled',
-            true
-        );
+        $this->setColumnFunction('htmlspecialchars', ['[name]'], 'name', false);
+        $this->setColumnFunction('htmlspecialchars', ['[description]'], 'description', false);
+        $this->setColumnFunction('htmlspecialchars', ['[version]'], 'version', false);
+        $this->setColumnFunction([new DataGridFunctions(), 'showBool'], ['[isEnabled]'], 'isEnabled', true);
 
         // Overwrite header labels
         $this->setHeaderLabels(

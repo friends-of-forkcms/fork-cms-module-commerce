@@ -43,7 +43,7 @@
     <div class="form-group">
       {{ form_widget(form.file) }}
       {% if help_text_message %}
-        <div class="help-text">{{ help_text_message|trans|format(help_text_argument) }}</div>
+        <div class="help-text">{{ help_text_message|trans|format(help_text_argument|escape)|raw }}</div>
       {% endif %}
       {{ form_errors(form.file) }}
     </div>

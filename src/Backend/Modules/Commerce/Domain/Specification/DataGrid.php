@@ -29,12 +29,8 @@ class DataGrid extends DataGridDatabase
         $this->setAttributes(['data-action' => 'SequenceSpecifications']);
 
         // Add some columns
-        $this->setColumnFunction(
-            [new DataGridFunctions(), 'showBool'],
-            ['[filter]'],
-            'filter',
-            true
-        );
+        $this->setColumnFunction('htmlspecialchars', ['[specification]'], 'specification', false);
+        $this->setColumnFunction([new DataGridFunctions(), 'showBool'], ['[filter]'], 'filter', true);
 
         // Overwrite header labels
         $this->setHeaderLabels(
