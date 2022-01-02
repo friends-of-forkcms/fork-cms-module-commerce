@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     menu();
     wishlist();
 
+    console.log("This is a test from a pull request");
+
     // Dynamic imports with code splitting for lazy loading
     // Lazy, or "on demand", loading is a great way to optimize your site or application. This practice essentially involves splitting your
     // code at logical breakpoints, and then loading it once the user has done something that requires, or will require, a new block of code.
