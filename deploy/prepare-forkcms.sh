@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+#====================================================================================
+# Setup a container for a demo commerce environment
+# This script runs on container startup as part of the docker entrypoint, after
+# mysql has become available and before Apache starts serving requests.
+# We do a fresh Fork CMS install, add additional composer packages, install modules,
+# inject a demo banner, ...
+#====================================================================================
+
 echo "Importing fresh Fork CMS database..."
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/fresh-forkcms-install.sql
 
@@ -57,6 +65,35 @@ cp deploy/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
 envsubst < /tmp/prepare-forkcms-db.sql.tmp > /tmp/prepare-forkcms-db.sql
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < /tmp/prepare-forkcms-db.sql
 rm /tmp/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
+
+# Prohibit resetting demo user password & running theme/module
+sed -i 's/BackendUsersModel::update/\/\/BackendUsersModel::update/g' src/Backend/Modules/Users/Actions/Edit.php
+sed -i 's/$zip->extractTo/\/\/$zip->extractTo/g' src/Backend/Modules/Extensions/Actions/UploadModule.php
+sed -i 's/$zip->extractTo/\/\/$zip->extractTo/g' src/Backend/Modules/Extensions/Actions/UploadTheme.php
+
+# Remove installation route
+sed -i 's/new ForkCMS\Bundle\InstallerBundle\ForkCMSInstallerBundle(),/\/\/new ForkCMS\Bundle\InstallerBundle\ForkCMSInstallerBundle(),/g' app/AppKernel.php
+sed -i 's/installer/# installer/g' app/config/routing.yml
+sed -i 's/resource: "@ForkCMSInstallerBundle\/Resources\/config\/routing.yml"/# resource: "@ForkCMSInstallerBundle\/Resources\/config\/routing.yml"/g' app/config/routing.yml
+
+# Remove default Fork theme
+rm -rf src/Frontend/Themes/Fork || true
+
+# Inject a yellow demo banner which displays a warning about demo reset
+{
+  cat src/Frontend/Themes/CommerceDemo/Core/Layout/Templates/Footer.html.twig
+  echo "{% if SITE_DOMAIN == 'preview-module-commerce-jessedobbelaere.cloud.okteto.net' %}"
+  echo "<div style=\"position: absolute; top: 0; left: 0; right: 0; text-align: center; font-size: 12px; font-family: system-ui; line-height: 1.4; color: #332d1c; background: #ffe38a; border-bottom: 1px solid #e6901e\">⚠️ This demo resets every 2 hours.</div>"
+  echo "{% endif %}"
+} > src/Frontend/Themes/CommerceDemo/Core/Layout/Templates/FooterDemo.html.twig
+mv src/Frontend/Themes/CommerceDemo/Core/Layout/Templates/FooterDemo.html.twig src/Frontend/Themes/CommerceDemo/Core/Layout/Templates/Footer.html.twig
+{
+  cat src/Backend/Core/Layout/Templates/head.html.twig
+  echo "{% if SITE_DOMAIN == 'preview-module-commerce-jessedobbelaere.cloud.okteto.net' %}"
+  echo "<div style=\"position: relative; text-align: center; background: #fcf8e3; border-bottom: 1px solid #faebcc\">⚠️ This demo resets every 2 hours.</div>"
+  echo "{% endif %}"
+} > src/Backend/Core/Layout/Templates/headDemo.html.twig
+mv src/Backend/Core/Layout/Templates/headDemo.html.twig src/Backend/Core/Layout/Templates/head.html.twig
 
 # Generate fixtures data
 bin/console doctrine:fixtures:load --append --group=module-commerce

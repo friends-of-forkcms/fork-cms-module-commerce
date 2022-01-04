@@ -12,6 +12,7 @@ spec:
       labels:
         app: $K8S_APP_NAME
     spec:
+      restartPolicy: Always
       containers:
         - name: app
           image: okteto.dev/fork-cms-module-commerce-demo:latest

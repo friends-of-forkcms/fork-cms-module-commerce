@@ -1,0 +1,57 @@
+---
+# https://stackoverflow.com/questions/52422300/how-to-schedule-pods-restart
+# Service account the client will use to reset the deployment,
+# by default the pods running inside the cluster can do no such things.
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: deployment-restart
+---
+# Allow getting status, and patching only the one deployment you want to restart
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-restart
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["$K8S_APP_NAME"]
+    verbs: ["get", "patch", "list", "watch"] # "list" and "watch" are needed if you want to use `rollout status`
+---
+# Bind the role to the service account
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-restart
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: deployment-restart
+subjects:
+  - kind: ServiceAccount
+    name: deployment-restart
+---
+# Cronjob that will restart the deployment every 2 hours
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: deployment-restart
+spec:
+  concurrencyPolicy: Forbid
+  schedule: '*/10 * * * *' # TODO change
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600 # timeout
+      template:
+        spec:
+          serviceAccountName: deployment-restart
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl
+              command:
+                - 'kubectl'
+                - 'rollout'
+                - 'restart'
+                - 'deployment/$K8S_APP_NAME'
