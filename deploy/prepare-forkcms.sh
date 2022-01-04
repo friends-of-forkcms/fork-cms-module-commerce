@@ -3,37 +3,23 @@ set -Eeuo pipefail
 
 #====================================================================================
 # Setup a container for a demo commerce environment
+#
 # This script runs on container startup as part of the docker entrypoint, after
 # mysql has become available and before Apache starts serving requests.
 # We do a fresh Fork CMS install, add additional composer packages, install modules,
 # inject a demo banner, ...
 #====================================================================================
 
-echo "Importing fresh Fork CMS database..."
-mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < deploy/fresh-forkcms-install.sql
-
-# Prepare Fork CMS parameters.yml
-echo "Adding Fork CMS parameters.yml..."
-cp app/config/parameters.yml.test app/config/parameters.yml
-yq eval --inplace '.parameters."database.host" = "%env(DB_HOST)%"' app/config/parameters.yml
-yq eval --inplace '.parameters."database.name" = "%env(DB_NAME)%"' app/config/parameters.yml
-yq eval --inplace '.parameters."database.user" = "%env(DB_USER)%"' app/config/parameters.yml
-yq eval --inplace '.parameters."database.password" = "%env(DB_PASSWORD)%"' app/config/parameters.yml
-yq eval --inplace '.parameters."session.cookie_secure" = true' app/config/parameters.yml
-yq eval --inplace '.parameters."site.domain" = "%env(SITE_DOMAIN)%"' app/config/parameters.yml
-yq eval --inplace '.parameters."site.protocol" = "https"' app/config/parameters.yml
-yq eval --inplace '.parameters."wkhtmltopdf.binary" = "/usr/bin/wkhtmltopdf"' app/config/parameters.yml
-
 # Prepare a god avatar. The god avatar is normally installed during the installation process.
-echo "Restore the missing god avatar"
+echo "👉 Restore the missing god avatar..."
 curl -sLo ./src/Frontend/Files/Users/avatars/source/god.png https://github.com/forkcms.png?size=128
 curl -sLo ./src/Frontend/Files/Users/avatars/128x128/god.png https://github.com/forkcms.png?size=128
 curl -sLo ./src/Frontend/Files/Users/avatars/64x64/god.png https://github.com/forkcms.png?size=64
 curl -sLo ./src/Frontend/Files/Users/avatars/32x32/god.png https://github.com/forkcms.png?size=32
-mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} -e 'UPDATE users_settings SET value = REPLACE(value, "god.jpg", "god.png") WHERE name = "avatar"'
+#mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} -e 'UPDATE users_settings SET value = REPLACE(value, "god.jpg", "god.png") WHERE name = "avatar"'
 
 # Install the module's dependencies
-echo "Installing module composer dependencies..."
+echo "👉 Installing module composer dependencies..."
 composer require --no-scripts --dev 'doctrine/doctrine-fixtures-bundle:^3.4' 'zenstruck/foundry:^1.8'
 composer require --no-scripts \
     'php:^7.4' \
@@ -48,10 +34,22 @@ composer require --no-scripts \
 # You can regenerate these by doing:
 # git diff forkcms/master:app/AppKernel.php app/AppKernel.php > ../fork-cms-module-commerce/deploy/patches/AppKernel.php.patch
 # git diff forkcms/master:app/config/config.yml app/config/config.yml > ../fork-cms-module-commerce/deploy/patches/config.yml.patch
+echo "👉 Patching core files from Fork CMS..."
 patch -p1 --force < deploy/patches/AppKernel.php.patch
 patch -p1 --force < deploy/patches/config.yml.patch
 
+echo "👉 Installing a fresh DB of Fork CMS..."
+php deploy/cli-installer.php "/var/www/html/" $DB_HOST $DB_PORT $DB_USER $DB_PASSWORD $DB_NAME $SITE_DOMAIN
+
+# Modify Fork CMS parameters.yml
+echo "👉 Modifying Fork CMS parameters.yml..."
+yq eval --inplace '.parameters."session.cookie_secure" = true' app/config/parameters.yml
+yq eval --inplace '.parameters."site.domain" = "%env(SITE_DOMAIN)%"' app/config/parameters.yml
+yq eval --inplace '.parameters."site.protocol" = "https"' app/config/parameters.yml
+yq eval --inplace '.parameters."wkhtmltopdf.binary" = "/usr/bin/wkhtmltopdf"' app/config/parameters.yml
+
 # Install the necessary modules
+echo "👉 Installing necessary Fork CMS modules..."
 curl -sL https://github.com/friends-of-forkcms/fork-cms-module-sitemaps/archive/master.tar.gz | tar xz --strip-components 1
 bin/console forkcms:install:module Sitemaps
 bin/console forkcms:install:module Profiles
@@ -61,6 +59,7 @@ bin/console forkcms:install:module CommercePickup
 
 # Setup the CMS for our demo (install demo theme, add widgets, ...)
 # Use envsubst to fill in the secrets based on env vars in the file
+echo "👉 Applying custom SQL queries to our DB..."
 cp deploy/prepare-forkcms-db.sql /tmp/prepare-forkcms-db.sql.tmp
 envsubst < /tmp/prepare-forkcms-db.sql.tmp > /tmp/prepare-forkcms-db.sql
 mysql --host=${DB_HOST} --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < /tmp/prepare-forkcms-db.sql
