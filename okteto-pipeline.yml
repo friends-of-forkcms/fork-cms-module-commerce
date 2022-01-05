@@ -10,6 +10,9 @@ deploy:
     echo "Finished building docker image with tag ${IMAGE_TAG} for branch ${OKTETO_GIT_BRANCH}"
     cd k8s && kustomize edit set image okteto.dev/fork-cms-module-commerce-demo=okteto.dev/fork-cms-module-commerce-demo:${IMAGE_TAG}
 
+  # Only reset the pod every 2 hours on master branch. For branches, clear the cronjob demo resetter.
+  - if [[ "$OKTETO_GIT_BRANCH" != "master" ]]; then echo "" > ./k8s/cronjob-demo-reset.yml; fi
+
   # Deploy Kubernetes manifest using Kustomize.
   # Use envsubst to replace env values in our k8s files, e.g. for injecting the SITE_DOMAIN.
   - |
