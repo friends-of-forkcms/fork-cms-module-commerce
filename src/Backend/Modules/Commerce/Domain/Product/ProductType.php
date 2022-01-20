@@ -55,7 +55,7 @@ class ProductType extends AbstractType
                 'label' => 'lbl.Weight',
             ])
             ->add('price', MoneyType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => 'lbl.Price',
             ])
             ->add('order_quantity', NumberType::class, [
