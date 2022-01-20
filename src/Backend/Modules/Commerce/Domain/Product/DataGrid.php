@@ -4,6 +4,7 @@ namespace Backend\Modules\Commerce\Domain\Product;
 
 use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\DataGridDatabase;
+use Backend\Core\Engine\DataGridFunctions as BackendDataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Core\Language\Locale;
@@ -18,22 +19,33 @@ use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
  */
 class DataGrid extends DataGridDatabase
 {
-    public function __construct(Locale $locale, ?Category $category, ?string $sku, int $offset = 0)
-    {
-        $query = 'SELECT
-                    i.id,
-                    i.title AS title,
-                    i.sku,
-                    i.categoryId,
-                    b.title AS brand,
-                    i.priceAmount AS price,
-                    i.priceCurrencyCode,
-                    i.stock,
-                    i.sequence,
-                    i.hidden
-                FROM commerce_products AS i
-                LEFT JOIN commerce_brands AS b ON b.id = i.brandId
-                WHERE i.language = :language';
+    public function __construct(
+        Locale $locale,
+        ?Category $category,
+        ?string $sku,
+        int $offset = 0
+    ) {
+        $query = '
+            SELECT
+                i.id,
+                i.title AS title,
+                i.sku,
+                i.categoryId,
+                b.title AS brand,
+                i.priceAmount AS price,
+                i.priceCurrencyCode,
+                i.stock,
+                i.sequence,
+                i.hidden,
+                mi.url AS imageUrl,
+                mi.shardingFolderName AS imageShardingFolderName
+            FROM commerce_products AS i
+            LEFT JOIN commerce_brands AS b ON b.id = i.brandId
+            LEFT JOIN MediaGroupMediaItem AS mgmi ON mgmi.mediaGroupId = i.imageGroupId AND mgmi.sequence = 0
+            LEFT JOIN MediaItem AS mi ON mgmi.mediaItemId = mi.id
+            WHERE i.language = :language
+            GROUP BY 1 
+        ';
 
         $parameters = [
             'language' => $locale,
@@ -50,9 +62,11 @@ class DataGrid extends DataGridDatabase
                         i.priceCurrencyCode,
                         i.stock,
                         i.sequence,
-                        i.hidden
+                        i.hidden,
+                        mgmi.mediaItemId
                     FROM commerce_products AS i
                     LEFT JOIN commerce_brands AS b ON b.id = i.brandId
+                    LEFT JOIN MediaGroupMediaItem AS mgmi ON mgmi.mediaGroupId = i.imageGroupId AND mgmi.sequence = 0
                     WHERE i.language = :language AND i.categoryId = :category';
 
             $parameters['category'] = $category->getId();
@@ -65,6 +79,7 @@ class DataGrid extends DataGridDatabase
 
         parent::__construct($query, $parameters);
 
+        // Set datagrid options
         $this->enableSequenceByDragAndDrop();
         $this->setPaging(true);
         $this->setAttributes(
@@ -78,7 +93,6 @@ class DataGrid extends DataGridDatabase
         $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
         $this->setColumnFunction('htmlspecialchars', ['[sku]'], 'sku', false);
         $this->setColumnFunction('htmlspecialchars', ['[brand]'], 'brand', false);
-
 
         // our JS needs to know an id, so we can highlight it
         $this->setRowAttributes(['id' => 'row-[id]']);
@@ -95,6 +109,7 @@ class DataGrid extends DataGridDatabase
         $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[priceCurrencyCode]'], 'price', true);
 
         // check if this action is allowed
+        $editUrl = null;
         if (BackendAuthentication::isAllowedAction('Edit')) {
             $editUrl = Model::createUrlForAction(
                 'Edit',
@@ -106,6 +121,25 @@ class DataGrid extends DataGridDatabase
             $this->setColumnURL('title', $editUrl);
             $this->addColumn('edit', null, Language::lbl('Edit'), $editUrl, Language::lbl('Edit'));
         }
+
+        // Add thumbnail and render it first in the datagrid
+        $this->addColumn('thumb', '');
+        $this->setColumnsHidden(['imageUrl', 'imageShardingFolderName']);
+        $this->setColumnFunction(
+            [BackendDataGridFunctions::class, 'showImage'],
+            [
+                Model::get('media_library.storage.local')->getWebDir() . '/[imageShardingFolderName]',
+                '[imageUrl]',
+                '[imageUrl]',
+                $editUrl,
+                50,
+                50,
+                'product_thumbnail_square',
+            ],
+            'thumb',
+            true
+        );
+        $this->setColumnsSequence(['dragAndDropHandle', 'sortHandle', 'sequence', 'thumb']);
     }
 
     public static function getHtml(Locale $locale, ?Category $category, ?string $sku, int $offset = 0): string

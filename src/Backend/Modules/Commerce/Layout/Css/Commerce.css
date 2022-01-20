@@ -16,3 +16,9 @@ input[type="datetime-local"].form-control,
 input[type="month"].form-control {
     line-height: normal !important;
 }
+
+/** Datagrid */
+.fork-data-grid .thumb img {
+    display: block;
+    border: 1px solid #D1D5DB;
+}

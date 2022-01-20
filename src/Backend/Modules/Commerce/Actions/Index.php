@@ -52,7 +52,7 @@ class Index extends BackendBaseActionIndex
                 Locale::workingLocale(),
                 $this->category,
                 $this->sku,
-                $this->getRequest()->query->getInt('offset')
+                $this->getRequest()->query->getInt('offset'),
             )
         );
 
