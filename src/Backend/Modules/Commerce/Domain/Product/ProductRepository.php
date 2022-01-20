@@ -100,12 +100,10 @@ class ProductRepository extends EntityRepository
     public function removeByIdAndLocale($id, Locale $locale): void
     {
         // We don't flush here, see http://disq.us/p/okjc6b
-        array_map(
-            function (Product $product) {
-                $this->getEntityManager()->remove($product);
-            },
-            (array) $this->findBy(['id' => $id, 'locale' => $locale])
-        );
+        $items = (array) $this->findBy(['id' => $id, 'locale' => $locale]);
+        foreach ($items as $item) {
+            $this->getEntityManager()->remove($item);
+        }
     }
 
     /**
