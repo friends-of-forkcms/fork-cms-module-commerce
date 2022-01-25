@@ -56,6 +56,7 @@
           </li>
         </ul>
         <div class="tab-content">
+
           <div role="tabpanel" class="tab-pane active" id="tabContent">
             <div class="row">
               <div class="col-md-8">
@@ -101,7 +102,10 @@
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabRelations">
+            <p class="help-block">{{ 'msg.HelpProductRelations'|trans }}</p>
+
             <div class="row">
               <div class="col-md-5">
                 {{ form_row(form.related_products) }}
@@ -113,6 +117,7 @@
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabDimensions">
             <div class="row">
               <div class="col-md-12">
@@ -178,7 +183,10 @@
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabOptions">
+            <p class="help-block">{{ 'msg.HelpProductOptions'|trans }}</p>
+
             <div class="row">
               <div class="col-md-12">
                 {{ macro.dataGrid(productOptionsDataGrid) }}
@@ -190,9 +198,12 @@
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabSpecifications">
+            <p class="help-block">{{ 'msg.HelpProductSpecifications'|trans }}</p>
             {{ form_row(form.specification_values) }}
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabProductSpecials">
             {{ form_row(form.specials) }}
           </div>

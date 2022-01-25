@@ -1055,6 +1055,23 @@
         <translation language="nl"><![CDATA[Vul ofwel een kortingspercentage of vast kortingsbedrag in.]]></translation>
         <translation language="en"><![CDATA[Either a reduction percentage or reduction price is required.]]></translation>
       </item>
+      <item type="message" name="HelpProductSpecifications">
+        <translation language="nl"><![CDATA[Voeg informatie toe over dit artikel; bijvoorbeeld: technische specificaties of ingrediënten.
+          Sommige waarden kunnen gebruikt worden als filter om klanten sneller producten te helpen vinden (bijvoorbeeld:
+          materiaal, kleur, of maat.]]></translation>
+        <translation language="en"><![CDATA[Add information about what this item is composed of; for example:
+          technical specifications or ingredients. Some of these values can be used as filter to help customers find products faster (for example:
+          material, color, or size.
+        ]]></translation>
+      </item>
+      <item type="message" name="HelpProductRelations">
+        <translation language="en"><![CDATA[Selecteer verwante producten om bij dit product te tonen.]]></translation>
+        <translation language="en"><![CDATA[Add related products to promote upselling on product and shopping cart pages.]]></translation>
+      </item>
+      <item type="message" name="HelpProductOptions">
+        <translation language="en"><![CDATA[Toon bijkomende diensten of vraag de klant om meer informatie bij de aankoop. Bijvoorbeeld: cadeauverpakking of afspraakdatum.]]></translation>
+        <translation language="en"><![CDATA[Display additional services or clarify information you need from a customer. For example: gift wrapping or appointment times.]]></translation>
+      </item>
       <item type="label" name="Actions">
         <translation language="nl"><![CDATA[acties]]></translation>
         <translation language="en"><![CDATA[actions]]></translation>
