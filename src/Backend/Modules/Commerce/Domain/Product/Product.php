@@ -207,12 +207,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $ean13;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $isbn;
+    private ?string $barcode;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
@@ -315,8 +310,7 @@ class Product
         int $orderQuantity,
         bool $fromStock,
         string $sku,
-        ?string $ean13,
-        ?string $isbn,
+        ?string $barcode,
         string $summary,
         ?string $text,
         ?string $dimensionInstructions,
@@ -354,8 +348,7 @@ class Product
         $this->orderQuantity = $orderQuantity;
         $this->fromStock = $fromStock;
         $this->sku = $sku;
-        $this->ean13 = $ean13;
-        $this->isbn = $isbn;
+        $this->barcode = $barcode;
         $this->summary = $summary;
         $this->text = $text;
         $this->sequence = $sequence;
@@ -402,8 +395,7 @@ class Product
             $dataTransferObject->order_quantity,
             $dataTransferObject->from_stock,
             $dataTransferObject->sku,
-            $dataTransferObject->ean13,
-            $dataTransferObject->isbn,
+            $dataTransferObject->barcode,
             $dataTransferObject->summary,
             $dataTransferObject->text,
             $dataTransferObject->dimension_instructions,
@@ -567,17 +559,9 @@ class Product
     /**
      * @return string
      */
-    public function getEan13(): ?string
+    public function getBarcode(): ?string
     {
-        return $this->ean13;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIsbn(): ?string
-    {
-        return $this->isbn;
+        return $this->barcode;
     }
 
     /**
@@ -739,8 +723,7 @@ class Product
         $product->orderQuantity = $dataTransferObject->order_quantity;
         $product->fromStock = $dataTransferObject->from_stock;
         $product->sku = $dataTransferObject->sku;
-        $product->ean13 = $dataTransferObject->ean13;
-        $product->isbn = $dataTransferObject->isbn;
+        $product->barcode = $dataTransferObject->barcode;
         $product->summary = $dataTransferObject->summary;
         $product->text = $dataTransferObject->text;
         $product->dimensionInstructions = $dataTransferObject->dimension_instructions;

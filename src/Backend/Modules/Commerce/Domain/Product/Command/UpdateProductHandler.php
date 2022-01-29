@@ -91,8 +91,7 @@ final class UpdateProductHandler
                     'title' => $product->getTitle(),
                     'text' => $product->getText(),
                     'sku' => $product->getSku(),
-                    'ean13' => $product->getEan13(),
-                    'isbn' => $product->getIsbn(),
+                    'barcode' => $product->getBarcode(),
                     'brand' => $product->getBrand() ? $product->getBrand()->getTitle() : null,
                 ])
             );

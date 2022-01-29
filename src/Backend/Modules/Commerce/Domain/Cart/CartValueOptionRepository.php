@@ -20,7 +20,7 @@ class CartValueOptionRepository extends EntityRepository
 
         if ($cartValue->getId() && $productOptionValue->getId()) {
             $entity = $query_builder->where('i.cart_value = :cart_value')
-                ->andWhere('i.product_option_value = :product_option_value')
+                ->andWhere('i.productOptionValue = :product_option_value')
                 ->setParameter('cart_value', $cartValue)
                 ->setParameter('product_option_value', $productOptionValue)
                 ->getQuery()
