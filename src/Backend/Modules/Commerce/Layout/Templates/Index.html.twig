@@ -1,11 +1,12 @@
 {% extends 'Layout/Templates/base.html.twig' %}
-{% import "Layout/Templates/macros.html.twig" as macro %}
+{% import 'Layout/Templates/macros.html.twig' as macro %}
 
 {% block actionbar %}
   {% if showCommerceAdd %}
     <div class="btn-toolbar pull-right">
       <div class="btn-group" role="group">
-        {{ macro.buttonIcon( geturl('Add'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
+        {# prettier-ignore #}
+        {{ macro.buttonIcon(geturl('Add'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
       </div>
     </div>
   {% endif %}
@@ -13,30 +14,31 @@
 
 {% block content %}
   <!-- Product filter -->
-  <div class="content-block">
-    {{ form_start(form) }}
+  <div class="content-block" x-data>
+    {# prettier-ignore #}
+    {{ form_start(form, { 'attr': { 'x-ref': 'productFilterForm' } }) }}
 
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <div class="form-group">
-              {{ form_label(form.category) }}
-              {{ form_widget(form.category) }}
+              {# Submit form when typing + set cursor at end of line #}
+              {{ form_widget(form.search, { 'attr': {
+                '@input.debounce.500ms': '$refs.productFilterForm.submit()',
+                'x-init': '$el.setSelectionRange($el.value.length, $el.value.length)'
+              }}) }}
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group">
-              {{ form_label(form.sku) }}
-              {{ form_widget(form.sku) }}
+              {{ form_widget(form.brand, { 'attr': { '@input.debounce.500ms': '$refs.productFilterForm.submit()'}}) }}
             </div>
           </div>
-        </div>
-      </div>
-      <div class="panel-footer">
-        <div class="btn-toolbar">
-          <div class="btn-group pull-right">
-            {{ macro.buttonIcon('', 'refresh', 'lbl.UpdateFilter'|trans|ucfirst, 'btn-primary', { "type":"submit", "id":"search", "name":"search" }) }}
+          <div class="col-md-3">
+            <div class="form-group">
+              {{ form_widget(form.category, { 'attr': { '@input.debounce.500ms': '$refs.productFilterForm.submit()'}}) }}
+            </div>
           </div>
         </div>
       </div>
@@ -46,4 +48,7 @@
   </div>
 
   {{ macro.dataGrid(dataGrid) }}
+
+  {# Javascript #}
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 {% endblock %}

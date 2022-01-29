@@ -20,5 +20,11 @@ input[type="month"].form-control {
 /** Datagrid */
 .fork-data-grid .thumb img {
     display: block;
-    border: 1px solid #D1D5DB;
+    border: 1px solid #CCC;
+}
+
+/** Product filters */
+#filter_brand option[value=""],
+#filter_category option[value=""] {
+    color: #CCC !important;
 }

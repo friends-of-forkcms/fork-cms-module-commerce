@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\Commerce\Domain\Product;
 
+use Backend\Modules\Commerce\Domain\Brand\Brand;
 use Backend\Modules\Commerce\Domain\Category\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,10 +15,23 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('search', TextType::class, [
+                'required' => false,
+                'label' => 'lbl.FilterProducts',
+                'attr' => ['placeholder' => 'lbl.FilterProducts']
+            ])
+            ->add('brand', EntityType::class, [
+                'required' => false,
+                'label' => 'lbl.FilterByBrand',
+                'placeholder' => 'lbl.FilterByBrand',
+                'class' => Brand::class,
+                'choices' => $options['brands'],
+                'choice_label' => fn (Brand $brand) => $brand->getTitle(),
+            ])
             ->add('category', EntityType::class, [
                 'required' => false,
-                'label' => 'lbl.ShowOnlyProductsInCategory',
-                'placeholder' => 'lbl.None',
+                'label' => 'lbl.FilterByCategory',
+                'placeholder' => 'lbl.FilterByCategory',
                 'class' => Category::class,
                 'choices' => $options['categories'],
                 'choice_label' => function (Category $category) {
@@ -28,10 +42,6 @@ class FilterType extends AbstractType
 
                     return $prefix . $category->getTitle();
                 },
-            ])
-            ->add('sku', TextType::class, [
-                'required' => false,
-                'label' => 'lbl.ArticleNumber',
             ]);
     }
 
@@ -40,6 +50,7 @@ class FilterType extends AbstractType
         $resolver->setDefaults(
             [
                 'categories' => null,
+                'brands' => null,
             ]
         );
     }

@@ -5,6 +5,9 @@ namespace Backend\Modules\Commerce\Actions;
 use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Language\Locale;
+use Backend\Modules\Commerce\Domain\Brand\Brand;
+use Backend\Modules\Commerce\Domain\Brand\BrandRepository;
+use Backend\Modules\Commerce\Domain\Brand\Exception\BrandNotFound;
 use Backend\Modules\Commerce\Domain\Category\Category;
 use Backend\Modules\Commerce\Domain\Category\CategoryRepository;
 use Backend\Modules\Commerce\Domain\Category\Exception\CategoryNotFound;
@@ -17,15 +20,9 @@ use Common\Exception\RedirectException;
  */
 class Index extends BackendBaseActionIndex
 {
-    /**
-     * The category where is filtered on.
-     */
     private ?Category $category = null;
-
-    /**
-     * The sku number to filter on.
-     */
-    private ?string $sku = null;
+    private ?Brand $brand = null;
+    private ?string $searchQuery = null;
 
     public function execute(): void
     {
@@ -33,15 +30,25 @@ class Index extends BackendBaseActionIndex
 
         // Filters
         $categoryId = $this->getRequest()->query->getInt('category', null);
-        $this->sku = $this->getRequest()->query->get('sku');
-        $categoryRepository = $this->getCategoryRepository();
+        $brandId = $this->getRequest()->query->getInt('brand', null);
+        $this->searchQuery = $this->getRequest()->query->get('q');
 
         if ($categoryId) {
             try {
+                $categoryRepository = $this->getCategoryRepository();
                 $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
+                return;
+            }
+        }
 
+        if ($brandId) {
+            try {
+                $brandRepository = $this->getBrandRepository();
+                $this->brand = $brandRepository->findOneByIdAndLocale($brandId, Locale::workingLocale());
+            } catch (BrandNotFound $e) {
+                $this->redirect($this->getBackLink());
                 return;
             }
         }
@@ -51,7 +58,8 @@ class Index extends BackendBaseActionIndex
             DataGrid::getHtml(
                 Locale::workingLocale(),
                 $this->category,
-                $this->sku,
+                $this->brand,
+                $this->searchQuery,
                 $this->getRequest()->query->getInt('offset'),
             )
         );
@@ -71,10 +79,12 @@ class Index extends BackendBaseActionIndex
             FilterType::class,
             [
                 'category' => $this->category,
-                'sku' => $this->sku,
+                'brand' => $this->brand,
+                'search' => $this->searchQuery,
             ],
             [
                 'categories' => $this->getCategoryRepository()->getTree(Locale::workingLocale()),
+                'brands' => $this->getBrandRepository()->findAll(),
             ]
         );
 
@@ -90,14 +100,16 @@ class Index extends BackendBaseActionIndex
                 $parameters['category'] = $data['category']->getId();
             }
 
-            if ($data['sku']) {
-                $parameters['sku'] = $data['sku'];
+            if ($data['brand']) {
+                $parameters['brand'] = $data['brand']->getId();
+            }
+
+            if ($data['search']) {
+                $parameters['q'] = $data['search'];
             }
 
             // redirect to a filtered page
-            $this->redirect(
-                $this->getBackLink($parameters)
-            );
+            $this->redirect($this->getBackLink($parameters));
         }
 
         // assign the form to our template
@@ -109,16 +121,16 @@ class Index extends BackendBaseActionIndex
      */
     private function getBackLink(array $parameters = []): string
     {
-        return BackendModel::createUrlForAction(
-            'Index',
-            null,
-            null,
-            $parameters
-        );
+        return BackendModel::createUrlForAction('Index', null, null, $parameters);
     }
 
     private function getCategoryRepository(): CategoryRepository
     {
         return $this->get('commerce.repository.category');
+    }
+
+    private function getBrandRepository(): BrandRepository
+    {
+        return $this->get('commerce.repository.brand');
     }
 }
