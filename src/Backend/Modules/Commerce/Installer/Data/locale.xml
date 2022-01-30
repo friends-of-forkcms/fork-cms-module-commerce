@@ -1100,6 +1100,10 @@
           material, color, or size.
         ]]></translation>
       </item>
+      <item type="message" name="HelpProductSpecials">
+        <translation language="nl"><![CDATA[Stel een tijdsgebonden promotie in op het product]]></translation>
+        <translation language="en"><![CDATA[Configure a product special]]></translation>
+      </item>
       <item type="message" name="HelpProductRelations">
         <translation language="en"><![CDATA[Selecteer verwante producten om bij dit product te tonen.]]></translation>
         <translation language="en"><![CDATA[Add related products to promote upselling on product and shopping cart pages.]]></translation>
