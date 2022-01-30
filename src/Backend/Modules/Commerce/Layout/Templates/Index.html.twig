@@ -16,7 +16,7 @@
   <!-- Product filter -->
   <div class="content-block" x-data>
     {# prettier-ignore #}
-    {{ form_start(form, { 'attr': { 'x-ref': 'productFilterForm' } }) }}
+    {{ form_start(form, { 'attr': { 'x-ref': 'filterForm' } }) }}
 
     <div class="panel panel-default">
       <div class="panel-body">
@@ -24,20 +24,22 @@
           <div class="col-md-6">
             <div class="form-group">
               {# Submit form when typing + set cursor at end of line #}
-              {{ form_widget(form.search, { 'attr': {
-                '@input.debounce.500ms': '$refs.productFilterForm.submit()',
-                'x-init': '$el.setSelectionRange($el.value.length, $el.value.length)'
-              }}) }}
+              {{ form_widget(form.search_query, {
+                  'attr': {
+                    '@input.debounce.500ms': '$refs.filterForm.submit()',
+                    'x-init': '$el.setSelectionRange($el.value.length, $el.value.length)'
+                  }
+              }) }}
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              {{ form_widget(form.brand, { 'attr': { '@input.debounce.500ms': '$refs.productFilterForm.submit()'}}) }}
+              {{ form_widget(form.brand, { 'attr': { '@input.debounce.500ms': '$refs.filterForm.submit()'}}) }}
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              {{ form_widget(form.category, { 'attr': { '@input.debounce.500ms': '$refs.productFilterForm.submit()'}}) }}
+              {{ form_widget(form.category, { 'attr': { '@input.debounce.500ms': '$refs.filterForm.submit()'}}) }}
             </div>
           </div>
         </div>

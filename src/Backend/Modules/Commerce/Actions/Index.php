@@ -104,8 +104,8 @@ class Index extends BackendBaseActionIndex
                 $parameters['brand'] = $data['brand']->getId();
             }
 
-            if ($data['search']) {
-                $parameters['q'] = $data['search'];
+            if ($data['search_query']) {
+                $parameters['q'] = $data['search_query'];
             }
 
             // redirect to a filtered page

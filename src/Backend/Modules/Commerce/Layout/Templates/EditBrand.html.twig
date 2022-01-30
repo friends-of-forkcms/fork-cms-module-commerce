@@ -6,6 +6,16 @@
 
 {% block content %}
     {{ form_start(form) }}
+
+    <div class="row fork-module-content">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
+                {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
+            </div>
+        </div>
+    </div>
+
     <div class="row fork-module-content">
         <div class="col-md-12">
             <div role="tabpanel">
@@ -21,8 +31,17 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabContent">
-                        {{ form_row(form.title) }}
-                        {{ form_row(form.image) }}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2><label for="image">{{ 'lbl.Image'|trans|ucfirst }}</label></h2>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    {{ form_widget(form.image) }}
+                                    {{ form_errors(form.image) }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane clearfix" id="tabSEO">
                         {{ form_widget(form.meta, {'attr' : { 'class' : 'clearfix' } } ) }}

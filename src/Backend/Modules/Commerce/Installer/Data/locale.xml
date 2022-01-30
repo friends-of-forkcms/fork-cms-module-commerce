@@ -487,6 +487,10 @@
         <translation language="nl"><![CDATA[Filter merk]]></translation>
         <translation language="en"><![CDATA[Filter brand]]></translation>
       </item>
+      <item type="label" name="FilterByStatus">
+        <translation language="nl"><![CDATA[Filter status]]></translation>
+        <translation language="en"><![CDATA[Filter status]]></translation>
+      </item>
       <item type="label" name="FilterOnSku">
         <translation language="nl"><![CDATA[filter op artikelnummer:]]></translation>
         <translation language="en"><![CDATA[filter on sku:]]></translation>
@@ -515,9 +519,13 @@
         <translation language="nl"><![CDATA[verzendmethoden]]></translation>
         <translation language="en"><![CDATA[shipment methods]]></translation>
       </item>
-      <item type="label" name="FilterProducts">
-        <translation language="nl"><![CDATA[Filter producten]]></translation>
-        <translation language="en"><![CDATA[Filter products]]></translation>
+      <item type="label" name="SearchOrders">
+        <translation language="nl"><![CDATA[Zoeken in bestellingen]]></translation>
+        <translation language="en"><![CDATA[Search orders]]></translation>
+      </item>
+      <item type="label" name="SearchProducts">
+        <translation language="nl"><![CDATA[Zoeken naar producten]]></translation>
+        <translation language="en"><![CDATA[Search products]]></translation>
       </item>
       <item type="label" name="Version">
         <translation language="nl"><![CDATA[versie]]></translation>
@@ -1168,9 +1176,25 @@
         <translation language="nl"><![CDATA[laatste 30 dagen]]></translation>
         <translation language="en"><![CDATA[last 30 days]]></translation>
       </item>
+      <item type="label" name="Last90Days">
+        <translation language="nl"><![CDATA[laatste 90 dagen]]></translation>
+        <translation language="en"><![CDATA[last 90 days]]></translation>
+      </item>
+      <item type="label" name="LastYear">
+        <translation language="nl"><![CDATA[laatste jaar]]></translation>
+        <translation language="en"><![CDATA[last year]]></translation>
+      </item>
       <item type="label" name="ThisMonth">
         <translation language="nl"><![CDATA[deze maand]]></translation>
         <translation language="en"><![CDATA[this month]]></translation>
+      </item>
+      <item type="label" name="ThisQuarter">
+        <translation language="nl"><![CDATA[dit kwartaal]]></translation>
+        <translation language="en"><![CDATA[this quarter]]></translation>
+      </item>
+      <item type="label" name="ThisYear">
+        <translation language="nl"><![CDATA[dit jaar]]></translation>
+        <translation language="en"><![CDATA[this year]]></translation>
       </item>
       <item type="label" name="LastMonth">
         <translation language="nl"><![CDATA[vorige maand]]></translation>

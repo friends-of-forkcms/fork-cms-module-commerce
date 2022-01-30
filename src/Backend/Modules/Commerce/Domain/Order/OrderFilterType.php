@@ -19,11 +19,12 @@ class OrderFilterType extends AbstractType
             ->add('search_query', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Search',
+                'attr' => ['placeholder' => 'lbl.SearchOrders']
             ])
             ->add('order_status', EntityType::class, [
                 'required' => false,
                 'label' => 'lbl.OrderStatus',
-                'placeholder' => 'lbl.None',
+                'placeholder' => 'lbl.FilterByStatus',
                 'class' => OrderStatus::class,
                 'choices' => $options['order_statuses'],
                 'choice_label' => fn (OrderStatus $orderStatus) => $orderStatus->getTitle(),

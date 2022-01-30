@@ -6,6 +6,16 @@
 
 {% block content %}
     {{ form_start(form) }}
+
+    <div class="row fork-module-content">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="name" class="control-label">{{ 'lbl.Name'|trans|ucfirst }}</label>
+                {{ form_widget(form.name, {'attr' : {'class' : 'title'}}) }}
+            </div>
+        </div>
+    </div>
+
     <div class="row fork-module-content">
         <div class="col-md-12">
             <div role="tabpanel">
@@ -17,7 +27,6 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabContent">
-                        {{ form_row(form.name) }}
                         {{ form_row(form.iso) }}
                     </div>
                 </div>

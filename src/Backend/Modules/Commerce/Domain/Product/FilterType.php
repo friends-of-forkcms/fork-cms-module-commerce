@@ -15,10 +15,10 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('search', TextType::class, [
+            ->add('search_query', TextType::class, [
                 'required' => false,
-                'label' => 'lbl.FilterProducts',
-                'attr' => ['placeholder' => 'lbl.FilterProducts']
+                'label' => 'lbl.Search',
+                'attr' => ['placeholder' => 'lbl.SearchProducts']
             ])
             ->add('brand', EntityType::class, [
                 'required' => false,

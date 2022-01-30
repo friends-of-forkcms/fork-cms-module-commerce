@@ -15,7 +15,7 @@ class FilterType extends AbstractType
             ->add('category', EntityType::class, [
                 'required' => false,
                 'label' => 'lbl.ShowOnlyProductsInCategory',
-                'placeholder' => 'lbl.None',
+                'placeholder' => 'lbl.ShowOnlyProductsInCategory',
                 'class' => Category::class,
                 'choices' => $options['categories'],
                 'choice_label' => function ($category) {
