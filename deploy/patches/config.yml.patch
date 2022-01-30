@@ -1,5 +1,5 @@
 diff --git a/app/config/config.yml b/app/config/config.yml
-index ec29007a4..742444ebe 100644
+index ec29007a4..67cc3e7c9 100644
 --- a/app/config/config.yml
 +++ b/app/config/config.yml
 @@ -28,6 +28,8 @@ framework:
@@ -11,7 +11,7 @@ index ec29007a4..742444ebe 100644
  
  # Assetic Configuration
  assetic:
-@@ -125,6 +127,34 @@ liip_imagine:
+@@ -125,6 +127,39 @@ liip_imagine:
                  strip: ~
  
                  thumbnail: { size : [1600, 500], mode : inbound }
@@ -21,6 +21,11 @@ index ec29007a4..742444ebe 100644
 +                auto_rotate: ~
 +                strip: ~
 +                scale: { dim: [ 300, 372 ] }
++        product_thumbnail_square:
++            filters:
++                thumbnail:
++                    size: [250, 250]
++                    mode: outbound
 +        product_large:
 +            filters:
 +                # auto rotate the image using EXIF metadata and then strip the metadata (privacy)
@@ -46,7 +51,7 @@ index ec29007a4..742444ebe 100644
  
  services:
      templating.name_parser.public:
-@@ -278,3 +308,12 @@ services:
+@@ -278,3 +313,12 @@ services:
      ForkCMS\ImagineController:
          public: true
          autowire: true
