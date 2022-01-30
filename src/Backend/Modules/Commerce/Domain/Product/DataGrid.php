@@ -175,6 +175,7 @@ class DataGrid extends DataGridDatabase
     public static function getFormattedMoney(int $amount, string $currencyCode): string
     {
         $money = new Money($amount, new Currency($currencyCode));
+
         return (new MoneyFormatter())->localizedFormatMoney($money);
     }
 }

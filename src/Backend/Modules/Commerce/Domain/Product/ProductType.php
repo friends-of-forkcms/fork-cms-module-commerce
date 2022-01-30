@@ -69,7 +69,7 @@ class ProductType extends AbstractType
             ])
             ->add('from_stock', CheckboxType::class, [
                 'required' => false,
-                'label' => 'lbl.FromStock'
+                'label' => 'lbl.FromStock',
             ])
             ->add('sku', TextType::class, [
                 'required' => false,

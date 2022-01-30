@@ -39,6 +39,7 @@ class Index extends BackendBaseActionIndex
                 $this->category = $categoryRepository->findOneByIdAndLocale($categoryId, Locale::workingLocale());
             } catch (CategoryNotFound $e) {
                 $this->redirect($this->getBackLink());
+
                 return;
             }
         }
@@ -49,6 +50,7 @@ class Index extends BackendBaseActionIndex
                 $this->brand = $brandRepository->findOneByIdAndLocale($brandId, Locale::workingLocale());
             } catch (BrandNotFound $e) {
                 $this->redirect($this->getBackLink());
+
                 return;
             }
         }

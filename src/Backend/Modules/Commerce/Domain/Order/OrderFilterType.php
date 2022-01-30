@@ -19,7 +19,7 @@ class OrderFilterType extends AbstractType
             ->add('search_query', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Search',
-                'attr' => ['placeholder' => 'lbl.SearchOrders']
+                'attr' => ['placeholder' => 'lbl.SearchOrders'],
             ])
             ->add('order_status', EntityType::class, [
                 'required' => false,

@@ -18,7 +18,7 @@ class FilterType extends AbstractType
             ->add('search_query', TextType::class, [
                 'required' => false,
                 'label' => 'lbl.Search',
-                'attr' => ['placeholder' => 'lbl.SearchProducts']
+                'attr' => ['placeholder' => 'lbl.SearchProducts'],
             ])
             ->add('brand', EntityType::class, [
                 'required' => false,
