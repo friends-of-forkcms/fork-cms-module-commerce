@@ -15,7 +15,7 @@ metadata:
 rules:
   - apiGroups: ["apps", "extensions"]
     resources: ["deployments"]
-    resourceNames: ["$K8S_APP_NAME"]
+    resourceNames: ["preview-module-commerce"]
     verbs: ["get", "patch", "list", "watch"] # "list" and "watch" are needed if you want to use `rollout status`
 ---
 # Bind the role to the service account
@@ -54,4 +54,4 @@ spec:
                 - 'kubectl'
                 - 'rollout'
                 - 'restart'
-                - 'deployment/$K8S_APP_NAME'
+                - 'deployment/preview-module-commerce'

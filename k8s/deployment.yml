@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $K8S_APP_NAME
+  name: preview-module-commerce
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $K8S_APP_NAME
+      app: preview-module-commerce
   template:
     metadata:
       labels:
-        app: $K8S_APP_NAME
+        app: preview-module-commerce
     spec:
       restartPolicy: Always
       containers:
