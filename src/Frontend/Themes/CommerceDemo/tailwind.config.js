@@ -15,7 +15,7 @@ View the full documentation at https://tailwindcss.com.
 const colors = require('tailwindcss/colors');
 
 // See defaults: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
-/** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
+/** @types {import('tailwindcss').Config} */
 module.exports = {
     // Purge our generated CSS and only leave the css classes found in these files.
     content: [
