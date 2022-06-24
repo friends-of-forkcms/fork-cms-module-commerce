@@ -69,7 +69,7 @@ jobs:
           token: ${{ secrets.OKTETO_TOKEN }}
 
       - name: Deploy preview environment
-        uses: okteto/deploy-preview@latest
+        uses: okteto/deploy-preview@2.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REF: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
