@@ -73,7 +73,7 @@ jobs:
         uses: jessedobbelaere/deploy-preview@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GITHUB_REF: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
+          GITHUB_REF: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
         with:
           name: ${{ env.DEPLOY_NAME }}
           timeout: 15m
