@@ -1,6 +1,6 @@
 /** @jsx html */
 import { html } from 'htm/preact';
-import { autocomplete, VNode } from '@algolia/autocomplete-js';
+import { autocomplete } from '@algolia/autocomplete-js';
 import { requestAjax } from '../api/ForkAPI';
 import { memoize, ucfirst } from "../utilities/utils";
 import '@algolia/autocomplete-theme-classic/dist/theme.css';
@@ -107,7 +107,7 @@ export async function search(): Promise<void> {
                                     <span className="aa-SourceHeaderTitle">${lblProducts}</span>
                                     <div className="aa-SourceHeaderLine" />
                                 </div>
-                            `;
+                            ` as any;
                         },
                         item({ item }) {
                             return renderProductResult(item);
@@ -161,7 +161,7 @@ export async function search(): Promise<void> {
         return e.innerText;
     }
 
-    function highlightHits(term: string, snippet: string): VNode {
+    function highlightHits(term: string, snippet: string): any {
         const snippetWithoutNewLines = snippet.replace(/[\r\n]+/g, ' ');
         const highlightedSnippet = decode(snippetWithoutNewLines).replace(
             new RegExp(term, 'gi'),
@@ -170,7 +170,7 @@ export async function search(): Promise<void> {
         return html`${html([highlightedSnippet] as unknown as TemplateStringsArray)}`;
     }
 
-    function renderPageResult(item: ForkSearchItem): VNode {
+    function renderPageResult(item: ForkSearchItem): any {
         return html`<a class="aa-ItemLink" href="${item.full_url}">
             <div className="aa-ItemContent">
                 <div class="aa-ItemIcon aa-ItemIcon--noBorder">
@@ -187,7 +187,7 @@ export async function search(): Promise<void> {
         </a>`;
     }
 
-    function renderProductResult(item: ForkProductItem): VNode {
+    function renderProductResult(item: ForkProductItem): any {
         return html`<a class="aa-ItemLink" href="${item.full_url}">
             <div className="aa-ItemContent">
                 ${item.preview_image_url &&

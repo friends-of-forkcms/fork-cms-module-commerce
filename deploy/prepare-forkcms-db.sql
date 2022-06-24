@@ -1,3 +1,9 @@
+-- Set the website name
+UPDATE modules_settings SET value = 's:13:"Commerce Demo";' WHERE module = 'Core' AND name LIKE 'site_title%';
+
+-- Fix the god.png avatar
+UPDATE users_settings SET value = REPLACE(value, 'god.jpg', 'god.png') WHERE name = 'avatar';
+
 -- Install the CommerceDemo theme
 INSERT INTO `themes_templates` (`id`, `theme`, `label`, `path`, `active`, `data`) VALUES
 (3, 'CommerceDemo', 'Default', 'Core/Layout/Templates/Default.html.twig', 1, 'a:4:{s:6:\"format\";s:16:\"[main,main,main]\";s:5:\"image\";b:1;s:5:\"names\";a:1:{i:0;s:4:\"main\";}s:14:\"default_extras\";a:1:{s:4:\"main\";a:0:{}}}'),
@@ -13,7 +19,8 @@ UPDATE pages SET template_id = 4 WHERE id = 1;
 -- Add a recent products widget on the homepage
 SET @module_widget_extra_id = (SELECT id FROM modules_extras WHERE module = 'Commerce' AND type = 'widget' AND action = 'RecentProducts');
 INSERT INTO `pages_blocks` (`revision_id`, `position`, `extra_id`, `extra_type`, `extra_data`, `html`, `created_on`, `edited_on`, `visible`, `sequence`) VALUES
-    (1,'main',@module_widget_extra_id,'widget','',NULL,NOW(),NOW(),1,0);
+    (1,'main',@module_widget_extra_id,'widget','',NULL,NOW(),NOW(),1,0),
+    (5,'main',@module_widget_extra_id,'widget','',NULL,NOW(),NOW(),1,0);
 
 -- Setup a mailer for demo purposes using a free Mailjet account (200 mails per day, 6000 emails per month)
 -- See: https://www.mailjet.com/pricing/#email

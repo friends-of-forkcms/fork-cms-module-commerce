@@ -1,17 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $K8S_APP_NAME
+  name: preview-module-commerce
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $K8S_APP_NAME
+      app: preview-module-commerce
   template:
     metadata:
       labels:
-        app: $K8S_APP_NAME
+        app: preview-module-commerce
     spec:
+      restartPolicy: Always
       containers:
         - name: app
           image: okteto.dev/fork-cms-module-commerce-demo:latest
@@ -30,6 +31,8 @@ spec:
           env:
             - name: DB_HOST
               value: 127.0.0.1
+            - name: DB_PORT
+              value: "3306"
             - name: DB_NAME
               value: forkcms
             - name: DB_USER

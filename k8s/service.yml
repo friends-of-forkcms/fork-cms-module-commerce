@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: $K8S_APP_NAME
+  name: preview-module-commerce
   annotations:
     dev.okteto.com/auto-ingress: "true"
 spec:
   selector:
-    app: $K8S_APP_NAME # Any Pod matching the label `app=preview-app` will be picked up by this service
+    app: preview-module-commerce # Any Pod matching the label will be picked up by this service
   type: ClusterIP # Exposes the service by opening a port on each node
   ports: # Forward incoming connections on port 80 to the target port 80 in the Pod
     - name: p-80-80-tcp
