@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-while ! /usr/local/bin/mysqladmin ping --host "$DB_HOST" --port "$DB_PORT" --silent; do
+while ! mysqladmin ping --host "$DB_HOST" --port "$DB_PORT" --silent; do
     echo "Waiting for mysql db to be up and running..."
     sleep 1
 done
