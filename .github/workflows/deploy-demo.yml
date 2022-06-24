@@ -1,7 +1,8 @@
 on:
   workflow_dispatch:
   push:
-    branches: [master]
+    branches:
+      - master
   schedule:
     - cron: "30 6 * * *"  # Runs at 06:30 UTC every day
     - cron: "30 18 * * *" # Runs at 18:30 UTC every day
@@ -15,6 +16,7 @@ jobs:
   deploy-demo-app:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: github.repository_owner == 'friends-of-forkcms'
     steps:
       - name: Login
         uses: okteto/login@master
