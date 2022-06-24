@@ -18,8 +18,8 @@ jobs:
     timeout-minutes: 15
     if: github.repository_owner == 'friends-of-forkcms'
     steps:
-      - name: Login
-        uses: okteto/login@master
+      - name: Context
+        uses: okteto/context@latest
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
