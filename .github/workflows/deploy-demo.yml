@@ -18,19 +18,19 @@ jobs:
     timeout-minutes: 15
     if: github.repository_owner == 'friends-of-forkcms'
     steps:
-      - name: Context
-        uses: okteto/context@latest
+      - name: Login
+        uses: okteto/login@main
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
       # Namespace must be the GitHub ID or suffixed with it.
       - name: Activate Namespace
-        uses: okteto/namespace@master
+        uses: okteto/namespace@main
         with:
           namespace: jessedobbelaere
 
       - name: Deploy Pipeline
-        uses: okteto/pipeline@master
+        uses: okteto/pipeline@main
         with:
           name: "fork-cms-module-commerce-demo"
           timeout: 15m
