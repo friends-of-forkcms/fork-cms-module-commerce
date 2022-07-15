@@ -3,7 +3,6 @@
 namespace Backend\Modules\CommerceMollie\Domain\Mollie\Checkout;
 
 use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\PaymentMethodQuote;
-use Money\Money;
 
 class Quote extends PaymentMethodQuote
 {

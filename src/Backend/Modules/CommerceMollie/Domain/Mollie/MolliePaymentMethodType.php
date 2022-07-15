@@ -30,7 +30,7 @@ class MolliePaymentMethodType extends PaymentMethodType
                 TextType::class,
                 [
                     'required' => true,
-                    'label' => 'lbl.ApiKey'
+                    'label' => 'lbl.ApiKey',
                 ]
             )
             ->add(
@@ -58,7 +58,7 @@ class MolliePaymentMethodType extends PaymentMethodType
                         return $er->createQueryBuilder('i')
                             ->orderBy('i.title', 'ASC');
                     },
-                    'choice_label' => 'title'
+                    'choice_label' => 'title',
                 ]
             )
             ->add(
@@ -72,7 +72,7 @@ class MolliePaymentMethodType extends PaymentMethodType
                         return $er->createQueryBuilder('i')
                             ->orderBy('i.title', 'ASC');
                     },
-                    'choice_label' => 'title'
+                    'choice_label' => 'title',
                 ]
             )
             ->add(
@@ -86,7 +86,7 @@ class MolliePaymentMethodType extends PaymentMethodType
                         return $er->createQueryBuilder('i')
                             ->orderBy('i.title', 'ASC');
                     },
-                    'choice_label' => 'title'
+                    'choice_label' => 'title',
                 ]
             )
             ->add(
@@ -100,7 +100,7 @@ class MolliePaymentMethodType extends PaymentMethodType
                         return $er->createQueryBuilder('i')
                             ->orderBy('i.title', 'ASC');
                     },
-                    'choice_label' => 'title'
+                    'choice_label' => 'title',
                 ]
             );
 
@@ -149,10 +149,10 @@ class MolliePaymentMethodType extends PaymentMethodType
                     ChoiceType::class,
                     [
                         'required' => false,
-                        'label'    => 'lbl.Enabled',
+                        'label' => 'lbl.Enabled',
                         'placeholder' => false,
-                        'choices'  => [
-                            'lbl.No'  => false,
+                        'choices' => [
+                            'lbl.No' => false,
                             'lbl.Yes' => true,
                         ],
                     ]

@@ -5,7 +5,6 @@ namespace Backend\Modules\CommerceMollie\Domain\Mollie;
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MolliePaymentMethodDataTransferObject extends PaymentMethodDataTransferObject

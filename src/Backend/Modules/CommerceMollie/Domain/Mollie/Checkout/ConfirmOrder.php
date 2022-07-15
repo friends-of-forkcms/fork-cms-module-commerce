@@ -133,7 +133,7 @@ class ConfirmOrder extends BaseConfirmOrder
                 ],
                 'description' => 'Order ' . $this->order->getId(),
                 'redirectUrl' => SITE_URL . $this->redirectUrl,
-                'webhookUrl' => $baseUrl . '/webhook?payment_method=Mollie.'. $this->option,
+                'webhookUrl' => $baseUrl . '/webhook?payment_method=Mollie.' . $this->option,
                 'method' => $this->option,
                 'issuer' => $this->data->issuer,
                 'metadata' => [
@@ -178,7 +178,7 @@ class ConfirmOrder extends BaseConfirmOrder
         ];
         $payment->description = 'Order ' . $this->order->getId();
         $payment->redirectUrl = SITE_URL . $this->redirectUrl;
-        $payment->webhookUrl = $baseUrl . '/webhook?payment_method=Mollie.'. $this->option;
+        $payment->webhookUrl = $baseUrl . '/webhook?payment_method=Mollie.' . $this->option;
         $payment->method = $this->option;
         $payment->metadata = [
             'order_id' => $this->order->getId(),

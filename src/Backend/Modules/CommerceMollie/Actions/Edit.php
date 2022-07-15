@@ -43,6 +43,7 @@ class Edit extends PaymentBaseActionEdit
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->template->assign('form', $form->createView());
             $this->template->assign('enabledMethods', $enabledMethods);
+
             return;
         }
 
