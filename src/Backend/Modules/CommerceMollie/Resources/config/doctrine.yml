@@ -1,0 +1,9 @@
+doctrine:
+    orm:
+        mappings:
+            commerce_mollie_payment:
+                type: annotation
+                is_bundle: false
+                dir: "%kernel.project_dir%/src/Backend/Modules/CommerceMollie/Domain/Payment"
+                alias: CommerceMolliePayment
+                prefix: Backend\Modules\CommerceMollie\Domain\Payment

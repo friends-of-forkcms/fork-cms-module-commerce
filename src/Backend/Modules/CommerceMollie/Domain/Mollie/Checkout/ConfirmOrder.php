@@ -8,6 +8,9 @@ use Backend\Modules\Commerce\Domain\OrderHistory\Command\CreateOrderHistory;
 use Backend\Modules\Commerce\Domain\OrderStatus\Exception\OrderStatusNotFound;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Checkout\ConfirmOrder as BaseConfirmOrder;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Exception\PaymentException;
+use Backend\Modules\CommerceMollie\Domain\Payment\Command\CreateMolliePayment;
+use Backend\Modules\CommerceMollie\Domain\Payment\MolliePaymentRepository;
+use Common\Core\Model;
 use Doctrine\DBAL\DBALException;
 use Frontend\Core\Engine\Navigation;
 use Frontend\Core\Language\Language;
@@ -15,7 +18,6 @@ use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Resources\Payment;
 use Money\Currencies\ISOCurrencies;
-use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 
 class ConfirmOrder extends BaseConfirmOrder
@@ -69,20 +71,12 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     public function postPayment(): void
     {
-        $query = $this->entityManager->getConnection()->prepare(
-            'SELECT order_id, method, transaction_id
-            FROM commerce_orders_mollie_payments
-            WHERE order_id = :order_id'
-        );
-        $query->bindValue('order_id', $this->order->getId());
-        $query->execute();
-
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->getPaymentRepository()->findOneByOrderId($this->order->getId());
 
         $mollie = new MollieApiClient();
         $mollie->setApiKey($this->getSetting('apiKey'));
 
-        $payment = $mollie->payments->get($result['transaction_id']);
+        $payment = $mollie->payments->get($result->getTransactionId());
 
         $this->paid = $payment->isPaid();
         $this->open = $payment->isOpen();
@@ -99,15 +93,10 @@ class ConfirmOrder extends BaseConfirmOrder
      */
     private function getPayment(): Payment
     {
-        $query = $this->entityManager->getConnection()->prepare(
-            'SELECT order_id, method, transaction_id FROM commerce_orders_mollie_payments WHERE order_id = :order_id'
-        );
-        $query->bindValue('order_id', $this->order->getId());
-        $query->execute();
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->getPaymentRepository()->findOneByOrderId($this->order->getId());
 
         if ($result) {
-            return $this->updatePayment($result['transaction_id']);
+            return $this->updatePayment($result->getTransactionId());
         }
 
         return $this->createPayment();
@@ -142,15 +131,11 @@ class ConfirmOrder extends BaseConfirmOrder
             ]
         );
 
-        $this->entityManager->getConnection()
-            ->insert(
-                'commerce_orders_mollie_payments',
-                [
-                    'order_id' => $this->order->getId(),
-                    'method' => $this->option,
-                    'transaction_id' => $payment->id,
-                ]
-            );
+        $createPayment = new CreateMolliePayment();
+        $createPayment->order_id = $this->order->getId();
+        $createPayment->method = $this->option;
+        $createPayment->transaction_id = $payment->id;
+        $this->commandBus->handle($createPayment);
 
         return $payment;
     }
@@ -238,5 +223,10 @@ class ConfirmOrder extends BaseConfirmOrder
         }
 
         return '';
+    }
+
+    private function getPaymentRepository(): MolliePaymentRepository
+    {
+        return Model::get('commerce_mollie.repository.payment');
     }
 }

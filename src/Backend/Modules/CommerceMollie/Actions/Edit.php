@@ -63,47 +63,6 @@ class Edit extends PaymentBaseActionEdit
         );
     }
 
-    protected function install(): void
-    {
-        parent::install();
-
-        // @TODO handle this through the module installer
-        $query = $this->entityManager->getConnection()->prepare(
-            'CREATE TABLE IF NOT EXISTS `commerce_orders_mollie_payments` (
-                `order_id` int(11) unsigned NOT NULL,
-                `method` VARCHAR(150) NOT NULL DEFAULT \'ideal\',
-                `transaction_id` varchar(32) NOT NULL,
-                `bank_account` varchar(15) DEFAULT NULL,
-                `bank_status` varchar(20) DEFAULT NULL,
-                PRIMARY KEY (`order_id`),
-                UNIQUE KEY `transaction_id` (`transaction_id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
-        );
-
-        $query->execute();
-    }
-
-    protected function uninstall(): void
-    {
-        parent::uninstall();
-
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('count', 'count');
-
-        $query = $this->entityManager->createNativeQuery(
-            'SELECT COUNT(*) AS `count` FROM `commerce_orders_mollie_payments`',
-            $rsm
-        );
-
-        $result = $query->getResult();
-
-        if ((int)$result[0]['count'] === 0) {
-            $this->entityManager->getConnection()
-                ->prepare('DROP TABLE IF EXISTS `commerce_orders_mollie_payments`')
-                ->execute();
-        }
-    }
-
     private function getForm(PaymentMethod $paymentMethod, $enabledMethods = []): Form
     {
         $form = $this->createForm(

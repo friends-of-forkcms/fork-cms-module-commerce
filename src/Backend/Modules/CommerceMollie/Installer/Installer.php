@@ -2,16 +2,26 @@
 
 namespace Backend\Modules\CommerceMollie\Installer;
 
+use Backend\Core\Engine\Model;
 use Backend\Core\Installer\ModuleInstaller;
 use Backend\Core\Language\Language;
+use Backend\Modules\CommerceMollie\Domain\Payment\MolliePayment;
 
 class Installer extends ModuleInstaller
 {
     public function install(): void
     {
+        $this->configureEntities();
         $this->addModule('CommerceMollie');
         $this->importLocale(__DIR__ . '/Data/locale.xml');
         $this->registerCommercePaymentMethod($this->getModule());
+    }
+
+    private function configureEntities(): void
+    {
+        Model::get('fork.entity.create_schema')->forEntityClasses([
+            MolliePayment::class,
+        ]);
     }
 
     /**
