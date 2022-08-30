@@ -7,9 +7,9 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\Edit as PaymentBaseActionEdit;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethodDataTransferObject;
-use Backend\Modules\CommerceMollie\Domain\Mollie\Command\UpdateMolliePaymentMethod;
-use Backend\Modules\CommerceMollie\Domain\Mollie\MolliePaymentMethodDataTransferObject;
-use Backend\Modules\CommerceMollie\Domain\Mollie\MolliePaymentMethodType;
+use Backend\Modules\CommerceMollie\Domain\PaymentMethod\Command\UpdateMolliePaymentMethod;
+use Backend\Modules\CommerceMollie\Domain\PaymentMethod\MolliePaymentMethodDataTransferObject;
+use Backend\Modules\CommerceMollie\Domain\PaymentMethod\MolliePaymentMethodType;
 use Mollie\Api\MollieApiClient;
 use Symfony\Component\Form\Form;
 

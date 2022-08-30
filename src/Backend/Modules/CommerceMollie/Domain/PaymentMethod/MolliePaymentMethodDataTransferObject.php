@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\CommerceMollie\Domain\Mollie;
+namespace Backend\Modules\CommerceMollie\Domain\PaymentMethod;
 
 use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;

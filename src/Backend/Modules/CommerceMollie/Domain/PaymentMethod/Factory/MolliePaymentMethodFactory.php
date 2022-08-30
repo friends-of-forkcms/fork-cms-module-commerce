@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\CommerceMollie\Domain\Mollie\Factory;
+namespace Backend\Modules\CommerceMollie\Domain\PaymentMethod\Factory;
 
 use Backend\Modules\Commerce\Domain\PaymentMethod\Factory\PaymentMethodFactory;
 use Backend\Modules\Commerce\Domain\PaymentMethod\PaymentMethod;
