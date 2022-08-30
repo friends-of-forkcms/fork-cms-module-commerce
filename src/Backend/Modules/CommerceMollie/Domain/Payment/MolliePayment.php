@@ -50,7 +50,6 @@ class MolliePayment
         $this->bank_status = $bank_status;
     }
 
-
     public static function fromDataTransferObject(MolliePaymentDataTransferObject $dataTransferObject): MolliePayment
     {
         if ($dataTransferObject->hasExistingPayment()) {

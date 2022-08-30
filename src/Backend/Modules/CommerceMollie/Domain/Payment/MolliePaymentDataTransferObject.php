@@ -31,7 +31,6 @@ class MolliePaymentDataTransferObject
      */
     public ?string $bank_status = null;
 
-
     public function __construct(MolliePayment $payment = null)
     {
         $this->paymentEntity = $payment;
