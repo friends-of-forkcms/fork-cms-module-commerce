@@ -1,8 +1,14 @@
-{% extends '/Layout/Templates/base.html.twig' %}
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
 {% form_theme form with ["Commerce/Layout/Templates/FormHelper.html.twig", "Commerce/Layout/Templates/Select2Entity.html.twig"] %}
+
+{% block actionbar %}
+
+{% endblock %}
 
 {% block content %}
   {{ form_start(form) }}
+
   <div class="row fork-module-content">
     <div class="col-md-12">
       <div class="form-group">
@@ -24,7 +30,7 @@
             <a href="#tabRelations" aria-controls="tabRelations" role="tab"
                data-toggle="tab">{{ 'lbl.Relations'|trans|ucfirst }}</a>
           </li>
-          <li role="presentation" class="hidden">
+          <li role="presentation"{% if not product.usesDimensions %} class="hidden"{% endif %}>
             <a href="#tabDimensions" aria-controls="tabDimensions" role="tab"
                data-toggle="tab">{{ 'lbl.Dimensions'|trans|ucfirst }}</a>
           </li>
@@ -62,6 +68,7 @@
                   </div>
                   {{ form_errors(form.summary) }}
                 </div>
+
                 <div class="panel panel-default panel-editor">
                   <div class="panel-heading">
                     {{ form_label(form.text) }}
@@ -71,31 +78,100 @@
                   </div>
                   {{ form_errors(form.text) }}
                 </div>
+
+                <!-- Price -->
+                <div class="panel panel-default">
+                  <div class="panel-heading">{{ 'lbl.Pricing'|trans|ucfirst }}</div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        {{ form_row(form.price) }}
+                        {{ form_row(form.vat) }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Inventory -->
+                <div class="panel panel-default">
+                  <div class="panel-heading">{{ 'lbl.Inventory'|trans|ucfirst }}</div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div>
+                          {{ form_label(form.sku) }}
+                          <p class="help-block">SKU (Stock Keeping Unit)</p>
+                          {{ form_widget(form.sku) }}
+                          {{ form_errors(form.sku) }}
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div>
+                          {{ form_label(form.barcode) }}
+                          <p class="help-block">ISBN, UPC, GTIN, etc</p>
+                          {{ form_widget(form.barcode) }}
+                          {{ form_errors(form.barcode) }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="panel-body">
+                    {{ form_row(form.from_stock) }}
+                    <div class="js-stock-tracking">
+                      {{ form_row(form.stock) }}
+                      {{ form_row(form.stock_status) }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Shipping -->
+                <div class="panel panel-default">
+                  <div class="panel-heading">{{ 'lbl.Shipping'|trans|ucfirst }}</div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          {{ form_label(form.weight) }}
+                          <div class="input-group">
+                            {{ form_widget(form.weight) }}
+                            <span class="input-group-addon">kg</span>
+                          </div>
+                        </div>
+
+                        {{ form_row(form.order_quantity) }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <!-- Right sidebar -->
               <div class="col-md-4">
+
+                <!-- Metadata panel -->
                 <div class="panel form-group panel-default">
                   <div class="panel-heading">{{ 'lbl.MetaData'|trans|ucfirst }}</div>
                   <div class="panel-body">
-                    {{ form_row(form.sku) }}
-                    {{ form_row(form.ean13) }}
-                    {{ form_row(form.isbn) }}
-                    {{ form_row(form.category) }}
-                    {{ form_row(form.brand) }}
-                    {{ form_row(form.weight) }}
-                    {{ form_row(form.price) }}
-                    {{ form_row(form.vat) }}
-                    {{ form_row(form.order_quantity) }}
-                    {{ form_row(form.stock) }}
-                    {{ form_row(form.from_stock) }}
-                    {{ form_row(form.stock_status) }}
                     {{ form_row(form.hidden) }}
+                  </div>
+                </div>
+
+                <div class="panel form-group panel-default">
+                  <div class="panel-heading">{{ 'lbl.Organization'|trans|ucfirst }}</div>
+                  <div class="panel-body">
+                    {{ form_row(form.brand) }}
                     {{ form_row(form.type) }}
+                    {{ form_row(form.category) }}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabRelations">
+            <p class="help-block">{{ 'msg.HelpProductRelations'|trans }}</p>
+
             <div class="row">
               <div class="col-md-5">
                 {{ form_row(form.related_products) }}
@@ -107,6 +183,7 @@
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabDimensions">
             <div class="row">
               <div class="col-md-12">
@@ -172,17 +249,29 @@
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabOptions">
+            <p class="help-block">{{ 'msg.HelpProductOptions'|trans }}</p>
+
             <div class="row">
               <div class="col-md-12">
-                {{ 'msg.CannotAddProductOptionsWhenCreatingANewProduct'|trans }}
+                {{ macro.dataGrid(productOptionsDataGrid) }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{ macro.buttonIcon( geturl('AddProductOption', null, '&product=' ~ product.id), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
               </div>
             </div>
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabSpecifications">
+            <p class="help-block">{{ 'msg.HelpProductSpecifications'|trans }}</p>
             {{ form_row(form.specification_values) }}
           </div>
+
           <div role="tabpanel" class="tab-pane" id="tabProductSpecials">
+            <p class="help-block">{{ 'msg.HelpProductSpecials'|trans }}</p>
             {{ form_row(form.specials) }}
           </div>
           <div role="tabpanel" class="tab-pane" id="tabMedia">
@@ -196,13 +285,12 @@
       </div>
     </div>
   </div>
-  <div class="row fork-module-actions">
+  <div class="row fork-page-actions">
     <div class="col-md-12">
       <div class="btn-toolbar">
         <div class="btn-group pull-right" role="group">
           <button id="addButton" type="submit" name="add" class="btn btn-primary">
-            <span class="fa fa-plus-square"></span>&nbsp;
-            {{ 'lbl.Add'|trans|ucfirst }}
+            <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}
           </button>
         </div>
       </div>

@@ -420,8 +420,8 @@
         <translation language="en"><![CDATA[stock]]></translation>
       </item>
       <item type="label" name="FromStock">
-        <translation language="nl"><![CDATA[van voorraad]]></translation>
-        <translation language="en"><![CDATA[from stock]]></translation>
+        <translation language="nl"><![CDATA[houd de voorraad bij]]></translation>
+        <translation language="en"><![CDATA[track stock quantity]]></translation>
       </item>
       <item type="label" name="OrderStatuses">
         <translation language="nl"><![CDATA[order statussen]]></translation>
@@ -452,8 +452,8 @@
         <translation language="en"><![CDATA[no]]></translation>
       </item>
       <item type="label" name="OrderQuantity">
-        <translation language="nl"><![CDATA[bestel hoeveelheid]]></translation>
-        <translation language="en"><![CDATA[order quantity]]></translation>
+        <translation language="nl"><![CDATA[minimaal bestelaantal]]></translation>
+        <translation language="en"><![CDATA[minimal order quantity]]></translation>
       </item>
       <item type="label" name="ArticleNumber">
         <translation language="nl"><![CDATA[artikelnummer]]></translation>
@@ -476,8 +476,20 @@
         <translation language="en"><![CDATA[The brand is saved.]]></translation>
       </item>
       <item type="label" name="ShowOnlyProductsInCategory">
-        <translation language="nl"><![CDATA[toon enkel producten in de categorie:]]></translation>
-        <translation language="en"><![CDATA[show only products in category:]]></translation>
+        <translation language="nl"><![CDATA[Toon enkel producten in de categorie]]></translation>
+        <translation language="en"><![CDATA[Show only products in category]]></translation>
+      </item>
+      <item type="label" name="FilterByCategory">
+        <translation language="nl"><![CDATA[Filter categorie]]></translation>
+        <translation language="en"><![CDATA[Filter category]]></translation>
+      </item>
+      <item type="label" name="FilterByBrand">
+        <translation language="nl"><![CDATA[Filter merk]]></translation>
+        <translation language="en"><![CDATA[Filter brand]]></translation>
+      </item>
+      <item type="label" name="FilterByStatus">
+        <translation language="nl"><![CDATA[Filter status]]></translation>
+        <translation language="en"><![CDATA[Filter status]]></translation>
       </item>
       <item type="label" name="FilterOnSku">
         <translation language="nl"><![CDATA[filter op artikelnummer:]]></translation>
@@ -487,9 +499,33 @@
         <translation language="nl"><![CDATA[upsell producten]]></translation>
         <translation language="en"><![CDATA[up sell products]]></translation>
       </item>
+      <item type="label" name="Organization">
+        <translation language="nl"><![CDATA[organisatie]]></translation>
+        <translation language="en"><![CDATA[organization]]></translation>
+      </item>
+      <item type="label" name="Pricing">
+        <translation language="nl"><![CDATA[prijzen]]></translation>
+        <translation language="en"><![CDATA[pricing]]></translation>
+      </item>
+      <item type="label" name="Shipping">
+        <translation language="nl"><![CDATA[verzending]]></translation>
+        <translation language="en"><![CDATA[shipping]]></translation>
+      </item>
+      <item type="label" name="Inventory">
+        <translation language="nl"><![CDATA[voorraad]]></translation>
+        <translation language="en"><![CDATA[inventory]]></translation>
+      </item>
       <item type="label" name="ShipmentMethods">
         <translation language="nl"><![CDATA[verzendmethoden]]></translation>
         <translation language="en"><![CDATA[shipment methods]]></translation>
+      </item>
+      <item type="label" name="SearchOrders">
+        <translation language="nl"><![CDATA[Zoeken in bestellingen]]></translation>
+        <translation language="en"><![CDATA[Search orders]]></translation>
+      </item>
+      <item type="label" name="SearchProducts">
+        <translation language="nl"><![CDATA[Zoeken naar producten]]></translation>
+        <translation language="en"><![CDATA[Search products]]></translation>
       </item>
       <item type="label" name="Version">
         <translation language="nl"><![CDATA[versie]]></translation>
@@ -1055,6 +1091,35 @@
         <translation language="nl"><![CDATA[Vul ofwel een kortingspercentage of vast kortingsbedrag in.]]></translation>
         <translation language="en"><![CDATA[Either a reduction percentage or reduction price is required.]]></translation>
       </item>
+      <item type="message" name="HelpProductSpecifications">
+        <translation language="nl"><![CDATA[Voeg informatie toe over dit artikel; bijvoorbeeld: technische specificaties of ingrediënten.
+          Sommige waarden kunnen gebruikt worden als filter om klanten sneller producten te helpen vinden (bijvoorbeeld:
+          materiaal, kleur, of maat.]]></translation>
+        <translation language="en"><![CDATA[Add information about what this item is composed of; for example:
+          technical specifications or ingredients. Some of these values can be used as filter to help customers find products faster (for example:
+          material, color, or size.
+        ]]></translation>
+      </item>
+      <item type="message" name="HelpProductSpecials">
+        <translation language="nl"><![CDATA[Stel een tijdsgebonden promotie in op het product]]></translation>
+        <translation language="en"><![CDATA[Configure a product special]]></translation>
+      </item>
+      <item type="message" name="HelpProductRelations">
+        <translation language="en"><![CDATA[Selecteer verwante producten om bij dit product te tonen.]]></translation>
+        <translation language="en"><![CDATA[Add related products to promote upselling on product and shopping cart pages.]]></translation>
+      </item>
+      <item type="message" name="HelpProductOptions">
+        <translation language="en"><![CDATA[Toon bijkomende diensten of vraag de klant om meer informatie bij de aankoop. Bijvoorbeeld: cadeauverpakking of afspraakdatum.]]></translation>
+        <translation language="en"><![CDATA[Display additional services or clarify information you need from a customer. For example: gift wrapping or appointment times.]]></translation>
+      </item>
+      <item type="label" name="ProductOption">
+        <translation language="en"><![CDATA[product optie]]></translation>
+        <translation language="en"><![CDATA[product option]]></translation>
+      </item>
+      <item type="label" name="ProductOptions">
+        <translation language="en"><![CDATA[product opties]]></translation>
+        <translation language="en"><![CDATA[product options]]></translation>
+      </item>
       <item type="label" name="Actions">
         <translation language="nl"><![CDATA[acties]]></translation>
         <translation language="en"><![CDATA[actions]]></translation>
@@ -1115,9 +1180,25 @@
         <translation language="nl"><![CDATA[laatste 30 dagen]]></translation>
         <translation language="en"><![CDATA[last 30 days]]></translation>
       </item>
+      <item type="label" name="Last90Days">
+        <translation language="nl"><![CDATA[laatste 90 dagen]]></translation>
+        <translation language="en"><![CDATA[last 90 days]]></translation>
+      </item>
+      <item type="label" name="LastYear">
+        <translation language="nl"><![CDATA[laatste jaar]]></translation>
+        <translation language="en"><![CDATA[last year]]></translation>
+      </item>
       <item type="label" name="ThisMonth">
         <translation language="nl"><![CDATA[deze maand]]></translation>
         <translation language="en"><![CDATA[this month]]></translation>
+      </item>
+      <item type="label" name="ThisQuarter">
+        <translation language="nl"><![CDATA[dit kwartaal]]></translation>
+        <translation language="en"><![CDATA[this quarter]]></translation>
+      </item>
+      <item type="label" name="ThisYear">
+        <translation language="nl"><![CDATA[dit jaar]]></translation>
+        <translation language="en"><![CDATA[this year]]></translation>
       </item>
       <item type="label" name="LastMonth">
         <translation language="nl"><![CDATA[vorige maand]]></translation>
@@ -1181,13 +1262,9 @@
         <translation language="nl"><![CDATA[verzendmethode]]></translation>
         <translation language="en"><![CDATA[shipment method]]></translation>
       </item>
-      <item type="label" name="EAN13">
-        <translation language="nl"><![CDATA[EAN 13]]></translation>
-        <translation language="en"><![CDATA[EAN 13]]></translation>
-      </item>
-      <item type="label" name="ISBN">
-        <translation language="nl"><![CDATA[ISBN]]></translation>
-        <translation language="en"><![CDATA[ISBN]]></translation>
+      <item type="label" name="Barcode">
+        <translation language="nl"><![CDATA[barcode]]></translation>
+        <translation language="en"><![CDATA[barcode]]></translation>
       </item>
       <item type="label" name="Notification">
         <translation language="nl"><![CDATA[melding]]></translation>

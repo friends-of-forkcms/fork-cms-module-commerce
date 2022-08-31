@@ -58,8 +58,7 @@ final class ProductFactory extends ModelFactory
                 $dto->price = $attributes['price'];
                 $dto->stock = $attributes['stock'];
                 $dto->sku = $attributes['sku'];
-                $dto->ean13 = $attributes['ean13'];
-                $dto->isbn = $attributes['isbn'];
+                $dto->barcode = $attributes['barcode'];
                 $dto->summary = $attributes['summary'];
                 $dto->text = $attributes['text'];
                 $dto->specials = $attributes['specials'];
@@ -100,8 +99,7 @@ final class ProductFactory extends ModelFactory
             'price' => Money::EUR((string) self::faker()->randomFloat(2, 1, 1000) * 100),
             'stock' => self::faker()->randomNumber(),
             'sku' => (string) self::faker()->randomNumber(),
-            'ean13' => self::faker()->ean13,
-            'isbn' => self::faker()->isbn13,
+            'barcode' => self::faker()->isbn13(),
             'summary' => self::faker()->sentence(),
             'text' => self::faker()->paragraph(),
             'specials' => new ArrayCollection(),

@@ -89,12 +89,12 @@ class ProductOptionType extends AbstractType
 
                     $queryBuilder = $entityRepository->createQueryBuilder('i');
                     if ($options['data']->hasExistingProductOption()) {
-                        $queryBuilder->andWhere('i.product_option != :product_option')
+                        $queryBuilder->andWhere('i.productOption != :product_option')
                             ->setParameter('product_option', $options['data']->getProductOptionEntity());
                     }
 
                     if ($options['product']) {
-                        $queryBuilder->innerJoin('i.product_option', 'op')
+                        $queryBuilder->innerJoin('i.productOption', 'op')
                             ->andWhere('op.product = :product')
                             ->setParameter('product', $options['product']);
                     }

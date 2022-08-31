@@ -7,9 +7,6 @@ use Backend\Core\Language\Locale;
 use Backend\Modules\Commerce\Domain\Product\Product;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Alters the sequence of Commerce categories.
- */
 class AutoCompleteProducts extends BackendBaseAJAXAction
 {
     public function execute(): void

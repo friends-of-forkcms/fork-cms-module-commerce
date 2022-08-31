@@ -16,3 +16,15 @@ input[type="datetime-local"].form-control,
 input[type="month"].form-control {
     line-height: normal !important;
 }
+
+/** Datagrid */
+.fork-data-grid .thumb img {
+    display: block;
+    border: 1px solid #CCC;
+}
+
+/** Product filters */
+#filter_brand option[value=""],
+#filter_category option[value=""] {
+    color: #CCC !important;
+}

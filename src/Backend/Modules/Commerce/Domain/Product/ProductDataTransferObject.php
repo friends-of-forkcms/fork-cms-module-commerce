@@ -85,8 +85,7 @@ class ProductDataTransferObject
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
     public string $sku;
-    public ?string $ean13 = null;
-    public ?string $isbn = null;
+    public ?string $barcode = null;
     public ?string $text = null;
     public ?string $dimension_instructions = null;
     public Locale $locale;
@@ -192,8 +191,7 @@ class ProductDataTransferObject
         $this->order_quantity = $this->productEntity->getOrderQuantity();
         $this->from_stock = $this->productEntity->isFromStock();
         $this->sku = $this->productEntity->getSku();
-        $this->ean13 = $this->productEntity->getEan13();
-        $this->isbn = $this->productEntity->getIsbn();
+        $this->barcode = $this->productEntity->getBarcode();
         $this->sequence = $this->productEntity->getSequence();
         $this->specification_values = $this->productEntity->getSpecificationValues();
         $this->specials = $this->productEntity->getSpecials();

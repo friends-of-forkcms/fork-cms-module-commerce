@@ -13,7 +13,7 @@ class SpecificationDataTransferObject
 {
     protected ?Specification $specificationEntity = null;
 
-    public int $id;
+    public ?int $id = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")

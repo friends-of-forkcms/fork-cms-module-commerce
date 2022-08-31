@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -55,7 +56,7 @@ class ProductType extends AbstractType
                 'label' => 'lbl.Weight',
             ])
             ->add('price', MoneyType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => 'lbl.Price',
             ])
             ->add('order_quantity', NumberType::class, [
@@ -66,25 +67,17 @@ class ProductType extends AbstractType
                 'required' => true,
                 'label' => 'lbl.Stock',
             ])
-            ->add('from_stock', ChoiceType::class, [
-                'required' => true,
+            ->add('from_stock', CheckboxType::class, [
+                'required' => false,
                 'label' => 'lbl.FromStock',
-                'choices' => [
-                    'lbl.Yes' => true,
-                    'lbl.No' => false,
-                ],
             ])
             ->add('sku', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'lbl.ArticleNumber',
             ])
-            ->add('ean13', TextType::class, [
+            ->add('barcode', TextType::class, [
                 'required' => false,
-                'label' => 'lbl.EAN13',
-            ])
-            ->add('isbn', TextType::class, [
-                'required' => false,
-                'label' => 'lbl.ISBN',
+                'label' => 'lbl.Barcode',
             ])
             ->add('type', ChoiceType::class, [
                 'required' => true,

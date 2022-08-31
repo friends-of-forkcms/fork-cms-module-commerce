@@ -7,6 +7,16 @@
 
 {% block content %}
   {{ form_start(form) }}
+
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'lbl.Name'|trans|ucfirst }}</label>
+        {{ form_widget(form.name, {'attr' : {'class' : 'title'}}) }}
+      </div>
+    </div>
+  </div>
+
   <div class="row fork-module-content">
     <div class="col-md-12">
       <div role="tabpanel">
@@ -20,18 +30,6 @@
           <div role="tabpanel" class="tab-pane active" id="tabContent">
             <div class="row">
               <div class="col-md-8">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <p>{{ 'lbl.DefaultSettings'|trans|ucfirst }}</p>
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      {{ form_label(form.name) }}
-                      {{ form_widget(form.name) }}
-                      {{ form_errors(form.name) }}
-                    </div>
-                  </div>
-                </div>
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <p>{{ 'lbl.OrderStatuses'|trans|ucfirst }}</p>

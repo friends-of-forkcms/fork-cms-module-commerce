@@ -6,23 +6,16 @@
 
 {% block content %}
     {{ form_start(form) }}
+
     <div class="row fork-module-content">
         <div class="col-md-12">
-            <div role="tabpanel">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#tabContent" aria-controls="tabContent" role="tab"
-                           data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tabContent">
-                        {{ form_row(form.title) }}
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }}</label>
+                {{ form_widget(form.title, {'attr' : {'class' : 'title'}}) }}
             </div>
         </div>
     </div>
+
     <div class="row fork-page-actions">
         <div class="col-md-12">
             <div class="btn-toolbar">

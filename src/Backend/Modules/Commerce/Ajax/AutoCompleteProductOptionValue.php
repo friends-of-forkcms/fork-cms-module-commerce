@@ -7,9 +7,6 @@ use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValue;
 use Backend\Modules\Commerce\Domain\ProductOptionValue\ProductOptionValueRepository;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Alters the sequence of Commerce categories.
- */
 class AutoCompleteProductOptionValue extends BackendBaseAJAXAction
 {
     public function execute(): void

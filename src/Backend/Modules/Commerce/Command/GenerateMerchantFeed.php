@@ -160,12 +160,8 @@ class GenerateMerchantFeed extends Command
 
     private function getGtin(Product $product): ?string
     {
-        if ($product->getEan13()) {
-            return $product->getEan13();
-        }
-
-        if ($product->getIsbn()) {
-            return $product->getIsbn();
+        if ($product->getBarcode()) {
+            return $product->getBarcode();
         }
 
         return null;

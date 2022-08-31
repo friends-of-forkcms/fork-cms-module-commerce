@@ -8,6 +8,9 @@ use Backend\Core\Engine\DataGridFunctions;
 use Backend\Core\Engine\Model;
 use Backend\Core\Language\Language;
 use Backend\Modules\Commerce\Domain\ProductOption\ProductOption;
+use Money\Currency;
+use Money\Money;
+use Tbbc\MoneyBundle\Formatter\MoneyFormatter;
 
 /**
  * @TODO replace with a doctrine implementation of the data grid
@@ -23,7 +26,8 @@ class DataGrid extends DataGridDatabase
                 IF(po.type = :typeBetween, CONCAT_WS(:titleSeparator, CONCAT(IFNULL(po.prefix, ""), c.start, IFNULL(po.suffix, "")), CONCAT(IFNULL(po.prefix, ""), c.end, IFNULL(po.suffix, ""))), c.title) as title,
                 c.impactType,
                 c.percentage,
-                c.price,
+                c.priceAmount AS price,
+                c.priceCurrencyCode,
                 c.defaultValue,
                 c.sequence,
                 (SELECT(count(*)) FROM commerce_product_options i WHERE i.productOptionValueId = c.id) as sub_options
@@ -41,9 +45,12 @@ class DataGrid extends DataGridDatabase
         $this->setColumnFunction('htmlspecialchars', ['[title]'], 'title', false);
         $this->setColumnFunction([DataGridFunctions::class, 'showBool'], ['[defaultValue]'], 'defaultValue');
         $this->setColumnFunction([self::class, 'getImpactTypeText'], ['[impactType]'], 'impactType');
-        $this->setColumnsHidden(['sequence']);
+        $this->setColumnsHidden(['sequence', 'priceCurrencyCode']);
         $this->enableSequenceByDragAndDrop();
         $this->setAttributes(['data-action' => 'SequenceProductOptionValues']);
+
+        // Format price column properly
+        $this->setColumnFunction([self::class, 'getFormattedMoney'], ['[price]', '[priceCurrencyCode]'], 'price', true);
 
         // check if this action is allowed
         if (BackendAuthentication::isAllowedAction('EditProductOptionValue')) {
@@ -73,5 +80,13 @@ class DataGrid extends DataGridDatabase
         }
 
         return $returnValue;
+    }
+
+    public static function getFormattedMoney(int $amount, string $currencyCode): string
+    {
+        $money = new Money($amount, new Currency($currencyCode));
+        $moneyFormatter = new MoneyFormatter();
+
+        return $moneyFormatter->localizedFormatMoney($money);
     }
 }
