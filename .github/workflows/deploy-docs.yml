@@ -12,6 +12,7 @@ jobs:
   build:
     name: Deploy docs
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'friends-of-forkcms'
     steps:
       - name: Checkout master
         uses: actions/checkout@v2

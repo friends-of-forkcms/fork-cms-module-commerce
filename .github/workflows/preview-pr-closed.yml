@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Login
-        uses: okteto/login@master
+        uses: okteto/login@main
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
       - name: Delete preview
-        uses: okteto/destroy-preview@master
+        uses: okteto/destroy-preview@main
         with:
           name: ${{ env.DEPLOY_NAME }}

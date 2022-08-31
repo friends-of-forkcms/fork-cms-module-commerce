@@ -49,7 +49,6 @@ RUN a2enmod rewrite
 
 # Install mysql and mysqladmin binaries
 RUN apt-get update && apt-get install -y --no-install-recommends mariadb-client
-COPY --from=mariadb:10 /usr/bin/mysqladmin /usr/local/bin/mysqladmin
 
 # Install GD2
 RUN apt-get update && apt-get install -y --no-install-recommends --allow-downgrades \

@@ -28,12 +28,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Login
-        uses: okteto/login@master
+        uses: okteto/login@main
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
       - name: Deploy preview environment
-        uses: okteto/deploy-preview@latest
+        uses: okteto/deploy-preview@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -64,12 +64,12 @@ jobs:
           ref: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
 
       - name: Login
-        uses: okteto/login@master
+        uses: okteto/login@main
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
       - name: Deploy preview environment
-        uses: okteto/deploy-preview@latest
+        uses: okteto/deploy-preview@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REF: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
