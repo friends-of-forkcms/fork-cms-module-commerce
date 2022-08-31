@@ -37,14 +37,14 @@ class MolliePaymentMethodType extends PaymentMethodType
                 'orderInitId',
                 EntityType::class,
                 [
-                'required' => true,
-                'label' => 'lbl.OrderInitialized',
-                'class' => OrderStatus::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('i')
-                              ->orderBy('i.title', 'ASC');
-                },
-                'choice_label' => 'title',
+                    'required' => true,
+                    'label' => 'lbl.OrderInitialized',
+                    'class' => OrderStatus::class,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('i')
+                            ->orderBy('i.title', 'ASC');
+                    },
+                    'choice_label' => 'title',
                 ]
             )
             ->add(
