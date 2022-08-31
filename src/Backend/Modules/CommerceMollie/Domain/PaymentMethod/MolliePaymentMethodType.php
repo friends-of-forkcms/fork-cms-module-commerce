@@ -121,20 +121,6 @@ class MolliePaymentMethodType extends PaymentMethodType
             ->addModelTransformer(new OrderStatusTransformer($options['entityManager']));
 
         foreach ($options['enabledMethods'] as $method) {
-            /**
-             * @var FormFactory $formFactory
-             */
-//            $formFactory = Model::get('form.factory');
-//            $subForm = $formFactory->createNamed($method['id']);
-//            $subForm->add(
-//                'label',
-//                TextType::class,
-//                [
-//                    'required' => false,
-//                    'label' => 'lbl.Name',
-//                ]
-//            );
-
             $builder->add(
                 $builder->create(
                     $method['id'],
