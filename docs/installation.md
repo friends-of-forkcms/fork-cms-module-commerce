@@ -16,7 +16,8 @@ composer require knplabs/knp-snappy-bundle "v1.6.0"
 composer require h4cc/wkhtmltopdf-amd64 "^0.12.4"
 composer require gedmo/doctrine-extensions "^3.0"
 composer require jeroendesloovere/sitemap-bundle "^2.0"
-composer require tbbc/money-bundle ^4.1"
+composer require tbbc/money-bundle "^4.1"
+composer require mollie/mollie-api-php "^2.0"
 
 # In case you want to load the demo fixtures or run unit tests
 composer require --dev doctrine/doctrine-fixtures-bundle
