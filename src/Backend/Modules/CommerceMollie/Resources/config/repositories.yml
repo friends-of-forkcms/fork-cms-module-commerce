@@ -1,0 +1,6 @@
+services:
+    commerce_mollie.repository.payment:
+        class: Backend\Modules\CommerceMollie\Domain\Payment\MolliePaymentRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\CommerceMollie\Domain\Payment\MolliePayment

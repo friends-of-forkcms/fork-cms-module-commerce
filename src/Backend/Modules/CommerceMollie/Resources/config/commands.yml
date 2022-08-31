@@ -1,0 +1,15 @@
+services:
+    commerce.handler.create_payment_mollie:
+        class: Backend\Modules\CommerceMollie\Domain\Payment\Command\CreateMolliePaymentHandler
+        arguments:
+            - "@commerce_mollie.repository.payment"
+            - "@fork.settings"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\CommerceMollie\Domain\Payment\Command\CreateMolliePayment }
+    commerce.handler.update_payment_method_mollie:
+        class: Backend\Modules\CommerceMollie\Domain\PaymentMethod\Command\UpdateMolliePaymentMethodHandler
+        arguments:
+            - "@commerce.repository.payment_method"
+            - "@fork.settings"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\CommerceMollie\Domain\PaymentMethod\Command\UpdateMolliePaymentMethod }

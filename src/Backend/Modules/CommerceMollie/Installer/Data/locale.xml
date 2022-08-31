@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  <Backend>
+    <Core>
+      <item type="label" name="CommerceMollie">
+        <translation language="nl"><![CDATA[Mollie]]></translation>
+        <translation language="en"><![CDATA[Mollie]]></translation>
+      </item>
+    </Core>
+  </Backend>
+</locale>
