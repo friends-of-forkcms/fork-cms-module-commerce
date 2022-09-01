@@ -75,12 +75,12 @@ class CartRuleRepository extends EntityRepository
         $now = new DateTime();
 
         return $queryBuilder->where('i.code LIKE :code')
-            ->andWhere('i.from <= :now')
+            ->andWhere('i.fromDate <= :now')
             ->andWhere(
                 $queryBuilder->expr()
                 ->orX(
-                    $queryBuilder->expr()->isNull('i.till'),
-                    $queryBuilder->expr()->gte('i.till', ':now')
+                    $queryBuilder->expr()->isNull('i.tillDate'),
+                    $queryBuilder->expr()->gte('i.tillDate', ':now')
                 )
             )
             ->andWhere('i.hidden = :hidden')
