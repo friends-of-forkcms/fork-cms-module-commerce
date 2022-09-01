@@ -503,7 +503,8 @@ class Cart implements JsonSerializable
             }
 
             if ($cartRule->getReductionPrice() !== null) {
-                $total = $this->applyPercentageDiscount($cartRule->getReductionPrice() / $this->total);
+                $this->moneyFormatter = new MoneyFormatter();
+                $total = $this->applyPercentageDiscount($this->moneyFormatter->asFloat($cartRule->getReductionPrice()) / $this->moneyFormatter->asFloat($this->subTotal));
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
