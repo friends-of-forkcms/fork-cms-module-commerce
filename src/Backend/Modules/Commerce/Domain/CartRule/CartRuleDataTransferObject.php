@@ -94,6 +94,14 @@ class CartRuleDataTransferObject
      */
     public function validate(ExecutionContextInterface $context): void
     {
+        // Validate dates
+        if (($this->from && $this->till) && ($this->from > $this->till)) {
+            $context->buildViolation('err.EndDateAfterStartDate')
+                ->atPath('till')
+                ->addViolation();
+        }
+
+        // Validate reduction discount
         $isEmptyReductionPercentage = empty($this->reduction_percentage);
         $isEmptyReductionPrice = $this->reduction_price === null || $this->reduction_price->isZero();
 
