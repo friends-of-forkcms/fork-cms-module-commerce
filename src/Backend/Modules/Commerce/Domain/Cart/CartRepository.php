@@ -49,6 +49,18 @@ class CartRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
+    public function getCartRuleUsage(int $id): int
+    {
+        $query_builder = $this->createQueryBuilder('i');
+
+        return $query_builder->select('COUNT(cr.id)')
+            ->join('i.cartRules', 'cr')
+            ->where('cr.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     /**
      * Find by a cart by session id. When there is no cart found create a new one.
      *

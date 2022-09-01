@@ -41,16 +41,17 @@ class AddCartRule extends FrontendBaseAJAXAction
             return;
         }
 
-        if ($this->cartRule->getQuantity() < 1) {
-            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('ThisCartRuleIsNotValid'));
+        // Only add the cart rule when it does not exist in the current cart yet
+        $cartRuleExists = $this->cart->getCartRules()->exists(fn ($key, $value) => $value->getId() === $this->cartRule->getId());
+        if ($cartRuleExists) {
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('CartRuleAlreadyUsed'));
 
             return;
         }
 
-        // Only add the cart rule when it does not exist yet
-        $cartRuleExists = $this->cart->getCartRules()->exists(fn ($key, $value) => $value->getId() === $this->cartRule->getId());
-        if ($cartRuleExists) {
-            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('CartRuleAlreadyUsed'));
+        // Discount code quantity must not be exceeded (when set)
+        if ($this->cartRule->getQuantity() > 0 && $this->cartRule->getQuantity() <= $this->getCartRepository()->getCartRuleUsage($this->cartRule->getId())) {
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('ThisCartRuleIsNotValid'));
 
             return;
         }
