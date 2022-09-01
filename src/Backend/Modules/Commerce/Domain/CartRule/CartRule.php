@@ -33,12 +33,12 @@ class CartRule
     private string $title;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private DateTimeInterface $fromDate;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTimeInterface $tillDate;
 
