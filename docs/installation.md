@@ -81,6 +81,11 @@ liip_imagine:
                 auto_rotate: ~
                 strip: ~
                 scale: { dim: [ 300, 380 ] }
+        product_thumbnail_square:
+            filters:
+                auto_rotate: ~
+                strip: ~
+                thumbnail: { size: [ 250, 250 ], mode: outbound }
         product_large:
             filters:
                 auto_rotate: ~
