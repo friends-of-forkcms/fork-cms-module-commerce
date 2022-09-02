@@ -49,6 +49,13 @@ class AddCartRule extends FrontendBaseAJAXAction
             return;
         }
 
+        // Cart must meet minimum price requirement
+        if ($this->cartRule->getMinimumPrice() > $this->cart->getOrder()->getTotal()) {
+            $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('MinimumAmountNotMet'));
+
+            return;
+        }
+
         // Discount code quantity must not be exceeded (when set)
         if ($this->cartRule->getQuantity() > 0 && $this->cartRule->getQuantity() <= $this->getCartRepository()->getCartRuleUsage($this->cartRule->getId())) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('ThisCartRuleIsNotValid'));
