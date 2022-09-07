@@ -497,23 +497,22 @@ class Cart implements JsonSerializable
     {
         foreach ($this->cartRules as $cartRule) {
             if ($cartRule->getReductionPercentage() !== null) {
-                $total = $this->applyPercentageDiscount($cartRule->getReductionPercentage());
+                $total = $this->applyDiscount($this->subTotal->multiply($cartRule->getReductionPercentage()));
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
 
             if ($cartRule->getReductionPrice() !== null) {
-                $this->moneyFormatter = new MoneyFormatter();
-                $total = $this->applyPercentageDiscount($this->moneyFormatter->asFloat($cartRule->getReductionPrice()) / $this->moneyFormatter->asFloat($this->subTotal));
+                $total = $this->applyDiscount($cartRule->getReductionPrice());
 
                 $this->setCartRuleTotal($cartRule, $total);
             }
         }
     }
 
-    private function applyPercentageDiscount(float $percentage): Money
+    private function applyDiscount(Money $discount): Money
     {
-        $discount = $this->subTotal->multiply($percentage);
+        $percentage = $discount->ratioOf($this->subTotal);
         $this->subTotal = $this->subTotal->subtract($discount);
 
         foreach ($this->vats as $key => $vat) {
