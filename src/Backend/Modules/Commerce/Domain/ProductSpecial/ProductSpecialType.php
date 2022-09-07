@@ -3,7 +3,7 @@
 namespace Backend\Modules\Commerce\Domain\ProductSpecial;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tbbc\MoneyBundle\Form\Type\MoneyType;
@@ -17,11 +17,11 @@ class ProductSpecialType extends AbstractType
                 'required' => true,
                 'label' => 'lbl.Price',
             ])
-            ->add('start_date', DateType::class, [
+            ->add('start_date', DateTimeType::class, [
                 'required' => true,
                 'label' => 'lbl.StartDate',
             ])
-            ->add('end_date', DateType::class, [
+            ->add('end_date', DateTimeType::class, [
                 'required' => false,
                 'label' => 'lbl.EndDate',
             ]);

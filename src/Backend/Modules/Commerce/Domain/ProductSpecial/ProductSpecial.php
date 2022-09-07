@@ -106,8 +106,6 @@ class ProductSpecial
 
     public function setStartDate(DateTimeInterface $startDate): void
     {
-        $startDate->setTime(0, 0);
-
         $this->startDate = $startDate;
     }
 
@@ -122,10 +120,6 @@ class ProductSpecial
 
     public function setEndDate(?DateTimeInterface $endDate): void
     {
-        if ($endDate) {
-            $endDate->setTime(0, 0);
-        }
-
         $this->endDate = $endDate;
     }
 
@@ -137,9 +131,7 @@ class ProductSpecial
     public function isDateValid(ExecutionContextInterface $context, $payload): void
     {
         if ($this->endDate && $this->startDate) {
-            $difference = $this->endDate->diff($this->startDate);
-
-            if ($difference->invert === 0 && $difference->days > 0) {
+            if ($this->startDate > $this->endDate) {
                 $context->buildViolation('err.EndDateAfterStartDate')
                         ->atPath('endDate')
                         ->addViolation();
