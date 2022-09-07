@@ -111,7 +111,6 @@ class ProductSpecial
 
     /**
      * @Assert\Date(message="err.InvalidDate")
-     * @Assert\Date(message="err.InvalidDate")
      */
     public function getEndDate(): ?DateTimeInterface
     {
