@@ -10,7 +10,7 @@ export const filters = (): void => {
     // Early return if we do not have filters or sorting on this page.
     const sortElement = document.querySelector<HTMLInputElement>(sortDropdownSelector);
     const filterElements = document.querySelectorAll<HTMLInputElement>(`${filtersSelector} input`);
-    if (!sortElement || filterElements.length === 0) {
+    if (!sortElement && filterElements.length === 0) {
         return;
     }
 
