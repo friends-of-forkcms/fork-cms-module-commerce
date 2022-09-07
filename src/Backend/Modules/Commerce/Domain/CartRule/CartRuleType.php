@@ -20,14 +20,14 @@ class CartRuleType extends AbstractType
                 'required' => true,
                 'label' => 'lbl.Title',
             ])
-            ->add('from', DateTimeType::class, [
+            ->add('fromDate', DateTimeType::class, [
                 'required' => true,
                 'label' => 'lbl.StartDate',
                 'date_widget' => 'single_text',
                 'html5' => false,
                 'date_format' => 'dd/MM/yyyy', // For consistency with the data-mask and JS datepicker
             ])
-            ->add('till', DateTimeType::class, [
+            ->add('tillDate', DateTimeType::class, [
                 'required' => false,
                 'label' => 'lbl.EndDate',
                 'date_widget' => 'single_text',

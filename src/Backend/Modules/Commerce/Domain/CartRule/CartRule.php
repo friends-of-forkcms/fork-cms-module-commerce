@@ -147,8 +147,8 @@ class CartRule
         return new self(
             $dataTransferObject->locale,
             $dataTransferObject->title,
-            $dataTransferObject->from,
-            $dataTransferObject->till,
+            $dataTransferObject->fromDate,
+            $dataTransferObject->tillDate,
             $dataTransferObject->quantity,
             $dataTransferObject->quantity_per_user,
             $dataTransferObject->code,
@@ -165,8 +165,8 @@ class CartRule
 
         $cartRule->locale = $dataTransferObject->locale;
         $cartRule->title = $dataTransferObject->title;
-        $cartRule->fromDate = $dataTransferObject->from;
-        $cartRule->tillDate = $dataTransferObject->till;
+        $cartRule->fromDate = $dataTransferObject->fromDate;
+        $cartRule->tillDate = $dataTransferObject->tillDate;
         $cartRule->quantity = $dataTransferObject->quantity;
         $cartRule->quantityPerUser = $dataTransferObject->quantity_per_user;
         $cartRule->code = $dataTransferObject->code;
