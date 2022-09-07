@@ -50,7 +50,8 @@ class AddCartRule extends FrontendBaseAJAXAction
         }
 
         // Cart must meet minimum price requirement
-        if ($this->cartRule->getMinimumPrice() > $this->cart->getOrder()->getTotal()) {
+        $this->cart->calculateTotals();
+        if ($this->cartRule->getMinimumPrice() > $this->cart->getTotal()) {
             $this->output(Response::HTTP_UNPROCESSABLE_ENTITY, null, Language::err('MinimumAmountNotMet'));
 
             return;
