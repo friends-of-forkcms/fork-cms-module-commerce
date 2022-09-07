@@ -22,9 +22,9 @@ class CartRuleDataTransferObject
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      */
-    public DateTimeInterface $from;
+    public DateTimeInterface $fromDate;
 
-    public ?DateTimeInterface $till = null;
+    public ?DateTimeInterface $tillDate = null;
 
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
@@ -52,7 +52,7 @@ class CartRuleDataTransferObject
         $this->cartRuleEntity = $cartRule;
         $this->locale = Locale::workingLocale();
         $this->hidden = false;
-        $this->from = new DateTime();
+        $this->fromDate = new DateTime();
         $this->quantity = 0;
         $this->minimum_price = Money::EUR(0);
 
@@ -63,8 +63,8 @@ class CartRuleDataTransferObject
         $this->id = $this->cartRuleEntity->getId();
         $this->locale = $this->cartRuleEntity->getLocale();
         $this->title = $this->cartRuleEntity->getTitle();
-        $this->from = $this->cartRuleEntity->getFromDate();
-        $this->till = $this->cartRuleEntity->getTillDate();
+        $this->fromDate = $this->cartRuleEntity->getFromDate();
+        $this->tillDate = $this->cartRuleEntity->getTillDate();
         $this->quantity = $this->cartRuleEntity->getQuantity();
         $this->quantity_per_user = $this->cartRuleEntity->getQuantityPerUser();
         $this->code = $this->cartRuleEntity->getCode();
@@ -94,6 +94,14 @@ class CartRuleDataTransferObject
      */
     public function validate(ExecutionContextInterface $context): void
     {
+        // Validate dates
+        if (($this->fromDate && $this->tillDate) && ($this->fromDate > $this->tillDate)) {
+            $context->buildViolation('err.EndDateAfterStartDate')
+                ->atPath('tillDate')
+                ->addViolation();
+        }
+
+        // Validate reduction discount
         $isEmptyReductionPercentage = empty($this->reduction_percentage);
         $isEmptyReductionPrice = $this->reduction_price === null || $this->reduction_price->isZero();
 

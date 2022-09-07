@@ -1040,8 +1040,8 @@
         <translation language="en"><![CDATA[A user will need to enter this code to active the discount.]]></translation>
       </item>
       <item type="message" name="HelpDiscountStartDate">
-        <translation language="nl"><![CDATA[Datum vanaf wanneer de korting actief zal zijn. Laat leeg voor onbeperkte startdatum.]]></translation>
-        <translation language="en"><![CDATA[Date from which the discount will be active. Leave blank for unlimited start date.]]></translation>
+        <translation language="nl"><![CDATA[Datum vanaf wanneer de korting actief zal zijn.]]></translation>
+        <translation language="en"><![CDATA[Date from which the discount will be active.]]></translation>
       </item>
       <item type="message" name="HelpDiscountEndDate">
         <translation language="nl"><![CDATA[Datum waarop de korting zal stoppen. Laat leeg voor onbeperkte einddatum.]]></translation>
@@ -2250,6 +2250,10 @@
       <item type="error" name="CartRuleAlreadyUsed">
         <translation language="nl"><![CDATA[Deze kortingscode is reeds gebruikt]]></translation>
         <translation language="en"><![CDATA[This discountcode is already used]]></translation>
+      </item>
+      <item type="error" name="MinimumAmountNotMet">
+        <translation language="nl"><![CDATA[Het vereiste minimum bestelbedrag voor deze kortingscode is niet bereikt]]></translation>
+        <translation language="en"><![CDATA[The required minimum amount for this discount code is not met]]></translation>
       </item>
       <item type="label" name="YourCountryPlaceholder">
         <translation language="nl"><![CDATA[- jouw land -]]></translation>
