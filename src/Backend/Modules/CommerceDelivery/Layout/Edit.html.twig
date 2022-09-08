@@ -1,0 +1,78 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% form_theme form with ["Commerce/Layout/Templates/FormHelper.html.twig"] %}
+
+{% block actionbar %}
+
+{% endblock %}
+
+{% block content %}
+  {{ form_start(form) }}
+
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'lbl.Name'|trans|ucfirst }}</label>
+        {{ form_widget(form.name, {'attr' : {'class' : 'title'}}) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#tabContent" aria-controls="tabContent" role="tab"
+               data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          {% for country in countries %}
+            <li role="presentation">
+              <a href="#tabCountry{{ country.id }}" aria-controls="tabContent" role="tab"
+                 data-toggle="tab">{{ country.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabContent">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <p>{{ 'lbl.DefaultSettings'|trans|ucfirst }}</p>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                      {{ form_row(form.price) }}
+                      {{ form_row(form.vatId) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                {{ form_row(form.isEnabled) }}
+                {{ form_row(form.availablePaymentMethods) }}
+              </div>
+            </div>
+          </div>
+          {% for country in countries %}
+            <div role="tabpanel" class="tab-pane" id="tabCountry{{ country.id }}">
+              {{ form_widget(form[country.id]) }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-page-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-right" role="group">
+          <button id="editButton" type="submit" name="edit" class="btn btn-primary">
+            <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form_end(form) }}
+{% endblock %}
