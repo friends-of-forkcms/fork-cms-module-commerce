@@ -38,19 +38,19 @@ class EditTest extends BackendWebTestCase
         self::assertPageLoadedCorrectly(
             $client,
             '/private/en/commerce/edit_shipment_method?id=1',
-            ['form name="pickup_shipment_method" method="post"']
+            ['form name="delivery_shipment_method" method="post"']
         );
 
         // Edit the shipment method and submit the form
         $form = $this->getFormForSubmitButton($client, 'Save');
         $client->submit($form, [
-            'pickup_shipment_method[name]' => 'Delivery (EditTest)',
-            'pickup_shipment_method[price][tbbc_amount]' => 10.00,
-            'pickup_shipment_method[vatId]' => (string) $vat->getId(),
-            'pickup_shipment_method[isEnabled]' => true,
-            'pickup_shipment_method[availablePaymentMethods][0]' => true,
-            'pickup_shipment_method[availablePaymentMethods][1]' => true,
-            'pickup_shipment_method[availablePaymentMethods][2]' => true,
+            'delivery_shipment_method[name]' => 'Delivery (EditTest)',
+            'delivery_shipment_method[price][tbbc_amount]' => 10.00,
+            'delivery_shipment_method[vatId]' => (string) $vat->getId(),
+            'delivery_shipment_method[isEnabled]' => true,
+            'delivery_shipment_method[availablePaymentMethods][0]' => true,
+            'delivery_shipment_method[availablePaymentMethods][1]' => true,
+            'delivery_shipment_method[availablePaymentMethods][2]' => true,
         ]);
         $client->followRedirect();
 
@@ -63,8 +63,8 @@ class EditTest extends BackendWebTestCase
         $client->request('GET', '/private/en/commerce/edit_shipment_method?id=1');
         self::assertResponseHasContent($client->getResponse(), $vat->getTitle());
         $formValues = $this->getFormForSubmitButton($client, 'Save')->getValues();
-        self::assertEquals('Delivery (EditTest)', $formValues['pickup_shipment_method[name]']);
-        self::assertEquals(10.00, $formValues['pickup_shipment_method[price][tbbc_amount]']);
-        self::assertEquals('1', $formValues['pickup_shipment_method[isEnabled]']);
+        self::assertEquals('Delivery (EditTest)', $formValues['delivery_shipment_method[name]']);
+        self::assertEquals(10.00, $formValues['delivery_shipment_method[price][tbbc_amount]']);
+        self::assertEquals('1', $formValues['delivery_shipment_method[isEnabled]']);
     }
 }
