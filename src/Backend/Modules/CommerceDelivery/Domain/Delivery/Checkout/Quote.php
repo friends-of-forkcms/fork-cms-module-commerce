@@ -37,21 +37,21 @@ class Quote extends ShipmentMethodQuote
 
         if ($enabledShipmentMethods) {
             return $enabledShipmentMethods;
-        } else {
-            // No enabled country-specific methods -> fallback to default delivery pricing
-            /** @var Money $price */
-            $price = $this->shipmentMethodSettingsRepository->getSetting('CommerceDelivery', 'price');
-
-            return [
-                $this->name => [
-                    'label' => "{$this->name} ({$this->moneyFormatter->localizedFormatMoney($price)})",
-                    'name' => $this->name,
-                    'price' => $price,
-                    'vat' => $this->getVatPrice($price),
-                    'available_payment_methods' => $availablePaymentMethods,
-                ],
-            ];
         }
+
+        // No enabled country-specific methods -> fallback to default delivery pricing
+        /** @var Money $price */
+        $price = $this->shipmentMethodSettingsRepository->getSetting('CommerceDelivery', 'price');
+
+        return [
+            $this->name => [
+                'label' => "{$this->name} ({$this->moneyFormatter->localizedFormatMoney($price)})",
+                'name' => $this->name,
+                'price' => $price,
+                'vat' => $this->getVatPrice($price),
+                'available_payment_methods' => $availablePaymentMethods,
+            ],
+        ];
     }
 
     /**
