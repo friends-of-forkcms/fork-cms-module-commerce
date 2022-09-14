@@ -27,15 +27,15 @@
             {# Price + discount #}
             {% if product.hasActiveSpecialPrice %}
                 <span class="price-old | line-through inline">
-                    <del aria-hidden="true">{{ product.oldPrice(false)|money_localized_format }}</del>
+                    <del aria-hidden="true">{{ product.oldPrice(includeVAT)|money_localized_format }}</del>
                 </span>
                 <span class="price-new | text-yellow-500 inline">
-                    {{ product.activePrice(false)|money_localized_format }}
+                    {{ product.activePrice(includeVAT)|money_localized_format }}
                 </span>
             {% else %}
                 {# Regular price #}
                 <span>
-                    {{ product.activePrice(false)|money_localized_format }}
+                    {{ product.activePrice(includeVAT)|money_localized_format }}
                 </span>
             {% endif %}
         </div>

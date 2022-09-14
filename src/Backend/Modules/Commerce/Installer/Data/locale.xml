@@ -975,6 +975,10 @@
         <translation language="nl"><![CDATA[categorie bewerken]]></translation>
         <translation language="en"><![CDATA[edit category]]></translation>
       </item>
+      <item type="label" name="ShowPricesWithVAT">
+        <translation language="nl"><![CDATA[toon alle prijzen inclusief BTW]]></translation>
+        <translation language="en"><![CDATA[show all prices including vat]]></translation>
+      </item>
       <item type="label" name="AddVat">
         <translation language="nl"><![CDATA[BTW toevoegen]]></translation>
         <translation language="en"><![CDATA[add vat]]></translation>
@@ -2326,6 +2330,10 @@
       <item type="error" name="DiscountCodeIsInvalid">
         <translation language="nl"><![CDATA[De ingevoerde code is ongeldig]]></translation>
         <translation language="en"><![CDATA[The entered code is not valid]]></translation>
+      </item>
+      <item type="message" name="InclusiveVatPricing">
+        <translation language="nl"><![CDATA[Inclusief %1$s&percnt; BTW.]]></translation>
+        <translation language="en"><![CDATA[Inclusive %1$s&percnt; VAT.]]></translation>
       </item>
       <item type="message" name="ExclusiveVatPricing">
         <translation language="nl"><![CDATA[Exclusief %1$s&percnt; BTW. (%2$s incl. %3$s&percnt; BTW)]]></translation>

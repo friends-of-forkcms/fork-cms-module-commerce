@@ -25,6 +25,9 @@ class RecentProducts extends FrontendBaseWidget
         $recentProducts = $this->getProductRepository()->getMostRecent($numItems, Locale::frontendLanguage());
 
         $this->template->assign('recentProducts', $recentProducts);
+
+        // Price VAT setting
+        $this->template->assign('includeVAT', $this->get('fork.settings')->get('Commerce', 'show_prices_with_vat', true));
     }
 
     private function getProductRepository(): ProductRepository

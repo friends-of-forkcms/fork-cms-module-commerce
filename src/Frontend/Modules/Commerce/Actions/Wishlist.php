@@ -52,6 +52,9 @@ class Wishlist extends FrontendBaseBlock
     private function parse(): void
     {
         $this->template->assign('products', $this->products);
+
+        // Price VAT setting
+        $this->template->assign('includeVAT', $this->get('fork.settings')->get('Commerce', 'show_prices_with_vat', true));
     }
 
     public function handlePdfDownload(): void
