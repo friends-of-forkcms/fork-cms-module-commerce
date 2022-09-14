@@ -1215,7 +1215,7 @@
     </Commerce>
     <Core>
       <item type="label" name="Commerce">
-        <translation language="nl"><![CDATA[commerceus]]></translation>
+        <translation language="nl"><![CDATA[commerce]]></translation>
         <translation language="en"><![CDATA[commerce]]></translation>
       </item>
       <item type="label" name="ShoppingCart">
