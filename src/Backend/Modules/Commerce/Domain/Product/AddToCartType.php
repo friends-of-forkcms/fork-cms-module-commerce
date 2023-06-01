@@ -323,25 +323,25 @@ class AddToCartType extends AbstractType
                         return $reverseTransform;
                     });
 
-//                    $params['class'] = ProductOptionValue::class;
-//                    $params['choices'] = $productOption->getProductOptionValues();
-//                    $params['choice_label'] = function(ProductOptionValue $productOptionValue) {
-//                        $label = [];
-//
-//                        if ($productOptionValue->getStart()) {
-//                            $label[] = $productOptionValue->getProductOption()->getPrefix() .
-//                                $productOptionValue->getStart().
-//                                $productOptionValue->getProductOption()->getSuffix();
-//                        }
-//
-//                        if ($productOptionValue->getEnd()) {
-//                            $label[] = $productOptionValue->getProductOption()->getPrefix() .
-//                                $productOptionValue->getEnd().
-//                                $productOptionValue->getProductOption()->getSuffix();
-//                        }
-//
-//                        return implode(' - ', $label);
-//                    };
+                    //                    $params['class'] = ProductOptionValue::class;
+                    //                    $params['choices'] = $productOption->getProductOptionValues();
+                    //                    $params['choice_label'] = function(ProductOptionValue $productOptionValue) {
+                    //                        $label = [];
+                    //
+                    //                        if ($productOptionValue->getStart()) {
+                    //                            $label[] = $productOptionValue->getProductOption()->getPrefix() .
+                    //                                $productOptionValue->getStart().
+                    //                                $productOptionValue->getProductOption()->getSuffix();
+                    //                        }
+                    //
+                    //                        if ($productOptionValue->getEnd()) {
+                    //                            $label[] = $productOptionValue->getProductOption()->getPrefix() .
+                    //                                $productOptionValue->getEnd().
+                    //                                $productOptionValue->getProductOption()->getSuffix();
+                    //                        }
+                    //
+                    //                        return implode(' - ', $label);
+                    //                    };
                     $params['attr']['placeholder'] = $productOption->getPlaceholder();
                     $params['attr']['prefix'] = $productOption->getPrefix();
                     $params['attr']['suffix'] = $productOption->getSuffix();

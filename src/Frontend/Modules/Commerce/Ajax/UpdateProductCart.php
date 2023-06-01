@@ -100,13 +100,13 @@ class UpdateProductCart extends FrontendBaseAJAXAction
 
         $cartValue->setQuantity($amount);
         $cartValue->setTotal($cartValue->getPrice()->multiply($amount));
-//        $cartValueRepository->
+        //        $cartValueRepository->
 
-//        $cartValue->save
+        //        $cartValue->save
 
         // Remove the value
-//        $this->cart->removeValue($cartValue);
-//        $cartValueRepository->removeByIdAndCart($cartValue->getId(), $this->cart);
+        //        $this->cart->removeValue($cartValue);
+        //        $cartValueRepository->removeByIdAndCart($cartValue->getId(), $this->cart);
 
         return $cartValue;
     }

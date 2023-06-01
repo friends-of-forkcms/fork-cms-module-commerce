@@ -601,10 +601,10 @@ class ProductRepository extends EntityRepository
             }
         }
 
-//        // Fetch categories
-//        $categories = $this->getEntityManager()
-//            ->getRepository('commerce.repository.category')
-//            ->findBy(['id' => array_map(fn ($item) => $item['category_id'], $items)]);
+        //        // Fetch categories
+        //        $categories = $this->getEntityManager()
+        //            ->getRepository('commerce.repository.category')
+        //            ->findBy(['id' => array_map(fn ($item) => $item['category_id'], $items)]);
 
         // Note: array must have the ID as key, else search breaks!
         return $items;
