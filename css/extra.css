@@ -1,0 +1,16 @@
+/* Fork CMS branding */
+:root {
+    --md-primary-fg-color: #2580b6;
+    --md-primary-fg-color--light: #bcdaeb;
+    --md-primary-fg-color--dark: #00578b;
+}
+
+/* Hide navigation title */
+nav.md-nav.md-nav--primary > label.md-nav__title {
+    display: none !important;
+}
+
+/* Hide copyright message */
+.md-footer-copyright {
+    visibility: hidden;
+}
