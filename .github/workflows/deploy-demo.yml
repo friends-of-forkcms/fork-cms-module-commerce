@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - master
-  schedule:
-    - cron: "30 6 * * *"  # Runs at 06:30 UTC every day
-    - cron: "30 18 * * *" # Runs at 18:30 UTC every day
+#   schedule:
+#     - cron: "30 6 * * *"  # Runs at 06:30 UTC every day
+#     - cron: "30 18 * * *" # Runs at 18:30 UTC every day
 
 concurrency:
   group: 'deploy-demo-${{ github.head_ref || github.ref }}'
