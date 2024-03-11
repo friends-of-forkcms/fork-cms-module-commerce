@@ -9,6 +9,8 @@ class SettingsDataTransferObject
 {
     private ModulesSettings $modulesSettings;
 
+    public bool $show_prices_with_vat;
+
     /**
      * @Assert\NotBlank(message="err.FieldIsRequired")
      * @Assert\Range(
@@ -52,6 +54,7 @@ class SettingsDataTransferObject
     {
         $this->modulesSettings = $modulesSettings;
 
+        $this->show_prices_with_vat = $this->get('show_prices_with_vat', true);
         $this->overview_num_items = $this->get('overview_num_items', 10);
         $this->filters_show_more_num_items = $this->get('filters_show_more_num_items', 5);
         $this->next_invoice_number = $this->get('next_invoice_number', 1);

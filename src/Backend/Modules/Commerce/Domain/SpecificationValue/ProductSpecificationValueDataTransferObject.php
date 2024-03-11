@@ -42,7 +42,9 @@ class ProductSpecificationValueDataTransferObject
             $this->value->getValue(),
             false,
             $specificationValueRepository->getUrl($this->value->getValue(), $this->specification, null),
-            false
+            false,
+            null,
+            ''
         );
 
         return $meta;

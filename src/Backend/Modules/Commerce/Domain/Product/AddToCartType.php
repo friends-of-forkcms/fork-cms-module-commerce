@@ -138,6 +138,9 @@ class AddToCartType extends AbstractType
                     },
                     'expanded' => true,
                     'multiple' => true,
+                    'attr' => [
+                        'data-include-vat' => Model::get('fork.settings')->get('Commerce', 'show_prices_with_vat', true),
+                    ],
                 ]);
         }
 

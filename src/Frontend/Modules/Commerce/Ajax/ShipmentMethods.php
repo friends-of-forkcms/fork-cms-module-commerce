@@ -164,7 +164,7 @@ class ShipmentMethods extends FrontendBaseAJAXAction
                 2592000,
                 '/',
                 null,
-                null,
+                true,
                 true,
                 false,
                 SymfonyCookie::SAMESITE_NONE

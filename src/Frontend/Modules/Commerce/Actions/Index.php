@@ -69,6 +69,9 @@ class Index extends FrontendBaseBlock
         } else {
             $this->redirect(FrontendNavigation::getUrl(404));
         }
+
+        // Price VAT setting
+        $this->template->assign('includeVAT', $this->get('fork.settings')->get('Commerce', 'show_prices_with_vat', true));
     }
 
     private function parseOverview(): void

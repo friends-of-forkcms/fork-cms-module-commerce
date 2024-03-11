@@ -35,30 +35,41 @@
                             {# Discounts #}
                             {% if product.hasActiveSpecialPrice %}
                                 <p class="price-old | line-through text-sm inline align-top">
-                                    <del aria-hidden="true">{{ product.oldPrice(false)|money_localized_format }}</del>
+                                    <del aria-hidden="true">{{ product.oldPrice(includeVAT)|money_localized_format }}</del>
                                 </p>
                                 <p class="price-new | text-xl text-yellow-500 font-semibold inline">
-                                    <span>{{ product.activePrice(false)|money_localized_format }}</span>
+                                    <span>{{ product.activePrice(includeVAT)|money_localized_format }}</span>
                                 </p>
 
                                 <div class="inline-block px-2 py-1 ml-2 text-xs text-gray-500 align-top border border-gray-500 rounded-full">{{ product.discountPercentageFormatted }}</div>
                             {% else %}
                                 <p class="price | text-xl text-yellow-500 font-semibold inline">
-                                    <span>{{ product.activePrice(false)|money_localized_format }}</span>
+                                    <span>{{ product.activePrice(includeVAT)|money_localized_format }}</span>
                                 </p>
                             {% endif %}
                             <p class="price-btw">
                                 <span class="block my-3 text-sm">
-                                    {{
-                                        'msg.ExclusiveVatPricing'
-                                            |trans
-                                            |format(
-                                                product.vat.percentage|formatnumber(0)|e,
-                                                product.activePrice(true)|money_localized_format|e,
-                                                product.vat.percentage|number_format(0, ',', '.')|e
-                                            )
-                                            |raw
-                                    }}
+                                    {% if includeVAT %}
+                                        {{
+                                            'msg.InclusiveVatPricing'
+                                                |trans
+                                                |format(
+                                                    product.vat.percentage|formatnumber(0)|e
+                                                )
+                                                |raw
+                                        }}
+                                    {% else %}
+                                        {{
+                                            'msg.ExclusiveVatPricing'
+                                                |trans
+                                                |format(
+                                                    product.vat.percentage|formatnumber(0)|e,
+                                                    product.activePrice(true)|money_localized_format|e,
+                                                    product.vat.percentage|number_format(0, ',', '.')|e
+                                                )
+                                                |raw
+                                        }}
+                                    {% endif %}
                                 </span>
                             </p>
                         </div>
@@ -238,7 +249,7 @@
   "offers": {
     "@type": "Offer",
     "priceCurrency": "EUR",
-    "price": "{{ product.activePrice(false)|money_as_float }}",
+    "price": "{{ product.activePrice(includeVAT)|money_as_float }}",
     "itemCondition": "http://schema.org/NewCondition",
     {% if product.inStock %}
     "availability": "http://schema.org/InStock",
