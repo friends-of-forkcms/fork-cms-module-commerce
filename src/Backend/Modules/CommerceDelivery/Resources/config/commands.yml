@@ -1,0 +1,8 @@
+services:
+    commerce.handler.update_shipment_method_delivery:
+        class: Backend\Modules\CommerceDelivery\Domain\Delivery\Command\UpdateDeliveryShipmentMethodHandler
+        arguments:
+            - "@commerce.repository.shipment_method"
+            - "@fork.settings"
+        tags:
+            - { name: command_handler, handles: Backend\Modules\CommerceDelivery\Domain\Delivery\Command\UpdateDeliveryShipmentMethod }

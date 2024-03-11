@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  <Backend>
+    <Core>
+      <item type="label" name="CommerceDelivery">
+        <translation language="nl"><![CDATA[Pakket leveren]]></translation>
+        <translation language="en"><![CDATA[Deliver shipment]]></translation>
+      </item>
+    </Core>
+  </Backend>
+</locale>
